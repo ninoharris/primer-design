@@ -1,25 +1,65 @@
 console.log("\n\n\n ------- NEW RUN -------")
 
-let sequence = []
-for(let i = 0; i < 11; i++) {
-	sequence.push({})
+const sequenceTemplate = {
+	NTLength: 9,
+	REStart: null,
+	displayString: null,
+	helperString: null,
+	setREStart: function(pos) {
+		if(!this["RESite"] || this["RESite"] == null) return
+		if(pos > (this.NTLength - this["RESite"].seq.length))
+			throw new Error("Cannot use a position that causes the returned string to be cut-off")
+			this.REStart = pos
+	},
+	setDisplayString: function() {
+		this.displayString =
+			(this["RESite"] === undefined || this["RESite"] == null) ?
+			generateRandom(9) :
+			generateSequenceWithInclude(this.NTLength, this["RESite"].seq, this.REStart)
+	},
+	setHelperString: function() {
+		if(!this["RESite"]) return this.helperString = new Array(this.NTLength + 1).join(" ");
+		if(typeof this.REStart !== "number") throw new Error("Must have a start position")
+		this.helperString = (
+			new Array(this.REStart + 1).join(" ") +
+			this["RESite"].name +
+			new Array(this.NTLength - this.REStart - this["RESite"].name.length + 1).join(" ")
+		)
+	}
 }
 
+let sequence = []
+for(let i = 0; i < 10; i++) {
+	sequence.push(Object.create(sequenceTemplate))
+}
+
+
+
 const RESitesClean = [
-	{ "id": 0, "name": "HindIII", "seq": "AAGCTT", "length": 6 },
-	{ "id": 1, "name": "EcoRI", "seq": "GAATTC", "length": 6 },
-	{ "id": 2, "name": "NheI", "seq": "GCTAGC", "length": 6 },
-	{ "id": 3, "name": "PstI", "seq": "CTGCAG", "length": 6 },
-	{ "id": 4, "name": "SacII", "seq": "CCGCGG", "length": 6 },
-	{ "id": 5, "name": "SpeI", "seq": "ACTAGT", "length": 6 },
-	{ "id": 6, "name": "HpaI", "seq": "GTTAAC", "length": 6 },
-	{ "id": 7, "name": "KpnI", "seq": "GGTACC", "length": 6 },
+	{ "id": 0, "name": "HindIII", "seq": "AAGCTT", "cutsForward": 2, "cutsReverse": 4 },
+	{ "id": 1, "name": "EcoRI", "seq": "GAATTC" },
+	{ "id": 2, "name": "NheI", "seq": "GCTAGC" },
+	{ "id": 3, "name": "PstI", "seq": "CTGCAG" },
+	{ "id": 4, "name": "SacII", "seq": "CCGCGG" },
+	{ "id": 5, "name": "SpeI", "seq": "ACTAGT" },
+	{ "id": 6, "name": "HpaI", "seq": "GTTAAC" },
+	{ "id": 7, "name": "KpnI", "seq": "GGTACC" },
 	// { name: "NotI", "seq": "GCGGCCGC", "length": 6 }
 ]
 
 const randomInt = function(max) {
 	if(typeof max !== 'number') throw new Error('randomInt:', max, ' is not a number')
 	return Math.floor(Math.random() * max)
+}
+
+function generateSequenceWithInclude(len, include, start) {
+	// console.log("generateSequenceWithInclude:", len, include, start)
+	if(typeof len !== "number" || len <= 0) throw new Error("Length must be a number > 0")
+	// TODO: Add colours for ease of reading
+	let str = generateRandom(start)
+	str += include
+	str += generateRandom(len - (include.length + start))
+	return str
 }
 
 function generateRandom(len) {
@@ -46,8 +86,10 @@ function generateRandomSingle(not) { // Pure
 }
 
 function complementFromString(str) { // Pure
+	if(!str || str.length === 0) throw new Error("String must not be empty")
 	let complement = ""
 	const outcomes = {
+		" ": " ",
 		"A": "T",
 		"T": "A",
 		"G": "C",
@@ -107,16 +149,39 @@ do {
 console.log(grpContainingRE1, grpContainingRE2)
 // console.log("\n\nAvailable RE sites left:\n", RESites)
 
-sequence[grpContainingRE1] = RE1
-sequence[grpContainingRE2] = RE2
+sequence[grpContainingRE1]["RESite"] = RE1
+sequence[grpContainingRE2]["RESite"] = RE2
 
 for(let i = 0, count = 0, used = {}; i < sequence.length && count < 6; i++) {
 	// Chance of a division containing a RE site is 40%
-	if(sequence[i].id > -1 || Math.random() < 0.6) continue
-	sequence[i] = RESites[randomInt(RESites.length)]
+	// TODO: Prevent overriding, by checking if a division contains a RE
+	if(sequence[i].hasOwnProperty('RESite') || Math.random() < 0.6) continue
+	sequence[i]["RESite"] = RESites[randomInt(RESites.length)]
 	count++
 }
 
-console.log("\n\nsequence contains:\n", sequence)
+for(let i = 0, filledSequence; i < sequence.length; i++) {
+	const division = sequence[i]
+	division.setREStart(randomInt(4))
+	division.setDisplayString()
+	division.setHelperString()
+}
 
-console.log(generateRandom(500))
+// console.log("\n\nsequence contains:\n", JSON.stringify(sequence, null, 2))
+
+let sequenceString, helperString
+
+sequenceString = sequence.map(seq => seq.displayString).join("")
+helperString = sequence.map(seq => seq.helperString).join("")
+console.log(helperString)
+console.log(sequenceString)
+console.log(complementFromString(sequenceString))
+
+// digest returns an object of forward and reverse strands
+function digest(sequence, RESite) {
+	output = {
+		forward,
+		reverse
+	}
+
+}
