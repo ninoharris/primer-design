@@ -32,7 +32,7 @@ const sequenceTemplate = {
 	},
 	setHelperString: function() {
 		if(!this["RESite"]) return this.helperString = repeatChar(this.NTLength, " ");
-		if(isNaN(this.REStart)) throw new Error("Must have a start position")
+		if(typeof this.REStart !== "number") throw new Error("Must have a start position")
 		this.helperString = (
 			repeatChar(this.REStart, " ") +
 			this["RESite"].name +
@@ -61,13 +61,13 @@ const RESitesClean = [
 ]
 
 const randomInt = function(max) {
-	if(isNaN(max)) throw new Error('randomInt:', max, ' is not a number')
+	if(typeof max !== 'number') throw new Error('randomInt:', max, ' is not a number')
 	return Math.floor(Math.random() * max)
 }
 
 function generateSequenceWithInclude(len, include, start) {
 	// console.log("generateSequenceWithInclude:", len, include, start)
-	if(isNaN(len) || len <= 0) throw new Error("Length must be a number > 0")
+	if(typeof len !== "number" || len <= 0) throw new Error("Length must be a number > 0")
 	let str = generateRandom(start)
 	str += include
 	str += generateRandom(len - (include.length + start))
@@ -75,7 +75,7 @@ function generateSequenceWithInclude(len, include, start) {
 }
 
 function generateRandom(len) {
-	if(isNaN(len)) throw new Error("Length must be a number")
+	if(typeof len !== 'number') throw new Error("Length must be a number")
 	let str = ""
 	for(let i = 0; i < len; i++) {
 		str += generateRandomSingle()
