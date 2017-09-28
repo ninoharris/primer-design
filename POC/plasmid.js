@@ -16,11 +16,13 @@ const sequenceTemplate = {
 	REStart: null,
 	displayString: null,
 	helperString: null,
-	setREStart: function(pos) {
+	setREStart: function(fixed) { // fixed is optional
 		if(!this["RESite"] || this["RESite"] == null) return
-		if(pos > (this.NTLength - this["RESite"].seq.length))
-			throw new Error("Cannot use a position that causes the returned string to be cut-off")
-			this.REStart = pos
+		const maxPosition = this.NTLength - this["RESite"].seq.length
+		if(fixed > (maxPosition))
+			throw new Error("Cannot instruct a position that causes the returned string to be cut-off")
+		this.REStart = fixed ? fixed :
+			randomInt(maxPosition + 1) // randomInt always floors, so +1.
 	},
 	setDisplayString: function() {
 		this.displayString =
@@ -66,7 +68,6 @@ const randomInt = function(max) {
 function generateSequenceWithInclude(len, include, start) {
 	// console.log("generateSequenceWithInclude:", len, include, start)
 	if(typeof len !== "number" || len <= 0) throw new Error("Length must be a number > 0")
-	// TODO: Add colours for ease of reading
 	let str = generateRandom(start)
 	str += include
 	str += generateRandom(len - (include.length + start))
@@ -173,7 +174,7 @@ for(let i = 0, count = 0, used = {}; i < sequence.length && count < 6; i++) {
 
 for(let i = 0, filledSequence; i < sequence.length; i++) {
 	const division = sequence[i]
-	division.setREStart(randomInt(4))
+	division.setREStart()
 	division.setDisplayString()
 	division.setHelperString()
 }
@@ -182,8 +183,8 @@ for(let i = 0, filledSequence; i < sequence.length; i++) {
 
 let sequenceString, helperString
 
-sequenceString = sequence.map(seq => seq.displayString).join("")
-helperString = sequence.map(seq => seq.helperString).join("")
+sequenceString = sequence.map(seq => seq.displayString).join(" ")
+helperString = sequence.map(seq => seq.helperString).join(" ")
 console.log(helperString)
 console.log(sequenceString)
 console.log(complementFromString(sequenceString))
