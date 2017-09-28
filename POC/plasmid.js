@@ -1,3 +1,14 @@
+const pad = require('pad')
+
+function repeatChar(count, ch) {
+	if(!ch || ch.length === 0) ch = " " // Default repeated char is space
+    var txt = "";
+    for (var i = 0; i < count; i++) {
+        txt += ch;
+    }
+    return txt;
+}
+
 console.log("\n\n\n ------- NEW RUN -------")
 
 const sequenceTemplate = {
@@ -18,32 +29,32 @@ const sequenceTemplate = {
 			generateSequenceWithInclude(this.NTLength, this["RESite"].seq, this.REStart)
 	},
 	setHelperString: function() {
-		if(!this["RESite"]) return this.helperString = new Array(this.NTLength + 1).join(" ");
+		if(!this["RESite"]) return this.helperString = repeatChar(this.NTLength, " ");
 		if(typeof this.REStart !== "number") throw new Error("Must have a start position")
 		this.helperString = (
-			new Array(this.REStart + 1).join(" ") +
+			repeatChar(this.REStart, " ") +
 			this["RESite"].name +
-			new Array(this.NTLength - this.REStart - this["RESite"].name.length + 1).join(" ")
+			repeatChar(this.NTLength - this.REStart - this["RESite"].name.length, " ")
 		)
 	}
 }
 
 let sequence = []
-for(let i = 0; i < 10; i++) {
+for(let i = 0; i < 7; i++) {
 	sequence.push(Object.create(sequenceTemplate))
 }
 
 
-
+// TODO: properly define positions
 const RESitesClean = [
-	{ "id": 0, "name": "HindIII", "seq": "AAGCTT", "cutsForward": 2, "cutsReverse": 4 },
-	{ "id": 1, "name": "EcoRI", "seq": "GAATTC" },
-	{ "id": 2, "name": "NheI", "seq": "GCTAGC" },
-	{ "id": 3, "name": "PstI", "seq": "CTGCAG" },
-	{ "id": 4, "name": "SacII", "seq": "CCGCGG" },
-	{ "id": 5, "name": "SpeI", "seq": "ACTAGT" },
-	{ "id": 6, "name": "HpaI", "seq": "GTTAAC" },
-	{ "id": 7, "name": "KpnI", "seq": "GGTACC" },
+	{ "id": 0, "name": "HndIII", "seq": "AAGCTT", "cutsForward": 2, "cutsReverse": 4 },
+	{ "id": 1, "name": "EcoRI", "seq": "GAATTC", "cutsForward": 2, "cutsReverse": 4 },
+	{ "id": 2, "name": "NheI", "seq": "GCTAGC", "cutsForward": 2, "cutsReverse": 4 },
+	{ "id": 3, "name": "PstI", "seq": "CTGCAG", "cutsForward": 2, "cutsReverse": 4 },
+	{ "id": 4, "name": "SacII", "seq": "CCGCGG", "cutsForward": 2, "cutsReverse": 4 },
+	{ "id": 5, "name": "SpeI", "seq": "ACTAGT", "cutsForward": 2, "cutsReverse": 4 },
+	{ "id": 6, "name": "HpaI", "seq": "GTTAAC", "cutsForward": 2, "cutsReverse": 4 },
+	{ "id": 7, "name": "KpnI", "seq": "GGTACC", "cutsForward": 2, "cutsReverse": 4 },
 	// { name: "NotI", "seq": "GCGGCCGC", "length": 6 }
 ]
 
@@ -63,6 +74,7 @@ function generateSequenceWithInclude(len, include, start) {
 }
 
 function generateRandom(len) {
+	if(typeof len !== 'number') throw new Error("Length must be a number")
 	let str = ""
 	for(let i = 0; i < len; i++) {
 		str += generateRandomSingle()
@@ -105,7 +117,9 @@ function complementFromString(str) { // Pure
 }
 // const seq = generateRandom(9)
 // console.log(seq, complementFromString(seq))
-// console.log(RESitesClean[1]["name"], "\n" + RESitesClean[1]["seq"] + "\n" + complementFromString(RESitesClean[1]["seq"]))
+// console.log(RESitesClean[1]["name"],
+// "\n" + RESitesClean[1]["seq"] + "\n" +
+// complementFromString(RESitesClean[1]["seq"]))
 
 function conflicts(s1, s2) {
 	const short = s1.length < s2.length ? s1 : s2, long = s1.length < s2.length ? s2 : s1
@@ -114,7 +128,7 @@ function conflicts(s1, s2) {
 	if(long.indexOf(short) > -1 || long.indexOf(shortReversed) > -1) return true
 	return false
 }
-
+// TODO: see if non ES6 method exists
 function reverse(str) {
 	return [...str].reverse().join('')
 }
@@ -126,9 +140,7 @@ function reverse(str) {
 let RE1, RE2, RE1Index, RE2Index
 RESites = RESitesClean.slice() // Make an editable copy of RESitesClean
 RE1Index = randomInt(RESites.length) // Select first sequence
-console.log("RESites.length before both splicing", RESites.length)
 RE1 = RESites.splice(RE1Index, 1)[0]
-console.log("RESites.length after one splicing", RESites.length)
 
 do {
 	RE2Index = randomInt(RESites.length)
@@ -137,7 +149,6 @@ do {
 } while (conflicts(RE1.seq, RE2.seq))
 console.log("RE1", RE1)
 console.log("RE2", RE2)
-console.log("RESites.length after both splicing", RESites.length)
 
 
 // Appoint 2 grps to contain one of each of the 2 'guaranteeds'
@@ -146,12 +157,12 @@ do {
 	grpContainingRE2 = randomInt(sequence.length)
 } while (Math.abs(grpContainingRE1 - grpContainingRE2) < 1) // At least 1 apart either direction
 
-console.log(grpContainingRE1, grpContainingRE2)
-// console.log("\n\nAvailable RE sites left:\n", RESites)
+console.log("Positions of guaranteed RE sites: ", grpContainingRE1, grpContainingRE2)
 
 sequence[grpContainingRE1]["RESite"] = RE1
 sequence[grpContainingRE2]["RESite"] = RE2
 
+// Choose which divisions are going to contain the 'filler' RE sites
 for(let i = 0, count = 0, used = {}; i < sequence.length && count < 6; i++) {
 	// Chance of a division containing a RE site is 40%
 	// TODO: Prevent overriding, by checking if a division contains a RE
@@ -179,9 +190,23 @@ console.log(complementFromString(sequenceString))
 
 // digest returns an object of forward and reverse strands
 function digest(sequence, RESite) {
-	output = {
-		forward,
-		reverse
+	const re = new RegExp(RESite.seq)
+	let matchPos = re.exec(sequence).index
+	let cutForward = matchPos + RESite.cutsForward
+	let cutReverse = matchPos + RESite.cutsReverse
+	console.log("cutForward:", cutForward, "cutReverse:", cutReverse,)
+	return {
+		LHS: {
+			forward: sequence.slice(0, cutForward),
+			reverse: sequence.slice(0, cutReverse)
+		},
+		// RHS: {
+		// 	forward: sequence.slice(0, cutForward),
+		// 	reverse: sequence.slice(0, cutReverse)
+		// }
 	}
-
 }
+
+let fragments = digest(sequenceString, RE1)
+console.log(fragments.LHS.forward)
+console.log(fragments.LHS.reverse)
