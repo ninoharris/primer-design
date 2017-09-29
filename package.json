@@ -4,6 +4,8 @@
   "description": "A React SPA to teach Undergraduates primer design.",
   "main": "index.js",
   "scripts": {
+    "start": "node index",
+		"plasmid": "babel-node",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,9 +23,17 @@
   },
   "homepage": "https://github.com/saturninoharris/primer-design#readme",
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
     "colors": "^1.1.2",
-    "pad": "^1.1.0",
     "prompt": "^1.0.0",
     "sha1": "^1.1.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.0",
+    "babel-register": "^6.26.0",
+    "webpack": "^3.6.0"
   }
 }
