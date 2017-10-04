@@ -11,16 +11,6 @@ import {
 
 console.log("\n\n\n ------- NEW RUN -------")
 
-// function repeatChar(count, ch) {
-// 	if(!ch || ch.length === 0) ch = " " // Default repeated char is space
-//     var txt = "";
-//     for (var i = 0; i < count; i++) {
-//         txt += ch;
-//     }
-//     return txt;
-// }
-
-
 const sequenceTemplate = {
 	NTLength: 9,
 	REStart: null,
@@ -53,26 +43,27 @@ const sequenceTemplate = {
 }
 
 let sequence = []
-for(let i = 0; i < 7; i++) {
+for(let i = 0; i < 9; i++) {
 	sequence.push(Object.create(sequenceTemplate))
 }
 
 
 // TODO: properly define positions
-const RESitesClean = [
-	{ "id": 0, "name": "HndIII", "seq": "AAGCTT", "cutsForward": 2, "cutsReverse": 4 },
-	{ "id": 1, "name": "EcoRI", "seq": "GAATTC", "cutsForward": 2, "cutsReverse": 4 },
-	{ "id": 2, "name": "NheI", "seq": "GCTAGC", "cutsForward": 2, "cutsReverse": 4 },
-	{ "id": 3, "name": "PstI", "seq": "CTGCAG", "cutsForward": 2, "cutsReverse": 4 },
-	{ "id": 4, "name": "SacII", "seq": "CCGCGG", "cutsForward": 2, "cutsReverse": 4 },
-	{ "id": 5, "name": "SpeI", "seq": "ACTAGT", "cutsForward": 2, "cutsReverse": 4 },
-	{ "id": 6, "name": "HpaI", "seq": "GTTAAC", "cutsForward": 2, "cutsReverse": 4 },
-	{ "id": 7, "name": "KpnI", "seq": "GGTACC", "cutsForward": 2, "cutsReverse": 4 },
-	// { name: "NotI", "seq": "GCGGCCGC", "length": 6 }
-]
+// const RESitesClean = [
+// 	{ "id": 0, "name": "HndIII", "seq": "AAGCTT", "cutsForward": 2, "cutsReverse": 4 },
+// 	{ "id": 1, "name": "EcoRI", "seq": "GAATTC", "cutsForward": 2, "cutsReverse": 4 },
+// 	{ "id": 2, "name": "NheI", "seq": "GCTAGC", "cutsForward": 2, "cutsReverse": 4 },
+// 	{ "id": 3, "name": "PstI", "seq": "CTGCAG", "cutsForward": 2, "cutsReverse": 4 },
+// 	{ "id": 4, "name": "SacII", "seq": "CCGCGG", "cutsForward": 2, "cutsReverse": 4 },
+// 	{ "id": 5, "name": "SpeI", "seq": "ACTAGT", "cutsForward": 2, "cutsReverse": 4 },
+// 	{ "id": 6, "name": "HpaI", "seq": "GTTAAC", "cutsForward": 2, "cutsReverse": 4 },
+// 	{ "id": 7, "name": "KpnI", "seq": "GGTACC", "cutsForward": 2, "cutsReverse": 4 },
+// 	// { name: "NotI", "seq": "GCGGCCGC", "length": 6 }
+// ]
 
-
-
+const RESitesJSON = require('./data')
+let RESitesClean = RESitesJSON["default"]["res"]
+console.log(RESitesClean)
 
 
 
