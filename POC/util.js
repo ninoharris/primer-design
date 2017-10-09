@@ -1,4 +1,4 @@
-export const repeatChar = function(count, ch) {
+const repeatChar = function(count, ch) {
 	if(!ch || ch.length === 0) ch = " " // Default repeated char is space
     var txt = "";
     for (var i = 0; i < count; i++) {
@@ -8,13 +8,13 @@ export const repeatChar = function(count, ch) {
 }
 
 
-export const randomInt = function(max) {
+const randomInt = function(max) {
 	if(isNaN(max)) throw new Error('randomInt:', max, ' is not a number')
 	return Math.floor(Math.random() * max)
 }
 
 
-export const generateSequenceWithInclude = function(len, include, start) {
+const generateSequenceWithInclude = function(len, include, start) {
 	// console.log("generateSequenceWithInclude:", len, include, start)
 	if(isNaN(len) || len <= 0) throw new Error("Length must be a number > 0")
 	let str = generateRandom(start)
@@ -23,7 +23,7 @@ export const generateSequenceWithInclude = function(len, include, start) {
 	return str
 }
 
-export const generateRandom = function(len) {
+const generateRandom = function(len) {
 	if(isNaN(len)) throw new Error("Length must be a number")
 	let str = ""
 	for(let i = 0; i < len; i++) {
@@ -32,7 +32,7 @@ export const generateRandom = function(len) {
 	return str
 }
 
-export const generateRandomSingle = function(not) { // Pure
+const generateRandomSingle = function(not) { // Pure
 	let pos, outcomes = ["A", "T", "G", "C"]
 	if(not) {
 		if(Array.isArray(not)) {
@@ -47,7 +47,7 @@ export const generateRandomSingle = function(not) { // Pure
 	return outcomes[randomInt(outcomes.length)]
 }
 
-export const complementFromString = function(str) { // Pure
+const complementFromString = function(str) { // Pure
 	if(!str || str.length === 0) throw new Error("String must not be empty")
 	let complement = ""
 	const outcomes = {
@@ -66,20 +66,58 @@ export const complementFromString = function(str) { // Pure
 	return complement
 }
 
+
 // const seq = generateRandom(9)
 // console.log(seq, complementFromString(seq))
 // console.log(RESitesClean[1]["name"],
 // "\n" + RESitesClean[1]["seq"] + "\n" +
 // complementFromString(RESitesClean[1]["seq"]))
 
-export const conflicts = function(s1, s2) {
-	const short = s1.length < s2.length ? s1 : s2, long = s1.length < s2.length ? s2 : s1
+const conflicts = function(s1, s2, maxRepeats) {
+	const short = s1.length < s2.length ? s1 : s2
+	const long = s1.length < s2.length ? s2 : s1
 	const shortReversed = reverse(short)
 
-	if(long.indexOf(short) > -1 || long.indexOf(shortReversed) > -1) return true
+	// If no maxRepeats, use a simpler one
+	if(!maxRepeats) {
+		if(long.indexOf(short) > -1 || long.indexOf(shortReversed) > -1) return true
+		return false
+	}
+
+	if(typeof maxRepeats !== 'number') {
+		throw Error('maxRepeats must be an integer.')
+	}
+
+	// If we have maxRepeats, then we need to test a certain limit of times.
+	const reg1 = RegExp(short, 'g'), reg2 = RegExp(shortReversed, 'g')
+	let match, matchCount
+	// Yes its repeating, but this is fine.
+	matchCount = 0
+	while((match = reg1.exec(long)) !== null) {
+		if(matchCount++ >= maxRepeats) return true
+	}
+	matchCount = 0
+	if((match = reg2.exec(long)) !== null) {
+		if(matchCount++ >= maxRepeats) return true
+	}
 	return false
 }
 // TODO: see if non ES6 method exists
-export const reverse = function(str) {
+const reverse = function(str) {
 	return [...str].reverse().join('')
 }
+
+const utils = {
+	repeatChar,
+	randomInt,
+	generateSequenceWithInclude,
+	generateRandom,
+	generateRandomSingle,
+	complementFromString,
+	conflicts,
+	reverse,
+}
+export default utils
+// console.log('module', module)
+
+console.log(conflicts('TA', 'ATGCTATATA', 2))

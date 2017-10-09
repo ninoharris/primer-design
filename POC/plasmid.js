@@ -1,4 +1,6 @@
-import {
+import util from './util'
+// ES6 destructuring
+var {
 	repeatChar,
 	randomInt,
 	generateSequenceWithInclude,
@@ -7,7 +9,7 @@ import {
 	complementFromString,
 	conflicts,
 	reverse,
-} from './util'
+} = util
 
 console.log("\n\n\n ------- NEW RUN -------")
 
@@ -63,7 +65,7 @@ for(let i = 0; i < 9; i++) {
 
 const RESitesJSON = require('./data')
 let RESitesClean = RESitesJSON["default"]["res"]
-console.log(RESitesClean)
+// console.log(RESitesClean)
 
 
 
@@ -78,8 +80,8 @@ do {
 	RE2 = RESites.splice(RE2Index, 1)[0]
 	//  RESites[RE2Index]
 } while (conflicts(RE1.seq, RE2.seq))
-console.log("RE1", RE1)
-console.log("RE2", RE2)
+// console.log("RE1", RE1)
+// console.log("RE2", RE2)
 
 
 // Appoint 2 grps to contain one of each of the 2 'guaranteeds'
@@ -88,7 +90,7 @@ do {
 	grpContainingRE2 = randomInt(sequence.length)
 } while (Math.abs(grpContainingRE1 - grpContainingRE2) < 1) // At least 1 apart either direction
 
-console.log("Positions of guaranteed RE sites: ", grpContainingRE1, grpContainingRE2)
+// console.log("Positions of guaranteed RE sites: ", grpContainingRE1, grpContainingRE2)
 
 sequence[grpContainingRE1]["RESite"] = RE1
 sequence[grpContainingRE2]["RESite"] = RE2
