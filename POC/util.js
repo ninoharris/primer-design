@@ -74,6 +74,7 @@ const complementFromString = function(str) { // Pure
 // complementFromString(RESitesClean[1]["seq"]))
 
 const conflicts = function(s1, s2, maxRepeats) {
+	// is memoization needed?
 	const short = s1.length < s2.length ? s1 : s2
 	const long = s1.length < s2.length ? s2 : s1
 	const shortReversed = reverse(short)
@@ -96,7 +97,6 @@ const conflicts = function(s1, s2, maxRepeats) {
 	while((match = reg1.exec(long)) !== null) {
 		if(matchCount++ >= maxRepeats) return true
 	}
-	matchCount = 0
 	if((match = reg2.exec(long)) !== null) {
 		if(matchCount++ >= maxRepeats) return true
 	}
@@ -120,4 +120,4 @@ const utils = {
 export default utils
 // console.log('module', module)
 
-console.log(conflicts('TA', 'ATGCTATATA', 2))
+console.log(conflicts('TAT', 'ATGCTATA', 2))
