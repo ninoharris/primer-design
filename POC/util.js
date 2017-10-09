@@ -97,7 +97,7 @@ const conflicts = function(s1, s2, maxRepeats) {
 	while((match = reg1.exec(long)) !== null) {
 		if(matchCount++ >= maxRepeats) return true
 	}
-	if((match = reg2.exec(long)) !== null) {
+	while((match = reg2.exec(long)) !== null) {
 		if(matchCount++ >= maxRepeats) return true
 	}
 	return false
