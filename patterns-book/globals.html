@@ -1,0 +1,27 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<style>
+	.wow {
+		background: yellow
+	}
+	</style>
+</head>
+<body>
+	<div id="result">
+		This is a element
+	</div>
+	<script>
+	// This is how you use the 'single var pattern', which I'm not a fan of
+	function updateElement() {
+		var el = document.getElementById('result'),
+		style = el.style
+		style.color = "red"
+	}
+	updateElement()
+	</script>
+</body>
+</html>

@@ -95,13 +95,18 @@ const conflicts = function(s1, s2, maxRepeats) {
 	// Yes its repeating, but this is fine.
 	matchCount = 0
 	while((match = reg1.exec(long)) !== null) {
+		console.log('reg1', match)
 		if(matchCount++ >= maxRepeats) return true
 	}
 	while((match = reg2.exec(long)) !== null) {
+		console.log('reg2', match)
 		if(matchCount++ >= maxRepeats) return true
 	}
 	return false
 }
+// console.log(conflicts('TATA', 'TATAAGCATATTATA', 2))
+
+
 // TODO: see if non ES6 method exists
 const reverse = function(str) {
 	return [...str].reverse().join('')
@@ -119,5 +124,3 @@ const utils = {
 }
 export default utils
 // console.log('module', module)
-
-console.log(conflicts('TAT', 'ATGCTATA', 2))
