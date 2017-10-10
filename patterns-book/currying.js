@@ -1,3 +1,4 @@
+import _ from 'lodash'
 // from MPJ
 const dragon =
 	name =>
@@ -7,14 +8,8 @@ const dragon =
 
 console.log(dragon('Kiros')('big')('ice'))
 
-// Lets make this a bit more complicated
+// Lets make this a bit more complicated (see bottom)
 
-const dragons = [
-	{ name: 'Myru', power: 'ice' },
-	{ name: 'Jenkins', power: 'old age' },
-	{ name: 'Rayshun', power: 'fire' },
-	{ name: 'Kanye', power: 'power' },
-]
 
 const sayHi = function(who) {
 	return "Hello" + (who ? (", " + who) : "") + "!"
@@ -74,3 +69,21 @@ var addy = function (a, b, c, d, e) {
 
 var hooray = schon(addy)
 console.log(hooray(5)(1)(1,10,1))
+
+
+
+const dragons = [
+	{ name: 'Myru', power: 'ice' },
+	{ name: 'Jenkins', power: 'old age' },
+	{ name: 'Rayshun', power: 'fire' },
+	{ name: 'Kanye', power: 'power' },
+]
+
+const filterDragons = function(power, dragon) {
+	console.log('Filter', power, dragon)
+	return dragon.power === power
+}
+
+const filterDragonsCurry = _.curry(filterDragons)
+
+console.log(dragons.filter(filterDragonsCurry('ice'))) // woo it works!
