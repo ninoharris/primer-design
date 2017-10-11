@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<style>
+		body {
+			font-family: monospace;
+			letter-spacing: 1px;
+		}
+		#blob {
+			animation: all 3s;
+		}
+		#blob, #sequence {
+			display: block;
+			position: absolute;
+		}
+	</style>
+</head>
+<body>
+	<div id="blob">ATGC</div>
+	<div id="sequence">
+		ACACAGGCTAGGGCACGAGCCGTGTTCGGATGTTTGTGAGAAGACTGTGGAGGCATCTGATCCACATGAACTGCGGTCCGGTTAGCGTCGTTACTGAACG
+	</div>
+	<script>
+		let seq = document.getElementById('sequence')
+		seq.style.left = (Math.random() * window.innerWidth) + 'px'
+		seq.style.top = (Math.random() * window.innerHeight) + 'px'
+		function hit() {
+			let blob = document.getElementById('blob')
+			blob.style.left = seq.style.left
+			let top = Number(seq.style.top.substring(0, seq.style.left.length - 2))
+			console.log(top)
+			blob.style.top = (top + 20) + 'px'
+		}
+		document.addEventListener('click', hit)
+	</script>
+</body>
+</html>

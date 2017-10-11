@@ -46,7 +46,7 @@ const sequenceTemplate = {
 
 let sequence = []
 for(let i = 0; i < 9; i++) {
-	sequence.push(Object.create(sequenceTemplate))
+	sequence.push(Object.create(sequenceTemplate)) // composition > inheritance
 }
 
 

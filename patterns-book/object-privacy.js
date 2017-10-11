@@ -1,3 +1,6 @@
+// Uses ES6 syntax, use babel-node with nodemon
+
+// 1. Object constructors with privacy
 const Constructor = function(seq, res) {
 	var plasmid = {
 		id: new Date(),
@@ -5,11 +8,11 @@ const Constructor = function(seq, res) {
 		res: res
 	}
 	this.getSpecs = function() {
-		return { ...plasmid }
+		return { ...plasmid } // returns a spread within an object
 	}
 	this.getSequence = function() {
 		return {
-			...plasmid,
+			...plasmid, // as above but extended.
 			age: 10
 		}
 	}
@@ -44,3 +47,14 @@ const newPersonWithout = function(properties) {
 
 var q = newPersonWithout('password')
 console.log(q)
+
+
+// 2. Object literals with privacy = encapsulate scope in IIFE with getter fn()
+var myObj = (function() {
+	var name = "default"
+	return {
+		getName: function() { return name }
+	}
+}())
+
+console.log(myObj.getName()) // 'default'
