@@ -32,7 +32,6 @@
 			let blob = document.getElementById('blob')
 			blob.style.left = seq.style.left
 			let top = Number(seq.style.top.substring(0, seq.style.left.length - 2))
-			console.log(top)
 			blob.style.top = (top + 20) + 'px'
 		}
 		document.addEventListener('click', hit)
