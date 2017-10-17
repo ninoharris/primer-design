@@ -90,7 +90,7 @@ do {
 	grpContainingRE2 = randomInt(sequence.length)
 } while (Math.abs(grpContainingRE1 - grpContainingRE2) < 1) // At least 1 apart either direction
 
-// console.log("Positions of guaranteed RE sites: ", grpContainingRE1, grpContainingRE2)
+console.log("Positions of guaranteed RE sites: ", grpContainingRE1, grpContainingRE2)
 
 sequence[grpContainingRE1]["RESite"] = RE1
 sequence[grpContainingRE2]["RESite"] = RE2
