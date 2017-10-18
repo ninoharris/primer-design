@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.css" />
+	<link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+	<style>
+		*, input {
+			font-family: 'Inconsolata', monospace;
+		}
+		input, p {
+			margin-bottom: 20px;
+		}
+		.container {
+			width: 900px;
+			margin: 100px auto;
+			display: flex;
+			align-content: stretch;
+		}
+	</style>
+
+</head>
+<body>
+	<div class="container">
+		<p>
+			This will be a page containing plasmids.
+		</p>
+		<form action="/api/upload-plasmid" id="upload-plasmid-form" method="POST">
+		  <input type="text" placeholder="Helper text" name="plasmidHelperText" size="100">
+		  <input type="text" placeholder="Plasmid sequence text" name="plasmidSequence" size="100"><br />
+		  <button type="submit">Upload plasmid sequence</button>
+		</form>
+	</div>
+	<script>
+	let plasmidForm = document.getElementById('upload-plasmid-form')
+	plasmidForm.addEventListener('submit', function(e) {
+		// e.preventDefault()
+		// fetch()
+	})
+	</script>
+</body>
+</html>
