@@ -1,0 +1,64 @@
+<!-- The following is an example of event delegation (applying to table as the currentTarget) with event bubbling
+(that is, even though the child element is clicked (td), it is bubbled up to the table).
+This allows us to use a single event handler AND lets us affect child elements even after the JS is loaded and applied.
+This is how React does it, and also means that we must clean up our handlers with componentWillUnmount
+ -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+</head>
+<body>
+	<table>
+		<tbody>
+			<tr>
+				<td>Content is: {1}</td>
+			</tr>
+			<tr>
+				<td>Content is: {2}</td>
+			</tr>
+			<tr>
+				<td>Content is: {3}</td>
+			</tr>
+			<tr>
+				<td>Content is: {4}</td>
+			</tr>
+			<tr>
+				<td>Content is: {5}</td>
+			</tr>
+			<tr>
+				<td>Content is: {6}</td>
+			</tr>
+			<tr>
+				<td>Content is: {7}</td>
+			</tr>
+			<tr>
+				<td>Content is: {8}</td>
+			</tr>
+			<tr>
+				<td>Content is: {9}</td>
+			</tr>
+			<tr>
+				<td>Content is: {10}</td>
+			</tr>
+		</tbody>
+	</table>
+	<script>
+	const table = document.querySelector('tbody')
+	table.addEventListener('click', function(e) {
+		if(event.target.tagName.toLowerCase() === 'td'){
+		  console.log('currentTarget', e.currentTarget.tagName) // table
+		  console.log('actual target is...', e.target.innerHTML) // td
+			let newTR = document.createElement('tr')
+			let newTD = document.createElement('td')
+			newTR.appendChild(newTD)
+			newTD.innerHTML = "Content is: {" + (table.children.length + 1) + "}"
+			table.appendChild(newTR)
+		}
+	})
+	</script>
+</body>
+</html>
