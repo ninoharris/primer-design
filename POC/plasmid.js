@@ -90,7 +90,7 @@ do {
 	grpContainingRE2 = randomInt(sequence.length)
 } while (Math.abs(grpContainingRE1 - grpContainingRE2) < 1) // At least 1 apart either direction
 
-console.log("Positions of guaranteed RE sites: ", grpContainingRE1, grpContainingRE2)
+// console.log("Positions of guaranteed RE sites: ", grpContainingRE1, grpContainingRE2)
 
 sequence[grpContainingRE1]["RESite"] = RE1
 sequence[grpContainingRE2]["RESite"] = RE2
@@ -117,7 +117,7 @@ let sequenceString, helperString
 
 sequenceString = sequence.map(seq => seq.displayString).join(" ")
 helperString = sequence.map(seq => seq.helperString).join(" ")
-console.log(helperString)
+console.log(helperString) // ****** TODO: uncomment these three.
 console.log(sequenceString)
 console.log(complementFromString(sequenceString))
 
@@ -141,5 +141,8 @@ function digest(sequence, RESite) {
 }
 
 let fragments = digest(sequenceString, RE1)
-console.log(fragments.LHS.forward)
-console.log(fragments.LHS.reverse)
+// console.log(fragments.LHS.forward)
+// console.log(fragments.LHS.reverse)
+
+// let test = 'GGGCGGGTGGG'
+// console.log('Should be equal to: CCCACCCGCCC', reverse(complementFromString(test)))

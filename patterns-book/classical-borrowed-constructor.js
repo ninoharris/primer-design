@@ -25,3 +25,6 @@ var page = new StaticPage()
 console.log('page.tags, is able to access: ', page.tags, '..... and has own property (duplicated):', page.hasOwnProperty('tags'))
 
 // console.log(instanceof page)
+
+console.log('page instanceof StaticPage:', page instanceof StaticPage)
+console.log('page instanceof Article:', page instanceof Article)
