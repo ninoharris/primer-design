@@ -11,6 +11,7 @@ var {
 	complementFromString,
 	conflicts,
 	reverse,
+	getAAseq,
 } = util
 
 console.log("\n\n\n ------- NEW RUN -------")
@@ -150,18 +151,20 @@ console.log(fragments.LHS.reverse)
 // console.log('Should be equal to: CCCACCCGCCC', reverse(complementFromString(test)))
 ;(function() {
 	// for(let i = 0; i <= 180; i += 60) {
-		let i = 0, min = i + 1, max = i + 180
+		let i = 0, min = i + 1, max = i + 60
 		console.log(generateHelper(max, min))
-		let forward = (new Nt.Seq()).read(generateRandom(180));
-		let backward = forward.complement();
-		console.log(forward.sequence())
-		console.log(backward.sequence())
-		let aa1 = forward.translate();
-		let aa2 = forward.translate(1);
-		let aa3 = forward.translate(2);
-		console.log(aa1.split('').join('  '))
-		console.log(" " + aa2.split('').join('  '))
-		console.log("  " + aa3.split('').join('  '))
+		let forward = generateRandom(max);
+		let backward = complementFromString(forward);
+		console.log(forward)
+		console.log(backward)
+
+		// Get AA sequences
+		let aa1 = getAAseq({ seq: forward })
+		let aa2 = getAAseq({ seq: forward, offset: 1 })
+		let aa3 = getAAseq({ seq: forward, offset: 2 })
+		console.log(aa1.join('  '))
+		console.log(" " + aa2.join('  '))
+		console.log("  " + aa3.join('  '))
 		console.log('\n')
 	// }
 }())

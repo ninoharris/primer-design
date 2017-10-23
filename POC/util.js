@@ -127,11 +127,55 @@ const reverse = function(str) {
 	return [...str].reverse().join('')
 }
 
-const getAAseq = function ({ seq, spacing = 1, offset = 0 }) {
+const getAAseq = function ({ seq, offset = 0 }) {
 	if(!seq || typeof seq !== 'string') throw Error('seq must be a string')
 	// TODO: see if any non ATGC are included, if spacing then remove.
+	seq = seq.toUpperCase()
+	if(seq.match(/[^ATGC\b]+/gi)) throw Error('seq must only contain: ATGC (and space)')
+	seq = seq.replace(/\b/, '') // remove spaces
 
-	// if()
+	let output = []
+	for(let i = offset; i < seq.length; i += 3) {
+		let test = seq.substring(i, i+3) // gets i, i+1, i+2 ONLY.
+		output.push(codonTable[test])
+	}
+	return output
+}
+
+// Used for getMatchAt .map
+const getMatchAtChar = function() {
+
+}
+
+// Returns an object of { isExact, rightSeq, wrongSeqQuery, wrongSeqHaystack }
+const getMatchAt = function ({ query, haystack, pos = 0 }) {
+	let isExact = true // starts off true, if mismatch then false
+	query = query.slice('') // convert string to array
+	let hayStackSubString = haystack.substr(pos, query.length)
+	console.log('hayStackSubString:', hayStackSubString)
+	console.log('query:', query)
+
+	// If contains exact match
+
+	, wrongSeqQuery, wrongSeqHaystack
+	const queryRegExp = new RegExp(query, 'i')
+	for(let i = 0, max = query.length; i < max; i++) {
+		if(query[i] == hayStackSubString[i]) {
+			wrongSeqQuery += '-'
+			wrongSeqHaystack += '-'
+		} else {
+			isExact = false
+			wrongSeqQuery += query[i]
+			wrongSeqQuery += hayStackSubString[i]
+		}
+	}
+	return {
+		isExact, rightSeq, wrongSeqQuery, wrongSeqHaystack
+	}
+}
+
+const getComplementMatch = function({ query, hayStack, pos }) {
+
 }
 
 
@@ -145,7 +189,7 @@ const utils = {
 	complementFromString,
 	conflicts,
 	reverse,
-
+	getAAseq,
 }
 export default utils
 // console.log('module', module)
