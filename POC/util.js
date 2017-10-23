@@ -142,40 +142,52 @@ const getAAseq = function ({ seq, offset = 0 }) {
 	return output
 }
 
-// Used for getMatchAt .map
-const getMatchAtChar = function() {
-
+const getMismatches = function(query, ref) {
+	// returns a string like ---A-C--GT.
+	ref = ref.slice('')
+	return query.slice('').map((char, i) =>
+		char === ref[i] ? '-' : char)
+		.join('')
 }
 
 // Returns an object of { isExact, rightSeq, wrongSeqQuery, wrongSeqHaystack }
-const getMatchAt = function ({ query, haystack, pos = 0 }) {
-	let isExact = true // starts off true, if mismatch then false
-	query = query.slice('') // convert string to array
-	let hayStackSubString = haystack.substr(pos, query.length)
-	console.log('hayStackSubString:', hayStackSubString)
+const containsMatch = function ({ query, haystack, pos = 0 }) {
+	let isExact = false, wrongSeqQuery = null, wrongSeqHaystack = null, rightSeq = null
+	let haystackSubString = haystack.substr(pos, query.length)
+	console.log('haystackSubString:', haystackSubString)
 	console.log('query:', query)
 
-	// If contains exact match
+	// If exact match
+	if(query == haystackSubString) {
+		return {
+			isExact: true,
+			rightSeq: query,
+			wrongSeqQuery,
+			wrongSeqHaystack
+		}
+	}
 
-	, wrongSeqQuery, wrongSeqHaystack
-	const queryRegExp = new RegExp(query, 'i')
 	for(let i = 0, max = query.length; i < max; i++) {
-		if(query[i] == hayStackSubString[i]) {
+		// console.log(`Round ${i} (query, haystackSubString):`, query[i], haystackSubString[i])
+		if(query[i] == haystackSubString[i]) {
 			wrongSeqQuery += '-'
 			wrongSeqHaystack += '-'
 		} else {
 			isExact = false
 			wrongSeqQuery += query[i]
-			wrongSeqQuery += hayStackSubString[i]
+			wrongSeqHaystack += haystackSubString[i]
 		}
 	}
 	return {
 		isExact, rightSeq, wrongSeqQuery, wrongSeqHaystack
 	}
 }
-
-const getComplementMatch = function({ query, hayStack, pos }) {
-
+// query stays the same, haystack is complemented.
+const containsComplementMatch = function({ query, haystack, pos }) {
+	return containsMatchAt({
+		query, pos,
+		haystack: complementFromString(haystack)
+	})
 }
 
 
@@ -190,6 +202,8 @@ const utils = {
 	conflicts,
 	reverse,
 	getAAseq,
+	containsMatch,
+	containsComplementMatch,
 }
 export default utils
 // console.log('module', module)

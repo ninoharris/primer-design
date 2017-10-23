@@ -12,6 +12,8 @@ var {
 	conflicts,
 	reverse,
 	getAAseq,
+	containsMatch,
+	containsComplementMatch,
 } = util
 
 console.log("\n\n\n ------- NEW RUN -------")
@@ -168,3 +170,9 @@ console.log(fragments.LHS.reverse)
 		console.log('\n')
 	// }
 }())
+
+console.log(containsMatch({
+	haystack: 'CATAAATAATGCGTGTCTAGGTCAAGGTCCCCGGTGATGTTAGGTGGGAAAACCGGAGGA',
+	query: 'CATAAT',
+	pos: 1
+}))
