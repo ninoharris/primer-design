@@ -141,51 +141,54 @@ const getAAseq = function ({ seq, offset = 0 }) {
 	}
 	return output
 }
-
 const getMismatches = function(query, ref) {
 	// returns a string like ---A-C--GT.
 	ref = ref.slice('')
-	return query.slice('').map((char, i) =>
+	return query.split('').map((char, i) =>
 		char === ref[i] ? '-' : char)
 		.join('')
+}
+const getMatches = function(query, ref) {
+	// returns a string like ---A-C--GT.
+	ref = ref.slice('')
+	return query.split('').map((char, i) =>
+		char === ref[i] ? char : '-')
+		.join('')
+}
+
+// TODO: complete function
+const getLongestMatch = function(str) {
+	// Takes in a string of format AGC---TGCGCGATA--A
+	// Returns an object of startPos, length, longestMatch.
+
 }
 
 // Returns an object of { isExact, rightSeq, wrongSeqQuery, wrongSeqHaystack }
 const containsMatch = function ({ query, haystack, pos = 0 }) {
 	let isExact = false, wrongSeqQuery = null, wrongSeqHaystack = null, rightSeq = null
 	let haystackSubString = haystack.substr(pos, query.length)
-	console.log('haystackSubString:', haystackSubString)
-	console.log('query:', query)
 
 	// If exact match
 	if(query == haystackSubString) {
-		return {
-			isExact: true,
-			rightSeq: query,
-			wrongSeqQuery,
-			wrongSeqHaystack
-		}
+		isExact = true
+		rightSeq = query
+	} else {
+		wrongSeqQuery = getMismatches(query, haystackSubString)
+		wrongSeqHaystack = getMismatches(haystackSubString, query)
+		// uses wrongSeqQuery to filter out correct matches
+		rightSeq = getMatches(query, haystackSubString)
 	}
 
-	for(let i = 0, max = query.length; i < max; i++) {
-		// console.log(`Round ${i} (query, haystackSubString):`, query[i], haystackSubString[i])
-		if(query[i] == haystackSubString[i]) {
-			wrongSeqQuery += '-'
-			wrongSeqHaystack += '-'
-		} else {
-			isExact = false
-			wrongSeqQuery += query[i]
-			wrongSeqHaystack += haystackSubString[i]
-		}
-	}
 	return {
 		isExact, rightSeq, wrongSeqQuery, wrongSeqHaystack
 	}
 }
+
 // query stays the same, haystack is complemented.
 const containsComplementMatch = function({ query, haystack, pos }) {
 	return containsMatchAt({
-		query, pos,
+		query,
+		pos,
 		haystack: complementFromString(haystack)
 	})
 }

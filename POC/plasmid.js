@@ -173,6 +173,5 @@ console.log(fragments.LHS.reverse)
 
 console.log(containsMatch({
 	haystack: 'CATAAATAATGCGTGTCTAGGTCAAGGTCCCCGGTGATGTTAGGTGGGAAAACCGGAGGA',
-	query: 'CATAAT',
-	pos: 1
+	query: 'CATAAAAT',
 }))
