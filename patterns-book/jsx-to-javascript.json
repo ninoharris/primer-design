@@ -1,0 +1,21 @@
+{
+	"type": "ul",
+	"props": {
+		"id":"nav",
+		"children": [
+			{
+				"type": "li",
+				"props": {
+					"children": {
+						"type": "a",
+						"props": {
+							"href": "#",
+							"children": "Home"
+						}
+					}
+				}
+			}
+		]
+
+	}
+}

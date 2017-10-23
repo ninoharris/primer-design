@@ -141,8 +141,9 @@ function digest(sequence, RESite) {
 }
 
 let fragments = digest(sequenceString, RE1)
-// console.log(fragments.LHS.forward)
-// console.log(fragments.LHS.reverse)
+console.log(fragments.LHS.forward)
+console.log(fragments.LHS.reverse)
 
 // let test = 'GGGCGGGTGGG'
 // console.log('Should be equal to: CCCACCCGCCC', reverse(complementFromString(test)))
+console.log(generateRandom(60))

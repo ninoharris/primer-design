@@ -23,3 +23,6 @@ prompt.get(['username', 'level'], function(err, result) {
 	return output
 })
 // 3935
+
+
+//IDEA: loop through first 30 until you get a match with the users...
