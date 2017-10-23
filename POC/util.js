@@ -1,3 +1,5 @@
+import codonTable from './codon_to_aa'
+
 const repeatChar = function(count, ch) {
 	if(!ch || ch.length === 0) ch = " " // Default repeated char is space
     var txt = "";
@@ -45,6 +47,19 @@ const generateRandomSingle = function(not) { // Pure
 		}
 	}
 	return outcomes[randomInt(outcomes.length)]
+}
+
+const generateHelper = function(len, start = 1)  {
+	let output = ""
+	for(let i = start; i < len; i++) {
+		if(i % 10 === 1) {
+			output += i
+			i += (String(i).length - 1) // If 10+, then remove a space to keep even. If 100+, remove 2 spaces.
+		} else {
+			output += " "
+		}
+	}
+	return output
 }
 
 const complementFromString = function(str) { // Pure
@@ -112,15 +127,25 @@ const reverse = function(str) {
 	return [...str].reverse().join('')
 }
 
+const getAAseq = function ({ seq, spacing = 1, offset = 0 }) {
+	if(!seq || typeof seq !== 'string') throw Error('seq must be a string')
+	// TODO: see if any non ATGC are included, if spacing then remove.
+
+	// if()
+}
+
+
 const utils = {
 	repeatChar,
 	randomInt,
 	generateSequenceWithInclude,
 	generateRandom,
 	generateRandomSingle,
+	generateHelper,
 	complementFromString,
 	conflicts,
 	reverse,
+
 }
 export default utils
 // console.log('module', module)

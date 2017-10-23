@@ -1,4 +1,5 @@
 import util from './util'
+import Nt from 'ntseq';
 // ES6 destructuring
 var {
 	repeatChar,
@@ -6,6 +7,7 @@ var {
 	generateSequenceWithInclude,
 	generateRandom,
 	generateRandomSingle,
+	generateHelper,
 	complementFromString,
 	conflicts,
 	reverse,
@@ -146,4 +148,20 @@ console.log(fragments.LHS.reverse)
 
 // let test = 'GGGCGGGTGGG'
 // console.log('Should be equal to: CCCACCCGCCC', reverse(complementFromString(test)))
-console.log(generateRandom(60))
+;(function() {
+	// for(let i = 0; i <= 180; i += 60) {
+		let i = 0, min = i + 1, max = i + 180
+		console.log(generateHelper(max, min))
+		let forward = (new Nt.Seq()).read(generateRandom(180));
+		let backward = forward.complement();
+		console.log(forward.sequence())
+		console.log(backward.sequence())
+		let aa1 = forward.translate();
+		let aa2 = forward.translate(1);
+		let aa3 = forward.translate(2);
+		console.log(aa1.split('').join('  '))
+		console.log(" " + aa2.split('').join('  '))
+		console.log("  " + aa3.split('').join('  '))
+		console.log('\n')
+	// }
+}())
