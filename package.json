@@ -34,6 +34,7 @@
     "ntseq": "^1.1.0",
     "prompt": "^1.0.0",
     "pug": "^2.0.0-rc.4",
+    "readline-sync": "^1.4.7",
     "sha1": "^1.1.1"
   },
   "devDependencies": {

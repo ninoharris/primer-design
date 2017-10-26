@@ -156,11 +156,38 @@ const getMatches = function(query, ref) {
 		.join('')
 }
 
-// TODO: complete function
 const getLongestMatch = function(str) {
 	// Takes in a string of format AGC---TGCGCGATA--A
-	// Returns an object of startPos, length, longestMatch.
+	// Returns an object of startPos, maxLength.
+	// BUG: If two matches are found with equal length, will return the first one.
+	str = str + '-' // Hacky hack hack
+	let currentlyMatching = false, startPosTemp, lengthTemp = 0, startPos, maxLength = 0
+	for(let i = 0, max = str.length; i < max; i++) {
+		// loop through string. if not '-', then length+1.
+		if(str[i] == '-') {
+			if(currentlyMatching && lengthTemp >= maxLength) {
+				if(lengthTemp == maxLength) console.log('We have a double match in getLongestMatch... oh dear FIX ME')
+				maxLength = lengthTemp
+				startPos = startPosTemp
+			}
+			// reset temps to 0
+			currentlyMatching = false
+			lengthTemp = 0
+		} else {
+			if(!currentlyMatching) {
+				startPosTemp = i
+				currentlyMatching = true
+			} else { // if is currentlyMatching
+				lengthTemp += 1
+			}
 
+		}
+	}
+	return {
+		longestMatch: str.substr(startPos, maxLength + 1), // +1 as substr is not inclusive
+		maxLength,
+		startPos
+	}
 }
 
 // Returns an object of { isExact, rightSeq, wrongSeqQuery, wrongSeqHaystack }
@@ -204,6 +231,7 @@ const utils = {
 	complementFromString,
 	conflicts,
 	reverse,
+	getLongestMatch,
 	getAAseq,
 	containsMatch,
 	containsComplementMatch,

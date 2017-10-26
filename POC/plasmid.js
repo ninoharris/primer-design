@@ -1,5 +1,6 @@
 import util from './util'
 import Nt from 'ntseq';
+import rls from 'readline-sync'
 // ES6 destructuring
 var {
 	repeatChar,
@@ -12,6 +13,7 @@ var {
 	conflicts,
 	reverse,
 	getAAseq,
+	getLongestMatch,
 	containsMatch,
 	containsComplementMatch,
 } = util
@@ -148,7 +150,8 @@ function digest(sequence, RESite) {
 let fragments = digest(sequenceString, RE1)
 console.log(fragments.LHS.forward)
 console.log(fragments.LHS.reverse)
-
+/*
+// First setup
 // let test = 'GGGCGGGTGGG'
 // console.log('Should be equal to: CCCACCCGCCC', reverse(complementFromString(test)))
 ;(function() {
@@ -169,9 +172,64 @@ console.log(fragments.LHS.reverse)
 		console.log("  " + aa3.join('  '))
 		console.log('\n')
 	// }
+
+	console.log(containsMatch({
+		haystack: 'CATAAATAATGCGTGTCTAGGTCAAGGTCCCCGGTGATGTTAGGTGGGAAAACCGGAGGA',
+		query: 'CATAAAAT',
+	}))
+
 }())
 
-console.log(containsMatch({
-	haystack: 'CATAAATAATGCGTGTCTAGGTCAAGGTCCCCGGTGATGTTAGGTGGGAAAACCGGAGGA',
-	query: 'CATAAAAT',
-}))
+*/
+
+// CLI demo.
+// This is to provide an exact matching test for the haystack sequence.
+;(function() {
+	console.log(' - - - - Starting CLI tool - - - - -')
+	const max = 60;
+
+	const forward = generateRandom(max)
+	const reverse = complementFromString(forward)
+
+	// Create random 'gene' sequence within the forward sequence.
+	let startPos = Math.floor(Math.random() * 30) // Starts between 0 and 40
+	let matchLength = Math.floor(Math.random() * 10) + 20 // Gene length is between 20-30
+
+	// Set length limits in which the user must create a primer =
+	const limits = {
+		min: 6,
+		max: 10
+	}
+
+	console.log(`Make a forward primer that begins at position ${startPos + 1} for the sequence below\n`)
+	console.log(generateHelper(60))
+	console.log(forward)
+	console.log(reverse)
+	let userCorrect = false, answer, matchAttempt
+	while(!userCorrect) {
+		answer = rls.question('Attempt: ')
+		matchAttempt = containsMatch({
+			haystack: forward,
+			query: answer,
+			pos: startPos
+		})
+		if(matchAttempt.isExact) {
+			if(answer.length >= limits.min && answer.length <= limits.max) {
+				console.log('Well done!')
+			} else {
+				console.log('So close! Sequence is just a bit too ' + (answer.length > limits.max ? 'long' : 'short'))
+			}
+		} else {
+			console.log('Sorry no luck... mismatch shown')
+			console.log(matchAttempt)
+		}
+	}
+	console.log('Well done!')
+}())
+
+// let match = containsMatch({
+// 	haystack: 'CATAAATAATGCGTGTCTAGGTCAAGGTCCCCGGTGATGTTAGGTGGGAAAACCGGAGGA',
+// 	query: 'CATCAAT',
+// })
+// let { rightSeq } = match
+// console.log(getLongestMatch(rightSeq))
