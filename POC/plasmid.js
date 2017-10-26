@@ -189,11 +189,13 @@ console.log(fragments.LHS.reverse)
 	const max = 60;
 
 	const forward = generateRandom(max)
-	const reverse = complementFromString(forward)
+	const backward = complementFromString(forward)
 
 	// Create random 'gene' sequence within the forward sequence.
 	let startPos = Math.floor(Math.random() * 30) // Starts between 0 and 40
 	let matchLength = Math.floor(Math.random() * 10) + 20 // Gene length is between 20-30
+	let endPos = startPos + matchLength
+	let endPosFromEnd = max - endPos
 
 	// Set length limits in which the user must create a primer =
 	const limits = {
@@ -201,13 +203,13 @@ console.log(fragments.LHS.reverse)
 		max: 10
 	}
 
-	console.log(`Make a forward primer that begins at position ${startPos + 1} for the sequence below\n`)
+	console.log(`Make a forward primer that begins at position ${startPos + 1} and ends at ${endPos} for the sequence below\n`)
 	console.log(generateHelper(60))
 	console.log(forward)
-	console.log(reverse)
+	console.log(backward)
 	let userCorrect = false, answer, matchAttempt
 	while(!userCorrect) {
-		answer = rls.question('Attempt: ')
+		answer = rls.question(`Attempt: (5' to 3')`)
 		matchAttempt = containsMatch({
 			haystack: forward,
 			query: answer,
@@ -215,6 +217,7 @@ console.log(fragments.LHS.reverse)
 		})
 		if(matchAttempt.isExact) {
 			if(answer.length >= limits.min && answer.length <= limits.max) {
+				userCorrect = true
 				console.log('Well done!')
 			} else {
 				console.log('So close! Sequence is just a bit too ' + (answer.length > limits.max ? 'long' : 'short'))
@@ -224,7 +227,47 @@ console.log(fragments.LHS.reverse)
 			console.log(matchAttempt)
 		}
 	}
-	console.log('Well done!')
+	userCorrect = false // reset for next stage...
+	console.log('Now for the reverse primer!')
+	while(!userCorrect) {
+		answer = rls.question(`Attempt: (5' to 3')`)
+		// get reverse to go from 3' LEFT to 5' RIGHT to: 5' LEFT to 3' RIGHT.
+		let backward5to3 = reverse(backward)
+
+		matchAttempt = containsMatch({
+			haystack: backward5to3,
+			query: answer,
+			pos: endPosFromEnd
+		})
+		if(matchAttempt.isExact) {
+			if(answer.length >= limits.min && answer.length <= limits.max) {
+				userCorrect = true
+				console.log('Well done!')
+			} else {
+				console.log('So close! Sequence is just a bit too ' + (answer.length > limits.max ? 'long' : 'short'))
+			}
+		} else {
+			// go through different reasons as to why they're wrong...
+			// if its 3' to 5' instead of 5' to 3':
+			if(containsMatch({
+				haystack: backward5to3,
+				query: reverse(answer),
+				pos: endPosFromEnd
+			}).isExact) {
+				console.log(`Oops, youve done it 3' to 5' instead of 5' to 3'. Try instead reversing your answer as this is the *reverse* primer`)
+			}
+			// if they've gone for the wrong strand...
+			if(containsMatch({
+				haystack: reverse(forward),
+				query: answer,
+				pos: endPosFromEnd
+			}).isExact) {
+				console.log(`You've picked the forward strand instead of the reverse strand.`)
+			}
+			console.log('Sorry no luck... mismatch shown')
+			console.log(matchAttempt)
+		}
+	}
 }())
 
 // let match = containsMatch({

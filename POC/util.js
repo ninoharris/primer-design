@@ -184,9 +184,9 @@ const getLongestMatch = function(str) {
 		}
 	}
 	return {
-		longestMatch: str.substr(startPos, maxLength + 1), // +1 as substr is not inclusive
 		maxLength,
-		startPos
+		startPos,
+		longestMatch: str.substr(startPos, maxLength + 1), // +1 as substr is not inclusive
 	}
 }
 
