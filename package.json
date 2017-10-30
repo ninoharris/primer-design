@@ -26,6 +26,7 @@
     "babel-polyfill": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
+    "bionode-ncbi": "^2.0.1",
     "body-parser": "^1.18.2",
     "colors": "^1.1.2",
     "ejs": "^2.5.7",
