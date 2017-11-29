@@ -1,0 +1,49 @@
+.App {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  font-family: monospace;
+  padding-top: 50px;
+  box-sizing: border-box;
+}
+.sidebar {
+  width: 240px;
+}
+.main {
+  flex-grow: 1;
+}
+input, textarea, .display {
+  font-family: monospace;
+  font-size: 15px;
+}
+.display {
+  margin-left: 3px;
+  position: relative;
+}
+.display .abs {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.display .abs span {
+  white-space: pre;
+}
+.display .matchContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.display .matchContainer .leftAlign {
+  position: relative;
+}
+.display .matchContainer .helper {
+  position: absolute;
+  top: -45px;
+  left: 0;
+}
+.display .matchContainer .match {
+  border-radius: 3px;
+  border: 1px solid lightblue;
+  background: rgba(0,0,255,0.3);
+  padding-top: 25px;
+}
