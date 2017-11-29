@@ -220,9 +220,38 @@ console.log(fragments.LHS.reverse)
 				userCorrect = true
 				console.log('Well done!')
 			} else {
-				console.log('So close! Sequence is just a bit too ' + (answer.length > limits.max ? 'long' : 'short'))
+        if(answer.length === 0) {
+          console.log('No answer given...')
+        } else {
+          console.log('So close! Sequence is just a bit too ' + (answer.length > limits.max ? 'long' : 'short'))
+        }
 			}
-		} else {
+		} else { // if they're wrong
+      if (containsMatch({
+        haystack: forward,
+        query: answer,
+        pos: startPos
+      }).isExact) {
+        console.log(`Oops, youve done it 3' to 5' instead of 5' to 3'. Try instead reversing your answer.`)
+      }
+      // if they've gone for the wrong strand...
+      if (containsMatch({
+        haystack: complementFromString(forward),
+        query: answer,
+        pos: startPos
+      }).isExact) {
+        console.log(`You've picked the reverse strand instead of the forward strand for the forward primer.`)
+      }
+      // tests for out-of-frame
+      for (let i = -2; i <= 2; i++) {
+        if (containsMatch({
+          haystack: forward,
+          query: answer,
+          pos: startPos + i
+        }).isExact) {
+          console.log(`Out of frame by ${Math.abs(i)} bases to the ${i < 0 ? 'left' : 'right'}!`)
+        }
+      }
 			console.log('Sorry no luck... mismatch shown')
 			console.log(matchAttempt)
 		}
@@ -244,7 +273,11 @@ console.log(fragments.LHS.reverse)
 				userCorrect = true
 				console.log('Well done!')
 			} else {
-				console.log('So close! Sequence is just a bit too ' + (answer.length > limits.max ? 'long' : 'short'))
+        if (answer.length === 0) {
+          console.log('No answer given...')
+        } else {
+          console.log('So close! Sequence is just a bit too ' + (answer.length > limits.max ? 'long' : 'short'))
+        }
 			}
 		} else {
 			// go through different reasons as to why they're wrong...
@@ -262,8 +295,18 @@ console.log(fragments.LHS.reverse)
 				query: answer,
 				pos: endPosFromEnd
 			}).isExact) {
-				console.log(`You've picked the forward strand instead of the reverse strand.`)
-			}
+				console.log(`You've picked the forward strand instead of the reverse strand for the reverse primer.`)
+      }
+      // tests for out-of-frame
+      for (let i = -2; i <= 2; i++) {
+        if (containsMatch({
+          haystack: backward5to3,
+          query: reverse(answer),
+          pos: endPosFromEnd + i
+        }).isExact) {
+          console.log(`Out of frame by ${Math.abs(i)} bases to the ${i < 0 ? 'left' : 'right'}!`)
+        }
+      }
 			console.log('Sorry no luck... mismatch shown')
 			console.log(matchAttempt)
 		}
