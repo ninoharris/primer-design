@@ -9,7 +9,7 @@ export default class RESites extends Component {
         <h3>Here are some RE Sites to test</h3>
         {RESitesJSON.res.map(RE => {
           return (
-          <div key={RE.id}>
+          <div key={RE.id} style={{color: `rgba(${RE.color}, 1`}}>
             <strong>{RE.name}: </strong>
             {RE.seq}
           </div>

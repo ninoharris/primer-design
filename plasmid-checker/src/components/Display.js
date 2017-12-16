@@ -17,7 +17,17 @@ export default class Display extends Component {
       console.log(m)
       const bufferText = new Array(m.matchPos + 1).join(' ');
       const buffer = <span className="buffer">{bufferText}</span>
-      const match = <span className="match">{/* m.seq */ new Array(m.length + 1).join(' ')}</span>
+      const match = (
+      <span
+        className="match" 
+        style={{
+          background: `rgba(${m.color}, 0.4)`,
+          borderColor: `rgba(${m.color}, 0.8)`,
+        }}
+      >
+        {/* m.seq */ new Array(m.length + 1).join(' ')}
+      </span>
+      )
       const helper = <span className="helper">{m.REName}</span>
       return (
         <span key={i++} className="matchContainer">

@@ -3,38 +3,56 @@
     
     { "id": 0, "name": "HndIII", 
       "seq": "AAGCTT", 
-      "cutsForward": 1, "cutsReverse": 5 },
+      "cutsForward": 1, "cutsReverse": 5 ,
+      "color": "39, 188, 6"
+    },
     
       { "id": 1, "name": "EcoRI", 
       "seq": "GAATTC", 
-      "cutsForward": 1, "cutsReverse": 5 },
+      "cutsForward": 1, "cutsReverse": 5,
+      "color": "188, 130, 6"
+    },
     
       { "id": 2, "name": "NheI", 
       "seq": "GCTAGC", 
-      "cutsForward": 1, "cutsReverse": 5 },
+      "cutsForward": 1, "cutsReverse": 5 ,
+      "color": "188, 39, 6"
+    },
     
       { "id": 3, "name": "PstI", 
       "seq": "CTGCAG", 
-      "cutsForward": 5, "cutsReverse": 1 },
+      "cutsForward": 5, "cutsReverse": 1,
+      "color": "248, 183, 32"
+    },
     
       { "id": 4, "name": "SacII", 
       "seq": "CCGCGG", 
-      "cutsForward": 4, "cutsReverse": 2 },
+      "cutsForward": 4, "cutsReverse": 2,
+      "color": "32, 248, 187"
+    },
     
       { "id": 5, "name": "SpeI", 
       "seq": "ACTAGT", 
-      "cutsForward": 1, "cutsReverse": 5 },
+      "cutsForward": 1, "cutsReverse": 5,
+      "color": "32, 162, 248"
+    },
     
       { "id": 6, "name": "KpnI", 
       "seq": "GGTACC", 
-      "cutsForward": 5, "cutsReverse": 1 },
+      "cutsForward": 5, "cutsReverse": 1,
+      "color": "32, 36, 248"
+    },
     
       { "id": 7, "name": "SalI", 
       "seq": "GTCGAC", 
-      "cutsForward": 1, "cutsReverse": 5 },
+      "cutsForward": 1, "cutsReverse": 5,
+      "color": "176, 32, 248"
+    },
 
       { "id": 8, "name": "NdeI", 
       "seq": "CATATG", 
-      "cutsForward": 2, "cutsReverse": 4 }
+      "cutsForward": 2, "cutsReverse": 4,
+      "color": "248, 32, 108"
+    }
 	]
 }

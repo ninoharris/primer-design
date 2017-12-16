@@ -6,6 +6,14 @@
   padding-top: 50px;
   box-sizing: border-box;
 }
+@keyframes fadeIn {
+  0%{opacity: 0}
+  100%{opacity: 1}
+}
+@keyframes fadeInUp {
+  0%{opacity: 0; margin-top: 20px; }
+  100%{opacity: 1; margin-top: 0; }
+}
 .sidebar {
   width: 240px;
 }
@@ -16,7 +24,10 @@ input, textarea, .display {
   font-family: monospace;
   font-size: 15px;
 }
-.display {
+textarea {
+  background: transparent;
+}
+.display { 
   margin-left: 3px;
   position: relative;
 }
@@ -30,6 +41,7 @@ input, textarea, .display {
 }
 .display .matchContainer {
   position: absolute;
+  z-index: -1;
   top: 0;
   left: 0;
 }
@@ -40,10 +52,12 @@ input, textarea, .display {
   position: absolute;
   top: -45px;
   left: 0;
+  animation: fadeInUp 1s;
 }
 .display .matchContainer .match {
   border-radius: 3px;
   border: 1px solid lightblue;
   background: rgba(0,0,255,0.3);
   padding-top: 25px;
+  animation: fadeIn 2s ease-out;
 }

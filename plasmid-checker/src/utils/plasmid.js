@@ -7,14 +7,15 @@ const getRESitesInSeq = (str) => {
   const matches = []
 
   RESites.forEach(RE => {
-    const { seq, name: REName } = RE
+    const { seq, name: REName, color } = RE
     let matchPos = str.indexOf(seq)
     while (matchPos > -1) {
       matches.push({
         REName,
         matchPos,
         length: seq.length,
-        seq
+        seq,
+        color,
       })
       matchPos = str.indexOf(seq, matchPos + seq.length)
     }

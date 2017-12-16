@@ -209,7 +209,7 @@ console.log(fragments.LHS.reverse)
 	console.log(backward)
 	let userCorrect = false, answer, matchAttempt
 	while(!userCorrect) {
-		answer = rls.question(`Attempt: (5' to 3')`)
+    answer = rls.question(`Attempt: (5' to 3')`).toUpperCase()
 		matchAttempt = containsMatch({
 			haystack: forward,
 			query: answer,

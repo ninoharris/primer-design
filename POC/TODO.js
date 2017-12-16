@@ -2,7 +2,6 @@
 TODO: Create server side collection for plasmids
 TODO: Create server side collection for haystacks
 TODO: Using database, allow addition of a collection via input
-TODO: Correct collection of RE sites to right digestion sites.
 TODO: Rename reverse function to invert.
 TODO: Allow RE sites to be referenced against input.
 

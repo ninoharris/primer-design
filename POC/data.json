@@ -33,7 +33,7 @@
       "seq": "GTCGAC", 
       "cutsForward": 1, "cutsReverse": 5 },
 
-      { "id": 7, "name": "NdeI", 
+      { "id": 8, "name": "NdeI", 
       "seq": "CATATG", 
       "cutsForward": 2, "cutsReverse": 4 }
 	]
