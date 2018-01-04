@@ -1,0 +1,59 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+.primer-form {
+  
+}
+.primer-form input[type="text"] {
+  font-family: monospace;
+}
+
+/* PRIMER PREVIEW */
+[class^='primer-preview'] {
+  white-space: pre-wrap;
+  font-family: monospace;
+  font-size: 20px;
+}
+.primer-preview-reverse .RP {
+  color: red;
+}
+.primer-preview-reverse .RG {
+  color: maroon;
+}
+.primer-preview-forward .FP {
+  color: turquoise;
+}
+.primer-preview-forward .FG {
+  color: blue;
+}
+.primer-preview-reverse.active {
+  animation: preview-swivel 5s ease infinite;
+}
+
+.primer-preview-reverse.active span.l {
+  animation: preview-swivel-inner 5s ease infinite;
+  display: inline-block;
+}
+@keyframes preview-swivel {
+  50% {
+    transform: rotateY(180deg);
+  }
+  100% {
+    transform: rotateY(180deg);
+  }
+}
+@keyframes preview-swivel-inner {
+  50% {
+    transform: none;
+  }
+  80%, 100% {
+    transform: rotateY(180deg);
+  };
+}
+
+.sequence {
+  font-family: monospace;
+}

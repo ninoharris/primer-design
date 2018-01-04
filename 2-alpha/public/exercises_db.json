@@ -1,0 +1,10 @@
+{
+  "boogie": {
+    "question": "Expression of a domain is required. The first and last 39 bases of the coding sequence (which has 522 bases in total) are shown in (fig2). You are given by a lab colleague an expression vector which she says has an origin of replication and codes for glutathione-S-transferase followed by an in-frame thrombin cleavage site. She also tells you that the vector has a lac promoter 5’ to the gene for glutathione–S-transferase, codes elsewhere for LacI and has a multiple cloning site of the following sequence, where the 5’ ccc is in- frame with the glutathione-S-transferase reading frame (fig1)",
+    "haystack": "ATGGCGATGAAAAAGTTGCTCATAGCGTCGCTGCTGTTT.................GTGTTGACCTAAAACTGGTGTTCCAGGAAGGTGTGTCAG",
+    "plasmid": "CCCGGGTCTAGACCATGGGTCGACCTCGAGGAGCTC",
+    "constructStart": 0,
+    "constructEnd": 95,
+    "id": "boogie"
+  }
+}
