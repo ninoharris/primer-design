@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index",
     "plasmid": "babel-node",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "fake-server": "json-server --watch exercises_db.json --port 3939"
   },
   "repository": {
     "type": "git",
