@@ -172,3 +172,16 @@ export const getRestrictionSiteMatches = (RESites, sequence) => {
   })
   return matches
 }
+
+export const generateHelper = function (len, start = 1) {
+  let output = ""
+  for (let i = start; i < len; i++) {
+    if (i % 3 === 1) {
+      output += i
+      i += (String(i).length - 1) // If 10+, then remove a space to keep even. If 100+, remove 2 spaces.
+    } else {
+      output += " "
+    }
+  }
+  return output
+}

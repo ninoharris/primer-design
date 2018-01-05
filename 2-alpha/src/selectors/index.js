@@ -8,10 +8,10 @@ const exercisesListSelector = state => state.exercisesList
 const exercisesByIdSelector = state => state.exercisesById
 const currentExerciseSelector = state => state.currentExercise
 
-const forwardVectorSelector = state => state.formInputs.FV
-const forwardGeneSelector = state => state.formInputs.FG
-const reverseVectorSelector = state => state.formInputs.RV
-const reverseGeneSelector = state => state.formInputs.RG
+const userForwardVectorSelector = state => state.formInputs.FV
+const userForwardGeneSelector = state => state.formInputs.FG
+const userRreverseVectorSelector = state => state.formInputs.RV
+const userReverseGeneSelector = state => state.formInputs.RG
 
 const restrictionSitesSelector = state => state.restrictionSites
 
@@ -36,6 +36,14 @@ export const getBothVectorStrands = createSelector(
     reverse: api.complementFromString(vector)
   })
 )
+export const getForwardVectorStrand = createSelector(
+  getBothVectorStrands,
+  ({ forward }) => forward
+)
+export const getReverseVectorStrand = createSelector(
+  getBothVectorStrands,
+  ({ reverse }) => reverse
+)
 
 export const getQuestion = createSelector(
   getCurrentExercise,
@@ -47,18 +55,26 @@ export const getVectorRestrictionSites = createSelector(
   getBothVectorStrands,
   (RESites, { forward, reverse }) => {
     return api.getRestrictionSiteMatches(RESites, forward)
+    // 20: { pos: 20, name: 'X', seq: 'AAAAAA' }
   }
 )
 
 export const getVectorHelpers = createSelector(
-  currentExerciseSelector,
+  getCurrentExercise,
   getVectorRestrictionSites,
   ({helpers}, RESites) => {
-    const REHelpers = ''
-    
+    // console.log(helpers, RESites)
+    const REHelpers = _.mapValues(RESites, ({ name, seq, pos, color = '#CCCCCC'}) => ({
+      name, seq, pos, len: seq.length, color
+    }))
+    return {
+      ...REHelpers,
+      ...helpers,
+    }
   }
   // returns object of pos: { name, pos, len, color }
 )
+
 /*
 pseudocode
 getMatches = 
@@ -70,8 +86,63 @@ OR
 */
 
 // const FVErrorsSelector = createSelector(
-//   forwardVectorSelector,
+//   userForwardVectorSelector,
 //   hayStackSelector,
 //   (FV, haystack) => {
 //     const errors = {}
 //   })
+
+export const getUserVectorForward = createSelector(
+  userForwardVectorSelector, (input) => input.toUpperCase()
+)
+
+// return single object if only one match (user is correct!) or array of matches if matches = 0 or > 1
+// READ: when using this function, check for array or object! array = user wrong, object = user right.
+export const getUserVectorMatchesForward = createSelector(
+  getUserVectorForward,
+  getVectorRestrictionSites,
+  (input, RESites) => {
+    const matchesObj = _.pickBy(RESites, (RESite) => input.includes(RESite.seq))
+    const matches = _.values(matchesObj)
+    if(matches.length === 1) {
+      return matches[0] 
+    }
+    return matches
+  }
+)
+
+export const getUserVectorMatchForwardAlignment = createSelector(
+  getUserVectorForward,
+  getUserVectorMatchesForward,
+  getCurrentExercise,
+  (input, match, { vectorStart = false, vector }) => {
+    if(Array.isArray(match)) throw Error('Cannot do, more than one match')
+    const result = {...match}
+    const REMatchPos = result['REMatchPos'] = input.indexOf(match.seq) // XXATAGCGYY (primer) -> 2
+    result['leadingSeq']  = input.slice(0, REMatchPos) // XXATAGCGYY (primer)-> XX
+    result['trailingSeq'] = input.slice(REMatchPos + match.length) // XXATAGCGYY (primer) -> YY
+    result['positionInVector'] = match.pos - result['leadingSeq'].length  // position to put primer relative to vector.
+    result['frame'] = vectorStart // false (no required frame, ignore framing errors) or INT
+    if(!vectorStart) return result // no required frame -> return now and say we dont need frame here
+
+    result['betweenStartAndREStr'] = vector.slice(vectorStart, match.pos) // ZZZZZATAGCG (vector) -> ZZZZZ
+    result['betweenStartAndRE'] = result['betweenStartAndREStr'].length // ZZZZZ -> 5
+    result['desiredFrame'] = result['betweenStartAndRE'] % 3
+    
+    return result
+  }
+)
+
+export const getVectorFrameStart = createSelector(
+  getUserVectorForward,
+  getUserVectorMatchesForward,
+  getCurrentExercise,
+  (input, match, { vectorStart = null, vector }) => {
+    if(vectorStart == null) return "In frame!"
+    const leadingSeq = input.slice(0, input.indexOf(match.seq))
+    const betweenStartAndRE = vector.slice(vectorStart, match.pos)
+    const frame = (leadingSeq.length % 3) - (betweenStartAndRE.length % 3 )
+    return frame // >= 0 ? frame : (frame + 3) // always positive.
+  }
+)
+

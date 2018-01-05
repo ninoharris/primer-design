@@ -7,9 +7,9 @@ import PrimerPreviewSmall from './PrimerPreviewSmall'
 
 class Form extends Component {
   handleChange = (e) => {
-    const text = e.target.value.toUpperCase()
-    const filteredText = text.replace(/[^ATGC ]/gi,'')
-    this.props.updateInput(e.target.name, filteredText)
+    // const text = e.target.value.toUpperCase()
+    // const filteredText = text.replace(/[^ATGC ]/gi,'')
+    this.props.updateInput(e.target.name, e.target.value)
   }
   handleSubmit = (e) => {
     e.preventDefault()
@@ -42,7 +42,7 @@ class Form extends Component {
     
   }
   render() {
-    const { FV, FG, RV, RG, animatingPreview, beginAnimatePreview } = this.props
+    const { FV, FG, RV, RG } = this.props
     return (
       <form className="form-group primer-form" onSubmit={this.handleSubmit}>
         <div className="text-center"><strong>Forward Primer</strong></div>

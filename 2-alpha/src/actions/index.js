@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import axios from 'axios'
 
 const ROOT_URL = 'http://localhost:3939'
