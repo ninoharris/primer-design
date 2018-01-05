@@ -36,7 +36,7 @@ class App extends Component {
             <Evaluation />
           </div>
           <div className="Display col-8">
-            {/* <Display /> */}
+            <Display />
           </div>
         </div>
       </div>

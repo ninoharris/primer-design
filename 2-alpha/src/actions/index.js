@@ -2,6 +2,11 @@ import _ from 'lodash'
 import axios from 'axios'
 
 const ROOT_URL = 'http://localhost:3939'
+export const ANIMATE_PREVIEW_START = 'ANIMATE_PREVIEW_START'
+export const ANIMATE_PREVIEW_END = 'ANIMATE_PREVIEW_END'
+export const FETCH_EXERCISES_INIT = 'FETCH_EXERCISES_INIT'
+export const FETCH_EXERCISES_SUCCESS = 'FETCH_EXERCISES_SUCCESS'
+export const SELECT_EXERCISE = 'SELECT_EXERCISE'
 
 export const updateInput = (segment, userInput) => {
   return {
@@ -10,20 +15,18 @@ export const updateInput = (segment, userInput) => {
   }
 }
 
-export const beginAnimatePreview = () => (dispatch) => {
-  dispatch({
-    type: 'ANIMATE_PREVIEW_START',
-  })
-  window.setTimeout(() => dispatch({
-    type: 'ANIMATE_PREVIEW_END'
-  }), 4000)
-}
+export const beginAnimatePreview = () => ({
+  type: 'ANIMATE_PREVIEW_START',
+})
+export const endAnimatePreview = () => ({
+  type: 'ANIMATE_PREVIEW_END',
+})
 
 export const fetchExercises = () => (dispatch, getState) => {
   dispatch({type: 'FETCH_EXERCISES_INIT' })
 
   axios.get(`${ROOT_URL}/exercises`)
-  .then(response => console.log(response.data) || response.data)
+  .then(response => response.data)
   .then(payload => {
     dispatch({
       type: 'FETCH_EXERCISES_SUCCESS',

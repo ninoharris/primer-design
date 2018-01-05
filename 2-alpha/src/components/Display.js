@@ -1,34 +1,29 @@
-import _ from 'lodash'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getBothVectorStrands, getBothHaystackStrands, getQuestion} from '../selectors'
+import { getQuestion} from '../selectors'
+
+import Vector from './Vector'
 
 class Display extends Component {
   render() {
-    if(!this.props.exercise) {
-      return <div>Loading...</div>
+    if(this.props.loading) {
+      return <div className="loading">Loading...</div>
     }
-    const { question, forward, reverse } = this.props.exercise
+    const { question } = this.props
     return (
-      <div>
+      <div className="col-12">
         <strong>{question}</strong>
-        <div className="vector">
-          <div className="sequence">
-            {forward}
-          </div>
-          <div className="sequence">
-            {reverse}
-          </div>
-        </div>
+        <Vector />
+        {/* <Haystack /> */}
       </div>
     )
   }
 }
 
 const mapStateToProps = (state) => {
-  const { forward, reverse } = getBothHaystackStrands(state)
-  const question = getQuestion(state)
-  return { forward, reverse, question }
+  const { loading } = state
+  if (loading) return { loading }
+  return { question: getQuestion(state) }
 }
 
 export default connect(mapStateToProps)(Display)

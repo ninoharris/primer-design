@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { updateInput, beginAnimatePreview } from '../actions'
+import { updateInput, beginAnimatePreview, endAnimatePreview } from '../actions'
 
 import PrimerPreviewSmall from './PrimerPreviewSmall'
 
 class Form extends Component {
   handleChange = (e) => {
-    this.props.updateInput(e.target.name, e.target.value)
+    const text = e.target.value.toUpperCase()
+    const filteredText = text.replace(/[^ATGC ]/gi,'')
+    this.props.updateInput(e.target.name, filteredText)
   }
   handleSubmit = (e) => {
     e.preventDefault()
@@ -25,6 +27,19 @@ class Form extends Component {
   }
   renderInput2 = () => {
 
+  }
+  animatePreviewButton = () => {
+    const { beginAnimatePreview, endAnimatePreview, animatingPreview } = this.props
+    if(!animatingPreview) {
+      return <button
+        type="button" onClick={beginAnimatePreview}
+        className="btn btn-info btn-small">Preview reverse primer</button>
+    } else {
+      return <button
+        type="button" onClick={endAnimatePreview}
+        className="btn btn-info">End reverse primer preview</button>
+    }
+    
   }
   render() {
     const { FV, FG, RV, RG, animatingPreview, beginAnimatePreview } = this.props
@@ -75,9 +90,7 @@ class Form extends Component {
         <button type="submit" className="btn btn-primary">
           Submit
         </button>
-        <button
-          type="button" onClick={beginAnimatePreview} disabled={animatingPreview}
-          className="btn btn-info">Preview reverse primer</button>
+        {this.animatePreviewButton()}
       </form>
     )
   }
@@ -88,7 +101,7 @@ const mapStateToProps = ({formInputs, animatingPreview}) => ({
   FG: formInputs.FG,
   RV: formInputs.RV,
   RG: formInputs.RG,
-  animatingPreview
+  animatingPreview,
 })
 
-export default connect(mapStateToProps, { updateInput, beginAnimatePreview })(Form)
+export default connect(mapStateToProps, { updateInput, beginAnimatePreview, endAnimatePreview })(Form)

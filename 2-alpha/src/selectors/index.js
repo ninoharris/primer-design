@@ -1,5 +1,8 @@
+import _ from 'lodash'
 import * as api from '../api'
 import { createSelector } from 'reselect'
+
+export const loadingSelector = state => state.loading
 
 const exercisesListSelector = state => state.exercisesList
 const exercisesByIdSelector = state => state.exercisesById
@@ -9,6 +12,8 @@ const forwardVectorSelector = state => state.formInputs.FV
 const forwardGeneSelector = state => state.formInputs.FG
 const reverseVectorSelector = state => state.formInputs.RV
 const reverseGeneSelector = state => state.formInputs.RG
+
+const restrictionSitesSelector = state => state.restrictionSites
 
 export const getCurrentExercise = createSelector(
   exercisesByIdSelector,
@@ -37,7 +42,23 @@ export const getQuestion = createSelector(
   ({ question }) => question
 )
 
+export const getVectorRestrictionSites = createSelector(
+  restrictionSitesSelector,
+  getBothVectorStrands,
+  (RESites, { forward, reverse }) => {
+    return api.getRestrictionSiteMatches(RESites, forward)
+  }
+)
 
+export const getVectorHelpers = createSelector(
+  currentExerciseSelector,
+  getVectorRestrictionSites,
+  ({helpers}, RESites) => {
+    const REHelpers = ''
+    
+  }
+  // returns object of pos: { name, pos, len, color }
+)
 /*
 pseudocode
 getMatches = 

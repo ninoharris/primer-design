@@ -32,7 +32,9 @@ const initialState = {
 
 const configureStore = () => {
   const middleWares = [thunk]
-  middleWares.push(createLogger())
+  middleWares.push(createLogger({
+    collapsed: true,
+  }))
 
   return createStore(
     reducer,

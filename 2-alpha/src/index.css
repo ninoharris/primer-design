@@ -30,11 +30,11 @@ body {
   color: blue;
 }
 .primer-preview-reverse.active {
-  animation: preview-swivel 5s ease infinite;
+  animation: preview-swivel 5s ease;
 }
 
 .primer-preview-reverse.active span.l {
-  animation: preview-swivel-inner 5s ease infinite;
+  animation: preview-swivel-inner 5s ease once;
   display: inline-block;
 }
 @keyframes preview-swivel {
@@ -56,4 +56,16 @@ body {
 
 .sequence {
   font-family: monospace;
+  white-space: pre-wrap;
+}
+.helpers {
+  position: relative;
+}
+.helpers .helper {
+  cursor: default;
+}
+.helpers .helper:not(:first-of-type) {
+  position: absolute;
+  top: 0;
+  left: 0;
 }

@@ -16,112 +16,17 @@ export const randomInt = function (max) {
   return Math.floor(Math.random() * max)
 }
 
-
-export const generateSequenceWithInclude = function (len, include, start) {
-  // console.log("generateSequenceWithInclude:", len, include, start)
-  if (isNaN(len) || len <= 0) throw new Error("Length must be a number > 0")
-  let str = generateRandom(start)
-  str += include
-  str += generateRandom(len - (include.length + start))
-  return str
-}
-
-export const generateRandom = function (len) {
-  if (isNaN(len)) throw new Error("Length must be a number")
-  let str = ""
-  for (let i = 0; i < len; i++) {
-    str += generateRandomSingle()
-  }
-  return str
-}
-
-export const generateRandomSingle = function (not) { // Pure
-  let pos, outcomes = ["A", "T", "G", "C"]
-  if (not) {
-    if (Array.isArray(not)) {
-      for (let i = 0; i < not.length; i++) {
-        if (pos = outcomes.indexOf(not[i]))
-          outcomes.splice(pos, 1)
-      }
-    } else if (pos = outcomes.indexOf(not)) {
-      outcomes.splice(pos, 1)
-    }
-  }
-  return outcomes[randomInt(outcomes.length)]
-}
-
-export const generateHelper = function (len, start = 1) {
-  let output = ""
-  for (let i = start; i < len; i++) {
-    if (i % 10 === 1) {
-      output += i
-      i += (String(i).length - 1) // If 10+, then remove a space to keep even. If 100+, remove 2 spaces.
-    } else {
-      output += " "
-    }
-  }
-  return output
-}
-
 export const complementFromString = function (str) { // Pure
-  if (!str || str.length === 0) throw new Error("String must not be empty")
-  let complement = ""
   const outcomes = {
     " ": " ",
     "A": "T",
     "T": "A",
     "G": "C",
-    "C": "G"
+    "C": "G",
+    ".": ".",
   }
-  for (let i = 0; i < str.length; i++) {
-    if (!outcomes[str[i]]) {
-      throw new Error(`ComplementFromString: char "${str[i]}" is not a standard NT:`, str)
-    }
-    complement += outcomes[str[i]]
-  }
-  return complement
+  return str.split('').reduce((prev, curr) => [...prev, outcomes[curr] || ' '], []).join('')
 }
-
-
-// export const seq = generateRandom(9)
-// console.log(seq, complementFromString(seq))
-// console.log(RESitesClean[1]["name"],
-// "\n" + RESitesClean[1]["seq"] + "\n" +
-// complementFromString(RESitesClean[1]["seq"]))
-
-export const conflicts = function (s1, s2, maxRepeats) {
-  // is memoization needed?
-  const short = s1.length < s2.length ? s1 : s2
-  const long = s1.length < s2.length ? s2 : s1
-  const shortReversed = reverse(short)
-
-  // If no maxRepeats, use a simpler one
-  if (!maxRepeats) {
-    if (long.indexOf(short) > -1 || long.indexOf(shortReversed) > -1) return true
-    return false
-  }
-
-  if (typeof maxRepeats !== 'number') {
-    throw Error('maxRepeats must be an integer.')
-  }
-
-  // If we have maxRepeats, then we need to test a certain limit of times.
-  const reg1 = RegExp(short, 'g'), reg2 = RegExp(shortReversed, 'g')
-  let match, matchCount
-  // Yes its repeating, but this is fine.
-  matchCount = 0
-  while ((match = reg1.exec(long)) !== null) {
-    console.log('reg1', match)
-    if (matchCount++ >= maxRepeats) return true
-  }
-  while ((match = reg2.exec(long)) !== null) {
-    console.log('reg2', match)
-    if (matchCount++ >= maxRepeats) return true
-  }
-  return false
-}
-// console.log(conflicts('TATA', 'TATAAGCATATTATA', 2))
-
 
 // TODO: see if non ES6 method exists
 export const reverse = function (str) {
@@ -142,19 +47,17 @@ export const getAAseq = function ({ seq, offset = 0 }) {
   }
   return output
 }
-export const getMismatches = function (query, ref) {
-  // returns a string like ---A-C--GT.
-  ref = ref.slice('')
-  return query.split('').map((char, i) =>
-    char === ref[i] ? '-' : char)
-    .join('')
-}
+
 export const getMatches = function (query, ref) {
   // returns a string like ---A-C--GT.
   ref = ref.slice('')
-  return query.split('').map((char, i) =>
-    char === ref[i] ? char : '-')
-    .join('')
+  return query.split('').map((char, i) => char === ref[i] ? char : '-').join('')
+}
+
+export const getMismatches = function (query, ref) {
+  // returns a string like ---A-C--GT.
+  ref = ref.slice('')
+  return query.split('').map((char, i) => char === ref[i] ? '-' : char).join('')
 }
 
 export const getLongestMatch = function (str) {
@@ -165,9 +68,9 @@ export const getLongestMatch = function (str) {
   let currentlyMatching = false, startPosTemp, lengthTemp = 0, startPos, maxLength = 0
   for (let i = 0, max = str.length; i < max; i++) {
     // loop through string. if not '-', then length+1.
-    if (str[i] == '-') {
+    if (str[i] === '-') {
       if (currentlyMatching && lengthTemp >= maxLength) {
-        if (lengthTemp == maxLength) console.log('We have a double match in getLongestMatch... oh dear FIX ME')
+        if (lengthTemp === maxLength) console.log('We have a double match in getLongestMatch... oh dear FIX ME')
         maxLength = lengthTemp
         startPos = startPosTemp
       }
@@ -197,7 +100,7 @@ export const containsMatch = function ({ query, haystack, pos = 0 }) {
   let haystackSubString = haystack.substr(pos, query.length)
 
   // If exact match
-  if (query == haystackSubString) {
+  if (query === haystackSubString) {
     isExact = true
     rightSeq = query
   } else {
@@ -230,10 +133,7 @@ export const seqInVector = (seq, vector) => {
  * @param {String} string               The string
  * @param {String} subString            The sub string to search for
  * @param {Boolean} [allowOverlapping]  Optional. (Default:false)
- *
- * @author Vitim.us https://gist.github.com/victornpb/7736865
- * @see Unit Test https://jsfiddle.net/Victornpb/5axuh96u/
- * @see http://stackoverflow.com/questions/4009756/how-to-count-string-occurrence-in-string/7924240#7924240
+ * @returns {Array[position...]} 
  */
 function occurrences(subString, string, allowOverlapping) {
 
@@ -253,4 +153,22 @@ function occurrences(subString, string, allowOverlapping) {
         } else break;
     }
     return n;
+}
+
+// get restriction site matches:
+/**
+ * @param {Object} RESites {"AAATTT": { name: "HindII", ...}}
+ * @returns {Object} {0: RESite1, 6: RESite2, ...}
+ */
+export const getRestrictionSiteMatches = (RESites, sequence) => {
+  const matches = {}
+  _.keys(RESites).forEach(RE => {
+    let reg = RegExp(RE, 'g')
+    let result = reg.exec(sequence)
+    while (result !== null) {
+      matches[result.index] = {...RESites[RE], pos: result.index}
+      result = reg.exec(sequence)
+    }
+  })
+  return matches
 }
