@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import codonTable from './codon_to_aa'
 
 export const repeatChar = function (count, ch) {
@@ -65,7 +66,7 @@ export const generateHelper = function (len, start = 1) {
 export const complementFromString = function (str) { // Pure
   if (!str || str.length === 0) throw new Error("String must not be empty")
   let complement = ""
-  export const outcomes = {
+  const outcomes = {
     " ": " ",
     "A": "T",
     "T": "A",
@@ -90,9 +91,9 @@ export const complementFromString = function (str) { // Pure
 
 export const conflicts = function (s1, s2, maxRepeats) {
   // is memoization needed?
-  export const short = s1.length < s2.length ? s1 : s2
-  export const long = s1.length < s2.length ? s2 : s1
-  export const shortReversed = reverse(short)
+  const short = s1.length < s2.length ? s1 : s2
+  const long = s1.length < s2.length ? s2 : s1
+  const shortReversed = reverse(short)
 
   // If no maxRepeats, use a simpler one
   if (!maxRepeats) {
@@ -105,7 +106,7 @@ export const conflicts = function (s1, s2, maxRepeats) {
   }
 
   // If we have maxRepeats, then we need to test a certain limit of times.
-  export const reg1 = RegExp(short, 'g'), reg2 = RegExp(shortReversed, 'g')
+  const reg1 = RegExp(short, 'g'), reg2 = RegExp(shortReversed, 'g')
   let match, matchCount
   // Yes its repeating, but this is fine.
   matchCount = 0
@@ -213,9 +214,43 @@ export const containsMatch = function ({ query, haystack, pos = 0 }) {
 
 // query stays the same, haystack is complemented.
 export const containsComplementMatch = function ({ query, haystack, pos }) {
-  return containsMatchAt({
+  return containsMatch({
     query,
     pos,
     haystack: complementFromString(haystack)
   })
+}
+
+export const seqInVector = (seq, vector) => {
+
+  return occurrences(vector, seq, true)
+}
+
+/** Function that count occurrences of a substring in a string;
+ * @param {String} string               The string
+ * @param {String} subString            The sub string to search for
+ * @param {Boolean} [allowOverlapping]  Optional. (Default:false)
+ *
+ * @author Vitim.us https://gist.github.com/victornpb/7736865
+ * @see Unit Test https://jsfiddle.net/Victornpb/5axuh96u/
+ * @see http://stackoverflow.com/questions/4009756/how-to-count-string-occurrence-in-string/7924240#7924240
+ */
+function occurrences(subString, string, allowOverlapping) {
+
+    string += "";
+    subString += "";
+    if (subString.length <= 0) return (string.length + 1);
+
+    var n = [],
+        pos = 0,
+        step = allowOverlapping ? 1 : subString.length;
+
+    while (true) {
+        pos = string.indexOf(subString, pos);
+        if (pos >= 0) {
+            n.push(pos);
+            pos += step;
+        } else break;
+    }
+    return n;
 }

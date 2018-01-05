@@ -23,35 +23,61 @@ class Form extends Component {
       </div>
     )
   }
+  renderInput2 = () => {
+
+  }
   render() {
     const { FV, FG, RV, RG, animatingPreview, beginAnimatePreview } = this.props
     return (
       <form className="form-group primer-form" onSubmit={this.handleSubmit}>
+        <div className="text-center"><strong>Forward Primer</strong></div>
+        <div className="input-group">
+          <div className="input-group-prepend">
+            <div className="input-group-text">5'</div>
+          </div>
+          <input className="form-control"
+            name='FV' value={FV}
+            type="text" onChange={this.handleChange}
+          />
+          <input className="form-control"
+            name='FG' value={FG}
+            type="text" onChange={this.handleChange}
+          />
+          <div className="input-group-append">
+            <div className="input-group-text">3'</div>
+          </div>
+        </div>
+        <PrimerPreviewSmall strand="forward" />
 
-        <div className="row">
-          {this.renderInput('FV', FV, 'Forward for plasmid')}
-          {this.renderInput('FG', FG, 'Forward for gene')}
+        <div className="text-center"><strong>Reverse Primer</strong></div>
+        <div className="input-group">
+          <div className="input-group-prepend">
+            <div className="input-group-text">5'</div>
+          </div>
+          <input className="form-control"
+            name='RV' value={RV}
+            type="text" onChange={this.handleChange}
+          />
+          <input className="form-control"
+            name='RG' value={RG}
+            type="text" onChange={this.handleChange}
+          />
+          <div className="input-group-append">
+            <div className="input-group-text">3'</div>
+          </div>
         </div>
-        <div className="row">
-          <strong>Forward primer: </strong>
-          <PrimerPreviewSmall strand="forward" />
-        </div>
+        <PrimerPreviewSmall strand="reverse" />
 
-        <div className="row">
-          {this.renderInput('RV', RV, 'Reverse for plasmid')}
-          {this.renderInput('RG', RG, 'Reverse for gene')}
-        </div>
-        <div className="row">
-          <strong>Reverse primer: </strong>
-          <PrimerPreviewSmall strand="reverse" />
-        </div>
+
+
+
 
         <button type="submit" className="btn btn-primary">
           Submit
         </button>
         <button
           type="button" onClick={beginAnimatePreview} disabled={animatingPreview}
-          className="btn btn-info">Preview primers</button>
+          className="btn btn-info">Preview reverse primer</button>
       </form>
     )
   }

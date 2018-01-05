@@ -19,16 +19,22 @@ export const beginAnimatePreview = () => (dispatch) => {
   }), 4000)
 }
 
-export const fetchExercises = () => (dispatch) => {
-  dispatch({
-    type: 'FETCH_EXERCISES_INIT'
-  })
+export const fetchExercises = () => (dispatch, getState) => {
+  dispatch({type: 'FETCH_EXERCISES_INIT' })
+
   axios.get(`${ROOT_URL}/exercises`)
-  .then(response => console.log(response.data) ||response.data)
+  .then(response => console.log(response.data) || response.data)
   .then(payload => {
     dispatch({
       type: 'FETCH_EXERCISES_SUCCESS',
       payload
+    })
+  })
+  .then(() => {
+    const selectedExerciseId = getState().exercisesList[0] // just pick the first one off
+    dispatch({
+      type: 'SELECT_EXERCISE',
+      payload: selectedExerciseId
     })
   })
 }

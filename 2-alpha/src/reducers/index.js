@@ -2,7 +2,7 @@ import { combineReducers } from 'redux'
 import { reducer as formReducer } from 'redux-form'
 
 import game from './game'
-import exercises from './exercises'
+import { exercisesById, exercisesList, currentExercise } from './exercises'
 
 const restrictionSites = (state = {}, action) => {
   return state
@@ -38,7 +38,9 @@ const reducer = combineReducers({
   restrictionSites,
   formInputs,
   animatingPreview,
-  exercises,
+  exercisesById,
+  exercisesList,
+  currentExercise,
   game,
 })
 
