@@ -4,7 +4,6 @@ import _ from 'lodash'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { getBothVectorStrands, getVectorHelpers } from '../selectors'
-import * as api from '../api'
 
 import VectorForward from './VectorForward'
 import HelperPosition from './HelperPosition'

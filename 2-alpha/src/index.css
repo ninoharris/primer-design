@@ -17,16 +17,16 @@ body {
   font-family: monospace;
   font-size: 20px;
 }
-.primer-preview-reverse .RP {
+.RV {
   color: red;
 }
-.primer-preview-reverse .RG {
+.RG {
   color: maroon;
 }
-.primer-preview-forward .FP {
+.FV {
   color: turquoise;
 }
-.primer-preview-forward .FG {
+.FG {
   color: blue;
 }
 .primer-preview-reverse.active {

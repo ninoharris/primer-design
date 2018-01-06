@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getUserVectorMatchesForward, getUserVectorMatchForwardAlignment} from '../selectors'
+import { getUserVectorMatchesForward, getUserVectorMatchForwardAlignment, getUFG} from '../selectors'
 
 // Goes like so: check if multiple matches exist or no matches at all, then show matches as warnings
 // Otherwise, show alignment etc
@@ -25,13 +25,14 @@ class VectorForward extends Component {
   }
   render() {
     if(this.props.matches) return this.isNotOnlyOneMatch()
-    const { result } = this.props
+    const { result, FG } = this.props
     return (
-      <div className="sequence">
+      <div className="sequence FV">
         {_.pad('',result.positionInVector)}
         <span className="leading">{result.leadingSeq}</span>
         <span className="restriction-site-match">{result.seq}</span>
         <span className="trailing">{result.trailingSeq}</span>
+        <span className="FG">{FG}</span>
       </div>
     )
   }
@@ -40,9 +41,9 @@ class VectorForward extends Component {
 const mapStateToProps = (state) => {
   const matches = getUserVectorMatchesForward(state)
   if(Array.isArray(matches)) return { matches }
-
+  const FG = getUFG(state)
   const result = getUserVectorMatchForwardAlignment(state)
-  return { result }
+  return { result, FG }
 }
 
 export default connect(mapStateToProps)(VectorForward)

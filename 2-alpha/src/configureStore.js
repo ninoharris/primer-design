@@ -7,25 +7,25 @@ import reducer from './reducers'
 
 const initialState = {
   restrictionSites: {
-    AAGCTT: { id: 0, name: "HndIII", seq: "AAGCTT", cutsForward: 1, cutsReverse: 5 },
-    ACTAGT: { id: 5, name: "SpeI", seq: "ACTAGT", cutsForward: 1, cutsReverse: 5 },
-    CATATG: { id: 8, name: "NdeI", seq: "CATATG", cutsForward: 2, cutsReverse: 4 },
-    CCGCGG: { id: 4, name: "SacII", seq: "CCGCGG", cutsForward: 4, cutsReverse: 2 },
-    CTGCAG: { id: 3, name: "PstI", seq: "CTGCAG", cutsForward: 5, cutsReverse: 1 },
-    GAATTC: { id: 1, name: "EcoRI", seq: "GAATTC", cutsForward: 1, cutsReverse: 5 },
-    GCTAGC: { id: 2, name: "NheI", seq: "GCTAGC", cutsForward: 1, cutsReverse: 5 },
-    GGTACC: { id: 6, name: "KpnI", seq: "GGTACC", cutsForward: 5, cutsReverse: 1 },
-    GTCGAC: { id: 7, name: "SalI", seq: "GTCGAC", cutsForward: 1, cutsReverse: 5 },
-    TCTAGA: { id: 8, name: "Xba1", seq: "TCTAGA", cutsForward: 1, cutsReverse: 5 },
-    CTCGAG: { id: 9, name: "Xho1", seq: "CTCGAG", cutsForward: 1, cutsReverse: 5 },
-    GAGCTC: { id: 10, name: "Sac1", seq: "GAGCTC", cutsForward: 5, cutsReverse: 1 },
-    CCCGGG: { id: 11, name: "Sma1", seq: "CCCGGG", cutsForward: 3, cutsReverse: 3 },
-    CCATGG: { id: 12, name: "NcoI", seq: "CCATGG", cutsForward: 1, cutsReverse: 5 }
+    AAGCTT: { seq: "AAGCTT", name: "HndIII", cutsForward: 1, cutsReverse: 5 },
+    ACTAGT: { seq: "ACTAGT", name: "SpeI", cutsForward: 1, cutsReverse: 5 },
+    CATATG: { seq: "CATATG", name: "NdeI", cutsForward: 2, cutsReverse: 4 },
+    CCGCGG: { seq: "CCGCGG", name: "SacII", cutsForward: 4, cutsReverse: 2 },
+    CTGCAG: { seq: "CTGCAG", name: "PstI", cutsForward: 5, cutsReverse: 1 },
+    GAATTC: { seq: "GAATTC", name: "EcoRI", cutsForward: 1, cutsReverse: 5 },
+    GCTAGC: { seq: "GCTAGC", name: "NheI", cutsForward: 1, cutsReverse: 5 },
+    GGTACC: { seq: "GGTACC", name: "KpnI", cutsForward: 5, cutsReverse: 1 },
+    GTCGAC: { seq: "GTCGAC", name: "SalI", cutsForward: 1, cutsReverse: 5 },
+    TCTAGA: { seq: "TCTAGA", name: "Xba1", cutsForward: 1, cutsReverse: 5 },
+    CTCGAG: { seq: "CTCGAG", name: "Xho1", cutsForward: 1, cutsReverse: 5 },
+    GAGCTC: { seq: "GAGCTC", name: "Sac1", cutsForward: 5, cutsReverse: 1 },
+    CCCGGG: { seq: "CCCGGG", name: "Sma1", cutsForward: 3, cutsReverse: 3 },
+    CCATGG: { seq: "CCATGG", name: "NcoI", cutsForward: 1, cutsReverse: 5 }
   },
   formInputs: {
     FV: 'TCTAGA',
     FG: '',
-    RV: '',
+    RV: 'GAGCTC',
     RG: ''
   }
 }

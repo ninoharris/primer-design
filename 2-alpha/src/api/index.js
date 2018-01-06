@@ -33,6 +33,8 @@ export const reverse = function (str) {
   return [...str].reverse().join('')
 }
 
+export const hund80 = str => complementFromString(reverse(str))
+
 export const getAAseq = function ({ seq, offset = 0 }) {
   if (!seq || typeof seq !== 'string') throw Error('seq must be a string')
   // TODO: see if any non ATGC are included, if spacing then remove.

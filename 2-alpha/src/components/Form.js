@@ -14,17 +14,6 @@ class Form extends Component {
   handleSubmit = (e) => {
     e.preventDefault()
   }
-  renderInput = (segment, value, label) => {
-    return (
-      <div className="col-6">
-        <label htmlFor={'form-'+segment}>{label}</label>
-        <input
-          name={segment} id={'form-'+segment} value={value}
-          type="text" onChange={this.handleChange}
-          className="form-control mb-3" />
-      </div>
-    )
-  }
   renderInput2 = () => {
 
   }
@@ -50,11 +39,11 @@ class Form extends Component {
           <div className="input-group-prepend">
             <div className="input-group-text">5'</div>
           </div>
-          <input className="form-control"
+          <input className="form-control FV"
             name='FV' value={FV}
             type="text" onChange={this.handleChange}
           />
-          <input className="form-control"
+          <input className="form-control FG"
             name='FG' value={FG}
             type="text" onChange={this.handleChange}
           />
@@ -69,11 +58,11 @@ class Form extends Component {
           <div className="input-group-prepend">
             <div className="input-group-text">5'</div>
           </div>
-          <input className="form-control"
+          <input className="form-control RV"
             name='RV' value={RV}
             type="text" onChange={this.handleChange}
           />
-          <input className="form-control"
+          <input className="form-control RG"
             name='RG' value={RG}
             type="text" onChange={this.handleChange}
           />

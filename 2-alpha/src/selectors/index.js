@@ -4,14 +4,20 @@ import { createSelector } from 'reselect'
 
 export const loadingSelector = state => state.loading
 
-const exercisesListSelector = state => state.exercisesList
+export const exercisesListSelector = state => state.exercisesList
 const exercisesByIdSelector = state => state.exercisesById
 const currentExerciseSelector = state => state.currentExercise
 
-const userForwardVectorSelector = state => state.formInputs.FV
-const userForwardGeneSelector = state => state.formInputs.FG
-const userRreverseVectorSelector = state => state.formInputs.RV
-const userReverseGeneSelector = state => state.formInputs.RG
+const uFV = state => state.formInputs.FV
+const uFG = state => state.formInputs.FG
+const uRV = state => state.formInputs.RV
+const uRG = state => state.formInputs.RG
+export const getUFV = createSelector(uFV, (seq) => seq.toUpperCase())
+export const getUFG = createSelector(uFG, (seq) => seq.toUpperCase())
+export const getURV = createSelector(uRV, (seq) => seq.toUpperCase())
+export const getURVHund80 = createSelector(getURV, seq => api.hund80(seq))
+export const getURG = createSelector(uRG, (seq) => seq.toUpperCase())
+export const getURGReverse = createSelector(getURG, seq => api.reverse(seq))
 
 const restrictionSitesSelector = state => state.restrictionSites
 
@@ -93,14 +99,10 @@ OR
 //     const errors = {}
 //   })
 
-export const getUserVectorForward = createSelector(
-  userForwardVectorSelector, (input) => input.toUpperCase()
-)
-
 // return single object if only one match (user is correct!) or array of matches if matches = 0 or > 1
 // READ: when using this function, check for array or object! array = user wrong, object = user right.
 export const getUserVectorMatchesForward = createSelector(
-  getUserVectorForward,
+  getUFV,
   getVectorRestrictionSites,
   (input, RESites) => {
     const matchesObj = _.pickBy(RESites, (RESite) => input.includes(RESite.seq))
@@ -113,7 +115,7 @@ export const getUserVectorMatchesForward = createSelector(
 )
 
 export const getUserVectorMatchForwardAlignment = createSelector(
-  getUserVectorForward,
+  getUFV,
   getUserVectorMatchesForward,
   getCurrentExercise,
   (input, match, { vectorStart = false, vector }) => {
@@ -123,6 +125,7 @@ export const getUserVectorMatchForwardAlignment = createSelector(
     result['leadingSeq']  = input.slice(0, REMatchPos) // XXATAGCGYY (primer)-> XX
     result['trailingSeq'] = input.slice(REMatchPos + match.seq.length) // XXATAGCGYY (primer) -> YY
     result['positionInVector'] = match.pos - result['leadingSeq'].length  // position to put primer relative to vector.
+    result['endPos'] = result['positionInVector'] + input.length
     result['frame'] = vectorStart // false (no required frame, ignore framing errors) or INT
     if(!vectorStart) return result // no required frame -> return now and say we dont need frame here
 
@@ -134,16 +137,38 @@ export const getUserVectorMatchForwardAlignment = createSelector(
   }
 )
 
-export const getVectorFrameStart = createSelector(
-  getUserVectorForward,
-  getUserVectorMatchesForward,
-  getCurrentExercise,
-  (input, match, { vectorStart = null, vector }) => {
-    if(vectorStart == null) return "In frame!"
-    const leadingSeq = input.slice(0, input.indexOf(match.seq))
-    const betweenStartAndRE = vector.slice(vectorStart, match.pos)
-    const frame = (leadingSeq.length % 3) - (betweenStartAndRE.length % 3 )
-    return frame // >= 0 ? frame : (frame + 3) // always positive.
+export const getUserVectorMatchesReverse = createSelector(
+  getURVHund80,
+  getVectorRestrictionSites,
+  (input, RESites) => {
+    const matchesObj = _.pickBy(RESites, (RESite) => input.includes(RESite.seq))
+    const matches = _.values(matchesObj)
+    if (matches.length === 1) {
+      return matches[0]
+    }
+    return matches
   }
 )
 
+export const getUserVectorMatchReverseAlignment = createSelector(
+  getURVHund80,
+  getUserVectorMatchesReverse,
+  getCurrentExercise,
+  getUserVectorMatchesForward,
+  (input, match, { vectorEnd = false, vector }, { endPos }) => {
+    if (Array.isArray(match)) throw Error('Cannot do, more than one match')
+    const result = { ...match }
+    const REMatchPos = result['REMatchPos'] = input.indexOf(match.seq) // XXATAGCGYY (primer) -> 2
+    result['leadingSeq'] = input.slice(0, REMatchPos) // XXATAGCGYY (primer)-> XX
+    result['trailingSeq'] = input.slice(REMatchPos + match.seq.length) // XXATAGCGYY (primer) -> YY
+    result['positionInVector'] = match.pos - result['leadingSeq'].length  // position to put primer relative to vector.
+    result['frame'] = vectorEnd // false (no required frame, ignore framing errors) or INT
+    if (!vectorEnd) return result // no required frame -> return now and say we dont need frame here
+
+    result['betweenStartAndREStr'] = vector.slice(vectorEnd, match.pos) // ZZZZZATAGCG (vector) -> ZZZZZ
+    result['betweenStartAndRE'] = result['betweenStartAndREStr'].length // ZZZZZ -> 5
+    result['toGetDesiredFrame'] = 3 - (result['betweenStartAndRE'] % 3)
+
+    return result
+  }
+)
