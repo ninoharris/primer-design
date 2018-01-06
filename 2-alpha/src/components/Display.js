@@ -14,7 +14,7 @@ class Display extends Component {
     return (
       <div className="col-12">
         <div /* Invisible div to see width of 100 chars */ className="dummy-sizing"></div>
-        <strong>{question}</strong>
+        <strong style={{fontSize: '0.8rem'}}>{question}</strong>
         <Vector />
         <Haystack />
       </div>

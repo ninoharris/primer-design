@@ -59,9 +59,10 @@ body {
 .sequence {
   font-family: monospace;
   white-space: pre-wrap;
+  line-height: 1;
 }
 .leading, .trailing, .unimportant {
-  opacity: 0.4;
+  opacity: 0.35;
 }
 .offset-left, .offset-right {
   position: relative;
@@ -126,11 +127,19 @@ body {
 }
 .multiple-matches .multiple-match:not(:first-of-type) {
   position: absolute;
-  top: 0;
+  // top: 0;
   left: 0;
 }
 .multiple-match .match {
   background: red;
   color: white;
   border-radius: 2px;
+}
+
+.mismatch { 
+  color: red;  
+}
+
+.evaluations {
+  font-size: 0.6rem;
 }

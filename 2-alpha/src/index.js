@@ -15,6 +15,9 @@ import Evaluation from './components/Evaluation'
 import Display from './components/Display'
 
 
+
+
+
 class App extends Component {
   componentWillMount() {
     this.props.fetchExercises()
@@ -33,10 +36,11 @@ class App extends Component {
         <div className="row">
           <div className=" Sidebar col-3">
             <Form />
-            <Evaluation />
+            {/* <Evaluation /> */}
           </div>
           <div className="Display col-8">
             <Display />
+            <Evaluation />
           </div>
         </div>
       </div>

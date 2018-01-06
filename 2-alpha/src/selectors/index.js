@@ -31,7 +31,8 @@ export const getCurrentExercise = createSelector(
 
 export const getBothHaystackStrands = createSelector(
   getCurrentExercise,
-  ( exercise ) => console.log(exercise) || ({
+  ( exercise ) => /* console.log(exercise) || */
+  ({
     forward: exercise.haystack,
     reverse: api.complementFromString(exercise.haystack)
   })
@@ -156,8 +157,8 @@ export const getUserVectorMatchReverseAlignment = createSelector(
   getURVReverse,
   getUserVectorMatchesReverse,
   getCurrentExercise,
-  getUserVectorMatchesForward,
-  (input, match, { vectorEnd = false, vector }, { endPos }) => {
+  // getUserVectorMatchForwardAlignment,
+  (input, match, { vectorEnd = false, vector }, forwardMatch) => {
     if (Array.isArray(match)) throw Error('Cannot do, more than one match')
     const result = { ...match }
     const REMatchPos = result['REMatchPos'] = input.indexOf(match.seq) // XXATAGCGYY (primer) -> 2
@@ -170,7 +171,44 @@ export const getUserVectorMatchReverseAlignment = createSelector(
     result['betweenEndAndREStr'] = vector.slice(match.pos + 6, vectorEnd) // ATAGCGZZZZZ (vector) -> ZZZZZ
     result['betweenEndAndRE'] = result['betweenEndAndREStr'].length // ZZZZZ -> 5
     result['toGetDesiredFrame'] = (3 - (result['betweenEndAndRE'] % 3)) % 3
+    
+    // result['afterForwardPrimer'] = result['positionInVector'] > forwardMatch.endPos // Boolean
+    // result['tooCloseToForward'] = (result['positionInVector'] - forwardMatch.endPos) < 4 // Int.
 
     return result
+  }
+)
+
+export const getHaystackForwardMatches = createSelector(
+  getUFG,
+  getBothHaystackStrands,
+  getCurrentExercise,
+  (input, { forward }, { constructStart }) => {
+    const forwardMatches = {
+      tooShort: api.isTooShort(input),
+      tooLong: api.isTooLong(input),
+      pos: constructStart,
+      endPos: constructStart + input.length,
+      ...api.containsMatch({ haystack: forward, query: input, pos: constructStart })
+    }
+    return forwardMatches
+  }
+)
+
+export const getHaystackReverseMatches = createSelector(
+  getURGReverse,
+  getBothHaystackStrands,
+  getCurrentExercise,
+  (input, {reverse}, { constructEnd }) => {
+    // for this, we keep the haystack the same and reverse the users input. Substring the haystack by the input length for checking.
+    const pos = constructEnd - input.length
+    const reverseMatches = { 
+      tooShort: api.isTooShort(input),
+      tooLong: api.isTooLong(input),
+      pos,
+      endPos: constructEnd,
+      ...api.containsMatch({ haystack: reverse, query: input, pos: pos }),
+    }
+    return reverseMatches
   }
 )

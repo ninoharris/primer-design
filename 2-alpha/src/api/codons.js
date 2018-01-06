@@ -1,4 +1,4 @@
-const codon_to_aa = {
+export const codonTable = {
   'AAA': 'K',
   'AAT': 'N',
   'AAG': 'K',
@@ -64,4 +64,11 @@ const codon_to_aa = {
   'CCG': 'P',
   'CCC': 'P',
 }
-export default codon_to_aa
+
+export const startCodon = 'ATG'
+
+export const stopCodons = {
+  'TAA': 'ochre',
+  'TAG': 'amber',
+  'TGA': 'opal',
+}

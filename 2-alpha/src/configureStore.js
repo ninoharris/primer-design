@@ -24,9 +24,9 @@ const initialState = {
   },
   formInputs: {
     FV: 'TCTAGA',
-    FG: '',
+    FG: 'ATGGCGATGA',
     RV: 'GAGCTC',
-    RG: ''
+    RG: 'CTGACACACCT'
   }
 }
 

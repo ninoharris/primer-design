@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { getBothHaystackStrands } from '../selectors'
 import HelperPosition from './HelperPosition'
+import HaystackForward from './HaystackForward';
+import HaystackReverse from './HaystackReverse'
 
 class Haystack extends Component {
   render() {
@@ -12,8 +14,10 @@ class Haystack extends Component {
         <HelperPosition length={100} />
         <div className="forward">
           <div className="sequence">{forward}</div>
+          <HaystackReverse />
         </div>
         <div className="reverse">
+          <HaystackForward />
           <div className="sequence">{reverse}</div>
         </div>
       </div>

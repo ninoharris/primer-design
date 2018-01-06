@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import codonTable from './codon_to_aa'
+import { codonTable, stopCodons } from './codons'
 
 export const repeatChar = function (count, ch) {
   if (!ch || ch.length === 0) ch = " " // Default repeated char is space
@@ -53,13 +53,13 @@ export const getAAseq = function ({ seq, offset = 0 }) {
 export const getMatches = function (query, ref) {
   // returns a string like ---A-C--GT.
   ref = ref.slice('')
-  return query.split('').map((char, i) => char === ref[i] ? char : '-').join('')
+  return query.split('').map((char, i) => char === ref[i] ? char : ' ').join('')
 }
 
 export const getMismatches = function (query, ref) {
   // returns a string like ---A-C--GT.
   ref = ref.slice('')
-  return query.split('').map((char, i) => char === ref[i] ? '-' : char).join('')
+  return query.split('').map((char, i) => char === ref[i] ? ' ' : char).join('')
 }
 
 export const getLongestMatch = function (str) {
@@ -127,7 +127,6 @@ export const containsComplementMatch = function ({ query, haystack, pos }) {
 }
 
 export const seqInVector = (seq, vector) => {
-
   return occurrences(vector, seq, true)
 }
 
@@ -137,7 +136,7 @@ export const seqInVector = (seq, vector) => {
  * @param {Boolean} [allowOverlapping]  Optional. (Default:false)
  * @returns {Array[position...]} 
  */
-function occurrences(subString, string, allowOverlapping) {
+export function occurrences(subString, string, allowOverlapping) {
 
     string += "";
     subString += "";
@@ -155,6 +154,15 @@ function occurrences(subString, string, allowOverlapping) {
         } else break;
     }
     return n;
+}
+
+export const isTooShort = (seq, min = 10) => {
+  if(seq.length < min) return true
+  return false
+}
+export const isTooLong = (seq, max = 20) => {
+  if (seq.length > max) return true
+  return false
 }
 
 // get restriction site matches:
