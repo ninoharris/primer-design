@@ -1,5 +1,5 @@
 // THIS FILE MUST NOT CONTAIN ANYTHING RELATED TO THE USER'S INPUT.
-
+import * as api from '../api' 
 import _ from 'lodash'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
@@ -7,6 +7,7 @@ import { getBothVectorStrands, getVectorHelpers } from '../selectors'
 
 import VectorForward from './VectorForward'
 import HelperPosition from './HelperPosition'
+import VectorReverse from './VectorReverse';
 
 class Vector extends Component {
   getHelpers = () => {
@@ -26,12 +27,13 @@ class Vector extends Component {
   }
   getHighlights = (helpers, sequence, dir) => {
     let lastIndex = 0, output = []
-    _.map(helpers, ({pos, name, len}) => {
+    _.map(helpers, ({pos, name, len, color}) => {
       if(pos > lastIndex) {
         output.push(<span key={lastIndex} className="in-between">{sequence.slice(lastIndex, pos)}</span>)
       }
       const text = sequence.substr(pos, len)
-      output.push(<span key={pos} className={`hl ${dir}-hl ${name}`}>{text}</span>)
+      const style = { color: api.pickTextColor(color), backgroundColor: color }
+      output.push(<span key={pos} className={`hl ${dir}-hl ${name}`} style={style}>{text}</span>)
       lastIndex = len + pos
     })
     if(lastIndex < sequence.length) {
@@ -45,22 +47,26 @@ class Vector extends Component {
   render() {
     const { forward, reverse, helpers } = this.props
     return (
-      <div className="vector pt-5 pb-5 mt-3">
+      <div className="vector pt-3 pb-3 mt-3">
         <HelperPosition length={100} />
         <div className="forward">
           <div className="helpers sequence">
             {this.getHelpers()}
           </div>
           <div className="sequence">
+            <span className="offset-left"><span>5'-</span></span>
             {this.getHighlights(helpers, forward, 'forward')}
+            <span className="offset-right"><span>-3'</span></span>
           </div>
-          
+          <VectorReverse />
 
         </div>
         <div className="reverse">
           <VectorForward />
           <div className="sequence">
+            <span className="offset-left"><span>3'-</span></span>
             {this.getHighlights(helpers, reverse, 'reverse')}
+            <span className="offset-right"><span>-5'</span></span>
           </div>
         </div>
       </div>

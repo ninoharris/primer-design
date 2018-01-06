@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { getQuestion} from '../selectors'
 
 import Vector from './Vector'
+import Haystack from './Haystack'
 
 class Display extends Component {
   render() {
@@ -12,9 +13,10 @@ class Display extends Component {
     const { question } = this.props
     return (
       <div className="col-12">
+        <div /* Invisible div to see width of 100 chars */ className="dummy-sizing"></div>
         <strong>{question}</strong>
         <Vector />
-        {/* <Haystack /> */}
+        <Haystack />
       </div>
     )
   }

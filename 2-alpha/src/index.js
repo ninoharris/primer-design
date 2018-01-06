@@ -27,11 +27,11 @@ class App extends Component {
       <div className="container-fluid mb-10 mt-10">
         <div className="row">
           <div className="Nav">
-            <h3 className="mb-0">Primer Design!</h3>
+            <h3 className="mb-0">Primer Designer</h3>
           </div>
         </div>
         <div className="row">
-          <div className=" Sidebar col-4">
+          <div className=" Sidebar col-3">
             <Form />
             <Evaluation />
           </div>

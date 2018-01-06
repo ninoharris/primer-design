@@ -16,7 +16,9 @@ export const getUFV = createSelector(uFV, (seq) => seq.toUpperCase())
 export const getUFG = createSelector(uFG, (seq) => seq.toUpperCase())
 export const getURV = createSelector(uRV, (seq) => seq.toUpperCase())
 export const getURVHund80 = createSelector(getURV, seq => api.hund80(seq))
+export const getURVReverse = createSelector(getURV, seq => api.reverse(seq))
 export const getURG = createSelector(uRG, (seq) => seq.toUpperCase())
+export const getURGHund80 = createSelector(getURG, seq => api.hund80(seq))
 export const getURGReverse = createSelector(getURG, seq => api.reverse(seq))
 
 const restrictionSitesSelector = state => state.restrictionSites
@@ -70,7 +72,6 @@ export const getVectorHelpers = createSelector(
   getVectorRestrictionSites,
   ({helpers}, RESites) => {
     // console.log(helpers, RESites)
-    console.log('getVectorHelpers')
     const REHelpers = _.mapValues(RESites, ({ name, seq, pos, color = '#CCCCCC'}) => ({
       name, seq, pos, len: seq.length, color
     }))
@@ -131,7 +132,7 @@ export const getUserVectorMatchForwardAlignment = createSelector(
 
     result['betweenStartAndREStr'] = vector.slice(vectorStart, match.pos) // ZZZZZATAGCG (vector) -> ZZZZZ
     result['betweenStartAndRE'] = result['betweenStartAndREStr'].length // ZZZZZ -> 5
-    result['toGetDesiredFrame'] = 3 - (result['betweenStartAndRE'] % 3)
+    result['toGetDesiredFrame'] = (3 - (result['betweenStartAndRE'] % 3) % 3)
     
     return result
   }
@@ -142,7 +143,8 @@ export const getUserVectorMatchesReverse = createSelector(
   getVectorRestrictionSites,
   (input, RESites) => {
     const matchesObj = _.pickBy(RESites, (RESite) => input.includes(RESite.seq))
-    const matches = _.values(matchesObj)
+    const matchesObjSeqReverse = _.map(matchesObj, (RESite => ({ ...RESite, seq: api.reverse(RESite.seq) })))
+    const matches = _.values(matchesObjSeqReverse)
     if (matches.length === 1) {
       return matches[0]
     }
@@ -151,7 +153,7 @@ export const getUserVectorMatchesReverse = createSelector(
 )
 
 export const getUserVectorMatchReverseAlignment = createSelector(
-  getURVHund80,
+  getURVReverse,
   getUserVectorMatchesReverse,
   getCurrentExercise,
   getUserVectorMatchesForward,
@@ -159,15 +161,15 @@ export const getUserVectorMatchReverseAlignment = createSelector(
     if (Array.isArray(match)) throw Error('Cannot do, more than one match')
     const result = { ...match }
     const REMatchPos = result['REMatchPos'] = input.indexOf(match.seq) // XXATAGCGYY (primer) -> 2
-    result['leadingSeq'] = input.slice(0, REMatchPos) // XXATAGCGYY (primer)-> XX
-    result['trailingSeq'] = input.slice(REMatchPos + match.seq.length) // XXATAGCGYY (primer) -> YY
-    result['positionInVector'] = match.pos - result['leadingSeq'].length  // position to put primer relative to vector.
+    result['leadingSeq'] = input.slice(REMatchPos + match.seq.length) // XXATAGCGYY (primer)-> XX
+    result['trailingSeq'] = input.slice(0, REMatchPos) // XXATAGCGYY (primer) -> YY
+    result['positionInVector'] = match.pos - result['trailingSeq'].length // position to put primer relative to vector.
     result['frame'] = vectorEnd // false (no required frame, ignore framing errors) or INT
     if (!vectorEnd) return result // no required frame -> return now and say we dont need frame here
 
-    result['betweenStartAndREStr'] = vector.slice(vectorEnd, match.pos) // ZZZZZATAGCG (vector) -> ZZZZZ
-    result['betweenStartAndRE'] = result['betweenStartAndREStr'].length // ZZZZZ -> 5
-    result['toGetDesiredFrame'] = 3 - (result['betweenStartAndRE'] % 3)
+    result['betweenEndAndREStr'] = vector.slice(match.pos + 6, vectorEnd) // ATAGCGZZZZZ (vector) -> ZZZZZ
+    result['betweenEndAndRE'] = result['betweenEndAndREStr'].length // ZZZZZ -> 5
+    result['toGetDesiredFrame'] = (3 - (result['betweenEndAndRE'] % 3)) % 3
 
     return result
   }

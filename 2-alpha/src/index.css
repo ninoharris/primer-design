@@ -63,6 +63,18 @@ body {
 .leading, .trailing, .unimportant {
   opacity: 0.4;
 }
+.offset-left, .offset-right {
+  position: relative;
+}
+[class^="offset"] span {
+  position: absolute;
+}
+.offset-left span {
+  right: 0;
+}
+.offset-right span {
+  left: 0;
+}
 
 
 .helpers {
@@ -78,7 +90,7 @@ body {
 }
 
 
-.vector {
+.vector, .haystack {
   position: relative;
 }
 

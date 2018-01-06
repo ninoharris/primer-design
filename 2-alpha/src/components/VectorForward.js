@@ -32,7 +32,7 @@ class VectorForward extends Component {
         <span className="leading">{result.leadingSeq}</span>
         <span className="restriction-site-match">{result.seq}</span>
         <span className="trailing">{result.trailingSeq}</span>
-        <span className="FG">{FG}</span>
+        <span className="FG unimportant">{FG}</span>
       </div>
     )
   }
