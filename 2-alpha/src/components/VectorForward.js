@@ -1,19 +1,48 @@
+import _ from 'lodash'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { getUserVectorMatchesForward, getUserVectorMatchForwardAlignment} from '../selectors'
 
-
+// Goes like so: check if multiple matches exist or no matches at all, then show matches as warnings
+// Otherwise, show alignment etc
 class VectorForward extends Component {
-  render() {
+  isNotOnlyOneMatch() {
+    const { matches } = this.props
+    const matchesList = _.keys(matches)
     return (
-      <div>
-        Do something
+      <div className="sequence multiple-matches">
+        {matchesList.map(matchPos => {
+          const match = matches[matchPos]
+          return (
+            <span className="multiple-match">
+              {_.pad('', match.pos)}
+              <span key={matchPos} className="match">{match.seq}</span>
+            </span>
+          )
+        })}
+      </div>
+    )
+  }
+  render() {
+    if(this.props.matches) return this.isNotOnlyOneMatch()
+    const { result } = this.props
+    return (
+      <div className="sequence">
+        {_.pad('',result.positionInVector)}
+        <span className="leading">{result.leadingSeq}</span>
+        <span className="restriction-site-match">{result.seq}</span>
+        <span className="trailing">{result.trailingSeq}</span>
       </div>
     )
   }
 }
 
 const mapStateToProps = (state) => {
-  return {}
+  const matches = getUserVectorMatchesForward(state)
+  if(Array.isArray(matches)) return { matches }
+
+  const result = getUserVectorMatchForwardAlignment(state)
+  return { result }
 }
 
 export default connect(mapStateToProps)(VectorForward)

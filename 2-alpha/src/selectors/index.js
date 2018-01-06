@@ -64,6 +64,7 @@ export const getVectorHelpers = createSelector(
   getVectorRestrictionSites,
   ({helpers}, RESites) => {
     // console.log(helpers, RESites)
+    console.log('getVectorHelpers')
     const REHelpers = _.mapValues(RESites, ({ name, seq, pos, color = '#CCCCCC'}) => ({
       name, seq, pos, len: seq.length, color
     }))
@@ -120,14 +121,14 @@ export const getUserVectorMatchForwardAlignment = createSelector(
     const result = {...match}
     const REMatchPos = result['REMatchPos'] = input.indexOf(match.seq) // XXATAGCGYY (primer) -> 2
     result['leadingSeq']  = input.slice(0, REMatchPos) // XXATAGCGYY (primer)-> XX
-    result['trailingSeq'] = input.slice(REMatchPos + match.length) // XXATAGCGYY (primer) -> YY
+    result['trailingSeq'] = input.slice(REMatchPos + match.seq.length) // XXATAGCGYY (primer) -> YY
     result['positionInVector'] = match.pos - result['leadingSeq'].length  // position to put primer relative to vector.
     result['frame'] = vectorStart // false (no required frame, ignore framing errors) or INT
     if(!vectorStart) return result // no required frame -> return now and say we dont need frame here
 
     result['betweenStartAndREStr'] = vector.slice(vectorStart, match.pos) // ZZZZZATAGCG (vector) -> ZZZZZ
     result['betweenStartAndRE'] = result['betweenStartAndREStr'].length // ZZZZZ -> 5
-    result['desiredFrame'] = result['betweenStartAndRE'] % 3
+    result['toGetDesiredFrame'] = 3 - (result['betweenStartAndRE'] % 3)
     
     return result
   }

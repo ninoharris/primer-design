@@ -1,21 +1,34 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { getUserVectorMatchForwardAlignment } from '../selectors'
+import { getUserVectorMatchForwardAlignment, getUserVectorMatchesForward } from '../selectors'
 
 class Evaluation extends Component {
+  renderMismatch = () => {
+    return (
+      <div>
+        Matches: {this.props.matches.length}
+      </div>
+    )
+  }
+  renderMatch = () => {
+    return (
+      <pre>
+        {JSON.stringify(this.props.result, null, 2)}
+      </pre>
+    )
+  }
   render() {
-    if(this.props.loading) return (<div>
+    if(this.props.loading) 
+      return (<div> Loading... </div>)
 
-    </div>)
-    const { matches, startFrame } = this.props
-    console.log('Eval:', matches, startFrame)
+    const { matches } = this.props
+    if(Array.isArray(matches)) return this.renderMismatch()
+
     return (
       <div>
         <h4>Evalation:</h4>
-        <pre>
-          {JSON.stringify(this.props.result, null, 2)}
-        </pre>
+        {this.renderMatch()}
       </div>
     )
   }
@@ -23,8 +36,10 @@ class Evaluation extends Component {
 
 const mapStateToProps = (state) => {
   if(state.loading) return { loading: state.loading }
+  const matches = getUserVectorMatchesForward(state)
+  if(Array.isArray(matches)) return { matches, isNotOnlyOneMatch: true }
   return {
-    result: getUserVectorMatchForwardAlignment
+    result: getUserVectorMatchForwardAlignment(state)
   }
 }
 

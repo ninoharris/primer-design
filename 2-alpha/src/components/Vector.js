@@ -7,6 +7,7 @@ import { getBothVectorStrands, getVectorHelpers } from '../selectors'
 import * as api from '../api'
 
 import VectorForward from './VectorForward'
+import HelperPosition from './HelperPosition'
 
 class Vector extends Component {
   getHelpers = () => {
@@ -25,7 +26,6 @@ class Vector extends Component {
     }))
   }
   getHighlights = (helpers, sequence, dir) => {
-    console.log('get highelights called')
     let lastIndex = 0, output = []
     _.map(helpers, ({pos, name, len}) => {
       if(pos > lastIndex) {
@@ -35,6 +35,9 @@ class Vector extends Component {
       output.push(<span key={pos} className={`hl ${dir}-hl ${name}`}>{text}</span>)
       lastIndex = len + pos
     })
+    if(lastIndex < sequence.length) {
+      output.push(<span key={lastIndex} className="in-between">{sequence.slice(lastIndex)}</span>)
+    }
     return output
   }
   getUserInputAligned = () => {
@@ -43,20 +46,19 @@ class Vector extends Component {
   render() {
     const { forward, reverse, helpers } = this.props
     return (
-      <div className="vector">
-        <div className="col-12 forward">
+      <div className="vector pt-5 pb-5 mt-3">
+        <HelperPosition length={100} />
+        <div className="forward">
           <div className="helpers sequence">
             {this.getHelpers()}
           </div>
           <div className="sequence">
             {this.getHighlights(helpers, forward, 'forward')}
           </div>
-          <div className="sequence">
-            {api.generateHelper(100)}
-          </div>
+          
 
         </div>
-        <div className="col-12 reverse">
+        <div className="reverse">
           <VectorForward />
           <div className="sequence">
             {this.getHighlights(helpers, reverse, 'reverse')}
@@ -75,6 +77,7 @@ const mapStateToProps = (state) => {
   return {
     forward,
     reverse,
+    helpers
   }
 }
 

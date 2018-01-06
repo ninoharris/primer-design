@@ -54,10 +54,17 @@ body {
   };
 }
 
+
+
 .sequence {
   font-family: monospace;
   white-space: pre-wrap;
 }
+.leading, .trailing, .unimportant {
+  opacity: 0.4;
+}
+
+
 .helpers {
   position: relative;
 }
@@ -70,6 +77,48 @@ body {
   left: 0;
 }
 
+
+.vector {
+  position: relative;
+}
+
+
+.position-helper {
+  cursor: default;
+  position: absolute;
+  top: 0;
+  z-index: -1;
+  height: 100%;
+}
+.position-helper > span {
+  margin-left: -1px;
+  height: 100%;
+  border-left: 1px solid rgba(0,0,0,0.05);
+  position: relative;
+  display: inline-block;
+}
+.position-helper span span {
+  font-size: 0.6rem;
+  letter-spacing: -2px;
+  color: lightblue;
+  position: absolute;
+}
+
 .hl {
   background: #DDDDDD;
+}
+
+
+.multiple-matches {
+  position: relative;
+}
+.multiple-matches .multiple-match:not(:first-of-type) {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.multiple-match .match {
+  background: red;
+  color: white;
+  border-radius: 2px;
 }
