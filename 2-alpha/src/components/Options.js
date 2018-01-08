@@ -1,18 +1,28 @@
 import React, { Component } from 'react'
-import Toggle from './Toggle';
+import { connect } from 'react-redux'
+import Toggle from './Toggle'
+import { showCodons } from '../selectors'
+import { doShowCodons } from '../actions'
 
 class Options extends Component {
   render() {
+    const { showCodons, doShowCodons } = this.props
     return (
       <div>
-        <Toggle onToggle={on => console.log('toggle', on)}>
-          <Toggle.Button />
+        <Toggle on={showCodons} onToggle={on => doShowCodons(on)}>
           <Toggle.On>Showing codons</Toggle.On>
           <Toggle.Off>Hiding codons</Toggle.Off>
+          <Toggle.Button />
         </Toggle>
       </div>
     )
   }
 }
 
-export default Options
+const mapStateToProps = (state) => {
+  return {
+    showCodons: showCodons(state)
+  }
+}
+
+export default connect(mapStateToProps, { doShowCodons })(Options)

@@ -5,6 +5,7 @@ import { getVectorEvaluations } from '../selectors'
 class Evaluation extends Component {
   render() {
     if(this.props.loading) return null
+    return null
     return (
       <ul className="list-group">
         {this.props.messages.map(msg => {

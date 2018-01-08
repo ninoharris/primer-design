@@ -17,7 +17,7 @@ class Toggle extends Component {
   static Button = ToggleButton
   static defaultProps = { toggle: () => {} }
   state = {
-    on: false,
+    on: this.props.on === null ? false : this.props.on,
   }
   toggle = () => 
     this.setState(

@@ -40,3 +40,8 @@ export const fetchExercises = () => (dispatch, getState) => {
     })
   })
 }
+
+export const doShowCodons = (on) => ({
+  type: 'TOGGLE_CODONS',
+  payload: on
+})

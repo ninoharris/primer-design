@@ -1,17 +1,21 @@
 import _ from 'lodash'
 import * as api from '../api'
 import { createSelector } from 'reselect'
+import { messages as MSG } from './messages'
 
 export const loadingSelector = state => state.loading
+export const showCodons = state => state.showCodons
 
 export const exercisesListSelector = state => state.exercisesList
 const exercisesByIdSelector = state => state.exercisesById
 const currentExerciseSelector = state => state.currentExercise
 
+
 const uFV = state => state.formInputs.FV
 const uFG = state => state.formInputs.FG
 const uRV = state => state.formInputs.RV
 const uRG = state => state.formInputs.RG
+
 export const getUFV = createSelector(uFV, (seq) => seq.toUpperCase())
 export const getUFG = createSelector(uFG, (seq) => seq.toUpperCase())
 export const getURV = createSelector(uRV, (seq) => seq.toUpperCase())
@@ -26,7 +30,7 @@ const restrictionSitesSelector = state => state.restrictionSites
 export const getCurrentExercise = createSelector(
   exercisesByIdSelector,
   currentExerciseSelector,
-  (allExercises, currentId) => allExercises[currentId]
+  (allExercises, currentId) => ({ ...allExercises[currentId] })
 )
 
 export const getBothHaystackStrands = createSelector(
@@ -229,36 +233,92 @@ const failure = (message, additional = null, inputs = null, ...actions) => {
 //   failure(inputs, )
 // }
 
+// function that returns an object which can be used to createMessage directly, or through a shorthand:
+// First create a category and assign it to a variable: const myCategory = createCategory('myCat')
+// Then call the success/failure fns: myCategory.success(msg) myCategory.failure(msg)
+const createEvaluation = () => {
+  const state = []
+  let anyErrors = false
+  const createMessage = ({ inputs, success, messageID, meta }) => {
+    if (!inputs) throw Error('Missing inputs in createMessage.')
+    if (!messageID) throw Error('Missing messageID in createMessage.')
+    state.push({ inputs, success, message: messageID, meta })
+    if(success === false) anyErrors = true
+    return // to send back true or false or null here?
+  }
+  const getEvaluation = () => console.log('getEvaluation called: ', state) || state
+  const hasErrors = () => anyErrors
+
+  const createCategory = (...inputs) => ({ // inputs include:
+    success: (messageID, meta) => createMessage({ inputs, messageID, meta, success: false }),
+    failure: (messageID, meta) => createMessage({ inputs, messageID, meta, success: false })
+  })
+  
+  return {
+    getEvaluation,
+    createCategory,
+    createMessage,
+    hasErrors,
+  }
+}
+
+export const getHaystackEvaluations = (state) => {
+  // set up
+  // check if right completely (and frame)
+  // check if wrong strand (and frame)
+  // check if wrong direction (and frame)
+
+  // go to vector evaluations!
+}
+
 export const getVectorEvaluations = (state) => {
-  // make an evaluation array, fill it up with success/failure messages and return it.
-  const evaluation = []
-  // vector match must be a single objects before any continuing further to avoid conflicts.
+  const Eval = createEvaluation()
+  const EvalFV = Eval.createCategory('FV')
+  const EvalRV = Eval.createCategory('RV')
+  const FVRV = Eval.createCategory('RV', 'FV')
+
+  // vector matches must be a *single* object before any continuing further to avoid conflicts.
   const FVPrelim = getUserVectorMatchesForward(state)
   const RVPrelim = getUserVectorMatchesReverse(state)
 
   // No match
-  if (FVPrelim.length === 0) evaluation.push(failure('Forward primer has no matches in vector.',
-  `Choose a restriction site towards the left, and use its 5'-3' sequence on the leading strand.`, 'FV'))
-  if (RVPrelim.length === 0) evaluation.push(failure('Reverse primer has no matches in vector.', 
-  `Choose a restriction site towards the right, and use its 5'-3' sequence.`, 'RV'))
-  if (evaluation.length > 0) return evaluation
+  if (FVPrelim.length === 0) EvalFV.failure("NO_MATCH_FV")
+  if (RVPrelim.length === 0) EvalRV.failure("NO_MATCH_RV")
+  if (Eval.hasErrors()) return Eval.getEvaluation()
 
   // Too many matches
-  if (Array.isArray(FVPrelim)) evaluation.push(failure('Forward primer matches more than one restriction site.', 'FV'))
-  if (Array.isArray(RVPrelim)) evaluation.push(failure('Reverse primer matches more than one restriction site.', 'RV'))
+  if (Array.isArray(FVPrelim)) EvalFV.failure("EXCEED_MATCH_FV")
+  if (Array.isArray(RVPrelim)) EvalRV.failure("EXCEED_MATCH_RV")
     
-  if(evaluation.length > 0) return evaluation // return now as both are required to be a single match before continuing
-  evaluation.push(success('Vector: Each primer only matches one restriction site'))
+  if (Eval.hasErrors()) return Eval.getEvaluation() // return now as both are required to be a single match before continuing
+  FVRV.success("EACH_VECTOR_PRIMER_MATCHES_ONCE")
+
+  // TODO: either restriction site matches inside haystack:
+
+
+
+
 
   // Set up invidual matches
   const FV = getUserVectorMatchForwardAlignment(state)
   const RV = getUserVectorMatchReverseAlignment(state)
 
   // Spacing between primers
-  if (FV.endPos >= RV.pos) evaluation.push(failure('Vector: Reverse primer cannot overlap forward primer.'))
-  if ((RV.pos - FV.endPos) <= 4) evaluation.push(failure('Vector: Primers are too close', 'RV', 
-  'Pick a forward restriction site more to the left or Reverse right.'))
+  if (FV.endPos >= RV.pos) FVRV.failure("VECTOR_OVERLAP")
+  if ((RV.pos - FV.endPos) <= 4) FVRV.failure("VECTORS_TOO_CLOSE")
 
-  return evaluation
+  if (Eval.hasErrors()) return Eval.getEvaluation()
+  FVRV.success("VECTOR_PRIMERS_APART")
+
+  // does Forward primer need a start codon in this exercise, if so:
+    // no: check in-frame with constructStart and vectorStart
+    // yes: check in-frame with constructStart and placed start codon
+
+
+  // does Reverse primer need a stop codon in this exercise, if so:
+    // no: check in-frame with constructEnd and vectorEnd
+    // yes: check in-frame with constructEnd and placed stop codon
+  // 
+
 }
 
