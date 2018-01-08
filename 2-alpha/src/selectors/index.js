@@ -2,6 +2,7 @@ import _ from 'lodash'
 import * as api from '../api'
 import { createSelector } from 'reselect'
 import { messages as MSG } from './messages'
+import { shotgunComplementMatch } from '../api';
 
 export const loadingSelector = state => state.loading
 export const showCodons = state => state.showCodons
@@ -173,6 +174,7 @@ export const getHaystackForwardMatches = createSelector(
   getCurrentExercise,
   (input, { forward }, { constructStart }) => {
     const forwardMatches = {
+      attempt: forward,
       tooShort: api.isTooShort(input),
       tooLong: api.isTooLong(input),
       pos: constructStart,
@@ -191,6 +193,7 @@ export const getHaystackReverseMatches = createSelector(
     // for this, we keep the haystack the same and reverse the users input. Substring the haystack by the input length for checking.
     const pos = constructEnd - input.length
     const reverseMatches = { 
+      attempt: reverse,
       tooShort: api.isTooShort(input),
       tooLong: api.isTooLong(input),
       pos,
@@ -201,38 +204,6 @@ export const getHaystackReverseMatches = createSelector(
   }
 )
 
-// export const combineSingleVectorMatches = createSelector(
-//   getUserVectorMatchForwardAlignment,
-//   getUserVectorMatchReverseAlignment,
-//   (forward, reverse) => {
-
-//   }
-// )
-
-const success = (message, input = null) => ({
-  success: true, input, message
-})
-
-const failure = (message, additional = null, inputs = null, ...actions) => {
-  inputs = (Array.isArray(inputs) || inputs === null) ? inputs : [inputs]
-  return {
-    success: false, inputs, additional, message
-  }
-}
-
-// const evaluation = {
-//   state = [],
-//   success(inputs, message, additional) {
-//     state.push({
-//       success: true,
-//       inputs,
-//       message,
-//       additional,
-//     })
-//   }
-//   failure(inputs, )
-// }
-
 // function that returns an object which can be used to createMessage directly, or through a shorthand:
 // First create a category and assign it to a variable: const myCategory = createCategory('myCat')
 // Then call the success/failure fns: myCategory.success(msg) myCategory.failure(msg)
@@ -242,7 +213,7 @@ const createEvaluation = () => {
   const createMessage = ({ inputs, success, messageID, meta }) => {
     if (!inputs) throw Error('Missing inputs in createMessage.')
     if (!messageID) throw Error('Missing messageID in createMessage.')
-    state.push({ inputs, success, message: messageID, meta })
+    state.push({ inputs, success, ID: messageID, meta })
     if(success === false) anyErrors = true
     return // to send back true or false or null here?
   }
@@ -250,7 +221,7 @@ const createEvaluation = () => {
   const hasErrors = () => anyErrors
 
   const createCategory = (...inputs) => ({ // inputs include:
-    success: (messageID, meta) => createMessage({ inputs, messageID, meta, success: false }),
+    success: (messageID, meta) => createMessage({ inputs, messageID, meta, success: true }),
     failure: (messageID, meta) => createMessage({ inputs, messageID, meta, success: false })
   })
   
@@ -264,11 +235,27 @@ const createEvaluation = () => {
 
 export const getHaystackEvaluations = (state) => {
   // set up
+  const Eval = createEvaluation()
+  const EvalFG = Eval.createCategory('FG')
+  const EValRG = Eval.createCategory('RG')
+  const FG = getHaystackForwardMatches(state)
+  const RG = getHaystackReverseMatches(state)
+
+// TODO: MUCH OF THIS LOGIC SHOULDNT BE HERE AND SHOULD BE DONE BEFOREHAND in getHaystack____Matches.
+
+  // check if right completely (and frame)
+  if(FG.rightSeq) EvalFG.success('FORWARD_HAYSTACK_MATCH')
+  if(typeof api.shotgunMatch(FG.attempt) === 'number') EvalFG.failure('FORWARD_HAYSTACK_OUT_OF_FRAME')
+  // check if wrong strand (and frame)
+  // if(shotgunComplementMatch)
+  // check if wrong direction (and frame)
+
   // check if right completely (and frame)
   // check if wrong strand (and frame)
   // check if wrong direction (and frame)
 
   // go to vector evaluations!
+  return Eval.getEvaluation()
 }
 
 export const getVectorEvaluations = (state) => {
@@ -319,6 +306,6 @@ export const getVectorEvaluations = (state) => {
     // no: check in-frame with constructEnd and vectorEnd
     // yes: check in-frame with constructEnd and placed stop codon
   // 
-
+  return Eval.getEvaluation()
 }
 

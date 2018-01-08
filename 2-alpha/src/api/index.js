@@ -117,6 +117,27 @@ export const containsMatch = function ({ query, haystack, pos = 0 }) {
   }
 }
 
+// shotgun match = check the entire haystack.
+// not there: false
+// there and at position: true
+// there but not correct position (out of frame): INT, WHERE -ve MEANS QUERY IS TO THE LEFT
+export const shotgunMatch = ({ query, haystack, pos = 0 }) => {
+  const matchIndex = haystack.indexOf(query)
+  if(matchIndex > -1) { // if its in the query
+    if(matchIndex === 0) return true
+    return matchIndex
+  }
+  return false
+}
+export const shotgunComplementMatch = ({ query, haystack, pos = 0 }) => {
+  return shotgunMatch({ query: complementFromString(query), haystack, pos})
+}
+export const shotgunReverseMatch = ({ query, haystack, pos = 0 }) => {
+  return shotgunMatch({ query: reverse(query), haystack, pos })
+}
+export const shotgunComplementReverseMatch = ({ query, haystack, pos = 0}) => {
+  return shotgunMatch({ query: complementFromString(reverse(query)), haystack, pos })
+}
 // query stays the same, haystack is complemented.
 export const containsComplementMatch = function ({ query, haystack, pos }) {
   return containsMatch({
