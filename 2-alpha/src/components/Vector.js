@@ -36,7 +36,7 @@ class Vector extends Component {
       output.push(<span key={pos} className={`hl ${dir}-hl ${name}`} style={style}>{text}</span>)
       lastIndex = len + pos
     })
-    if(lastIndex < sequence.length) {
+    if(lastIndex < sequence.length) { // we're not done yet...
       output.push(<span key={lastIndex} className="in-between">{sequence.slice(lastIndex)}</span>)
     }
     return output
@@ -77,7 +77,6 @@ class Vector extends Component {
 const mapStateToProps = (state) => {
   const { forward, reverse } = getBothVectorStrands(state)
   const helpers = getVectorHelpers(state)
-// SO CONFUSING.
   
   return {
     forward,

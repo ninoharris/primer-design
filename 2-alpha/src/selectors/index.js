@@ -68,7 +68,7 @@ export const getVectorRestrictionSites = createSelector(
   }
 )
 
-export const getVectorHelpers = createSelector(
+export const getVectorHelpers = createSelector( // merges RESites and user-added helpers
   getCurrentExercise,
   getVectorRestrictionSites,
   ({helpers}, RESites) => {
@@ -83,23 +83,6 @@ export const getVectorHelpers = createSelector(
   }
   // returns object of pos: { name, pos, len, color }
 )
-
-/*
-pseudocode
-getMatches = 
-[[0 = pos, 8 = length]]
-[{pos: 0, length: 8}]
-OR
-[[2 = pos, 9 = length], [12 = pos, 9 = length]]
-[{pos:2, length: 9}, {pos:12, length: 9}]
-*/
-
-// const FVErrorsSelector = createSelector(
-//   userForwardVectorSelector,
-//   hayStackSelector,
-//   (FV, haystack) => {
-//     const errors = {}
-//   })
 
 // return single object if only one match (user is correct!) or array of matches if matches = 0 or > 1
 // READ: when using this function, check for array or object! array = user wrong, object = user right.
@@ -116,12 +99,13 @@ export const getUserVectorMatchesForward = createSelector(
   }
 )
 
+
 export const getUserVectorMatchForwardAlignment = createSelector(
   getUFV,
   getUserVectorMatchesForward,
   getCurrentExercise,
   (input, match, { vectorStart = false, vector }) => {
-    if(Array.isArray(match)) throw Error('Cannot do, more than one match')
+    if (Array.isArray(match)) return false // Only works if one match
     const result = {...match}
     const REMatchPos = result['REMatchPos'] = input.indexOf(match.seq) // XXATAGCGYY (primer) -> 2
     result['leadingSeq']  = input.slice(0, REMatchPos) // XXATAGCGYY (primer)-> XX
@@ -144,9 +128,9 @@ export const getUserVectorMatchesReverse = createSelector(
   getVectorRestrictionSites,
   (input, RESites) => {
     const matchesObj = _.pickBy(RESites, (RESite) => input.includes(RESite.seq))
-    const matchesObjSeqReverse = _.map(matchesObj, (RESite => ({ ...RESite, seq: api.reverse(RESite.seq) })))
+    const matchesObjSeqReverse = _.map(matchesObj, (RESite => ({ ...RESite, seq: api.reverse(RESite.seq) }) ))
     const matches = _.values(matchesObjSeqReverse)
-    if (matches.length === 1) {
+    if (matches.length === 1) { // only one match, return the match object
       return matches[0]
     }
     return matches
@@ -159,8 +143,8 @@ export const getUserVectorMatchReverseAlignment = createSelector(
   getCurrentExercise,
   // getUserVectorMatchForwardAlignment,
   (input, match, { vectorEnd = false, vector }, forwardMatch) => {
-    if (Array.isArray(match)) throw Error('Cannot do, more than one match')
-    const result = { ...match }
+    if (Array.isArray(match)) return false
+    const result = { ...match } // immutable
     const REMatchPos = result['REMatchPos'] = input.indexOf(match.seq) // XXATAGCGYY (primer) -> 2
     result['leadingSeq'] = input.slice(REMatchPos + match.seq.length) // XXATAGCGYY (primer)-> XX
     result['trailingSeq'] = input.slice(0, REMatchPos) // XXATAGCGYY (primer) -> YY
@@ -212,3 +196,69 @@ export const getHaystackReverseMatches = createSelector(
     return reverseMatches
   }
 )
+
+// export const combineSingleVectorMatches = createSelector(
+//   getUserVectorMatchForwardAlignment,
+//   getUserVectorMatchReverseAlignment,
+//   (forward, reverse) => {
+
+//   }
+// )
+
+const success = (message, input = null) => ({
+  success: true, input, message
+})
+
+const failure = (message, additional = null, inputs = null, ...actions) => {
+  inputs = (Array.isArray(inputs) || inputs === null) ? inputs : [inputs]
+  return {
+    success: false, inputs, additional, message
+  }
+}
+
+// const evaluation = {
+//   state = [],
+//   success(inputs, message, additional) {
+//     state.push({
+//       success: true,
+//       inputs,
+//       message,
+//       additional,
+//     })
+//   }
+//   failure(inputs, )
+// }
+
+export const getVectorEvaluations = (state) => {
+  // make an evaluation array, fill it up with success/failure messages and return it.
+  const evaluation = []
+  // vector match must be a single objects before any continuing further to avoid conflicts.
+  const FVPrelim = getUserVectorMatchesForward(state)
+  const RVPrelim = getUserVectorMatchesReverse(state)
+
+  // No match
+  if (FVPrelim.length === 0) evaluation.push(failure('Forward primer has no matches in vector.',
+  `Choose a restriction site towards the left, and use its 5'-3' sequence on the leading strand.`, 'FV'))
+  if (RVPrelim.length === 0) evaluation.push(failure('Reverse primer has no matches in vector.', 
+  `Choose a restriction site towards the right, and use its 5'-3' sequence.`, 'RV'))
+  if (evaluation.length > 0) return evaluation
+
+  // Too many matches
+  if (Array.isArray(FVPrelim)) evaluation.push(failure('Forward primer matches more than one restriction site.', 'FV'))
+  if (Array.isArray(RVPrelim)) evaluation.push(failure('Reverse primer matches more than one restriction site.', 'RV'))
+    
+  if(evaluation.length > 0) return evaluation // return now as both are required to be a single match before continuing
+  evaluation.push(success('Vector: Each primer only matches one restriction site'))
+
+  // Set up invidual matches
+  const FV = getUserVectorMatchForwardAlignment(state)
+  const RV = getUserVectorMatchReverseAlignment(state)
+
+  // Spacing between primers
+  if (FV.endPos >= RV.pos) evaluation.push(failure('Vector: Reverse primer cannot overlap forward primer.'))
+  if ((RV.pos - FV.endPos) <= 4) evaluation.push(failure('Vector: Primers are too close', 'RV', 
+  'Pick a forward restriction site more to the left or Reverse right.'))
+
+  return evaluation
+}
+

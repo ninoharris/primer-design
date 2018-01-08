@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux' 
-import { game, loading } from './game'
+import { game, loading, showCodons } from './game'
 import { exercisesById, exercisesList, currentExercise } from './exercises'
 
 const restrictionSites = (state = {}, action) => {
@@ -41,6 +41,7 @@ const reducer = combineReducers({
   currentExercise,
   game,
   loading,
+  showCodons,
 })
 
 export default reducer

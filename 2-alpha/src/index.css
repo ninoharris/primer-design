@@ -143,3 +143,81 @@ body {
 .evaluations {
   font-size: 0.6rem;
 }
+
+.matches-enter {
+  opacity: 0.1;
+  top: -10px;
+}
+.matches-enter-active {
+  transition: all 500ms ease-in;
+  top: 0;
+  opacity: 1;
+}
+.matches-leave {
+  opacity: 1;
+}
+.matches-leave-active {
+  transition: all 300ms ease-in;
+  top: 0;
+  opacity: 0.1;
+  top: -10px;
+}
+
+
+.pd-modal {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.toggle {
+
+}
+.toggle-input {
+  display: none;
+}
+.toggle-btn {
+  position: relative;
+  box-sizing: content-box;
+  height: 20px;
+  width: 40px;
+  padding: 2px;
+  background: #fbfbfb;
+  border: 1px solid #d4d4d4;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background 0.13s ease-in-out;
+  outline: none;
+}
+.toggle-btn::before {
+  content: '';
+  display: block;
+  position: relative;
+  width: 50%;
+  height: 100%;
+  background: #fbfbfb;
+  border-radius: 100%;
+  left: 0;
+  box-shadow: 0 3px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.2);
+  transition: all 0.1s 0.1s ease-in-out;
+}
+.toggle-btn:focus::before {
+  box-shadow: 0 3px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.4);
+}
+.toggle-btn-on {
+  background: lightgreen;
+  transition: background 0.13s 0.05s ease-in-out;
+}
+.toggle-btn, .toggle-btn:focus {
+  outline: none;
+}
+.toggle-btn-on::before {
+  left: 50%;
+  transition: all 0.1s ease-in;  
+}
+.toggle-btn-off {
+
+}

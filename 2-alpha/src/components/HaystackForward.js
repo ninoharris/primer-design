@@ -8,7 +8,6 @@ class HaystackForward extends Component {
     return this.props.rightSeq
   }
   showMismatches = () => {
-    console.log('showing mismatches')
     const { rightSeq, wrongSeqQuery } = this.props
     return (
       <span className="multiple-matches">

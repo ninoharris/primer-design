@@ -1,14 +1,13 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getHaystackReverseMatches, getURV, getURVReverse } from '../selectors'
+import { getHaystackReverseMatches, getURVReverse } from '../selectors'
 
 class HaystackForward extends Component {
   showExact = () => {
     return this.props.rightSeq
   }
   showMismatches = () => {
-    console.log('showing mismatches')
     const { rightSeq, wrongSeqQuery } = this.props
     return (
       <span className="multiple-matches">

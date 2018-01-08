@@ -11,11 +11,11 @@ import { fetchExercises } from './actions'
 
 // Components
 import Form from './components/Form'
+import EvaluationTemp from './components/Evaluation-temp'
 import Evaluation from './components/Evaluation'
 import Display from './components/Display'
-
-
-
+import Modal from './components/Modal';
+import Options from './components/Options'
 
 
 class App extends Component {
@@ -36,11 +36,14 @@ class App extends Component {
         <div className="row">
           <div className=" Sidebar col-3">
             <Form />
-            {/* <Evaluation /> */}
+            <Options />
+            {/* <Modal> */}
+              <Evaluation />
+            {/* </Modal> */}
           </div>
           <div className="Display col-8">
             <Display />
-            <Evaluation />
+            <EvaluationTemp />
           </div>
         </div>
       </div>
@@ -53,6 +56,6 @@ const mapStateToProps = ({exercisesById }) => ({ exercises: exercisesById })
 App = connect(mapStateToProps, {fetchExercises})(App)
 
 ReactDOM.render(
-  <Provider store={configureStore()}><App /></Provider>, 
+  <Provider store={configureStore}><App /></Provider>, 
   document.getElementById('root'));
 registerServiceWorker();
