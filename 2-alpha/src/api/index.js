@@ -97,25 +97,25 @@ export const getLongestMatch = function (str) {
 }
 
 // Returns an object of { isExact, rightSeq, wrongSeqQuery, wrongSeqHaystack }
-export const containsMatch = function ({ query, haystack, pos = 0 }) {
-  let isExact = false, wrongSeqQuery = null, wrongSeqHaystack = null, rightSeq = null
-  let haystackSubString = haystack.substr(pos, query.length)
+// export const containsMatch = function ({ query, haystack, pos = 0 }) {
+//   let isExact = false, wrongSeqQuery = null, wrongSeqHaystack = null, rightSeq = null
+//   let haystackSubString = haystack.substr(pos, query.length)
 
-  // If exact match
-  if (query === haystackSubString) {
-    isExact = true
-    rightSeq = query
-  } else {
-    wrongSeqQuery = getMismatches(query, haystackSubString)
-    wrongSeqHaystack = getMismatches(haystackSubString, query)
-    // uses wrongSeqQuery to filter out correct matches
-    rightSeq = getMatches(query, haystackSubString)
-  }
+//   // If exact match
+//   if (query === haystackSubString) {
+//     isExact = true
+//     rightSeq = query
+//   } else {
+//     wrongSeqQuery = getMismatches(query, haystackSubString)
+//     wrongSeqHaystack = getMismatches(haystackSubString, query)
+//     // uses wrongSeqQuery to filter out correct matches
+//     rightSeq = getMatches(query, haystackSubString)
+//   }
 
-  return {
-    isExact, rightSeq, wrongSeqQuery, wrongSeqHaystack
-  }
-}
+//   return {
+//     isExact, rightSeq, wrongSeqQuery, wrongSeqHaystack
+//   }
+// }
 
 // shotgun match = check the entire haystack.
 // not there: false
@@ -143,7 +143,7 @@ export const shotgunMatch = ({ query, haystack, pos = 0, minPercentMatching = 0.
       return {
         isExact,
         frame: startPos - pos,
-        ...rest
+        ...rest,
       }
     }
     startPos += 1
@@ -163,25 +163,28 @@ export const shotgunComplementReverseMatch = ({ query, ...rest }) => {
   shotgunMatch({ query: complementFromString(reverse(query)), ...rest, complementMatch: true, reverseMatch: true})
 }
 export const shotgunAllPotentialMatches = ({ query, haystack, pos = 0 }) => {
+  console.log(query, haystack)
   const correctSequence = haystack.substr(pos, query.length)
-  const params = { query, haystack, pos, correctSequence }
-  return (
+  const params = { query, haystack, pos, correctSequence,
+    wrongSeqQuery: getMismatches(query, correctSequence), correctChars: getMatches(query, correctSequence)
+  }
+  return ( // note, everything in params is always returned
     shotgunNormalMatch(params) ||
     shotgunComplementMatch(params) ||
     shotgunReverseMatch(params) ||
     shotgunComplementReverseMatch(params) ||
-    false
+    params
   )
 }
 
 // query stays the same, haystack is complemented.
-export const containsComplementMatch = function ({ query, haystack, pos }) {
-  return containsMatch({
-    query,
-    pos,
-    haystack: complementFromString(haystack)
-  })
-}
+// export const containsComplementMatch = function ({ query, haystack, pos }) {
+//   return containsMatch({
+//     query,
+//     pos,
+//     haystack: complementFromString(haystack)
+//   })
+// }
 
 export const seqInVector = (seq, vector) => {
   return occurrences(vector, seq, true)

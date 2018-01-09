@@ -15,9 +15,17 @@ export const loading = (state = true, action) => {
 }
 
 export const showCodons = (state = true, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case 'TOGGLE_CODONS':
       return action.payload
+    default: return state
+  }
+}
+
+export const evaluationDisplayToggle = (state = false, action) => {
+  switch (action.type) {
+    case 'TOGGLE_EVALUATION':
+    return action.payload
     default: return state
   }
 }

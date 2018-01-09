@@ -16,6 +16,7 @@ body {
   white-space: pre-wrap;
   font-family: monospace;
   font-size: 20px;
+  text-align: center;
 }
 .RV {
   color: red;

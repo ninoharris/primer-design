@@ -2,7 +2,7 @@ import _ from 'lodash'
 import * as api from '../api'
 import { createSelector } from 'reselect'
 import { messages as MSG } from './messages'
-import { shotgunComplementMatch } from '../api';
+import { shotgunComplementMatch, isTooShort } from '../api';
 
 export const loadingSelector = state => state.loading
 export const showCodons = state => state.showCodons
@@ -200,7 +200,7 @@ export const getHaystackReverseMatches = createSelector(
       tooLong: api.isTooLong(input),
       pos,
       endPos: constructEnd,
-      ...api.containsMatch({ haystack: reverse, query: input, pos: pos }),
+      ...api.shotgunAllPotentialMatches({ haystack: reverse, query: input, pos: pos }),
     }
     return reverseMatches
   }
@@ -212,10 +212,10 @@ export const getHaystackReverseMatches = createSelector(
 const createEvaluation = () => {
   const state = []
   let anyErrors = false
-  const createMessage = ({ inputs, success, messageID, meta }) => {
+  const createMessage = ({ inputs, success, messageID, context }) => {
     if (!inputs) throw Error('Missing inputs in createMessage.')
     if (!messageID) throw Error('Missing messageID in createMessage.')
-    state.push({ inputs, success, ID: messageID, meta })
+    state.push({ inputs, success, ID: messageID, context })
     if(success === false) anyErrors = true
     return // to send back true or false or null here?
   }
@@ -223,8 +223,8 @@ const createEvaluation = () => {
   const hasErrors = () => anyErrors
 
   const createCategory = (...inputs) => ({ // inputs include:
-    success: (messageID, meta) => createMessage({ inputs, messageID, meta, success: true }),
-    failure: (messageID, meta) => createMessage({ inputs, messageID, meta, success: false })
+    success: (messageID, context) => createMessage({ inputs, messageID, context, success: true }),
+    failure: (messageID, context) => createMessage({ inputs, messageID, context, success: false })
   })
   
   return {
@@ -239,23 +239,30 @@ export const getHaystackEvaluations = (state) => {
   // set up
   const Eval = createEvaluation()
   const EvalFG = Eval.createCategory('FG')
-  const EValRG = Eval.createCategory('RG')
+  const EvalRG = Eval.createCategory('RG')
+
+  // both use shotgunMatch
   const FG = getHaystackForwardMatches(state)
   const RG = getHaystackReverseMatches(state)
 
 // TODO: MUCH OF THIS LOGIC SHOULDNT BE HERE AND SHOULD BE DONE BEFOREHAND in getHaystack____Matches.
 
   // check if right completely (and frame)
-  if(FG.rightSeq) EvalFG.success('FORWARD_HAYSTACK_MATCH')
-  // put below somewhere else!
-  // if(typeof api.shotgunMatch(FG.attempt) === 'number') EvalFG.failure('FORWARD_HAYSTACK_OUT_OF_FRAME')
-  // check if wrong strand (and frame)
-  // if(shotgunComplementMatch)
-  // check if wrong direction (and frame)
-
+  if (isTooShort(FG.input)) EvalFG.failure('FORWARD_TOO_SHORT')
+  if (FG.normalMatch) EvalFG.success('FORWARD_HAYSTACK_MATCH')
+  if (FG.complementMatch) EvalFG.failure('FORWARD_WRONG_STRAND')
+  if (FG.reverseMatch) EvalFG.failure('FORWARD_WRONG_DIRECTION')
+  if (FG.frame && FG.frame !== 0) EvalFG.failure('FORWARD_OUT_OF_FRAME', FG.frame)
+  if (!FG.normalMatch && !FG.complementMatch && !FG.reverseMatch) EvalFG.failure("FORWARD_NO_MATCH")
   // check if right completely (and frame)
   // check if wrong strand (and frame)
   // check if wrong direction (and frame)
+  if (isTooShort(RG.input)) EvalRG.failure('REVERSE_TOO_SHORT')
+  if (RG.normalMatch) EvalRG.success('REVERSE_HAYSTACK_MATCH')
+  if (RG.complementMatch) EvalRG.failure('REVERSE_WRONG_STRAND')
+  if (RG.reverseMatch) EvalRG.failure('REVERSE_WRONG_DIRECTION')
+  if (RG.frame && RG.frame !== 0) EvalRG.failure('REVERSE_OUT_OF_FRAME', RG.frame)
+  if (!RG.normalMatch && !RG.complementMatch && !RG.reverseMatch) EvalRG.failure("REVERSE_NO_MATCH")
 
   // go to vector evaluations!
   return Eval.getEvaluation()
