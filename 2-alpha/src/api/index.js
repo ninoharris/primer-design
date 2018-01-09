@@ -121,23 +121,59 @@ export const containsMatch = function ({ query, haystack, pos = 0 }) {
 // not there: false
 // there and at position: true
 // there but not correct position (out of frame): INT, WHERE -ve MEANS QUERY IS TO THE LEFT
-export const shotgunMatch = ({ query, haystack, pos = 0 }) => {
-  const matchIndex = haystack.indexOf(query)
-  if(matchIndex > -1) { // if its in the query
-    if(matchIndex === 0) return true
-    return matchIndex
+// export const shotgunMatch = ({ query, haystack, pos = 0 }) => {
+//   const matchIndex = haystack.indexOf(query)
+//   if(matchIndex > -1) { // if its in the query
+//     if(matchIndex === 0) return true
+//     return matchIndex
+//   }
+//   return false
+// }
+// HELLO WORLD
+
+// looks for closest match within a range of 2 before and 2 after.
+export const shotgunMatch = ({ query, haystack, pos = 0, minPercentMatching = 0.5, ...rest }) => {
+  let startPos = pos - 2
+  // let startPos = Math.min(pos - 2, 0) // set start position to 2 before or 1 or 0
+  // FOR SHIFTED TO THE RIGHT
+  while(startPos < (pos + 2)) {
+    const haystackSubString = haystack.substr(startPos, query.length)
+    let isExact = haystackSubString.indexOf(query) > -1
+    if(isExact) {
+      return {
+        isExact,
+        frame: startPos - pos,
+        ...rest
+      }
+    }
+    startPos += 1
   }
   return false
 }
-export const shotgunComplementMatch = ({ query, haystack, pos = 0 }) => {
-  return shotgunMatch({ query: complementFromString(query), haystack, pos})
+export const shotgunNormalMatch = ({ query, ...rest, }) => {
+  return shotgunMatch({ query: query, ...rest, normalMatch: true })
 }
-export const shotgunReverseMatch = ({ query, haystack, pos = 0 }) => {
-  return shotgunMatch({ query: reverse(query), haystack, pos })
+export const shotgunComplementMatch = ({ query, ...rest }) => {
+  return shotgunMatch({ query: complementFromString(query), ...rest, complementMatch: true})
 }
-export const shotgunComplementReverseMatch = ({ query, haystack, pos = 0}) => {
-  return shotgunMatch({ query: complementFromString(reverse(query)), haystack, pos })
+export const shotgunReverseMatch = ({ query, ...rest }) => {
+  return shotgunMatch({ query: reverse(query), ...rest, reverseMatch: true})
 }
+export const shotgunComplementReverseMatch = ({ query, ...rest }) => {
+  shotgunMatch({ query: complementFromString(reverse(query)), ...rest, complementMatch: true, reverseMatch: true})
+}
+export const shotgunAllPotentialMatches = ({ query, haystack, pos = 0 }) => {
+  const correctSequence = haystack.substr(pos, query.length)
+  const params = { query, haystack, pos, correctSequence }
+  return (
+    shotgunNormalMatch(params) ||
+    shotgunComplementMatch(params) ||
+    shotgunReverseMatch(params) ||
+    shotgunComplementReverseMatch(params) ||
+    false
+  )
+}
+
 // query stays the same, haystack is complemented.
 export const containsComplementMatch = function ({ query, haystack, pos }) {
   return containsMatch({
@@ -177,7 +213,7 @@ export function occurrences(subString, string, allowOverlapping) {
     return n;
 }
 
-export const isTooShort = (seq, min = 10) => {
+export const isTooShort = (seq, min = 8) => {
   if(seq.length < min) return true
   return false
 }

@@ -5,19 +5,19 @@ import { getHaystackForwardMatches, getUFV } from '../selectors'
 
 class HaystackForward extends Component {
   showExact = () => {
-    return this.props.rightSeq
+    return this.props.correctChars
   }
   showMismatches = () => {
-    const { rightSeq, wrongSeqQuery } = this.props
+    const { correctChars, wrongSeqQuery } = this.props
     return (
       <span className="multiple-matches">
         <span className="multiple-match mismatch">{wrongSeqQuery}</span>
-        <span className="multiple-match match">{rightSeq}</span>
+        <span className="multiple-match match">{correctChars}</span>
       </span>
     )
   }
   render() {
-    const { pos, isExact, tooShort, FV } = this.props
+    const { pos, isExact, normalMatch, tooShort, FV } = this.props
     if(tooShort) return null
     return (
       <div className="sequence FG">
@@ -25,7 +25,7 @@ class HaystackForward extends Component {
           <span>{FV}</span>
         </span>
         {_.pad('', pos)}
-        {isExact ? this.showExact() : this.showMismatches()}
+        {isExact && normalMatch ? this.showExact() : this.showMismatches()}
       </div>
     )
   }

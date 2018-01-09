@@ -174,12 +174,14 @@ export const getHaystackForwardMatches = createSelector(
   getCurrentExercise,
   (input, { forward }, { constructStart }) => {
     const forwardMatches = {
-      attempt: forward,
+      rightSeq: forward.substr(constructStart, input.length),
+      input,
       tooShort: api.isTooShort(input),
       tooLong: api.isTooLong(input),
       pos: constructStart,
       endPos: constructStart + input.length,
-      ...api.containsMatch({ haystack: forward, query: input, pos: constructStart })
+      // ...api.containsMatch({ haystack: forward, query: input, pos: constructStart })
+      ...api.shotgunAllPotentialMatches({ haystack: forward, query: input, pos: constructStart })
     }
     return forwardMatches
   }
@@ -193,7 +195,7 @@ export const getHaystackReverseMatches = createSelector(
     // for this, we keep the haystack the same and reverse the users input. Substring the haystack by the input length for checking.
     const pos = constructEnd - input.length
     const reverseMatches = { 
-      attempt: reverse,
+      input,
       tooShort: api.isTooShort(input),
       tooLong: api.isTooLong(input),
       pos,
@@ -245,7 +247,8 @@ export const getHaystackEvaluations = (state) => {
 
   // check if right completely (and frame)
   if(FG.rightSeq) EvalFG.success('FORWARD_HAYSTACK_MATCH')
-  if(typeof api.shotgunMatch(FG.attempt) === 'number') EvalFG.failure('FORWARD_HAYSTACK_OUT_OF_FRAME')
+  // put below somewhere else!
+  // if(typeof api.shotgunMatch(FG.attempt) === 'number') EvalFG.failure('FORWARD_HAYSTACK_OUT_OF_FRAME')
   // check if wrong strand (and frame)
   // if(shotgunComplementMatch)
   // check if wrong direction (and frame)
