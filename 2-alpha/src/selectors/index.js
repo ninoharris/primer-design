@@ -2,7 +2,7 @@ import _ from 'lodash'
 import * as api from '../api'
 import { createSelector } from 'reselect'
 import { messages as MSG } from './messages'
-import { shotgunComplementMatch, isTooShort } from '../api';
+import { shotgunComplementMatch, isTooShort, complementFromString, reverse } from '../api';
 
 export const loadingSelector = state => state.loading
 export const showCodons = state => state.showCodons
@@ -89,82 +89,78 @@ export const getVectorHelpers = createSelector( // merges RESites and user-added
   // returns object of pos: { name, pos, len, color }
 )
 
-// return single object if only one match (user is correct!) or array of matches if matches = 0 or > 1
-// READ: when using this function, check for array or object! array = user wrong, object = user right.
-export const getUserVectorMatchesForward = createSelector(
+export const getUserVectorMatchForward = createSelector(
   getUFV,
+  getCurrentExercise,
   getVectorRestrictionSites,
-  (input, RESites) => {
+  (input, { vectorStart = false, vector }, RESites) => {
     const matchesObj = _.pickBy(RESites, (RESite) => input.includes(RESite.seq))
     const matches = _.values(matchesObj)
-    if(matches.length === 1) {
-      return matches[0] 
+    if (matches.length !== 1) {
+      return { matches, multipleMatches: true }
     }
-    return matches
-  }
-)
+    const match = matches[0]
+    const singleMatch = { ...match}
+    console.log('getUserVectorMatchForward', input, match)
+    const REMatchPos = singleMatch['REMatchPos'] = input.indexOf(match.seq) // XXATAGCGYY (primer) -> 2
+    singleMatch['leadingSeq']  = input.slice(0, REMatchPos) // XXATAGCGYY (primer)-> XX
+    singleMatch['trailingSeq'] = input.slice(REMatchPos + match.seq.length) // XXATAGCGYY (primer) -> YY
+    singleMatch['positionInVector'] = match.pos - singleMatch['leadingSeq'].length  // position to put primer relative to vector.
+    singleMatch['endPos'] = singleMatch['positionInVector'] + input.length
+    singleMatch['frame'] = vectorStart // false (no required frame, ignore framing errors) or INT
+    if(!vectorStart) return singleMatch // no required frame -> return now and say we dont need frame here
 
-
-export const getUserVectorMatchForwardAlignment = createSelector(
-  getUFV,
-  getUserVectorMatchesForward,
-  getCurrentExercise,
-  (input, match, { vectorStart = false, vector }) => {
-    if (Array.isArray(match)) return false // Only works if one match
-    const result = {...match}
-    const REMatchPos = result['REMatchPos'] = input.indexOf(match.seq) // XXATAGCGYY (primer) -> 2
-    result['leadingSeq']  = input.slice(0, REMatchPos) // XXATAGCGYY (primer)-> XX
-    result['trailingSeq'] = input.slice(REMatchPos + match.seq.length) // XXATAGCGYY (primer) -> YY
-    result['positionInVector'] = match.pos - result['leadingSeq'].length  // position to put primer relative to vector.
-    result['endPos'] = result['positionInVector'] + input.length
-    result['frame'] = vectorStart // false (no required frame, ignore framing errors) or INT
-    if(!vectorStart) return result // no required frame -> return now and say we dont need frame here
-
-    result['betweenStartAndREStr'] = vector.slice(vectorStart, match.pos) // ZZZZZATAGCG (vector) -> ZZZZZ
-    result['betweenStartAndRE'] = result['betweenStartAndREStr'].length // ZZZZZ -> 5
-    result['toGetDesiredFrame'] = (3 - (result['betweenStartAndRE'] % 3) % 3)
+    singleMatch['betweenStartAndREStr'] = vector.slice(vectorStart, REMatchPos) // ZZZZZATAGCG (vector) -> ZZZZZ
+    singleMatch['betweenStartAndRE'] = singleMatch['betweenStartAndREStr'].length // ZZZZZ -> 5
+    singleMatch['toGetDesiredFrame'] = (3 - (singleMatch['betweenStartAndRE'] % 3) % 3)
     
-    return result
+    return { singleMatch }
   }
 )
 
-export const getUserVectorMatchesReverse = createSelector(
+// export const getUserVectorMatchesReverse = createSelector(
+//   getURVHund80,
+//   getVectorRestrictionSites,
+//   (input, RESites) => {
+//     const matchesObj = _.pickBy(RESites, (RESite) => input.includes(RESite.seq))
+//     const matchesObjSeqReverse = _.map(matchesObj, (RESite => ({ ...RESite, seq: api.reverse(RESite.seq) }) ))
+//     const matches = _.values(matchesObjSeqReverse)
+//     if (matches.length === 1) { // only one match, return the match object
+//       return matches[0]
+//     }
+//     return matches
+//   }
+// )
+// let x = 'ATGCATGCGGG'
+// console.log(x, reverse(x), complementFromString(x), reverse(complementFromString(x)))
+
+export const getUserVectorMatchReverse = createSelector(
   getURVHund80,
-  getVectorRestrictionSites,
-  (input, RESites) => {
-    const matchesObj = _.pickBy(RESites, (RESite) => input.includes(RESite.seq))
-    const matchesObjSeqReverse = _.map(matchesObj, (RESite => ({ ...RESite, seq: api.reverse(RESite.seq) }) ))
-    const matches = _.values(matchesObjSeqReverse)
-    if (matches.length === 1) { // only one match, return the match object
-      return matches[0]
-    }
-    return matches
-  }
-)
-
-export const getUserVectorMatchReverseAlignment = createSelector(
   getURVReverse,
-  getUserVectorMatchesReverse,
   getCurrentExercise,
-  // getUserVectorMatchForwardAlignment,
-  (input, match, { vectorEnd = false, vector }, forwardMatch) => {
-    if (Array.isArray(match)) return false
-    const result = { ...match } // immutable
-    const REMatchPos = result['REMatchPos'] = input.indexOf(match.seq) // XXATAGCGYY (primer) -> 2
-    result['leadingSeq'] = input.slice(REMatchPos + match.seq.length) // XXATAGCGYY (primer)-> XX
-    result['trailingSeq'] = input.slice(0, REMatchPos) // XXATAGCGYY (primer) -> YY
-    result['positionInVector'] = match.pos - result['trailingSeq'].length // position to put primer relative to vector.
-    result['frame'] = vectorEnd // false (no required frame, ignore framing errors) or INT
-    if (!vectorEnd) return result // no required frame -> return now and say we dont need frame here
+  getVectorRestrictionSites,
+  (inputHund80, input, { vectorEnd = false, vector }, RESites) => {
+    const matchesObj = _.pickBy(RESites, (RESite) => inputHund80.includes(RESite.seq))
+    const matchesObjSeqReverse = _.map(matchesObj, (RESite => ({ ...RESite, seq: api.reverse(RESite.seq) })))
+    const matches = _.values(matchesObjSeqReverse)
+    if (matches.length !== 1) {
+      return { matches, multipleMatches: true }
+    }
+    const match = matches[0]
+    const singleMatch = { ...match }
 
-    result['betweenEndAndREStr'] = vector.slice(match.pos + 6, vectorEnd) // ATAGCGZZZZZ (vector) -> ZZZZZ
-    result['betweenEndAndRE'] = result['betweenEndAndREStr'].length // ZZZZZ -> 5
-    result['toGetDesiredFrame'] = (3 - (result['betweenEndAndRE'] % 3)) % 3
-    
-    // result['afterForwardPrimer'] = result['positionInVector'] > forwardMatch.endPos // Boolean
-    // result['tooCloseToForward'] = (result['positionInVector'] - forwardMatch.endPos) < 4 // Int.
+    const REMatchPos = singleMatch['REMatchPos'] = input.indexOf(match.seq) // XXATAGCGYY (primer) -> 2
+    singleMatch['leadingSeq'] = input.slice(REMatchPos + match.seq.length) // 5'-XXATAGCGYY-3' = 3'-YYGCGATAXX-5' (primer)-> XX
+    singleMatch['trailingSeq'] = input.slice(0, REMatchPos) // XXATAGCGYY (primer) -> YY
+    singleMatch['positionInVector'] = singleMatch['pos'] - singleMatch['trailingSeq'].length // position to put primer relative to vector.
+    singleMatch['frame'] = vectorEnd // false (no required frame, ignore framing errors) or INT
+    if (!vectorEnd) return singleMatch // no required frame -> return now and say we dont need frame here
 
-    return result
+    singleMatch['betweenEndAndREStr'] = vector.slice(match.pos + 6, vectorEnd) // ATAGCGZZZZZ (vector) -> ZZZZZ
+    singleMatch['betweenEndAndRE'] = singleMatch['betweenEndAndREStr'].length // ZZZZZ -> 5
+    singleMatch['toGetDesiredFrame'] = (3 - (singleMatch['betweenEndAndRE'] % 3)) % 3
+
+    return { singleMatch }
   }
 )
 
@@ -173,6 +169,7 @@ export const getHaystackForwardMatches = createSelector(
   getBothHaystackStrands,
   getCurrentExercise,
   (input, { forward }, { constructStart }) => {
+    if(input.length < 4) return {}
     const forwardMatches = {
       rightSeq: forward.substr(constructStart, input.length),
       input,
@@ -192,6 +189,8 @@ export const getHaystackReverseMatches = createSelector(
   getBothHaystackStrands,
   getCurrentExercise,
   (input, {reverse}, { constructEnd }) => {
+    console.log('Haystack reverse')
+    if (input.length < 4) return {}
     // for this, we keep the haystack the same and reverse the users input. Substring the haystack by the input length for checking.
     const pos = constructEnd - input.length
     const reverseMatches = { 
@@ -209,8 +208,8 @@ export const getHaystackReverseMatches = createSelector(
 // function that returns an object which can be used to createMessage directly, or through a shorthand:
 // First create a category and assign it to a variable: const myCategory = createCategory('myCat')
 // Then call the success/failure fns: myCategory.success(msg) myCategory.failure(msg)
-const createEvaluation = () => {
-  const state = []
+const createEvaluation = (...initialStates) => {
+  const state = initialStates ? initialStates : []
   let anyErrors = false
   const createMessage = ({ inputs, success, messageID, context }) => {
     if (!inputs) throw Error('Missing inputs in createMessage.')
@@ -235,70 +234,61 @@ const createEvaluation = () => {
   }
 }
 
-export const getHaystackEvaluations = (state) => {
+// evaluations which are independent of vector input
+export const getHaystackEvaluations = createSelector(
+  getHaystackForwardMatches,
+  getHaystackReverseMatches,
+  (FG, RG) => {
   // set up
   const Eval = createEvaluation()
   const EvalFG = Eval.createCategory('FG')
   const EvalRG = Eval.createCategory('RG')
 
-  // both use shotgunMatch
-  const FG = getHaystackForwardMatches(state)
-  const RG = getHaystackReverseMatches(state)
-
-// TODO: MUCH OF THIS LOGIC SHOULDNT BE HERE AND SHOULD BE DONE BEFOREHAND in getHaystack____Matches.
-
   // check if right completely (and frame)
-  if (isTooShort(FG.input)) EvalFG.failure('FORWARD_TOO_SHORT')
-  if (FG.normalMatch) EvalFG.success('FORWARD_HAYSTACK_MATCH')
-  if (FG.complementMatch) EvalFG.failure('FORWARD_WRONG_STRAND')
-  if (FG.reverseMatch) EvalFG.failure('FORWARD_WRONG_DIRECTION')
-  if (FG.frame && FG.frame !== 0) EvalFG.failure('FORWARD_OUT_OF_FRAME', FG.frame)
-  if (!FG.normalMatch && !FG.complementMatch && !FG.reverseMatch) EvalFG.failure("FORWARD_NO_MATCH")
-  // check if right completely (and frame)
-  // check if wrong strand (and frame)
-  // check if wrong direction (and frame)
-  if (isTooShort(RG.input)) EvalRG.failure('REVERSE_TOO_SHORT')
-  if (RG.normalMatch) EvalRG.success('REVERSE_HAYSTACK_MATCH')
-  if (RG.complementMatch) EvalRG.failure('REVERSE_WRONG_STRAND')
-  if (RG.reverseMatch) EvalRG.failure('REVERSE_WRONG_DIRECTION')
-  if (RG.frame && RG.frame !== 0) EvalRG.failure('REVERSE_OUT_OF_FRAME', RG.frame)
-  if (!RG.normalMatch && !RG.complementMatch && !RG.reverseMatch) EvalRG.failure("REVERSE_NO_MATCH")
-
+  if(FG.input) {
+    if (isTooShort(FG.input)) EvalFG.failure('FORWARD_TOO_SHORT')
+    if (FG.normalMatch) EvalFG.success('FORWARD_HAYSTACK_MATCH')
+    if (FG.complementMatch) EvalFG.failure('FORWARD_WRONG_STRAND')
+    if (FG.reverseMatch) EvalFG.failure('FORWARD_WRONG_DIRECTION')
+    if (FG.frame && FG.frame !== 0) EvalFG.failure('FORWARD_OUT_OF_FRAME', FG.frame)
+    if (!FG.normalMatch && !FG.complementMatch && !FG.reverseMatch) EvalFG.failure("FORWARD_NO_MATCH")
+  }
+  
+  if(RG.input) {
+    if (isTooShort(RG.input)) EvalRG.failure('REVERSE_TOO_SHORT')
+    if (RG.normalMatch) EvalRG.success('REVERSE_HAYSTACK_MATCH')
+    if (RG.complementMatch) EvalRG.failure('REVERSE_WRONG_STRAND')
+    if (RG.reverseMatch) EvalRG.failure('REVERSE_WRONG_DIRECTION')
+    if (RG.frame && RG.frame !== 0) EvalRG.failure('REVERSE_OUT_OF_FRAME', RG.frame)
+    if (!RG.normalMatch && !RG.complementMatch && !RG.reverseMatch) EvalRG.failure("REVERSE_NO_MATCH")
+  }
   // go to vector evaluations!
   return Eval.getEvaluation()
-}
+})
 
-export const getVectorEvaluations = (state) => {
+// evaluations which are independent of haystack input
+export const getVectorEvaluations = createSelector(
+  getUserVectorMatchForward,
+  getUserVectorMatchReverse,
+  (FV, RV) => {
   const Eval = createEvaluation()
   const EvalFV = Eval.createCategory('FV')
   const EvalRV = Eval.createCategory('RV')
   const FVRV = Eval.createCategory('RV', 'FV')
 
-  // vector matches must be a *single* object before any continuing further to avoid conflicts.
-  const FVPrelim = getUserVectorMatchesForward(state)
-  const RVPrelim = getUserVectorMatchesReverse(state)
-
   // No match
-  if (FVPrelim.length === 0) EvalFV.failure("NO_MATCH_FV")
-  if (RVPrelim.length === 0) EvalRV.failure("NO_MATCH_RV")
+  if (FV.matches && FV.matches.length === 0) EvalFV.failure("NO_MATCH_FV")
+  if (RV.matches && RV.matches.length === 0) EvalRV.failure("NO_MATCH_RV")
   if (Eval.hasErrors()) return Eval.getEvaluation()
 
   // Too many matches
-  if (Array.isArray(FVPrelim)) EvalFV.failure("EXCEED_MATCH_FV")
-  if (Array.isArray(RVPrelim)) EvalRV.failure("EXCEED_MATCH_RV")
+  if (FV.matches) EvalFV.failure("EXCEED_MATCH_FV")
+  if (RV.matches) EvalRV.failure("EXCEED_MATCH_RV")
     
   if (Eval.hasErrors()) return Eval.getEvaluation() // return now as both are required to be a single match before continuing
   FVRV.success("EACH_VECTOR_PRIMER_MATCHES_ONCE")
 
   // TODO: either restriction site matches inside haystack:
-
-
-
-
-
-  // Set up invidual matches
-  const FV = getUserVectorMatchForwardAlignment(state)
-  const RV = getUserVectorMatchReverseAlignment(state)
 
   // Spacing between primers
   if (FV.endPos >= RV.pos) FVRV.failure("VECTOR_OVERLAP")
@@ -317,5 +307,9 @@ export const getVectorEvaluations = (state) => {
     // yes: check in-frame with constructEnd and placed stop codon
   // 
   return Eval.getEvaluation()
-}
+})
 
+// evaluations which depend on both haystack and vector
+const getAllEvaluations = (state) => {
+  const Eval = createEvaluation
+}

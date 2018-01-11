@@ -9,6 +9,7 @@ import VectorForward from './VectorForward'
 import HelperPosition from './HelperPosition'
 import VectorReverse from './VectorReverse';
 
+
 class Vector extends Component {
   getHelpers = () => {
     return _.map(this.props.helpers, (helper => {
@@ -45,7 +46,8 @@ class Vector extends Component {
 
   }
   render() {
-    const { forward, reverse, helpers } = this.props
+    const { forward, reverse, helpers, showCodons } = this.props
+    console.log('reverse:', reverse)
     return (
       <div className="vector pt-3 pb-3 mt-3">
         <HelperPosition length={100} />
@@ -76,12 +78,11 @@ class Vector extends Component {
 
 const mapStateToProps = (state) => {
   const { forward, reverse } = getBothVectorStrands(state)
-  const helpers = getVectorHelpers(state)
   
   return {
     forward,
     reverse,
-    helpers
+    helpers: getVectorHelpers(state)
   }
 }
 

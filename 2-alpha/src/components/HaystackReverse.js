@@ -17,14 +17,17 @@ class HaystackForward extends Component {
     )
   }
   render() {
-    const { pos, isExact, normalMatch, tooShort, RV, input } = this.props
+    const { pos, isExact, normalMatch, tooShort, RV, input, frame } = this.props
     if (!input) return null
     return (
       <div className="sequence RG">
         {_.pad('', pos)}<span className="offset-left unimportant RV">
-          <span>{RV}</span>
+          <span><span className="end">3'-</span>{RV}</span>
         </span>
-        {isExact && normalMatch ? this.showExact() : this.showMismatches()}
+        {isExact && normalMatch && frame === 0 ? this.showExact() : this.showMismatches()}
+        <span className="offset-right unimportant">
+          <span><span className="end">-5'</span></span>
+        </span>
       </div>
     )
   }

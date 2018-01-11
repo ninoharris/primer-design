@@ -1,34 +1,17 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { getUserVectorMatchForwardAlignment, getUserVectorMatchesForward } from '../../selectors'
+import { getUserVectorMatchForward } from '../../selectors'
 
 class EvaluationFV extends Component {
-  renderMismatch = () => {
-    return (
-      <div>
-        Matches: {this.props.matches.length}
-      </div>
-    )
-  }
-  renderMatch = () => {
-    return (
-      <pre>
-        {JSON.stringify(this.props.result, null, 2)}
-      </pre>
-    )
-  }
   render() {
-    if (this.props.loading)
+    if (this.props.loading) {
       return (<div> Loading... </div>)
-
-    const { matches } = this.props
-    if (Array.isArray(matches)) return this.renderMismatch()
-
+    }
     return (
       <div>
         <h4>Evaluation FV:</h4>
-        {this.renderMatch()}
+        <pre>{JSON.stringify(this.props.match, null, 2)}</pre>
       </div>
     )
   }
@@ -36,10 +19,8 @@ class EvaluationFV extends Component {
 
 const mapStateToProps = (state) => {
   if (state.loading) return { loading: state.loading }
-  const matches = getUserVectorMatchesForward(state)
-  if (Array.isArray(matches)) return { matches, isNotOnlyOneMatch: true }
   return {
-    result: getUserVectorMatchForwardAlignment(state)
+    match: getUserVectorMatchForward(state)
   }
 }
 

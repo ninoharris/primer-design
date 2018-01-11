@@ -68,14 +68,17 @@ body {
 .offset-left, .offset-right {
   position: relative;
 }
-[class^="offset"] span {
+[class^="offset"] > span {
   position: absolute;
 }
-.offset-left span {
+.offset-left > span {
   right: 0;
 }
-.offset-right span {
+.offset-right > span {
   left: 0;
+}
+.end {
+  color: #000000;
 }
 
 

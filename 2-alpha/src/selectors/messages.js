@@ -45,7 +45,7 @@ export const messageIDsToDetails = {
   }),
   "FORWARD_OUT_OF_FRAME": (frame) => ({
     title: `Out of frame by ${Math.abs(frame)} to the ${frame > 0 ? 'right': 'left'}`,
-    additional: `Try ${frame > 0 ? 'removing': 'adding'} a base at the start of the forward primer's sequence`
+    additional: `Try ${frame > 0 ? 'adding' : 'removing'} a base at the start of the forward primer's sequence`
   }),
   "REVERSE_TOO_SHORT": () => ({
     title: 'Reverse haystack is too short!'

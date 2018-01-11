@@ -1,50 +1,53 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getUserVectorMatchesReverse, getUserVectorMatchReverseAlignment, getURGReverse } from '../selectors'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+import { getUserVectorMatchReverse, getURGReverse } from '../selectors'
 
 // Goes like so: check if multiple matches exist or no matches at all, then show matches as warnings
 // Otherwise, show alignment etc
 class VectorReverse extends Component {
-  isNotOnlyOneMatch() {
+  moreThanOneMatch() {
     const { matches } = this.props
-    const matchesList = _.keys(matches)
     return (
       <div className="sequence multiple-matches">
-        {matchesList.map(matchPos => {
-          const match = matches[matchPos]
-          return (
-            <span className="multiple-match">
+        <ReactCSSTransitionGroup transitionName="matches" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
+          {_.map(matches, (match, matchPos) => (
+            <span className="multiple-match" key={matchPos}>
               {_.pad('', match.pos)}
               <span key={matchPos} className="match">{match.seq}</span>
             </span>
-          )
-        })}
+          ))}
+        </ReactCSSTransitionGroup>
       </div>
     )
   }
-  render() {
-    if (this.props.matches) return this.isNotOnlyOneMatch()
-    const { result, RG } = this.props
+  singleMatch() {
+    const { singleMatch, RG } = this.props
     return (
-      <div className="sequence RV">
-        {_.pad('', result.positionInVector - RG.length)}
-        <span className="RG unimportant">{RG}</span>
-        <span className="trailing">{result.trailingSeq}</span>
-        <span className="restriction-site-match">{result.seq}</span>
-        <span className="leading">{result.leadingSeq}</span>
-        
-      </div>
+      <ReactCSSTransitionGroup transitionName="matches" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
+        <div className="sequence RV" key='match'>
+          {_.pad('', singleMatch.positionInVector - RG.length)}
+          <span className="RG unimportant">{RG}</span>
+          <span className="trailing">{singleMatch.trailingSeq}</span>
+          <span className="restriction-site-match">{singleMatch.seq}</span>
+          <span className="leading">{singleMatch.leadingSeq}</span>
+        </div>
+      </ReactCSSTransitionGroup>
     )
+  }
+  render() {
+    const { multipleMatches, matches = [] } = this.props
+    if (multipleMatches) {
+      if (matches.length === 0) return null
+      return this.moreThanOneMatch()
+    }
+    return this.singleMatch()
   }
 }
 
 const mapStateToProps = (state) => {
-  const matches = getUserVectorMatchesReverse(state)
-  if (Array.isArray(matches)) return { matches }
-  const RG = getURGReverse(state)
-  const result = getUserVectorMatchReverseAlignment(state)
-  return { result, RG }
+  return { ...getUserVectorMatchReverse(state), RG: getURGReverse(state) }
 }
 
 export default connect(mapStateToProps)(VectorReverse)

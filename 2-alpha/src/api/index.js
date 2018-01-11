@@ -35,17 +35,18 @@ export const reverse = function (str) {
 
 export const hund80 = str => complementFromString(reverse(str))
 
-export const getAAseq = function ({ seq, offset = 0 }) {
+export const getAASeq = function ({ seq, offset = 0, separator = '' }) {
   if (!seq || typeof seq !== 'string') throw Error('seq must be a string')
   // TODO: see if any non ATGC are included, if spacing then remove.
   seq = seq.toUpperCase()
-  if (seq.match(/[^ATGC\b]+/gi)) throw Error('seq must only contain: ATGC (and space)')
-  seq = seq.replace(/\b/, '') // remove spaces
+  // if (seq.match(/[^ATGC\b]+/gi)) throw Error('seq must only contain: ATGC (and space)')
+  // seq = seq.replace(/\b/, '') // remove spaces
 
-  let output = []
-  for (let i = offset; i < seq.length; i += 3) {
-    let test = seq.substring(i, i + 3) // gets i, i+1, i+2 ONLY.
-    output.push(codonTable[test])
+  let output = [], currentCodon
+  for (let i = offset; i <= seq.length; i += 3) {
+    let test = seq.substr(i, 3) // gets i, i+1, i+2 ONLY.
+    currentCodon = codonTable[test] 
+    output.push(currentCodon ? (currentCodon + separator) : separator + ' ')
   }
   return output
 }
