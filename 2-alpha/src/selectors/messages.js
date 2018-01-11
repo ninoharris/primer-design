@@ -43,9 +43,16 @@ export const messageIDsToDetails = {
     title: 'Forward primer doesnt match construct.',
     additional: 'Here is some help below:'
   }),
-  "FORWARD_OUT_OF_FRAME": (frame) => ({
+  "FORWARD_HAYSTACK_OUT_OF_FRAME": (frame) => ({
     title: `Out of frame by ${Math.abs(frame)} to the ${frame > 0 ? 'right': 'left'}`,
     additional: `Try ${frame > 0 ? 'adding' : 'removing'} a base at the start of the forward primer's sequence`
+  }),
+  "FORWARD_BOTH_IN_FRAME": () => ({
+    title: 'Forward primer is in frame!',
+  }),
+  "FORWARD_BOTH_OUT_OF_FRAME": (frame) => ({
+    title: `Out of frame by ${Math.abs(frame)}`,
+    additional: `At the forward primer sequence, try adding ${frame} base${frame > 1 ? 's':''} at the end of the vector part.`
   }),
   "REVERSE_TOO_SHORT": () => ({
     title: 'Reverse haystack is too short!'
@@ -63,8 +70,15 @@ export const messageIDsToDetails = {
     title: 'Reverse primer doesnt match construct.',
     additional: 'Here is some help below:'
   }),
-  "REVERSE_OUT_OF_FRAME": (frame) => ({
+  "REVERSE_HAYSTACK_OUT_OF_FRAME": (frame) => ({
     title: `Out of frame by ${Math.abs(frame)} to the ${frame > 0 ? 'right' : 'left'}`,
     additional: `Try ${frame > 0 ? 'removing' : 'adding'} a base at the end of the reverse primer's sequence`
+  }),
+  "REVERSE_BOTH_IN_FRAME": () => ({
+    title: 'Reverse primer is in frame!',
+  }),
+  "REVERSE_BOTH_OUT_OF_FRAME": (frame) => ({
+    title: `Out of frame by ${Math.abs(frame)} to the ${frame > 0 ? 'right' : 'left'}`,
+    additional: `At the reverse primer sequence, try adding ${frame} base${frame > 1 ? 's' : ''} at the end of the vector part.`
   }),
 }

@@ -225,3 +225,19 @@ body {
 .toggle-btn-off {
 
 }
+
+.forward-arrow, .reverse-arrow {
+  padding: 20px; 
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: auto;
+  margin-left: -20px;
+}
+.forward-arrow {
+  background-image: url('./images/forward-arrow.jpg');
+  
+}
+.reverse-arrow {
+  background-image: url('./images/reverse-arrow.jpg');
+  margin-right: -20px;
+}

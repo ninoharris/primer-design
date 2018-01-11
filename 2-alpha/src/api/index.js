@@ -164,7 +164,6 @@ export const shotgunComplementReverseMatch = ({ query, ...rest }) => {
   shotgunMatch({ query: complementFromString(reverse(query)), ...rest, complementMatch: true, reverseMatch: true})
 }
 export const shotgunAllPotentialMatches = ({ query, haystack, pos = 0 }) => {
-  console.log(query, haystack)
   const correctSequence = haystack.substr(pos, query.length)
   const params = { query, haystack, pos, correctSequence,
     wrongSeqQuery: getMismatches(query, correctSequence), correctChars: getMatches(query, correctSequence)

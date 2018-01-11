@@ -106,7 +106,7 @@ export const getUserVectorMatchForward = createSelector(
     singleMatch['leadingSeq']  = input.slice(0, REMatchPos) // XXATAGCGYY (primer)-> XX
     singleMatch['trailingSeq'] = input.slice(REMatchPos + match.seq.length) // XXATAGCGYY (primer) -> YY
     singleMatch['positionInVector'] = match.pos - singleMatch['leadingSeq'].length  // position to put primer relative to vector.
-    singleMatch['endPos'] = singleMatch['positionInVector'] + input.length
+    singleMatch['endPos'] = singleMatch['positionInVector'] + 6
     singleMatch['frame'] = vectorStart // false (no required frame, ignore framing errors) or INT
     if(!vectorStart) return singleMatch // no required frame -> return now and say we dont need frame here
     console.log('Start of vector and RE match:', vectorStart, match.pos)
@@ -255,7 +255,7 @@ export const getHaystackEvaluations = createSelector(
     if (FG.normalMatch) EvalFG.success('FORWARD_HAYSTACK_MATCH')
     if (FG.complementMatch) EvalFG.failure('FORWARD_WRONG_STRAND')
     if (FG.reverseMatch) EvalFG.failure('FORWARD_WRONG_DIRECTION')
-    if (FG.frame && FG.frame !== 0) EvalFG.failure('FORWARD_OUT_OF_FRAME', FG.frame)
+    if (FG.frame && FG.frame !== 0) EvalFG.failure('FORWARD_HAYSTACK_OUT_OF_FRAME', FG.frame)
     if (!FG.normalMatch && !FG.complementMatch && !FG.reverseMatch) EvalFG.failure("FORWARD_NO_MATCH")
   }
   
@@ -264,7 +264,7 @@ export const getHaystackEvaluations = createSelector(
     if (RG.normalMatch) EvalRG.success('REVERSE_HAYSTACK_MATCH')
     if (RG.complementMatch) EvalRG.failure('REVERSE_WRONG_STRAND')
     if (RG.reverseMatch) EvalRG.failure('REVERSE_WRONG_DIRECTION')
-    if (RG.frame && RG.frame !== 0) EvalRG.failure('REVERSE_OUT_OF_FRAME', RG.frame)
+    if (RG.frame && RG.frame !== 0) EvalRG.failure('REVERSE_HAYSTACK_OUT_OF_FRAME', RG.frame)
     if (!RG.normalMatch && !RG.complementMatch && !RG.reverseMatch) EvalRG.failure("REVERSE_NO_MATCH")
   }
   // go to vector evaluations!
@@ -317,35 +317,48 @@ export const getAllEvaluations = createSelector(
   getCurrentExercise,
   getUserVectorMatchForward,
   getUserVectorMatchReverse,
-  // getHaystackForwardMatches,
-  // getHaystackReverseMatches,
-  (EvalVector, EvalHaystack, exercise, FV, RV, /* FG, RG */) => {
-    console.log('woo!', EvalVector, EvalHaystack)
+  getHaystackForwardMatches,
+  getHaystackReverseMatches,
+  (EvalVector, EvalHaystack, exercise, FV, RV, FG, RG) => {
     const Eval = createEvaluation(EvalHaystack, EvalVector)
     const EvalFV = Eval.createCategory('FV')
     const EvalRV = Eval.createCategory('RV')
     
-    // does Forward primer need a start codon in this exercise, if so:
-    const forwardPrimerNeedsCodon = !exercise.vectorStart
-    
-    
-    if(forwardPrimerNeedsCodon) {
-      // yes: check in-frame with constructStart and placed start codon
-      
-    } else {
-      // no: check in-frame with constructStart and vectorStart
-      console.log('good sign f')
-      
-    }
-    
-    const reversePrimerNeedsCodon = !exercise.vectorEnd
-    // does Reverse primer need a stop codon in this exercise, if so:
-    if(reversePrimerNeedsCodon) {
-      console.log('bad sign r')
-    } else {
-      console.log('good sign r')
+    if(!FV.singleMatch || !RV.singleMatch) return Eval.getEvaluation()
 
+    // does Forward primer need a start codon in this exercise, if so:
+    if (FG.isExact && FG.normalMatch) {
+      const needsStartCodon = !exercise.vectorStart
+
+      if (needsStartCodon) {
+        // yes: check in-frame with constructStart and placed start codon
+
+      } else {
+        // no: check in-frame with constructStart and vectorStart
+        const diffBetweenForwardFrameAndDesired = (FV.singleMatch.toGetDesiredFrame - FV.singleMatch.trailingSeq.length)
+        if (diffBetweenForwardFrameAndDesired === 0) {
+          EvalFV.success('FORWARD_BOTH_IN_FRAME')
+        } else {
+          EvalFV.failure('FORWARD_BOTH_OUT_OF_FRAME', diffBetweenForwardFrameAndDesired)
+        }
+      }
     }
+
+    if (RG.isExact && RG.normalMatch) {
+      const needsStopCodon = !exercise.vectorEnd
+      // does Reverse primer need a stop codon in this exercise, if so:
+      if (needsStopCodon) {
+        console.log('Needs stop codon')
+      } else {
+        const diffBetweenReverseFrameAndDesired = (RV.singleMatch.toGetDesiredFrame - RV.singleMatch.trailingSeq.length)
+        if (diffBetweenReverseFrameAndDesired === 0) {
+          EvalRV.success('REVERSE_BOTH_IN_FRAME')
+        } else {
+          EvalRV.failure('REVERSE_BOTH_OUT_OF_FRAME', diffBetweenReverseFrameAndDesired)
+        }
+      }
+    }
+
     // no: check in-frame with constructEnd and vectorEnd
     // yes: check in-frame with constructEnd and placed stop codon
 

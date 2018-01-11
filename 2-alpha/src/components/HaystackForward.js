@@ -22,9 +22,9 @@ class HaystackForward extends Component {
     return (
       <div className="sequence FG">
         {_.pad('', pos)}<span className="offset-left unimportant FV">
-          <span>{FV}</span>
+          <span><span className="end">5'-</span>{FV}</span>
         </span>
-        {isExact && normalMatch ? this.showExact() : this.showMismatches()}
+        <span className="forward-arrow">{isExact && normalMatch ? this.showExact() : this.showMismatches()}<span className="end">-3'</span></span>
       </div>
     )
   }

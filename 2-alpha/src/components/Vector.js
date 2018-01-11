@@ -47,7 +47,6 @@ class Vector extends Component {
   }
   render() {
     const { forward, reverse, helpers, showCodons } = this.props
-    console.log('reverse:', reverse)
     return (
       <div className="vector pt-3 pb-3 mt-3">
         <HelperPosition length={100} />
