@@ -25,7 +25,6 @@ class VectorForward extends Component {
   }
   singleMatch() {
     const { singleMatch, FG } = this.props
-    console.log('A single match', singleMatch)
     return (
       <ReactCSSTransitionGroup transitionName="matches" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
         <div className="sequence FV" key='match'>

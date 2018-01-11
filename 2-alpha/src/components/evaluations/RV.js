@@ -10,7 +10,7 @@ class EvaluationRV extends Component {
     }
     return (
       <div>
-        <h4>Evaluation FV:</h4>
+        <h4>Evaluation RV:</h4>
         <pre>{JSON.stringify(this.props.match, null, 2)}</pre>
       </div>
     )

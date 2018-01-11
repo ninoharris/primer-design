@@ -101,7 +101,7 @@ export const getUserVectorMatchForward = createSelector(
     }
     const match = matches[0]
     const singleMatch = { ...match}
-    console.log('getUserVectorMatchForward', input, match)
+    // console.log('getUserVectorMatchForward', input, match)
     const REMatchPos = singleMatch['REMatchPos'] = input.indexOf(match.seq) // XXATAGCGYY (primer) -> 2
     singleMatch['leadingSeq']  = input.slice(0, REMatchPos) // XXATAGCGYY (primer)-> XX
     singleMatch['trailingSeq'] = input.slice(REMatchPos + match.seq.length) // XXATAGCGYY (primer) -> YY
@@ -109,11 +109,13 @@ export const getUserVectorMatchForward = createSelector(
     singleMatch['endPos'] = singleMatch['positionInVector'] + input.length
     singleMatch['frame'] = vectorStart // false (no required frame, ignore framing errors) or INT
     if(!vectorStart) return singleMatch // no required frame -> return now and say we dont need frame here
-
-    singleMatch['betweenStartAndREStr'] = vector.slice(vectorStart, REMatchPos) // ZZZZZATAGCG (vector) -> ZZZZZ
+    console.log('Start of vector and RE match:', vectorStart, match.pos)
+    singleMatch['betweenStartAndREStr'] = vector.substring(vectorStart - 1, match.pos) // ZZZZZATAGCG (vector) -> ZZZZZ
     singleMatch['betweenStartAndRE'] = singleMatch['betweenStartAndREStr'].length // ZZZZZ -> 5
-    singleMatch['toGetDesiredFrame'] = (3 - (singleMatch['betweenStartAndRE'] % 3) % 3)
+    singleMatch['toGetDesiredFrame'] = (3 - singleMatch['betweenStartAndRE'] % 3) % 3
     
+    
+
     return { singleMatch }
   }
 )
@@ -156,9 +158,9 @@ export const getUserVectorMatchReverse = createSelector(
     singleMatch['frame'] = vectorEnd // false (no required frame, ignore framing errors) or INT
     if (!vectorEnd) return singleMatch // no required frame -> return now and say we dont need frame here
 
-    singleMatch['betweenEndAndREStr'] = vector.slice(match.pos + 6, vectorEnd) // ATAGCGZZZZZ (vector) -> ZZZZZ
+    singleMatch['betweenEndAndREStr'] = vector.slice(match.pos + 6, vectorEnd + 1) // ATAGCGZZZZZ (vector) -> ZZZZZ
     singleMatch['betweenEndAndRE'] = singleMatch['betweenEndAndREStr'].length // ZZZZZ -> 5
-    singleMatch['toGetDesiredFrame'] = (3 - (singleMatch['betweenEndAndRE'] % 3)) % 3
+    singleMatch['toGetDesiredFrame'] = (3 - singleMatch['betweenEndAndRE'] % 3) % 3
 
     return { singleMatch }
   }
@@ -189,7 +191,7 @@ export const getHaystackReverseMatches = createSelector(
   getBothHaystackStrands,
   getCurrentExercise,
   (input, {reverse}, { constructEnd }) => {
-    console.log('Haystack reverse')
+    // console.log('Haystack reverse')
     if (input.length < 4) return {}
     // for this, we keep the haystack the same and reverse the users input. Substring the haystack by the input length for checking.
     const pos = constructEnd - input.length
@@ -209,7 +211,7 @@ export const getHaystackReverseMatches = createSelector(
 // First create a category and assign it to a variable: const myCategory = createCategory('myCat')
 // Then call the success/failure fns: myCategory.success(msg) myCategory.failure(msg)
 const createEvaluation = (...initialStates) => {
-  const state = initialStates ? initialStates : []
+  const state = Array.isArray(initialStates) ? initialStates.reduce((p,c) => [...p, ...c], []) : []
   let anyErrors = false
   const createMessage = ({ inputs, success, messageID, context }) => {
     if (!inputs) throw Error('Missing inputs in createMessage.')
@@ -218,7 +220,10 @@ const createEvaluation = (...initialStates) => {
     if(success === false) anyErrors = true
     return // to send back true or false or null here?
   }
-  const getEvaluation = () => console.log('getEvaluation called: ', state) || state
+  const getEvaluation = () => {
+    // console.log('getEvaluation called: ', state)
+    return state
+  }
   const hasErrors = () => anyErrors
 
   const createCategory = (...inputs) => ({ // inputs include:
@@ -288,28 +293,62 @@ export const getVectorEvaluations = createSelector(
   if (Eval.hasErrors()) return Eval.getEvaluation() // return now as both are required to be a single match before continuing
   FVRV.success("EACH_VECTOR_PRIMER_MATCHES_ONCE")
 
+  // For readability
+  FV = FV.singleMatch
+  RV = RV.singleMatch 
+  
   // TODO: either restriction site matches inside haystack:
-
   // Spacing between primers
   if (FV.endPos >= RV.pos) FVRV.failure("VECTOR_OVERLAP")
-  if ((RV.pos - FV.endPos) <= 4) FVRV.failure("VECTORS_TOO_CLOSE")
+  const differenceBetweenVectorPrimers = RV.pos - FV.endPos
+  if (differenceBetweenVectorPrimers <= 4) FVRV.failure("VECTORS_TOO_CLOSE", differenceBetweenVectorPrimers)
 
   if (Eval.hasErrors()) return Eval.getEvaluation()
   FVRV.success("VECTOR_PRIMERS_APART")
 
-  // does Forward primer need a start codon in this exercise, if so:
-    // no: check in-frame with constructStart and vectorStart
-    // yes: check in-frame with constructStart and placed start codon
 
-
-  // does Reverse primer need a stop codon in this exercise, if so:
-    // no: check in-frame with constructEnd and vectorEnd
-    // yes: check in-frame with constructEnd and placed stop codon
-  // 
   return Eval.getEvaluation()
 })
 
 // evaluations which depend on both haystack and vector
-const getAllEvaluations = (state) => {
-  const Eval = createEvaluation
-}
+export const getAllEvaluations = createSelector(
+  getVectorEvaluations,
+  getHaystackEvaluations,
+  getCurrentExercise,
+  getUserVectorMatchForward,
+  getUserVectorMatchReverse,
+  // getHaystackForwardMatches,
+  // getHaystackReverseMatches,
+  (EvalVector, EvalHaystack, exercise, FV, RV, /* FG, RG */) => {
+    console.log('woo!', EvalVector, EvalHaystack)
+    const Eval = createEvaluation(EvalHaystack, EvalVector)
+    const EvalFV = Eval.createCategory('FV')
+    const EvalRV = Eval.createCategory('RV')
+    
+    // does Forward primer need a start codon in this exercise, if so:
+    const forwardPrimerNeedsCodon = !exercise.vectorStart
+    
+    
+    if(forwardPrimerNeedsCodon) {
+      // yes: check in-frame with constructStart and placed start codon
+      
+    } else {
+      // no: check in-frame with constructStart and vectorStart
+      console.log('good sign f')
+      
+    }
+    
+    const reversePrimerNeedsCodon = !exercise.vectorEnd
+    // does Reverse primer need a stop codon in this exercise, if so:
+    if(reversePrimerNeedsCodon) {
+      console.log('bad sign r')
+    } else {
+      console.log('good sign r')
+
+    }
+    // no: check in-frame with constructEnd and vectorEnd
+    // yes: check in-frame with constructEnd and placed stop codon
+
+    return Eval.getEvaluation()
+    
+})

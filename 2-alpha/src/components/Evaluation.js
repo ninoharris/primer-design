@@ -1,11 +1,12 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getVectorEvaluations, getHaystackEvaluations } from '../selectors'
+import { getAllEvaluations } from '../selectors'
 import { messageIDsToDetails } from '../selectors/messages'
 
 class Evaluation extends Component {
   render() {
+    // console.log(this.props.messageIDsList)
     if(this.props.loading) return null
     return (
       <ul className="list-group">
@@ -27,7 +28,7 @@ class Evaluation extends Component {
 const mapStateToProps = (state) => {
   if(state.loading) return { loading: true }
   return {
-    messageIDsList: getVectorEvaluations(state).concat(getHaystackEvaluations(state))
+    messageIDsList: getAllEvaluations(state)
   }
 }
 

@@ -4,8 +4,6 @@ import { getAASeq } from '../api'
 // import { showCodons } from '../selectors/index';
 
 const Codons = ({ seq = '', showCodons }) => {
-  // getChildContext = () => {}
-  console.log(showCodons)
   if(!showCodons) return null
   return (
     <div className="codons">
