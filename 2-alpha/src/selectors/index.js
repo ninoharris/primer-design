@@ -225,10 +225,17 @@ const createEvaluation = (...initialStates) => {
     return state
   }
   const hasErrors = () => anyErrors
+  const contains = (searchID) => state.find(msg => msg.ID === searchID)
+  const doesntContain = (searchID) => !contains(searchID)
 
   const createCategory = (...inputs) => ({ // inputs include:
-    success: (messageID, context) => createMessage({ inputs, messageID, context, success: true }),
-    failure: (messageID, context) => createMessage({ inputs, messageID, context, success: false })
+    success: (messageID, context) => {
+      createMessage({ inputs, messageID, context, success: true })
+    },
+    failure: (messageID, context) => {
+      createMessage({ inputs, messageID, context, success: false })
+      return getEvaluation()
+    }
   })
   
   return {
@@ -236,6 +243,8 @@ const createEvaluation = (...initialStates) => {
     createCategory,
     createMessage,
     hasErrors,
+    contains,
+    doesntContain
   }
 }
 
@@ -275,23 +284,44 @@ export const getHaystackEvaluations = createSelector(
 export const getVectorEvaluations = createSelector(
   getUserVectorMatchForward,
   getUserVectorMatchReverse,
-  (FV, RV) => {
+  getUFV,
+  getURV,
+  (FV, RV, UFV, URV) => {
   const Eval = createEvaluation()
   const EvalFV = Eval.createCategory('FV')
   const EvalRV = Eval.createCategory('RV')
   const FVRV = Eval.createCategory('RV', 'FV')
+  const UFVReadyToCheck = UFV.length >= 6
+  const URVReadyToCheck = URV.length >= 6
+  
+  // No input or not enough to check against, return early
+  if(!UFVReadyToCheck && !URVReadyToCheck) return Eval.getEvaluation()
 
-  // No match
-  if (FV.matches && FV.matches.length === 0) EvalFV.failure("NO_MATCH_FV")
-  if (RV.matches && RV.matches.length === 0) EvalRV.failure("NO_MATCH_RV")
-  if (Eval.hasErrors()) return Eval.getEvaluation()
+  // If no match or too many matches, then return early as later logic requires a single match
+  if(UFVReadyToCheck) {
+    if (FV.matches && FV.matches.length === 0) return EvalFV.failure("NO_MATCH_FV")
+    if (FV.matches) {
+      EvalFV.failure("EXCEED_MATCH_FV") 
+    } else {
+      EvalFV.success('FV_MATCHES_ONCE')
+    }
+  }
+  if(URVReadyToCheck) {
+    if (RV.matches && RV.matches.length === 0) return EvalRV.failure("NO_MATCH_RV") 
+    if (RV.matches) {
+      EvalRV.failure("EXCEED_MATCH_RV")
+    } else {
+      EvalRV.success('RV_MATCHES_ONCE')
+    }
+  }
 
-  // Too many matches
-  if (FV.matches) EvalFV.failure("EXCEED_MATCH_FV")
-  if (RV.matches) EvalRV.failure("EXCEED_MATCH_RV")
-    
-  if (Eval.hasErrors()) return Eval.getEvaluation() // return now as both are required to be a single match before continuing
-  FVRV.success("EACH_VECTOR_PRIMER_MATCHES_ONCE")
+
+  // If either aren't ready yet, stop now
+  if (Eval.doesntContain('FV_MATCHES_ONCE') || Eval.doesntContain('RV_MATCHES_ONCE')) {
+    return Eval.getEvaluation()
+  }
+  
+  // FVRV.success("EACH_VECTOR_PRIMER_MATCHES_ONCE")
 
   // For readability
   FV = FV.singleMatch
@@ -323,7 +353,7 @@ export const getAllEvaluations = createSelector(
     const Eval = createEvaluation(EvalHaystack, EvalVector)
     const EvalFV = Eval.createCategory('FV')
     const EvalRV = Eval.createCategory('RV')
-    
+    console.log(Eval.getEvaluation())
     if(!FV.singleMatch || !RV.singleMatch) return Eval.getEvaluation()
 
     // does Forward primer need a start codon in this exercise, if so:
@@ -332,7 +362,7 @@ export const getAllEvaluations = createSelector(
 
       if (needsStartCodon) {
         // yes: check in-frame with constructStart and placed start codon
-
+        console.log('needs start codon')
       } else {
         // no: check in-frame with constructStart and vectorStart
         const diffBetweenForwardFrameAndDesired = (FV.singleMatch.toGetDesiredFrame - FV.singleMatch.trailingSeq.length)
@@ -361,7 +391,8 @@ export const getAllEvaluations = createSelector(
 
     // no: check in-frame with constructEnd and vectorEnd
     // yes: check in-frame with constructEnd and placed stop codon
-
-    return Eval.getEvaluation()
+    const result = Eval.getEvaluation()
+    console.log('result of evaluations:', result)
+    return result
     
 })

@@ -15,6 +15,12 @@ export const messageIDsToDetails = {
   "EXCEED_MATCH_RV": () => ({
     title: "Reverse primer matches more than one restriction site.",
   }),
+  "FV_MATCHES_ONCE": () => ({
+    title: "Forward primer matches just one restriction site."
+  }),
+  "RV_MATCHES_ONCE": () => ({
+    title: "Reverse primer matches just one restriction site."
+  }),
   "EACH_VECTOR_PRIMER_MATCHES_ONCE": () => ({
     title: "Each primer only matches one restriction site",
   }),

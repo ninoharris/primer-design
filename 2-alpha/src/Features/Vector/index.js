@@ -51,7 +51,7 @@ class Vector extends Component {
     return (
       <div className="vector pt-3 pb-3 mt-3">
         <HelperPosition length={100} />
-        <div className="forward">
+        <div className="forward mb-3">
           <div className="helpers sequence">
             {this.getHelpers()}
           </div>

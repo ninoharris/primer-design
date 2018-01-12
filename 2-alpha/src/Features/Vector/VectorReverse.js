@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import { getUserVectorMatchReverse, getURGReverse } from '../../selectors'
+import { Left3, Right5 } from '../../components/HelperEnds'
 
 // Goes like so: check if multiple matches exist or no matches at all, then show matches as warnings
 // Otherwise, show alignment etc
@@ -28,10 +29,12 @@ class VectorReverse extends Component {
       <ReactCSSTransitionGroup transitionName="matches" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
         <div className="sequence RV" key='match'>
           {_.pad('', singleMatch.positionInVector - RG.length)}
+          <Left3 />
           <span className="RG unimportant">{RG}</span>
           <span className="trailing">{singleMatch.trailingSeq}</span>
           <span className="restriction-site-match">{singleMatch.seq}</span>
           <span className="leading">{singleMatch.leadingSeq}</span>
+          <Right5 />
         </div>
       </ReactCSSTransitionGroup>
     )

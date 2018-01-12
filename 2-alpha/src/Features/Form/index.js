@@ -76,7 +76,7 @@ class Form extends Component {
 
 
 
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className="btn btn-primary mr-3">
           Submit
         </button>
         {this.animatePreviewButton()}

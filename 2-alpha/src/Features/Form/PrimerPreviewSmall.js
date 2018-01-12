@@ -8,7 +8,7 @@ const PrimerPreviewSmall = ({ strand, plasmidSegment, geneSegment, animatingPrev
   const activeClass = animatingPreview ? 'active' : ''
   if(strand === 'reverse') {
     return (
-      <div className={`primer-preview-reverse ` + activeClass}>
+      <div className={`primer-preview primer-preview-reverse ` + activeClass}>
         <span className='RV'>
           <span className='prime-5 l'>5</span>
           <span className='prime-5 l'>-</span>
@@ -24,7 +24,7 @@ const PrimerPreviewSmall = ({ strand, plasmidSegment, geneSegment, animatingPrev
   }
   if(strand === 'forward') { // doing a double if because I dont like silent errors.
     return (
-      <div className={`primer-preview-forward` + activeClass}>
+      <div className={`primer-preview primer-preview-forward` + activeClass}>
         <span className='FV'>
           <span className='prime-5'>5</span>
           <span className='prime-5'>-</span>

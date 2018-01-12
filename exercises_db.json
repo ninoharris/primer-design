@@ -6,7 +6,7 @@
         "part2": "The gene is contained within the sequence below, and is contained between positions 1 and 98 inclusive, where the stop codon ($) finishes."
       },
       "haystack": "GCATGGCGATGAAAAAGTTGCTCATAGCGTCGCTGCTGTTT.................GTGTTGACCTAAAACTGGTGTTCCAGGAAGGTGTGTCTGAAAT",
-      "vector": "CGAGGAGGTATGCCGCGATGCCCCGGGGTAGCGTCTAGACGCCATGGGTCGACCGTGGTAACTCGAGGAGCTCCCCTAAAGGTCGACGGGTCTGATCGACTGC",
+      "vector": "CGATGCCGAGGAGGTCGATGCCCCGGGGTAGCGTCTAGACGCCATGGGTCGACCGTGGTAACTCGAGGAGCTCCCCTAAAGGTCGACGGGTCTGATCGACTGC",
       "constructStart": false,
       "constructEnd": 98,
       "id": "boogie",
@@ -15,7 +15,7 @@
       "helpers": {
         "88": {
           "name": "GST",
-          "pos": 86,
+          "pos": 88,
           "len": 14,
           "color": "#f78f65"
         }

@@ -7,7 +7,7 @@ import Form from '../Form'
 import EvaluationTemp from '../Evaluation/Evaluation-temp'
 import Evaluation from '../Evaluation'
 import Display from '../Display'
-// import Modal from '../Modal';
+import Modal from '../../components/Modal';
 import Options from '../Options'
 
 
@@ -17,22 +17,31 @@ class App extends Component {
   }
   render() {
     if (!this.props.exercises) return (
-      <div>Loading game...</div>
+      <div className="main-loading">Loading game...</div>
     )
+    const { openHelp } = this.props
     return (
       <div className="container-fluid mb-10 mt-10">
+        <Modal>
+          This is a help page
+          <button onClick={}>Close tutorial</button>
+        </Modal>
         <div className="row">
           <div className="Nav">
-            <h3 className="mb-0">Primer Designer</h3>
+            <div className="Logo">
+              <h3 className="mb-0">Primer Designer</h3>
+            </div>
+            <div>
+              <button onClick={this.openHelp} className="btn btn-info">See tutorial</button>
+            </div>
           </div>
         </div>
         <div className="row">
           <div className=" Sidebar col-3">
             <Form />
             <Options />
-            {/* <Modal> */}
             <Evaluation />
-            {/* </Modal> */}
+            
           </div>
           <div className="Display col-8">
             <Display />

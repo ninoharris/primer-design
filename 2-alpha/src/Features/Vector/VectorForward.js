@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import { getUserVectorMatchForward, getUFG} from '../../selectors'
+import { Left5, Right3 } from '../../components/HelperEnds'
 
 // Goes like so: check if multiple matches exist or no matches at all, then show matches as warnings
 // Otherwise, show alignment etc
@@ -29,10 +30,12 @@ class VectorForward extends Component {
       <ReactCSSTransitionGroup transitionName="matches" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
         <div className="sequence FV" key='match'>
           {_.pad('', singleMatch.positionInVector)}
+          <Left5 />
           <span className="leading">{singleMatch.leadingSeq}</span>
           <span className="restriction-site-match">{singleMatch.seq}</span>
           <span className="trailing">{singleMatch.trailingSeq}</span>
           <span className="FG unimportant">{FG}</span>
+          <Right3 />
         </div>
       </ReactCSSTransitionGroup>
     )

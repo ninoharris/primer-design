@@ -25,14 +25,15 @@ class Toggle extends Component {
       () => this.props.onToggle(this.state.on)
     )
   render() {
+    const { on } = this.state
     const children = React.Children.map(this.props.children,
       (child) => React.cloneElement(child, {
-        on: this.state.on,
+        on,
         toggle: this.toggle
       })
     )
     return (
-      <div>
+      <div className={`toggle-wrapper toggle-is-${on ? 'on':'off'}`}>
         {children}
       </div>
     )
