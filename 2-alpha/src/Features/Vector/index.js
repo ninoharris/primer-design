@@ -1,13 +1,14 @@
 // THIS FILE MUST NOT CONTAIN ANYTHING RELATED TO THE USER'S INPUT.
-import * as api from '../api' 
+import * as api from '../../api' 
 import _ from 'lodash'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getBothVectorStrands, getVectorHelpers } from '../selectors'
+import { getBothVectorStrands, getVectorHelpers } from '../../selectors'
 
 import VectorForward from './VectorForward'
-import HelperPosition from './HelperPosition'
-import VectorReverse from './VectorReverse';
+import VectorReverse from './VectorReverse'
+import HelperPosition from '../../components/HelperPosition';
+import { Left5, Left3, Right5, Right3 } from '../../components/HelperEnds'
 
 
 class Vector extends Component {
@@ -55,9 +56,9 @@ class Vector extends Component {
             {this.getHelpers()}
           </div>
           <div className="sequence">
-            <span className="offset-left"><span>5'-</span></span>
+            <Left5 />
             {this.getHighlights(helpers, forward, 'forward')}
-            <span className="offset-right"><span>-3'</span></span>
+            <Right3 />
           </div>
           <VectorReverse />
 
@@ -65,9 +66,9 @@ class Vector extends Component {
         <div className="reverse">
           <VectorForward />
           <div className="sequence">
-            <span className="offset-left"><span>3'-</span></span>
+            <Left3 />
             {this.getHighlights(helpers, reverse, 'reverse')}
-            <span className="offset-right"><span>-5'</span></span>
+            <Right5 />
           </div>
         </div>
       </div>

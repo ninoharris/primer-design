@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import Toggle from './Toggle'
-import { showCodons } from '../selectors'
-import { doShowCodons } from '../actions'
+import Toggle from '../../components/Toggle'
+import { showCodons } from '../../selectors'
+import { doShowCodons } from '../../actions'
 
 class Options extends Component {
   render() {

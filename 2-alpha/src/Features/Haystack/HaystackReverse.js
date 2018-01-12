@@ -1,7 +1,8 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getHaystackReverseMatches, getURVReverse } from '../selectors'
+import { getHaystackReverseMatches, getURVReverse } from '../../selectors'
+import { Right5, Left3 } from '../../components/HelperEnds'
 
 class HaystackForward extends Component {
   showExact = () => {
@@ -22,11 +23,11 @@ class HaystackForward extends Component {
     return (
       <div className="sequence RG">
         {_.pad('', pos)}<span className="offset-left unimportant RV">
-          <span><span className="end">3'-</span></span>
+          <Left3 />
         </span>
         <span className="reverse-arrow">{isExact && normalMatch && frame === 0 ? this.showExact() : this.showMismatches()}</span>
         <span className="offset-right unimportant">
-          <span>{RV}<span className="end">-5'</span></span>
+          <span>{RV}<Right5 /></span>
         </span>
       </div>
     )

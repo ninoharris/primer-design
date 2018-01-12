@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getBothHaystackStrands, showCodons } from '../selectors'
-import HelperPosition from './HelperPosition'
+import { getBothHaystackStrands, showCodons } from '../../selectors'
+import HelperPosition from '../../components/HelperPosition'
 import HaystackForward from './HaystackForward';
 import HaystackReverse from './HaystackReverse'
-import Codons from './Codons'
+import Codons from '../../components/Codons'
+import { Left5, Left3, Right5, Right3 } from '../../components/HelperEnds'
 
 class Haystack extends Component {
   render() {
@@ -13,15 +14,18 @@ class Haystack extends Component {
       <div className="haystack pt-3 pb-3 mt-3">
         <HelperPosition length={100} />
         <div className="forward">
-          <div className="sequence">{forward}</div>
+          <div className="sequence">
+            <Left5 />{forward}<Right3 />
+          </div>
           <HaystackReverse />
         </div>
         <hr/>
         <div className="reverse">
           <HaystackForward />
-          <div className="sequence">{reverse}</div>
+          <div className="sequence">
+            <Left3 />{reverse}<Right5 />
+          </div>
           {showCodons ? <Codons seq={forward} /> : ''}
-          {/* {showCodons ? <Codons seq={reverse} /> : ''} */}
         </div>
       </div>
     )

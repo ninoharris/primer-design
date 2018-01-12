@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getQuestion} from '../selectors'
+import { getQuestion} from '../../selectors'
 
-import Vector from './Vector'
-import Haystack from './Haystack'
+import Vector from '../Vector'
+import Haystack from '../Haystack'
 
 class Display extends Component {
   render() {

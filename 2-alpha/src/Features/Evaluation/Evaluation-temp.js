@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 
-import FV from './evaluations/FV'
-import RV from './evaluations/RV'
-import FG from './evaluations/FG'
-import RG from './evaluations/RG'
+import FV from './FV'
+import RV from './RV'
+import FG from './FG'
+import RG from './RG'
 
 class Evaluation extends Component {
   render() {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { updateInput, beginAnimatePreview, endAnimatePreview } from '../actions'
+import { updateInput, beginAnimatePreview, endAnimatePreview } from '../../actions'
 
 import PrimerPreviewSmall from './PrimerPreviewSmall'
 

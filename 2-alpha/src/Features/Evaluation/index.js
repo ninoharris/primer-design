@@ -1,8 +1,8 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getAllEvaluations } from '../selectors'
-import { messageIDsToDetails } from '../selectors/messages'
+import { getAllEvaluations } from '../../selectors'
+import { messageIDsToDetails } from '../../selectors/messages'
 
 class Evaluation extends Component {
   render() {

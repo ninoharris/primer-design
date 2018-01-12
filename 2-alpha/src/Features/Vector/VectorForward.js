@@ -2,13 +2,14 @@ import _ from 'lodash'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
-import { getUserVectorMatchReverse, getURGReverse } from '../selectors'
+import { getUserVectorMatchForward, getUFG} from '../../selectors'
 
 // Goes like so: check if multiple matches exist or no matches at all, then show matches as warnings
 // Otherwise, show alignment etc
-class VectorReverse extends Component {
+class VectorForward extends Component {
   moreThanOneMatch() {
     const { matches } = this.props
+    console.log('More than one match', matches)
     return (
       <div className="sequence multiple-matches">
         <ReactCSSTransitionGroup transitionName="matches" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
@@ -23,23 +24,23 @@ class VectorReverse extends Component {
     )
   }
   singleMatch() {
-    const { singleMatch, RG } = this.props
+    const { singleMatch, FG } = this.props
     return (
       <ReactCSSTransitionGroup transitionName="matches" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
-        <div className="sequence RV" key='match'>
-          {_.pad('', singleMatch.positionInVector - RG.length)}
-          <span className="RG unimportant">{RG}</span>
-          <span className="trailing">{singleMatch.trailingSeq}</span>
-          <span className="restriction-site-match">{singleMatch.seq}</span>
+        <div className="sequence FV" key='match'>
+          {_.pad('', singleMatch.positionInVector)}
           <span className="leading">{singleMatch.leadingSeq}</span>
+          <span className="restriction-site-match">{singleMatch.seq}</span>
+          <span className="trailing">{singleMatch.trailingSeq}</span>
+          <span className="FG unimportant">{FG}</span>
         </div>
       </ReactCSSTransitionGroup>
     )
   }
   render() {
-    const { multipleMatches, matches = [] } = this.props
-    if (multipleMatches) {
-      if (matches.length === 0) return null
+    const { multipleMatches, matches = []} = this.props
+    if(multipleMatches) {
+      if(matches.length === 0) return null
       return this.moreThanOneMatch()
     }
     return this.singleMatch()
@@ -47,7 +48,7 @@ class VectorReverse extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return { ...getUserVectorMatchReverse(state), RG: getURGReverse(state) }
+  return { ...getUserVectorMatchForward(state), FG: getUFG(state) }
 }
 
-export default connect(mapStateToProps)(VectorReverse)
+export default connect(mapStateToProps)(VectorForward)
