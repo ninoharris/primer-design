@@ -60,20 +60,17 @@ body {
 .Nav {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
   padding: 5px 20px;
   margin-bottom: 20px;
-  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f6f8f9+0,e5ebee+50,d7dee3+51,f5f7f9+100;White+Gloss */
-  background: #f6f8f9; /* Old browsers */
-  background: -moz-linear-gradient(top, #f6f8f9 0%, #e5ebee 50%, #d7dee3 51%, #f5f7f9 100%); /* FF3.6-15 */
-  background: -webkit-linear-gradient(top, #f6f8f9 0%,#e5ebee 50%,#d7dee3 51%,#f5f7f9 100%); /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(to bottom, #f6f8f9 0%,#e5ebee 50%,#d7dee3 51%,#f5f7f9 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f6f8f9', endColorstr='#f5f7f9',GradientType=0 ); /* IE6-9 */
+  background: linear-gradient(top, #bfd255 0%,#8eb92a 50%,#72aa00 51%,#9ecb2d 100%); /* Chrome10-25,Safari5.1-6 */
 }
 .Nav .Logo {
-  letter-spacing: -1px;
-  font-size: 1.2rem;
+  letter-spacing: -2px;
+  font-size: 0.8rem;
   font-weight: bolder;
+  color: white;
 }
 
 

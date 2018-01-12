@@ -45,3 +45,11 @@ export const doShowCodons = (on) => ({
   type: 'TOGGLE_CODONS',
   payload: on
 })
+
+export const showModal = () => ({
+  type: 'SHOW_MODAL'
+})
+
+export const hideModal = () => ({
+  type: 'HIDE_MODAL'
+})

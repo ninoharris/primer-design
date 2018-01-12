@@ -29,3 +29,13 @@ export const evaluationDisplayToggle = (state = false, action) => {
     default: return state
   }
 }
+
+export const showModal = (state = false, action) => {
+  switch (action.type) {
+    case 'SHOW_MODAL':
+      return true
+    case 'HIDE_MODAL':
+      return false
+    default: return state
+  }
+}

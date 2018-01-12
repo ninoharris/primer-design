@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { fetchExercises } from '../../actions'
+import { fetchExercises, showModal, hideModal } from '../../actions'
 
 // Components
 import Form from '../Form'
 import EvaluationTemp from '../Evaluation/Evaluation-temp'
 import Evaluation from '../Evaluation'
 import Display from '../Display'
-import Modal from '../../components/Modal';
+// import Modal from '../../components/Modal';
 import Options from '../Options'
 
 
@@ -19,20 +19,20 @@ class App extends Component {
     if (!this.props.exercises) return (
       <div className="main-loading">Loading game...</div>
     )
-    const { openHelp } = this.props
+    const { showModal, hideModal } = this.props
     return (
       <div className="container-fluid mb-10 mt-10">
-        <Modal>
+        {/* <Modal>
           This is a help page
-          <button onClick={}>Close tutorial</button>
-        </Modal>
+          <button onClick={this.hideModal} className="btn btn-warning">Close tutorial</button>
+        </Modal> */}
         <div className="row">
           <div className="Nav">
             <div className="Logo">
               <h3 className="mb-0">Primer Designer</h3>
             </div>
             <div>
-              <button onClick={this.openHelp} className="btn btn-info">See tutorial</button>
+              <button onClick={this.showModal} className="btn btn-info">See tutorial</button>
             </div>
           </div>
         </div>
@@ -55,4 +55,4 @@ class App extends Component {
 
 const mapStateToProps = ({ exercisesById }) => ({ exercises: exercisesById })
 
-export default connect(mapStateToProps, { fetchExercises })(App)
+export default connect(mapStateToProps, { fetchExercises, showModal, hideModal })(App)
