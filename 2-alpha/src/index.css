@@ -227,17 +227,18 @@ body {
 }
 
 .forward-arrow, .reverse-arrow {
-  padding: 20px; 
+  padding: 25px; 
   background-repeat: no-repeat;
   background-position: center center;
-  background-size: auto;
-  margin-left: -20px;
+  background-size: 120px;
+  margin-left: -25px;
+  margin-right: -25px;
 }
 .forward-arrow {
-  background-image: url('./images/forward-arrow.jpg');
+  background-image: url('./images/forward-arrow.png');
   
 }
 .reverse-arrow {
-  background-image: url('./images/reverse-arrow.jpg');
-  margin-right: -20px;
+  background-image: url('./images/reverse-arrow.png');
+  
 }

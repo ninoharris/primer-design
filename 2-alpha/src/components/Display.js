@@ -10,12 +10,13 @@ class Display extends Component {
     if(this.props.loading) {
       return <div className="loading">Loading...</div>
     }
-    const { question } = this.props
+    const { part1, part2 } = this.props.question
     return (
       <div className="col-12">
         <div /* Invisible div to see width of 100 chars */ className="dummy-sizing"></div>
-        <strong style={{fontSize: '0.8rem'}}>{question}</strong>
+        <div className="question part-1">{part1}</div>
         <Vector />
+        <div className="question part-2 mt-5">{part2}</div>
         <Haystack />
       </div>
     )

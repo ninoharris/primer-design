@@ -10,8 +10,7 @@ class Haystack extends Component {
   render() {
     const { forward, reverse } = this.props
     return (
-      <div className="haystack">
-        <h4>Haystack</h4>
+      <div className="haystack pt-3 pb-3 mt-3">
         <HelperPosition length={100} />
         <div className="forward">
           <div className="sequence">{forward}</div>

@@ -1,12 +1,31 @@
 {
   "exercises": {
     "boogie": {
-      "question": "Expression of a domain is required. The first and last 39 bases of the coding sequence (which has 522 bases in total) are shown in (fig2). You are given by a lab colleague an expression vector which she says has an origin of replication and codes for glutathione-S-transferase followed by an in-frame thrombin cleavage site. She also tells you that the vector has a lac promoter 5’ to the gene for glutathione–S-transferase, codes elsewhere for LacI and has a multiple cloning site of the following sequence, where the 5’ ccc is in- frame with the glutathione-S-transferase reading frame (fig1)",
-      "haystack": "ATGGCGATGAAAAAGTTGCTCATAGCGTCGCTGCTGTTT.................GTGTTGACCTAAAACTGGTGTTCCAGGAAGGTGTGTCAG",
-      "vector": "CCCGGGTCTAGACCATGGGTCGACCTCGAGGAGCTC",
-      "constructStart": 0,
-      "constructEnd": 95,
-      "id": "boogie"
+      "question": {
+        "part1": "We wish to insert a gene into the plasmid vector below. This gene will have a GST (orange) tag added at the end.",
+        "part2": "The gene is contained within the sequence below, and is contained between positions 3 and 98 inclusive, where the stop codon ($) finishes."
+      },
+      "haystack": "GCATGGCGATGAAAAAGTTGCTCATAGCGTCGCTGCTGTTT.................GTGTTGACCTAAAACTGGTGTTCCAGGAAGGTGTGTCTGAAAT",
+      "vector": "CGAGGAGGTATGCCGCGATGCCCCGGGGTAGCGTCTAGACGCCATGGGTCGACCGTGGTAACTCGAGGAGCTCCCCTAAAGGTCGACGGGTCTGATCGACTGC",
+      "constructStart": false,
+      "constructEnd": 98,
+      "id": "boogie",
+      "vectorStart": 11,
+      "vectorEnd": 85,
+      "helpers": {
+        "2": {
+          "name": "",
+          "pos": 2,
+          "len": 0,
+          "color": "#79c687"
+        },
+        "88": {
+          "name": "GST",
+          "pos": 86,
+          "len": 14,
+          "color": "#f78f65"
+        }
+      }
     }
   } 
 }

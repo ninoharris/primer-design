@@ -216,7 +216,7 @@ export function occurrences(subString, string, allowOverlapping) {
     return n;
 }
 
-export const isTooShort = (seq, min = 8) => {
+export const isTooShort = (seq, min = 10) => {
   if(seq.length < min) return true
   return false
 }
