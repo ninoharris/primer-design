@@ -10,6 +10,25 @@ body {
 .primer-form input[type="text"] {
   font-family: monospace;
 }
+@keyframes shake {
+  0%, 100% {
+    left: -1px;
+  }
+  50% {
+    left: 1px;
+  }
+}
+.glow {
+  /*
+  animation-name: shake;
+  animation-duration: 0.1s;
+  animation-iteration-count: infinite;
+  */
+  box-shadow: 0 0 2px red;
+  border: none;
+  font-weight: bold;
+}
+
 
 /* PRIMER PREVIEW */
 [class^='primer-preview'] {

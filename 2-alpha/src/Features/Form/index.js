@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import { updateInput, beginAnimatePreview, endAnimatePreview } from '../../actions'
-
+import { FV_TS } from '../../selectors'
 import PrimerPreviewSmall from './PrimerPreviewSmall'
 
 class Form extends Component {
@@ -31,7 +31,8 @@ class Form extends Component {
     
   }
   render() {
-    const { FV, FG, RV, RG } = this.props
+    const { FV, FG, RV, RG, FV_TS } = this.props
+    console.log(FV_TS)
     return (
       <form className="form-group primer-form" onSubmit={this.handleSubmit}>
         <div className="text-center"><strong>Forward Primer</strong></div>
@@ -39,7 +40,7 @@ class Form extends Component {
           <div className="input-group-prepend">
             <div className="input-group-text">5'</div>
           </div>
-          <input className="form-control FV"
+          <input className={'form-control FV ' + (FV_TS ? 'glow' : '')}
             name='FV' value={FV}
             type="text" onChange={this.handleChange}
           />
@@ -85,12 +86,16 @@ class Form extends Component {
   }
 }
 
-const mapStateToProps = ({formInputs, animatingPreview}) => ({
-  FV: formInputs.FV,
-  FG: formInputs.FG,
-  RV: formInputs.RV,
-  RG: formInputs.RG,
-  animatingPreview,
-})
+const mapStateToProps = (state) => {
+  const { formInputs, animatingPreview } = state
+  return {
+    FV: formInputs.FV,
+    FG: formInputs.FG,
+    RV: formInputs.RV,
+    RG: formInputs.RG,
+    animatingPreview,
+    FV_TS: FV_TS(state),
+  }
+}
 
 export default connect(mapStateToProps, { updateInput, beginAnimatePreview, endAnimatePreview })(Form)

@@ -7,6 +7,8 @@ export const FETCH_EXERCISES_INIT = 'FETCH_EXERCISES_INIT'
 export const FETCH_EXERCISES_SUCCESS = 'FETCH_EXERCISES_SUCCESS'
 export const SELECT_EXERCISE = 'SELECT_EXERCISE'
 
+export * from './troubleshooter'
+
 export const updateInput = (segment, userInput) => {
   return {
     type: `UPDATE_${segment}`,

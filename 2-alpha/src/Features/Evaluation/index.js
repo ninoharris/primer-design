@@ -5,11 +5,14 @@ import { getAllEvaluations } from '../../selectors'
 import { messageIDsToDetails } from '../../selectors/messages'
 
 class Evaluation extends Component {
+  doActions = (actions = []) => {
+    actions.forEach(action => this.props.dispatch(action))
+  }
   displayMessage = (msg) => {
     const details = messageIDsToDetails[msg.ID](msg.context)
     const className = 'list-group-item ' + (msg.success ? 'list-group-item-success' : 'list-group-item-danger')
     return (
-      <li className={className} key={msg.ID}>
+      <li className={className} key={msg.ID} onMouseEnter={() => this.doActions(details.actions)}>
         <strong>{msg.inputs.join(' & ')}: </strong>{details.title}
         {details.additional ? <small className="additional"><hr />{details.additional}</small> : ''}
       </li>
@@ -38,4 +41,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(Evaluation)
+export default connect(mapStateToProps, dispatch => ({ dispatch }))(Evaluation)

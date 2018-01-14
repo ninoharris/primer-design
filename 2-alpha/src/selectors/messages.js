@@ -1,3 +1,7 @@
+import { bindActionCreators } from 'redux'
+import * as actions from '../actions/troubleshooter'
+
+
 export const messageIDsToDetails = {
   "NO_MATCH_FV": () => ({
     title: "Forward primer has no matches in vector.",
@@ -11,6 +15,7 @@ export const messageIDsToDetails = {
   }),
   "EXCEED_MATCH_FV": () => ({
     title: "Forward primer matches more than one restriction site.",
+    actions: [actions.troubleshootFV]
   }),
   "EXCEED_MATCH_RV": () => ({
     title: "Reverse primer matches more than one restriction site.",

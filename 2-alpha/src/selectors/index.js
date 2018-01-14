@@ -396,3 +396,6 @@ export const getAllEvaluations = createSelector(
     return result
     
 })
+
+export const getTroubleshooter = state => state.troubleshooter
+export const FV_TS = createSelector(getTroubleshooter, (TS) => TS.FV)
