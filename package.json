@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index",
+    "postinstall": "webpack -p",
     "plasmid": "babel-node",
     "test": "echo \"Error: no test specified\" && exit 1",
     "fake-server": "json-server --watch exercises_db.json --port 3939"
