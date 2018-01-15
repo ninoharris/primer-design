@@ -1,26 +1,9 @@
 import { combineReducers } from 'redux' 
-import { game, loading, showCodons, showModal } from './game'
-import { exercisesById, exercisesList, currentExercise } from './exercises'
+import * as game from './game'
+import * as exercises from './exercises'
 import troubleshooter from './troubleshooter'
 
-const restrictionSites = (state = {}, action) => {
-  return state
-}
 
-const formInputs = (state = { FV: '', FG: '', RV: '', RG: ''}, action) => {
-  switch(action.type) {
-  case 'UPDATE_FV':
-    return { ...state, FV: action.userInput }
-  case 'UPDATE_FG':
-    return { ...state, FG: action.userInput }
-  case 'UPDATE_RV':
-    return { ...state, RV: action.userInput }
-  case 'UPDATE_RG':
-    return { ...state, RG: action.userInput }
-  default:
-    return state
-  }
-}
 
 const animatingPreview = (state = false, action) => {
   switch(action.type) {
@@ -34,16 +17,9 @@ const animatingPreview = (state = false, action) => {
 }
 
 const reducer = combineReducers({
-  restrictionSites,
-  formInputs,
+  ...game,
+  ...exercises,
   animatingPreview,
-  exercisesById,
-  exercisesList,
-  currentExercise,
-  game,
-  loading,
-  showCodons,
-  showModal,
   troubleshooter
 })
 

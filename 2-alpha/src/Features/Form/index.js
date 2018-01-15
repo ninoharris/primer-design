@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { updateInput, beginAnimatePreview, endAnimatePreview } from '../../actions'
+import { updateInput, beginAnimatePreview, endAnimatePreview, attemptCompletion } from '../../actions'
 import { FV_TS } from '../../selectors'
 import PrimerPreviewSmall from './PrimerPreviewSmall'
 
@@ -13,9 +13,7 @@ class Form extends Component {
   }
   handleSubmit = (e) => {
     e.preventDefault()
-  }
-  renderInput2 = () => {
-
+    this.props.attemptCompletion()
   }
   animatePreviewButton = () => {
     const { beginAnimatePreview, endAnimatePreview, animatingPreview } = this.props
@@ -32,7 +30,6 @@ class Form extends Component {
   }
   render() {
     const { FV, FG, RV, RG, FV_TS } = this.props
-    console.log(FV_TS)
     return (
       <form className="form-group primer-form" onSubmit={this.handleSubmit}>
         <div className="text-center"><strong>Forward Primer</strong></div>
@@ -73,10 +70,6 @@ class Form extends Component {
         </div>
         <PrimerPreviewSmall strand="reverse" />
 
-
-
-
-
         <button type="submit" className="btn btn-primary mr-3">
           Submit
         </button>
@@ -98,4 +91,9 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { updateInput, beginAnimatePreview, endAnimatePreview })(Form)
+export default connect(mapStateToProps, { 
+  updateInput, 
+  beginAnimatePreview, 
+  endAnimatePreview,
+  attemptCompletion
+})(Form)

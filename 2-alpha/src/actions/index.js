@@ -1,11 +1,9 @@
 import axios from 'axios'
+import * as TYPES from './types'
+import { getIsSuccessful } from '../selectors'
+
 
 const ROOT_URL = 'http://localhost:3939'
-export const ANIMATE_PREVIEW_START = 'ANIMATE_PREVIEW_START'
-export const ANIMATE_PREVIEW_END = 'ANIMATE_PREVIEW_END'
-export const FETCH_EXERCISES_INIT = 'FETCH_EXERCISES_INIT'
-export const FETCH_EXERCISES_SUCCESS = 'FETCH_EXERCISES_SUCCESS'
-export const SELECT_EXERCISE = 'SELECT_EXERCISE'
 
 export * from './troubleshooter'
 
@@ -17,41 +15,45 @@ export const updateInput = (segment, userInput) => {
 }
 
 export const beginAnimatePreview = () => ({
-  type: 'ANIMATE_PREVIEW_START',
+  type: TYPES.ANIMATE_PREVIEW_START,
 })
 export const endAnimatePreview = () => ({
-  type: 'ANIMATE_PREVIEW_END',
+  type: TYPES.ANIMATE_PREVIEW_END,
 })
 
 export const fetchExercises = () => (dispatch, getState) => {
-  dispatch({type: 'FETCH_EXERCISES_INIT' })
+  dispatch({type: TYPES.FETCH_EXERCISES_INIT })
 
   axios.get(`${ROOT_URL}/exercises`)
   .then(response => response.data)
   .then(payload => {
     dispatch({
-      type: 'FETCH_EXERCISES_SUCCESS',
+      type: TYPES.FETCH_EXERCISES_SUCCESS,
       payload
     })
   })
   .then(() => {
     const selectedExerciseId = getState().exercisesList[0] // just pick the first one off
     dispatch({
-      type: 'SELECT_EXERCISE',
+      type: TYPES.SELECT_EXERCISE,
       payload: selectedExerciseId
     })
   })
 }
 
 export const doShowCodons = (on) => ({
-  type: 'TOGGLE_CODONS',
+  type: TYPES.TOGGLE_CODONS,
   payload: on
 })
 
-export const showModal = () => ({
-  type: 'SHOW_MODAL'
-})
-
-export const hideModal = () => ({
-  type: 'HIDE_MODAL'
-})
+export const attemptCompletion = () => (dispatch, getState) => {
+  if(getIsSuccessful(getState())) {
+    dispatch({
+      type: TYPES.EXERCISE_SUCCESS
+    })
+  } else {
+    dispatch({
+      type: TYPES.EXERCISE_FAIL
+    })
+  }
+}

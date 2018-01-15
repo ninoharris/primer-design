@@ -1,3 +1,5 @@
+import * as TYPES from '../actions/types'
+
 export const game = (state = {}, action) => {
   switch(action.type) {
   default: return state
@@ -6,9 +8,9 @@ export const game = (state = {}, action) => {
 
 export const loading = (state = true, action) => {
   switch (action.type) {
-    case 'FETCH_EXERCISES_INIT':
+    case TYPES.FETCH_EXERCISES_INIT:
       return true
-    case 'SELECT_EXERCISE':
+    case TYPES.SELECT_EXERCISE:
       return false
     default: return state
   }
@@ -16,26 +18,46 @@ export const loading = (state = true, action) => {
 
 export const showCodons = (state = true, action) => {
   switch (action.type) {
-    case 'TOGGLE_CODONS':
+    case TYPES.TOGGLE_CODONS:
       return action.payload
     default: return state
   }
 }
 
-export const evaluationDisplayToggle = (state = false, action) => {
+// export const evaluationDisplayToggle = (state = false, action) => {
+//   switch (action.type) {
+//     case 'TOGGLE_EVALUATION':
+//     return action.payload
+//     default: return state
+//   }
+// }
+
+export const success = (state = false, action) => {
   switch (action.type) {
-    case 'TOGGLE_EVALUATION':
-    return action.payload
+    case TYPES.EXERCISE_SUCCESS:
+      return true
+    case TYPES.NEW_EXERCISE:
+    case TYPES.EXERCISE_FAIL:
+      return false
     default: return state
   }
 }
 
-export const showModal = (state = false, action) => {
+export const restrictionSites = (state = {}, action) => {
+  return state
+}
+
+export const formInputs = (state = { FV: '', FG: '', RV: '', RG: '' }, action) => {
   switch (action.type) {
-    case 'SHOW_MODAL':
-      return true
-    case 'HIDE_MODAL':
-      return false
-    default: return state
+    case 'UPDATE_FV':
+      return { ...state, FV: action.userInput }
+    case 'UPDATE_FG':
+      return { ...state, FG: action.userInput }
+    case 'UPDATE_RV':
+      return { ...state, RV: action.userInput }
+    case 'UPDATE_RG':
+      return { ...state, RG: action.userInput }
+    default:
+      return state
   }
 }

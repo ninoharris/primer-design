@@ -391,11 +391,19 @@ export const getAllEvaluations = createSelector(
 
     // no: check in-frame with constructEnd and vectorEnd
     // yes: check in-frame with constructEnd and placed stop codon
+
+
+    // COMPLETED EXERCISE. Ready to go
+
     const result = Eval.getEvaluation()
     console.log('result of evaluations:', result)
     return result
     
 })
+
+// This means the user has entered successful inputs, but has not 'submitted' just yet.
+export const getIsSuccessful = createSelector(getAllEvaluations,
+  (evaluations) => !evaluations.hasErrors())
 
 export const getTroubleshooter = state => state.troubleshooter
 export const FV_TS = createSelector(getTroubleshooter, (TS) => TS.FV)
