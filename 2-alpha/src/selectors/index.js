@@ -394,16 +394,14 @@ export const getAllEvaluations = createSelector(
 
 
     // COMPLETED EXERCISE. Ready to go
-
+    Eval.success('READY')
     const result = Eval.getEvaluation()
-    console.log('result of evaluations:', result)
-    return result
-    
+    return console.log('Evaluations result: ', result) || result
 })
 
 // This means the user has entered successful inputs, but has not 'submitted' just yet.
 export const getIsSuccessful = createSelector(getAllEvaluations,
-  (evaluations) => !evaluations.hasErrors())
+  (evaluations) => evaluations.find(msg => msg.ID === 'READY' && msg.success))
 
 export const getTroubleshooter = state => state.troubleshooter
 export const FV_TS = createSelector(getTroubleshooter, (TS) => TS.FV)

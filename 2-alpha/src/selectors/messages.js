@@ -92,4 +92,7 @@ export const messageIDsToDetails = {
     title: `Out of frame by ${Math.abs(frame)} to the ${frame > 0 ? 'right' : 'left'}`,
     additional: `At the reverse primer sequence, try adding ${frame} base${frame > 1 ? 's' : ''} at the end of the vector part.`
   }),
+  "READY": () => ({
+    title: 'All primers look ready! Hooray!'
+  })
 }

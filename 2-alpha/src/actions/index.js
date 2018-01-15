@@ -49,11 +49,18 @@ export const doShowCodons = (on) => ({
 export const attemptCompletion = () => (dispatch, getState) => {
   if(getIsSuccessful(getState())) {
     dispatch({
-      type: TYPES.EXERCISE_SUCCESS
+      type: TYPES.EXERCISE_SUCCESS,
+      id: getState().currentExercise
     })
   } else {
     dispatch({
       type: TYPES.EXERCISE_FAIL
     })
   }
+}
+
+export const newExercise = () => (dispatch, getState) => {
+  dispatch({
+    type: TYPES.NEW_EXERCISE
+  })
 }
