@@ -8,7 +8,7 @@ export const loadingSelector = state => state.loading
 export const showCodons = state => state.showCodons
 
 export const exercisesListSelector = state => state.exercisesList
-const exercisesByIdSelector = state => state.exercisesById
+export const exercisesByIdSelector = state => state.exercisesById
 const currentExerciseSelector = state => state.currentExercise
 
 // function that returns an object which can be used to createMessage directly, or through a shorthand:
@@ -396,7 +396,7 @@ export const getAllEvaluations = createSelector(
 
 
     // COMPLETED EXERCISE. Ready to go
-    EvalALL.success('READY')
+    if(!Eval.hasErrors) EvalALL.success('READY')
     const result = Eval.getEvaluation()
     return console.log('Evaluations result: ', result) || result
 })

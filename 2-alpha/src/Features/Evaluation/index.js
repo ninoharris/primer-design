@@ -27,8 +27,8 @@ class Evaluation extends Component {
     const failureMessage = allMessages.find(msg => !msg.success)
     return (
       <ul className="list-group">
-        {successMessages.map((msg) => this.displayMessage(msg))}
         {failureMessage ? this.displayMessage(failureMessage) : ''}
+        {successMessages.reverse().slice(0, 3).map((msg) => this.displayMessage(msg))}
       </ul>
     )
   }
