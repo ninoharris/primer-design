@@ -29,8 +29,8 @@ class VectorReverse extends Component {
       <ReactCSSTransitionGroup transitionName="matches" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
         <div className="sequence RV" key='match'>
           {_.pad('', singleMatch.positionInVector - RG.length)}
-          <Left3 />
-          <span className="RG unimportant">{RG}</span>
+          
+          <span className="RG unimportant"><Left3 />{RG}</span>
           <span className="trailing">{singleMatch.trailingSeq}</span>
           <span className="restriction-site-match">{singleMatch.seq}</span>
           <span className="leading">{singleMatch.leadingSeq}</span>

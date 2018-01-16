@@ -34,8 +34,7 @@ class VectorForward extends Component {
           <span className="leading">{singleMatch.leadingSeq}</span>
           <span className="restriction-site-match">{singleMatch.seq}</span>
           <span className="trailing">{singleMatch.trailingSeq}</span>
-          <span className="FG unimportant">{FG}</span>
-          <Right3 />
+          <span className="FG unimportant">{FG}<Right3 /></span>
         </div>
       </ReactCSSTransitionGroup>
     )

@@ -22,7 +22,7 @@ class HaystackForward extends Component {
     if (!input) return null
     return (
       <div className="sequence RG">
-        {_.pad('', pos)}<span className="offset-left unimportant RV">
+        {_.pad('', pos)}<span className="offset-left">
           <Left3 />
         </span>
         <span className="reverse-arrow">{isExact && normalMatch && frame === 0 ? this.showExact() : this.showMismatches()}</span>
