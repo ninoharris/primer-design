@@ -8,7 +8,7 @@ import registerServiceWorker from './registerServiceWorker';
 import { Provider, connect } from 'react-redux'
 import configureStore from './configureStore'
 
-import App from './Features/App'
+import App from './routers'
 
 ReactDOM.render(
   <Provider store={configureStore}><App /></Provider>, 
