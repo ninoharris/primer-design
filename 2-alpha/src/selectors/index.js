@@ -11,6 +11,46 @@ export const exercisesListSelector = state => state.exercisesList
 const exercisesByIdSelector = state => state.exercisesById
 const currentExerciseSelector = state => state.currentExercise
 
+// function that returns an object which can be used to createMessage directly, or through a shorthand:
+// First create a category and assign it to a variable: const myCategory = createCategory('myCat')
+// Then call the success/failure fns: myCategory.success(msg) myCategory.failure(msg)
+const createEvaluation = (...initialStates) => {
+  const state = Array.isArray(initialStates) ? initialStates.reduce((p, c) => [...p, ...c], []) : []
+  let anyErrors = false
+  const createMessage = ({ inputs, success, messageID, context }) => {
+    if (!inputs) throw Error('Missing inputs in createMessage.')
+    if (!messageID) throw Error('Missing messageID in createMessage.')
+    state.push({ inputs, success, ID: messageID, context })
+    if (success === false) anyErrors = true
+    return // to send back true or false or null here?
+  }
+  const getEvaluation = () => {
+    // console.log('getEvaluation called: ', state)
+    return state
+  }
+  const hasErrors = () => anyErrors
+  const contains = (searchID) => state.find(msg => msg.ID === searchID)
+  const doesntContain = (searchID) => !contains(searchID)
+
+  const createCategory = (...inputs) => ({ // inputs include:
+    success: (messageID, context) => {
+      createMessage({ inputs, messageID, context, success: true })
+    },
+    failure: (messageID, context) => {
+      createMessage({ inputs, messageID, context, success: false })
+      return getEvaluation()
+    }
+  })
+
+  return {
+    getEvaluation,
+    createCategory,
+    createMessage,
+    hasErrors,
+    contains,
+    doesntContain
+  }
+}
 
 const uFV = state => state.formInputs.FV
 const uFG = state => state.formInputs.FG
@@ -207,46 +247,7 @@ export const getHaystackReverseMatches = createSelector(
   }
 )
 
-// function that returns an object which can be used to createMessage directly, or through a shorthand:
-// First create a category and assign it to a variable: const myCategory = createCategory('myCat')
-// Then call the success/failure fns: myCategory.success(msg) myCategory.failure(msg)
-const createEvaluation = (...initialStates) => {
-  const state = Array.isArray(initialStates) ? initialStates.reduce((p,c) => [...p, ...c], []) : []
-  let anyErrors = false
-  const createMessage = ({ inputs, success, messageID, context }) => {
-    if (!inputs) throw Error('Missing inputs in createMessage.')
-    if (!messageID) throw Error('Missing messageID in createMessage.')
-    state.push({ inputs, success, ID: messageID, context })
-    if(success === false) anyErrors = true
-    return // to send back true or false or null here?
-  }
-  const getEvaluation = () => {
-    // console.log('getEvaluation called: ', state)
-    return state
-  }
-  const hasErrors = () => anyErrors
-  const contains = (searchID) => state.find(msg => msg.ID === searchID)
-  const doesntContain = (searchID) => !contains(searchID)
 
-  const createCategory = (...inputs) => ({ // inputs include:
-    success: (messageID, context) => {
-      createMessage({ inputs, messageID, context, success: true })
-    },
-    failure: (messageID, context) => {
-      createMessage({ inputs, messageID, context, success: false })
-      return getEvaluation()
-    }
-  })
-  
-  return {
-    getEvaluation,
-    createCategory,
-    createMessage,
-    hasErrors,
-    contains,
-    doesntContain
-  }
-}
 
 // evaluations which are independent of vector input
 export const getHaystackEvaluations = createSelector(
@@ -353,6 +354,7 @@ export const getAllEvaluations = createSelector(
     const Eval = createEvaluation(EvalHaystack, EvalVector)
     const EvalFV = Eval.createCategory('FV')
     const EvalRV = Eval.createCategory('RV')
+    const EvalALL = Eval.createCategory('RV', 'FV', 'FG', 'RG')
     console.log(Eval.getEvaluation())
     if(!FV.singleMatch || !RV.singleMatch) return Eval.getEvaluation()
 
@@ -394,7 +396,7 @@ export const getAllEvaluations = createSelector(
 
 
     // COMPLETED EXERCISE. Ready to go
-    Eval.success('READY')
+    EvalALL.success('READY')
     const result = Eval.getEvaluation()
     return console.log('Evaluations result: ', result) || result
 })

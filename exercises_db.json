@@ -11,8 +11,14 @@
       "constructEnd": 98,
       "id": "boogie",
       "vectorStart": 11,
-      "vectorEnd": 85,
+      "vectorEnd": 88,
       "helpers": {
+        "2": {
+          "name": "promoter",
+          "pos": 2,
+          "len": 8,
+          "color": "#333333"
+        },
         "88": {
           "name": "GST",
           "pos": 88,

@@ -28,6 +28,7 @@ class Vector extends Component {
     }))
   }
   getHighlights = (helpers, sequence, dir) => {
+    console.log('helpers', helpers)
     let lastIndex = 0, output = []
     _.map(helpers, ({pos, name, len, color}) => {
       if(pos > lastIndex) {

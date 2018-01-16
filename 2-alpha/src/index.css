@@ -286,3 +286,7 @@ body {
   background-image: url('./images/reverse-arrow.png');
   
 }
+
+.ReactModal__Overlay {
+  z-index: 10;
+}
