@@ -21,7 +21,7 @@ class HaystackForward extends Component {
     const { pos, isExact, normalMatch, tooShort, RV, input, frame } = this.props
     if (!input) return null
     return (
-      <div className="sequence RG">
+      <div className="sequence RG user-sequence">
         {_.pad('', pos)}<span className="offset-left">
           <Left3 />
         </span>

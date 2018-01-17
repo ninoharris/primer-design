@@ -98,25 +98,54 @@ body {
   white-space: pre-wrap;
   line-height: 1;
 }
+.haystack .forward {
+  padding-bottom: 8rem;
+  margin-top: -3rem;
+}
+.haystack .reverse {
+  position: absolute;
+  top: 1rem;
+}
 .multiline {
   position: relative;
-  padding-bottom: 30px;
+  padding-bottom: 70px;
 }
-.multiline > .sequence {
+.multiline .sequence {
   width: 100ch;
   word-break: break-all;
-  line-height: 4;
+  line-height: 10;
 }
-.multiline .sequence .reverse {
+.multiline .sequence .user-sequence {
+  position: absolute;
+}
+.forward .multiline .user-sequence {
+  top: 0.7rem; /* Place just underneath the reference sequence */
+}
+.reverse .multiline .user-sequence {
+  top: -0.7rem;
+}
+.multiline .reverse {
   position: absolute;
   top: 30px;
 }
 .multiline .sequence [class^="offset"] {
   word-break: keep-all;
 }
-.forward, .reverse {
-  height: 30px;
+.multiline .codons {
+  position: absolute;
+  top: 0.7rem;
 }
+.multiline .codons .codon:nth-of-type(2) {
+  position: absolute;
+  top: 1rem;
+}
+.multiline .codons .codon:nth-of-type(3) {
+  position: absolute;
+  top: 2rem;
+}
+
+
+
 .leading, .trailing, .unimportant {
   opacity: 0.35;
 }
@@ -135,25 +164,6 @@ body {
 .end {
   color: #000000;
 }
-
-
-.helpers {
-  position: relative;
-}
-.helpers .helper {
-  cursor: default;
-}
-.helpers .helper:not(:first-of-type) {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-
-.vector, .haystack {
-  position: relative;
-}
-
 
 .position-helper {
   cursor: default;
@@ -175,6 +185,27 @@ body {
   color: lightblue;
   position: absolute;
 }
+
+
+.helpers {
+  position: relative;
+}
+.helpers .helper {
+  cursor: default;
+}
+.helpers .helper:not(:first-of-type) {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+
+.vector, .haystack {
+  position: relative;
+}
+
+
+
 
 .hl {
   background: #DDDDDD;
@@ -288,7 +319,7 @@ body {
   display: none;
 }
 
-
+/* Additional */
 .forward-arrow, .reverse-arrow {
   padding: 25px; 
   background-repeat: no-repeat;
