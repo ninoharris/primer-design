@@ -28,6 +28,7 @@ class ExerciseEditor extends Component {
               <label className="d-block" htmlFor="haystack">Haystack forward sequence</label>
               <Field className="form-control" name="haystack" component="textarea" type="text" />
             </div>
+
             <button type="submit" disabled={pristine || submitting}>{submitText}</button>
           </div>
         </div>
