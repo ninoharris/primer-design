@@ -100,28 +100,38 @@ body {
 }
 .haystack {
   user-select: none;
+  position: relative;
+  top: -2rem;
+  /* this -2rem top: all text in haystack is inline to allow clean breaking of the sequence at 100 chars.
+  'forward', 'reverse', 'position-helper', and 'codons' overlap each other, we set a big line-height (10rem).
+  -2rem offsets it at the very top, but still gives us some space between characters 1-100 and 101-201 etc... */
+}
+.haystack .position-helper {
+  top: 2rem; /* counterbalances .haystack's -2rem. */
+}
+.haystack .forward, .haystack .reverse {
+  transition: top 0.7s ease-out;
 }
 .haystack .forward {
-  padding-bottom: 8rem;
-  margin-top: -2rem;
-  transition: margin-top 0.7s ease-out;
+  position: relative;
+  top: 0;
+}
+.haystack-with-URG .forward {
+  top: -1rem; /* move it up by a line, gives room for URG */ 
 }
 .haystack .reverse {
   position: absolute;
-  top: 0;
-  transition: top 0.7s ease-out;
+  top: 1rem; /* OFFSET to prevent overlaps between reverse and forward */
 }
 .haystack-with-UFG .reverse {
-  top: 1rem;
-  transition: top 0.7s ease-out;
+  top: 2rem; /* move it up by a line, gives room for URG */
 }
-.haystack-with-URG .forward {
-  margin-top: -3rem;
-  transition: margin-top 0.7s ease-out;
-}
+
+
+
+
 .multiline {
   position: relative;
-  padding-bottom: 70px;
 }
 .multiline .sequence {
   width: 100ch;
@@ -137,10 +147,6 @@ body {
 .reverse .multiline .user-sequence {
   top: -0.7rem;
 }
-.multiline .reverse {
-  position: absolute;
-  top: 30px;
-}
 .multiline .sequence [class^="offset"] {
   word-break: keep-all;
 }
@@ -148,20 +154,26 @@ body {
   z-index: -1;
   position: absolute;
   top: 0.7rem;
+  animation: fade-in 1s;
+}
+@keyframes fade-in {
+  from { opacity: 0 }
+  to { opacity: 1 }
+}
+.multiline .codons .codon {
+  position: absolute;
 }
 .multiline .codons .codon:nth-of-type(2) {
-  position: absolute;
   top: 1rem;
 }
 .multiline .codons .codon:nth-of-type(3) {
-  position: absolute;
   top: 2rem;
 }
 
 
 
 .leading, .trailing, .unimportant {
-  opacity: 0.35;
+  opacity: 0.45;
 }
 .offset-left, .offset-right {
   position: relative;
@@ -198,6 +210,10 @@ body {
   letter-spacing: -2px;
   color: lightblue;
   position: absolute;
+}
+
+.haystack .position-helper.sequence {
+  line-height: 1;
 }
 
 
@@ -384,4 +400,17 @@ body {
 
 /* Admin Exercise Form */
 .Admin-Exercise-Form {
+  font-family: monospace;
+}
+.Admin-Exercise-Form input, .Admin-Exercise-Form textarea {
+  font-size: 0.8rem;
+}
+.Admin-Exercise-Form .vector-input, .Admin-Exercise-Form .haystack-input {
+  height: auto;
+  box-sizing: content-box;
+}
+.Admin-Exercise-Form .vector-input {
+}
+.Admin-Exercise-Form .haystack-input {
+  width: 100ch;
 }

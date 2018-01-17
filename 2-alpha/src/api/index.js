@@ -36,7 +36,7 @@ export const reverse = function (str) {
 export const hund80 = str => complementFromString(reverse(str))
 
 export const getAASeq = function ({ seq, offset = 0, separator = '' }) {
-  if (!seq || typeof seq !== 'string') throw Error('seq must be a string')
+  if (typeof seq !== 'string') throw Error('seq must be a string')
   // TODO: see if any non ATGC are included, if spacing then remove.
   seq = seq.toUpperCase()
   // if (seq.match(/[^ATGC\b]+/gi)) throw Error('seq must only contain: ATGC (and space)')

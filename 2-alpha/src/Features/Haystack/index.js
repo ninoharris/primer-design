@@ -10,7 +10,7 @@ import { Left5, Left3, Right5, Right3 } from '../../components/HelperEnds'
 class Haystack extends Component {
   render() {
     const { forward, reverse, FG, RG } = this.props
-    const className = "haystack pt-3 pb-3 mt-3" + (FG ? ' haystack-with-UFG' : '') + (RG ? ' haystack-with-URG' : '')
+    const className = "haystack mt-3" + (FG.length > 3 ? ' haystack-with-UFG' : '') + (RG.length > 3 ? ' haystack-with-URG' : '')
     return (
       <div className={className}>
         <HelperPosition length={100} />
