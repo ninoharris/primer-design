@@ -9,7 +9,7 @@ class Options extends Component {
     const { showCodons, doShowCodons } = this.props
     return (
       <div>
-        <Toggle on={showCodons} onToggle={on => doShowCodons(on)}>
+        <Toggle on={showCodons} onToggle={on => doShowCodons(on)} className="mb-2">
           <Toggle.On>Showing codons</Toggle.On>
           <Toggle.Off>Hiding codons</Toggle.Off>
           <Toggle.Button />

@@ -3,14 +3,18 @@ import { connect } from 'react-redux'
 import { updateExerciseFilter } from '../../actions/admin'
 import { filterTextSelector, sortOrderSelector, sortBySelector} from '../../selectors'
 
-const FilterExercises = (props) => {
+const ExerciseListFilters = (props) => {
   const updateFilter = (e) => {
     props.updateExerciseFilter(e.target.value)
   }
+
   return (
     <div className="input-group mb-3">
       <div className="input-group-prepend">
-        <label className="input-group-text">Filter/Sort exercises by</label>
+        <div className="input-group-text">
+          <input type="checkbox" aria-label="Checkbox for following text input" />
+          <label>Show only my exercises</label>
+        </div>
       </div>
       <input type="text" className="form-control" value={props.filterText} onChange={updateFilter} />
       <select className="custom-select" value={props.sortBy}>
@@ -22,6 +26,7 @@ const FilterExercises = (props) => {
       <select className="custom-select" value={props.sortOrder}>
         <option value="asc">Asc</option>
         <option value="desc">Desc</option>
+        {/* Show mine only */}
       </select>
     </div>
   )
@@ -35,4 +40,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { updateExerciseFilter })(FilterExercises)
+export default connect(mapStateToProps, { updateExerciseFilter })(ExerciseListFilters)
