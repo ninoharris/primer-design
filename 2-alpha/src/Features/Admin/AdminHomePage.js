@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 
 import ExerciseList from './ExerciseList'
 import withLoading from '../../components/withLoading'
+import FilterExercises from './FilterExercises'
 
 class AdminHomePage extends Component {
   render() {
@@ -21,6 +22,9 @@ class AdminHomePage extends Component {
           </div>
         </div>
         <div className="row">
+          <div className="col-12">
+            <FilterExercises />
+          </div>
           <div className="col-12">
             <ExerciseList />
           </div>

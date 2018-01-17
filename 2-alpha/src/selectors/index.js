@@ -9,7 +9,25 @@ export const showCodons = state => state.showCodons
 
 export const exercisesListSelector = state => state.exercisesList
 export const exercisesByIdSelector = state => state.exercisesById
-const currentExerciseSelector = state => state.currentExercise
+export const currentExerciseSelector = state => state.currentExercise
+export const sortOrderSelector = state => state.sortOrder
+export const sortBySelector = state => state.sortBy
+export const filterTextSelector = state => state.filterText
+
+export const getFilteredExercises = createSelector(
+  exercisesListSelector,
+  exercisesByIdSelector,
+  filterTextSelector,
+  (IDsList, exercisesById, filterText) => IDsList.filter(ID => {
+    const { question, authorId } = exercisesById[ID]
+    const { part1, part2 } = question
+    filterText = filterText.toLowerCase()
+    return part1.toLowerCase().includes(filterText) || 
+      part2.toLowerCase().includes(filterText) 
+      // TODO: include author names in this
+  })
+)
+
 
 // function that returns an object which can be used to createMessage directly, or through a shorthand:
 // First create a category and assign it to a variable: const myCategory = createCategory('myCat')

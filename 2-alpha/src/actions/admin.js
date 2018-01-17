@@ -18,3 +18,10 @@ export const addExercise = (data) => (dispatch) => {
     })
   })
 }
+
+export const updateExerciseFilter = (text) => {
+  return {
+    type: TYPES.FILTER_EXERCISES_BY_TEXT,
+    payload: text,
+  }
+}

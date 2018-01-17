@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { exercisesListSelector, exercisesByIdSelector } from '../../selectors/index'
+import { getFilteredExercises, exercisesByIdSelector } from '../../selectors/index'
 import { exercisesList, exercisesById } from '../../reducers/exercises';
 
 
@@ -44,7 +44,7 @@ class ExerciseList extends Component {
 
 const mapStateToProps = (state) => ({
   exercisesById: exercisesByIdSelector(state),
-  exercisesList: exercisesListSelector(state),
+  exercisesList: getFilteredExercises(state),
 })
 
 export default connect(mapStateToProps)(ExerciseList)
