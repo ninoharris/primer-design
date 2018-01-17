@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 import ExerciseList from './ExerciseList'
 import withLoading from '../../components/withLoading'
@@ -15,7 +16,7 @@ class AdminHomePage extends Component {
               <h4>Primer design - admin</h4>
             </div>
             <div>
-              <button className="btn btn-success mr-3" onClick={() => {}}>Add new exercise</button>
+              <Link to="/admin/create"><button className="btn btn-success mr-3">Add new exercise</button></Link>
               <button className="btn btn-info mr-3" onClick={() => { }}>View students</button>
               <button className="btn btn-warning mr-3" onClick={() => { }}>Log out</button>
             </div>

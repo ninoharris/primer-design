@@ -98,6 +98,25 @@ body {
   white-space: pre-wrap;
   line-height: 1;
 }
+.multiline {
+  position: relative;
+  padding-bottom: 30px;
+}
+.multiline > .sequence {
+  width: 100ch;
+  word-break: break-all;
+  line-height: 4;
+}
+.multiline .sequence .reverse {
+  position: absolute;
+  top: 30px;
+}
+.multiline .sequence [class^="offset"] {
+  word-break: keep-all;
+}
+.forward, .reverse {
+  height: 30px;
+}
 .leading, .trailing, .unimportant {
   opacity: 0.35;
 }
@@ -313,4 +332,9 @@ body {
 .evaluation-item-leave.evaluation-item-leave-active {
   opacity: 0;
   transition: all 0.3s ease-in-out;
+}
+
+
+/* Admin Exercise Form */
+.Admin-Exercise-Form {
 }

@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux' 
+import { reducer as formReducer } from 'redux-form'
 import * as game from './game'
 import * as exercises from './exercises'
 import troubleshooter from './troubleshooter'
@@ -20,7 +21,8 @@ const reducer = combineReducers({
   ...game,
   ...exercises,
   animatingPreview,
-  troubleshooter
+  troubleshooter,
+  form: formReducer
 })
 
 export default reducer

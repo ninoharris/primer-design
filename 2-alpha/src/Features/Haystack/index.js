@@ -13,14 +13,13 @@ class Haystack extends Component {
     return (
       <div className="haystack pt-3 pb-3 mt-3">
         <HelperPosition length={100} />
-        <div className="forward">
+        <div className="forward multiline">
           <div className="sequence">
             <Left5 />{forward}<Right3 />
           </div>
           <HaystackReverse />
         </div>
-        <hr/>
-        <div className="reverse">
+        <div className="reverse multiline">
           <HaystackForward />
           <div className="sequence">
             <Left3 />{reverse}<Right5 />

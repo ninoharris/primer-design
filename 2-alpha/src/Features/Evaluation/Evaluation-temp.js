@@ -7,6 +7,7 @@ import RG from './RG'
 
 class Evaluation extends Component {
   render() {
+    return null
     return (
       <div className="evaluations row">
         <div className="col-3">
