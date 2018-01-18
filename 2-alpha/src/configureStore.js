@@ -27,7 +27,8 @@ const initialState = {
     FG: 'gcatggcgat',
     RV: 'gagctc', //NcoI
     RG: 'tcagacacacctt'
-  }
+  },
+  showCodons: false,
 }
 
 const configureStore = () => {

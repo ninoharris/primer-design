@@ -69,7 +69,7 @@ const selector = formValueSelector('exerciseEditor')
 
 ExerciseEditor = connect(
   state => {
-    const { haystack = '', vector = ''} = selector(state, 'haystack', 'vector')
+    const { haystack = ' ', vector = ' '} = selector(state, 'haystack', 'vector')
     return {
       haystack: {
         forward: haystack,

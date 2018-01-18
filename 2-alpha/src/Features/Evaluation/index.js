@@ -20,13 +20,13 @@ class Evaluation extends Component {
   }
   displayMessage = (msg, i) => {
     const details = messageIDsToDetails[msg.ID](msg.context)
-    const className = 'list-group-item ' + (msg.success ? 'list-group-item-success' : 'list-group-item-danger')
+    const className = 'evaluation-item ' + (msg.success ? 'success' : 'failure')
     return (
       <li
         className={className}
         key={msg.ID}
         onMouseEnter={() => this.doActions(details.actions)}
-        style={{ transitionDelay: `${100 * (5-i)}ms`}}
+        // style={{ transitionDelay: `${100 * (5-i)}ms`}}
         >
         <strong>{msg.inputs.join(' & ')}: </strong>{details.title}
         {details.additional ? <small className="additional"><hr />{details.additional}</small> : ''}
@@ -34,20 +34,16 @@ class Evaluation extends Component {
     )
   }
   render() {
-    // console.log(this.props.messageIDsList)
+    console.log('rerender!!!!', this.props.messageIDsList)
     if(this.props.loading) return null
     const allMessages = this.props.messageIDsList
     
     const successMessages = allMessages.filter(msg => msg.success)
     const failureMessage = allMessages.find(msg => !msg.success)
     return (
-      <ul className="list-group">
-        <ReactCSSTransitionGroup transitionName="evaluation-item"
-          transitionEnterTimeout={500}
-          transitionLeaveTimeout={300}>
-          {failureMessage ? this.displayMessage(failureMessage, 0) : ''}
-          {successMessages.reverse().slice(0, 3).map((msg, i) => this.displayMessage(msg, i+1))}
-        </ReactCSSTransitionGroup>
+      <ul className="evaluation-list">
+        {failureMessage ? this.displayMessage(failureMessage, 0) : ''}
+        {successMessages.reverse().slice(0, 3).map((msg, i) => this.displayMessage(msg, i+1))}
       </ul>
     )
   }

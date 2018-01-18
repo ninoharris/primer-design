@@ -279,21 +279,21 @@ export const getHaystackEvaluations = createSelector(
 
   // check if right completely (and frame)
   if(FG.input) {
-    if (isTooShort(FG.input)) EvalFG.failure('FORWARD_TOO_SHORT')
     if (FG.normalMatch) EvalFG.success('FORWARD_HAYSTACK_MATCH')
     if (FG.complementMatch) EvalFG.failure('FORWARD_WRONG_STRAND')
     if (FG.reverseMatch) EvalFG.failure('FORWARD_WRONG_DIRECTION')
     if (FG.frame && FG.frame !== 0) EvalFG.failure('FORWARD_HAYSTACK_OUT_OF_FRAME', FG.frame)
     if (!FG.normalMatch && !FG.complementMatch && !FG.reverseMatch) EvalFG.failure("FORWARD_NO_MATCH")
+    if (isTooShort(FG.input)) EvalFG.failure('FORWARD_TOO_SHORT')
   }
   
   if(RG.input) {
-    if (isTooShort(RG.input)) EvalRG.failure('REVERSE_TOO_SHORT')
     if (RG.normalMatch) EvalRG.success('REVERSE_HAYSTACK_MATCH')
     if (RG.complementMatch) EvalRG.failure('REVERSE_WRONG_STRAND')
     if (RG.reverseMatch) EvalRG.failure('REVERSE_WRONG_DIRECTION')
     if (RG.frame && RG.frame !== 0) EvalRG.failure('REVERSE_HAYSTACK_OUT_OF_FRAME', RG.frame)
     if (!RG.normalMatch && !RG.complementMatch && !RG.reverseMatch) EvalRG.failure("REVERSE_NO_MATCH")
+    if (isTooShort(RG.input)) EvalRG.failure('REVERSE_TOO_SHORT')
   }
   // go to vector evaluations!
   return Eval.getEvaluation()
