@@ -28,7 +28,8 @@ class Evaluation extends Component {
         onMouseEnter={() => this.doActions(details.actions)}
         // style={{ transitionDelay: `${100 * (5-i)}ms`}}
         >
-        <strong>{msg.inputs.join(' & ')}: </strong>{details.title}
+        {/* <strong>{msg.inputs.join(' & ')}: </strong> */}
+        <strong>{details.title}</strong>
         {details.additional ? <small className="additional"><hr />{details.additional}</small> : ''}
       </li>
     )

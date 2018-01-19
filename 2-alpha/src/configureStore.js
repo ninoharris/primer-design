@@ -23,9 +23,9 @@ const initialState = {
     CCATGG: { seq: "CCATGG", name: "NcoI", cutsForward: 1, cutsReverse: 5 }
   },
   formInputs: {
-    FV: 'tctaga', // Xba1
+    FV: 'tctagaa', // Xba1
     FG: 'gcatggcgat',
-    RV: 'gagctc', //NcoI
+    RV: 'gagctccc', //NcoI
     RG: 'tcagacacacctt'
   },
   showCodons: false,

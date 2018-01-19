@@ -62,7 +62,7 @@ export const messageIDsToDetails = {
     title: 'Forward primer is in frame!',
   }),
   "FORWARD_BOTH_OUT_OF_FRAME": (frame) => ({
-    title: `Out of frame by ${Math.abs(frame)}`,
+    title: `Forward primer is out of frame by ${Math.abs(frame)}`,
     additional: `At the forward primer sequence, try adding ${frame} base${frame > 1 ? 's':''} at the end of the vector part.`
   }),
   "REVERSE_TOO_SHORT": () => ({
@@ -89,7 +89,7 @@ export const messageIDsToDetails = {
     title: 'Reverse primer is in frame!',
   }),
   "REVERSE_BOTH_OUT_OF_FRAME": (frame) => ({
-    title: `Out of frame by ${Math.abs(frame)} to the ${frame > 0 ? 'right' : 'left'}`,
+    title: `Reverse primer is out of frame by ${Math.abs(frame)}`,
     additional: `At the reverse primer sequence, try adding ${frame} base${frame > 1 ? 's' : ''} at the end of the vector part.`
   }),
   "READY": () => ({

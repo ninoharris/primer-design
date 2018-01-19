@@ -189,7 +189,7 @@ body {
   cursor: default;
   position: absolute;
   top: 0;
-  z-index: -1;
+  
   height: 100%;
 }
 .position-helper > span {
@@ -208,6 +208,7 @@ body {
 
 .haystack .position-helper.sequence {
   line-height: 1;
+  z-index: -1;
 }
 
 
@@ -394,11 +395,10 @@ body {
   opacity: 0.45;
 }
 .evaluation-item.failure {
-  height: 6rem;
   background: #e29c9c;
 }
 .evaluation-item.success {
-  height: 4rem;
+  height: 4.3rem;
   background: #b4e8c9;
 }
 .evaluation-item-enter {
@@ -420,6 +420,46 @@ body {
 */
 
 
+/* FINAL displays */
+.Final-Clone {
+  position: relative;
+}
+.Final-Clone .forward {
+
+}
+.Final-Clone .reverse {
+  position: absolute;
+  top: 1rem;
+}
+.Final-Clone .multiline .sequence {
+  line-height: 4rem;
+  width: 100ch;
+}
+.Final-Clone .multiline .sequence span {
+  display: inline;
+}
+.markers {
+  position: absolute;
+  top: -1rem;
+  white-space: pre-wrap;
+}
+.marker {
+  position: relative;
+  text-indent: -9999px;
+}
+.marker::after {
+  content: '';
+  display: block;
+  height: 6px;
+  width: 6px;
+  position: absolute;
+  top: 0.6rem;
+  right: -3px;
+  border: solid #8eb92a;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+
 /* Admin Exercise Form */
 .Admin-Exercise-Form {
   font-family: monospace;
@@ -436,3 +476,4 @@ body {
 .Admin-Exercise-Form .haystack-input {
   width: 100ch;
 }
+

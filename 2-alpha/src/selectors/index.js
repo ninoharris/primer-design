@@ -171,6 +171,7 @@ export const getUserVectorMatchForward = createSelector(
     singleMatch['betweenStartAndREStr'] = vector.substring(vectorStart - 1, match.pos) // ZZZZZATAGCG (vector) -> ZZZZZ
     singleMatch['betweenStartAndRE'] = singleMatch['betweenStartAndREStr'].length // ZZZZZ -> 5
     singleMatch['toGetDesiredFrame'] = (3 - singleMatch['betweenStartAndRE'] % 3) % 3
+    singleMatch['input'] = input
     
     
 
@@ -219,6 +220,7 @@ export const getUserVectorMatchReverse = createSelector(
     singleMatch['betweenEndAndREStr'] = vector.slice(match.pos + 6, vectorEnd + 1) // ATAGCGZZZZZ (vector) -> ZZZZZ
     singleMatch['betweenEndAndRE'] = singleMatch['betweenEndAndREStr'].length // ZZZZZ -> 5
     singleMatch['toGetDesiredFrame'] = (3 - singleMatch['betweenEndAndRE'] % 3) % 3
+    singleMatch['input'] = input
 
     return { singleMatch }
   }
@@ -414,7 +416,9 @@ export const getAllEvaluations = createSelector(
 
 
     // COMPLETED EXERCISE. Ready to go
-    if(!Eval.hasErrors) EvalALL.success('READY')
+    if(!Eval.hasErrors()) {
+      EvalALL.success('READY')
+    }
     const result = Eval.getEvaluation()
     return console.log('Evaluations result: ', result) || result
 })
@@ -422,6 +426,88 @@ export const getAllEvaluations = createSelector(
 // This means the user has entered successful inputs, but has not 'submitted' just yet.
 export const getIsSuccessful = createSelector(getAllEvaluations,
   (evaluations) => evaluations.find(msg => msg.ID === 'READY' && msg.success))
+
+
+export const getFinalClone = createSelector(
+  getCurrentExercise,
+  getUserVectorMatchForward,
+  getUserVectorMatchReverse,
+  getHaystackForwardMatches,
+  getHaystackReverseMatches,
+  (exercise, {singleMatch: FV }, {singleMatch: RV }, FG, RG) => {
+    const markers = [], helpers = []
+      
+    const vectorStartSeq = exercise.vector.slice(0, FV.positionInVector)
+    const startPosOfSecondPart = FV.positionInVector + FV.input.length + exercise.haystack.length
+    const vectorEndSeq = exercise.vector.slice(RV.positionInVector + FV.input.length)
+
+    // markers.push({
+    //   pos: exercise.vectorStart
+    // })
+
+    // helper pushing: look at vector and see which helpers are before the first cut off point or after the second. includes those in.
+    _.mapValues(exercise.helpers, (helper) => {
+      if(helper.pos < FV.positionInVector) {
+        helpers.push(helper)
+      }
+      if (helper.pos > (RV.pos + 6)) {
+        helpers.push({ ...helper, pos: (startPosOfSecondPart + helper.pos - RV.positionInVector - RV.trailingSeq.length) })
+      }
+    })
+    
+    console.log('Helpers:', helpers)
+    
+    // const forward = {
+    //   vectorStartSeq,
+    //   leadingSeq1: FV.leadingSeq,
+    //   seq1: FV.seq,
+    //   trailingSeq1: FV.trailingSeq,
+    //   haystack: exercise.haystack.slice(exercise.constructStart, exercise.constructEnd),
+    //   trailingSeq2: RV.trailingSeq,
+    //   seq2: RV.seq,
+    //   leadingSeq2: RV.leadingSeq,
+    //   vectorEndSeq,
+    // }
+    const forward = {
+      [vectorStartSeq]: { seq: vectorStartSeq,
+        text: 'Vector start'
+      },
+      [FV.leadingSeq]: { seq: FV.leadingSeq,
+        text: `Forward primer's 5' GC cap`
+      },
+      [FV.seq]: { seq: FV.seq,
+        text: `Forward restriction site match: ${FV.name}`
+      },
+      [FV.trailingSeq]: { seq: FV.trailingSeq,
+        text: 'Additional sequence to get construct in sequence'
+      },
+      [exercise.haystack.slice(exercise.constructStart, exercise.constructEnd)]: { seq: exercise.haystack.slice(exercise.constructStart, exercise.constructEnd),
+        text: 'Construct sequence to be cloned'
+      },
+      [RV.trailingSeq]: { seq: RV.trailingSeq,
+        text: 'Additional sequence to get construct in sequence'
+      },
+      [RV.seq]: { seq: RV.seq,
+        text: `Reverse restriction site match: ${RV.name}`
+      },
+      [RV.leadingSeq]: { seq: RV.leadingSeq,
+        text: `Reverse primer's 5' GC cap`
+      },
+      [vectorEndSeq]: { seq: vectorEndSeq,
+        text: 'Vector end'
+      },
+    }
+
+    // console.log('Markers', markers)
+    // console.log('Forward', forward, forward.length)
+    return {
+      forward,
+      markers,
+      helpers
+    }
+    
+  }
+)
 
 export const getTroubleshooter = state => state.troubleshooter
 export const FV_TS = createSelector(getTroubleshooter, (TS) => TS.FV)
