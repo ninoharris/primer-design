@@ -92,6 +92,9 @@ body {
   white-space: pre-wrap;
   line-height: 1;
 }
+.sequence span {
+  display: inline;
+}
 .haystack {
   user-select: none;
   position: relative;
@@ -171,6 +174,7 @@ body {
 }
 .offset-left, .offset-right {
   position: relative;
+  z-index: -9;
 }
 [class^="offset"] > span {
   position: absolute;
@@ -388,10 +392,13 @@ body {
   background: lightgray;
   padding: 10px;
 }
-.evaluation-item:nth-child(3) {
-  opacity: 0.7;
+.evaluation-item:nth-of-type(2) {
+  opacity: 0.8;
 }
-.evaluation-item:nth-child(4) {
+.evaluation-item:nth-of-type(3) {
+  opacity: 0.6;
+}
+.evaluation-item:nth-of-type(4)  {
   opacity: 0.45;
 }
 .evaluation-item.failure {
@@ -421,19 +428,30 @@ body {
 
 
 /* FINAL displays */
+.Final-Hover-Note {
+  background: darkcyan;
+  color: white;
+  border-radius: 3px;
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+}
 .Final-Clone {
   position: relative;
 }
-.Final-Clone .forward {
 
+.Final-Clone-Seq-Chunk:hover {
+  background: #eeeeee;
 }
-.Final-Clone .reverse {
-  position: absolute;
-  top: 1rem;
+.Final-Clone-Seq-Chunk:nth-child(2n) {
+  border-bottom: 1px dashed #666666;
+  border-top: 1px dashed #666666;
+}
+.Final-Clone .forward {
+  padding-top: 1rem;
 }
 .Final-Clone .multiline .sequence {
-  line-height: 4rem;
-  width: 100ch;
+  line-height: 2rem;
+  width: 150ch;
 }
 .Final-Clone .multiline .sequence span {
   display: inline;

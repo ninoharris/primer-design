@@ -435,15 +435,11 @@ export const getFinalClone = createSelector(
   getHaystackForwardMatches,
   getHaystackReverseMatches,
   (exercise, {singleMatch: FV }, {singleMatch: RV }, FG, RG) => {
-    const markers = [], helpers = []
+    const helpers = []
       
     const vectorStartSeq = exercise.vector.slice(0, FV.positionInVector)
     const startPosOfSecondPart = FV.positionInVector + FV.input.length + exercise.haystack.length
     const vectorEndSeq = exercise.vector.slice(RV.positionInVector + FV.input.length)
-
-    // markers.push({
-    //   pos: exercise.vectorStart
-    // })
 
     // helper pushing: look at vector and see which helpers are before the first cut off point or after the second. includes those in.
     _.mapValues(exercise.helpers, (helper) => {
@@ -454,49 +450,31 @@ export const getFinalClone = createSelector(
         helpers.push({ ...helper, pos: (startPosOfSecondPart + helper.pos - RV.positionInVector - RV.trailingSeq.length) })
       }
     })
-    
-    console.log('Helpers:', helpers)
-    
-    // const forward = {
-    //   vectorStartSeq,
-    //   leadingSeq1: FV.leadingSeq,
-    //   seq1: FV.seq,
-    //   trailingSeq1: FV.trailingSeq,
-    //   haystack: exercise.haystack.slice(exercise.constructStart, exercise.constructEnd),
-    //   trailingSeq2: RV.trailingSeq,
-    //   seq2: RV.seq,
-    //   leadingSeq2: RV.leadingSeq,
-    //   vectorEndSeq,
-    // }
+
+    const construct = exercise.haystack.slice(exercise.constructStart, exercise.constructEnd)
+
     const forward = {
-      [vectorStartSeq]: { seq: vectorStartSeq,
-        text: 'Vector start'
+      [vectorStartSeq]: { seq: vectorStartSeq, text: 'Vector start'
       },
-      [FV.leadingSeq]: { seq: FV.leadingSeq,
-        text: `Forward primer's 5' GC cap`
+      [FV.leadingSeq]: { seq: FV.leadingSeq, text: `Forward primer's 5' clamp`
       },
-      [FV.seq]: { seq: FV.seq,
-        text: `Forward restriction site match: ${FV.name}`
+      [FV.seq]: { seq: FV.seq, text: `Forward restriction site match: ${FV.name}`
       },
-      [FV.trailingSeq]: { seq: FV.trailingSeq,
-        text: 'Additional sequence to get construct in sequence'
+      [FV.trailingSeq]: { seq: FV.trailingSeq, text: 'Additional sequence to get construct in sequence'
       },
-      [exercise.haystack.slice(exercise.constructStart, exercise.constructEnd)]: { seq: exercise.haystack.slice(exercise.constructStart, exercise.constructEnd),
-        text: 'Construct sequence to be cloned'
+      [construct]: { seq: construct, text: 'Construct sequence to be cloned'
       },
-      [RV.trailingSeq]: { seq: RV.trailingSeq,
-        text: 'Additional sequence to get construct in sequence'
+      [RV.trailingSeq]: { seq: RV.trailingSeq, text: 'Additional sequence to get construct in sequence'
       },
-      [RV.seq]: { seq: RV.seq,
-        text: `Reverse restriction site match: ${RV.name}`
+      [RV.seq]: { seq: RV.seq, text: `Reverse restriction site match: ${RV.name}`
       },
-      [RV.leadingSeq]: { seq: RV.leadingSeq,
-        text: `Reverse primer's 5' GC cap`
+      [RV.leadingSeq]: { seq: RV.leadingSeq, text: `Reverse primer's 5' clamp.`
       },
-      [vectorEndSeq]: { seq: vectorEndSeq,
-        text: 'Vector end'
+      [vectorEndSeq]: { seq: vectorEndSeq, text: 'Vector end'
       },
     }
+
+    const markers = _.map(forward, ({seq, text}) => seq)
 
     // console.log('Markers', markers)
     // console.log('Forward', forward, forward.length)

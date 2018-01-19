@@ -10,7 +10,7 @@ class Display extends Component {
   render() {
     const { part1, part2 } = this.props.question
     return (
-      <div className="col-11 offset-md-1">
+      <div className="col-12">
         <div /* Invisible div to see width of 100 chars */ className="dummy-sizing"></div>
         <div className="question part-1">{part1}</div>
         <Vector />

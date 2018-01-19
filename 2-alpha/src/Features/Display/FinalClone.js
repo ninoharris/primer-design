@@ -8,18 +8,18 @@ import * as api from '../../api'
 class FinalClone extends Component {
   getMarkers = (markers) => {
     let lastIndex = 0
-    return _.map(markers, ({ pos }) => {
+    return markers.map(pos => {
       const marker = <span className="marker" key={pos}>{_.padStart('', pos - lastIndex, ' ')}</span>
       lastIndex = pos
       return marker
     })
   }
   getSequenceWithHover = (helpers, seqWithDetails, dir) => {
-    console.log(seqWithDetails)
     let lastIndex = 0
     const sequenceOutput = _.map(seqWithDetails, ({ seq, text }) => {
+      if(seq.length === 0) return
       let inside
-      const helper = helpers.find(helper => helper.pos >= lastIndex && helper.pos < (seq.length + lastIndex))
+      let helper = helpers.find(helper => helper.pos >= lastIndex && helper.pos < (seq.length + lastIndex))
       if(!helper) {
         inside = seq
       } else {
@@ -34,26 +34,26 @@ class FinalClone extends Component {
           </span>
         )
       }
-      return <span key={seq} onMouseEnter={() => this.props.handleMouseEnter(text)}>{inside}</span>
+      lastIndex += seq.length
+      return (<span
+        key={seq}
+        className="Final-Clone-Seq-Chunk" 
+        onMouseEnter={() => this.props.handleMouseEnter(text)}>{inside}</span>
+      )
     })
     return sequenceOutput
   }
   render() {
     const { helpers, forward, markers } = this.props.finalClone
-    // const reverse = api.complementFromString(forward)
+    const reverse = _.mapValues(forward, (o) => ({...o, seq: api.complementFromString(o.seq)}))
     return (
       <div className="Final-Clone">
-        <HelperPosition length={100} />
+        <HelperPosition length={151} />
         <div className="multiline">
           <div className="forward">
             <div className="sequence">
               <div className="markers sequence">{this.getMarkers(markers)}</div>
               {this.getSequenceWithHover(helpers, forward, 'forward')}
-            </div>
-          </div>
-          <div className="reverse">
-            <div className="sequence">
-              {/* {this.getSequenceWithHover(helpers, reverse, 'reverse')} */}
             </div>
           </div>
         </div>

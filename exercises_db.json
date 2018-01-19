@@ -3,12 +3,12 @@
     "boogie": {
       "question": {
         "part1": "We wish to insert a gene into the plasmid vector below. This gene will have a GST (orange) tag added at the end.",
-        "part2": "The gene is contained within the sequence below, and is contained between positions 1 and 106 inclusive, where a stop codon is not necessary."
+        "part2": "The gene is contained within the sequence below, and is contained between positions 1 and 127 inclusive, where a stop codon is not necessary."
       },
-      "haystack": "GCATGGCGATGAAAAAGTTGCTCATAGCGTCGCTGCTGTTTATGCCGACGATCGCGATGCCGAAGTGTGTTGACCTAAAACTGGTGTTCCAGGAAGGTGTGTCTGAAAT",
+      "haystack": "GCATGGCGATGAAAAAGTTGCTCATAGCGTCGCTGCTGTTTATGCCGACGATCGCGATGCCGAAGTGTACGATCGCGATGCCGAAGTGTGTTGACCTAAAACTGGTGTTCCAGGAAGGTGTGTCTGAAAT",
       "vector": "CGATGCCGAGGAGGTCGATGCCCCGGGGTAGCGTCTAGACGCCATGGGTCGACCGTGGTAACTCGAGGAGCTCCCCTAAAGGTCGACGGGTCTGATCGACTGC",
       "constructStart": false,
-      "constructEnd": 106,
+      "constructEnd": 127,
       "id": "boogie",
       "vectorStart": 11,
       "lastModified": 1516124255741,

@@ -16,11 +16,10 @@ class Success extends Component {
     if(!this.props.isOpen) return null
     return (
       <Modal isOpen={this.props.isOpen} >
-        <div className="success-modal">
+        <div className="Success-Modal">
           <h2>Success!</h2>
-          <strong>Hover any section to see its purpose</strong>
-          <h4>Here will be the final construct:</h4>
-          <div className="Final-hover-note">{this.state.hoverNote}</div>
+          <div className="Final-Hover-Note"><strong>Hover any section to see its purpose</strong>: {this.state.hoverNote}</div>
+          <h3>Here will be the final construct:</h3>
           <FinalClone handleMouseEnter={this.handleMouseEnter} />
           <button className="btn btn-success" onClick={this.props.newExercise}>Start new exercise!</button>
         </div>
