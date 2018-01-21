@@ -8,7 +8,7 @@ export const addExercise = (data) => (dispatch) => {
     type: TYPES.ADD_EXERCISE_INIT,
     id,
   })
-  fetch('http://server', {
+  fetch('https://server', {
     method: 'POST',
     body: JSON.stringify(data)
   }).then(() => {

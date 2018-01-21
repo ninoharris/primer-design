@@ -3,7 +3,7 @@ import * as TYPES from './types'
 import { getIsSuccessful } from '../selectors'
 
 
-const ROOT_URL = 'http://localhost:3939'
+const ROOT_URL = 'https://localhost:3939'
 
 export * from './troubleshooter'
 

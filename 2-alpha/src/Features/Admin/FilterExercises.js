@@ -12,8 +12,8 @@ const ExerciseListFilters = (props) => {
     <div className="input-group mb-3">
       <div className="input-group-prepend">
         <div className="input-group-text">
-          <input type="checkbox" aria-label="Checkbox for following text input" />
-          <label>Show only my exercises</label>
+          <input type="checkbox" aria-label="Checkbox for following text input" id="filter-exercises" />
+          <label htmlFor="filter-exercises"> Show only my exercises</label>
         </div>
       </div>
       <input type="text" className="form-control" value={props.filterText} onChange={updateFilter} />

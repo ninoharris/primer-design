@@ -9,6 +9,7 @@ import { getCurrentExercise } from '../../selectors/index';
 
 class Evaluation extends Component {
   render() {
+    return null
     return (
       <div>
         <div className="evaluations row">

@@ -1,0 +1,64 @@
+{
+  "exercises": {
+    "boogie": {
+      "question": {
+        "part1": "We wish to insert a gene into the plasmid vector below. This gene will have a GST (orange) tag added at the end.",
+        "part2": "The gene is contained within the sequence below, and is contained between positions 1 and 127 inclusive, where a stop codon is not necessary."
+      },
+      "haystack": "GCATGGCGATGAAAAAGTTGCTCATAGCGTCGCTGCTGTTTATGCCGACGATCGCGATGCCGAAGTGTACGATCGCGATGCCGAAGTGTGTTGACCTAAAACTGGTGTTCCAGGAAGGTGTGTCTGAAAT",
+      "vector": "CGATGCCGAGGAGGTCGATGCCCCGGGGTAGCGTCTAGACGCCATGGGTCGACCGTGGTAACTCGAGGAGCTCCCCTAAAGGTCGACGGGTCTGATCGACTGC",
+      "constructStart": false,
+      "constructEnd": 127,
+      "id": "boogie",
+      "vectorStart": 11,
+      "lastModified": 1516124255741,
+      "createdAt": 1515628800000,
+      "authorId": "sedm4648",
+      "vectorEnd": 88,
+      "helpers": {
+        "2": {
+          "name": "promoter",
+          "pos": 2,
+          "len": 8,
+          "color": "#333333"
+        },
+        "88": {
+          "name": "GST",
+          "pos": 88,
+          "len": 14,
+          "color": "#f78f65"
+        }
+      }
+    },
+    "dont-delete": {
+      "question": {
+        "part1": "DONT DELETE We wish to insert a gene into the plasmid vector below. This gene will have a GST (orange) tag added at the end.",
+        "part2": "The gene is contained within the sequence below, and is contained between positions 1 and 98 inclusive, where the stop codon ($) finishes."
+      },
+      "haystack": "GCATGGCGATGAAAAAGTTGCTCATAGCGTCGCTGCTGTTTATGCCGACGATCGCGATGTGTTGACCTAAAACTGGTGTTCCAGGAAGGTGTGTCTGAAAT",
+      "vector": "CGATGCCGAGGAGGTCGATGCCCCGGGGTAGCGTCTAGACGCCATGGGTCGACCGTGGTAACTCGAGGAGCTCCCCTAAAGGTCGACGGGTCTGATCGACTGC",
+      "constructStart": false,
+      "constructEnd": 98,
+      "id": "boogie",
+      "vectorStart": 11,
+      "lastModified": 1516124255741,
+      "createdAt": 1515628800000,
+      "authorId": "sedm4648",
+      "vectorEnd": 88,
+      "helpers": {
+        "2": {
+          "name": "promoter",
+          "pos": 2,
+          "len": 8,
+          "color": "#333333"
+        },
+        "88": {
+          "name": "GST",
+          "pos": 88,
+          "len": 14,
+          "color": "#f78f65"
+        }
+      }
+    }
+  }
+}

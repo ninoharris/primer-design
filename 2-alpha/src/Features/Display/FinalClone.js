@@ -8,29 +8,31 @@ import * as api from '../../api'
 class FinalClone extends Component {
   getMarkers = (markers) => {
     let lastIndex = 0
-    return markers.map(pos => {
-      const marker = <span className="marker" key={pos}>{_.padStart('', pos - lastIndex, ' ')}</span>
-      lastIndex = pos
+    console.log('markers', markers)
+    return markers.map(seq => {
+      const marker = <span className="marker" key={seq}>{_.padStart('', seq.length, ' ')}</span>
+      lastIndex += seq.length
       return marker
     })
   }
   getSequenceWithHover = (helpers, seqWithDetails, dir) => {
     let lastIndex = 0
     const sequenceOutput = _.map(seqWithDetails, ({ seq, text }) => {
-      if(seq.length === 0) return
       let inside
+      // REWRITE. this is only for single helpers, we need to accomodate for any!
       let helper = helpers.find(helper => helper.pos >= lastIndex && helper.pos < (seq.length + lastIndex))
       if(!helper) {
         inside = seq
       } else {
         const relativeHelperPos = helper.pos - lastIndex
+        const endPos = (seq.length === relativeHelperPos + helper.length) ? relativeHelperPos + helper.length : false
         const { color } = helper
         const style = { color: api.pickTextColor(color), backgroundColor: color }
         inside = (
           <span>
             {seq.slice(0, relativeHelperPos)}
-            <span className={`hl ${dir}-hl ${helper.name}`} style={style}>{seq.slice()}</span>
-            {seq.slice(relativeHelperPos + helper.length)}
+            <span className={`hl ${dir}-hl ${helper.name}`} style={style}>{seq.slice(relativeHelperPos, helper.length)}</span>
+            {endPos ? seq.slice(endPos) : ''}
           </span>
         )
       }

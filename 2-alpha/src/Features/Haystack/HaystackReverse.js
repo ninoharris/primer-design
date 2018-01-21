@@ -25,7 +25,7 @@ class HaystackForward extends Component {
         {_.pad('', pos)}<Left3 />
         <span className="reverse-arrow">{isExact && normalMatch && frame === 0 ? this.showExact() : this.showMismatches()}</span>
         <span className="offset-right unimportant">
-          <span>{RV}<Right5 /></span>
+          <span className="RV">{RV}<Right5 /></span>
         </span>
       </div>
     )

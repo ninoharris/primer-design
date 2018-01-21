@@ -437,6 +437,7 @@ body {
 }
 .Final-Clone {
   position: relative;
+  z-index: 2;
 }
 
 .Final-Clone-Seq-Chunk:hover {
@@ -451,32 +452,43 @@ body {
 }
 .Final-Clone .multiline .sequence {
   line-height: 2rem;
-  width: 150ch;
+  width: 151ch;
 }
 .Final-Clone .multiline .sequence span {
   display: inline;
 }
 .markers {
   position: absolute;
-  top: -1rem;
+  top: -0.2rem;
   white-space: pre-wrap;
+  z-index: -1;
 }
 .marker {
   position: relative;
   text-indent: -9999px;
 }
-.marker::after {
+.marker::before, .marker::after {
   content: '';
   display: block;
   height: 6px;
   width: 6px;
   position: absolute;
   top: 0.6rem;
-  right: -3px;
   border: solid #8eb92a;
   border-width: 0 3px 3px 0;
   transform: rotate(45deg);
 }
+.marker::before {
+  left: -3px;
+}
+.marker::after {
+  right: -3px;
+}
+
+
+/* MODALS */
+
+
 
 /* Admin Exercise Form */
 .Admin-Exercise-Form {
