@@ -1,29 +1,37 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-
-import FV from './FV'
-import RV from './RV'
-import FG from './FG'
-import RG from './RG'
-import { getCurrentExercise } from '../../selectors/index';
+import { 
+  getCurrentExercise, 
+  getHaystackForwardMatches, 
+  getHaystackReverseMatches,
+  getUserVectorMatchForward,
+  getUserVectorMatchReverse,
+ } from '../../selectors/index';
 
 class Evaluation extends Component {
+  renderEval(title, matches) {
+    return (
+      <div>
+        <h4>Evalation {title}:</h4>
+        <pre>{JSON.stringify(matches, null, 2)}</pre>
+      </div>
+    )
+  }
   render() {
-    return null
     return (
       <div>
         <div className="evaluations row">
           <div className="col-3">
-            <FV />
+            {this.renderEval('FV', this.props.FVMatches)}
           </div>
           <div className="col-3">
-            <RV />
+            {this.renderEval('RV', this.props.RVMatches)}
           </div>
           <div className="col-3">
-            <FG />
+            {this.renderEval('FG', this.props.FGMatches)}
           </div>
           <div className="col-3">
-            <RG />
+            {this.renderEval('RG', this.props.RGMatches)}
           </div>
         </div>
         <div className="evaluations row">
@@ -38,7 +46,12 @@ class Evaluation extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    exerciseData: getCurrentExercise(state)
+    exerciseData: getCurrentExercise(state),
+
+    FGMatches: getHaystackForwardMatches(state), 
+    RGMatches: getHaystackReverseMatches(state),
+    FVMatches: getUserVectorMatchForward(state),
+    RVMatches: getUserVectorMatchReverse(state),
   }
 }
 

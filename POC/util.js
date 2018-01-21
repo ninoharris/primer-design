@@ -238,3 +238,12 @@ const utils = {
 }
 export default utils
 // console.log('module', module)
+
+
+console.log(generateRandom(100))
+console.log(generateRandom(100))
+console.log(generateRandom(100))
+console.log(generateRandom(100))
+console.log(generateRandom(100))
+console.log(generateRandom(100))
+console.log(generateRandom(100))

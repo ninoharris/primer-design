@@ -27,4 +27,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default withLoading(connect(mapStateToProps)(Display))
+export default withLoading()(connect(mapStateToProps)(Display))

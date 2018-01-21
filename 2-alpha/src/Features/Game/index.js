@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { fetchExercises, showModal, hideModal } from '../../actions'
+import { fetchExercises, selectExercise, showModal, hideModal } from '../../actions'
 
 // Components
 import Form from '../Form'
@@ -14,10 +14,13 @@ import Modals from '../modals'
 
 class App extends Component {
   componentWillMount() {
-    this.props.fetchExercises()
+    this.props.fetchExercises().then(() => {
+      this.props.selectExercise(this.props.match.params.id) // TODO: when deploying, remove id bit. let it pick it randomly
+    })
+
   }
   render() {
-    if (!this.props.exercises) return (
+    if (!this.props.currentExercise) return (
       <div className="main-loading">Loading game...</div>
     )
     return (
@@ -52,6 +55,6 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = ({ exercisesById }) => ({ exercises: exercisesById })
+const mapStateToProps = (state) => ({ currentExercise: state.currentExercise })
 
-export default connect(mapStateToProps, { fetchExercises })(App)
+export default connect(mapStateToProps, { fetchExercises, selectExercise })(App)

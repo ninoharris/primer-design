@@ -11,7 +11,7 @@ const App = () => {
     <Router>
       <div className="router">
         <Switch>
-          <Route path="/play" component={Game} />
+          <Route path="/play/:id?" component={Game} />
           <Route exact path="/admin" component={AdminHomePage} />
           <Route path="/admin/create" component={AdminCreatePage} />
           <Redirect from="/" to="/play" />

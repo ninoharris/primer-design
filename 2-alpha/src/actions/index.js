@@ -3,7 +3,7 @@ import * as TYPES from './types'
 import { getIsSuccessful } from '../selectors'
 
 
-const ROOT_URL = 'https://localhost:3939'
+const ROOT_URL = 'http://localhost:3939'
 
 export * from './troubleshooter'
 
@@ -20,11 +20,16 @@ export const beginAnimatePreview = () => ({
 export const endAnimatePreview = () => ({
   type: TYPES.ANIMATE_PREVIEW_END,
 })
-
-export const fetchExercises = () => (dispatch, getState) => {
+export const fetchExercises = (alwaysFetch = false) => (dispatch, getState) => {
+  if(!alwaysFetch) {
+    if(getState().exercisesList.length > 0) {
+      dispatch({ type: TYPES.FETCHED_EXERCISES_FROM_CACHED })
+      return Promise.resolve() // fetchExercises must always be then-able (eg for selectExercise after exercises are loaded)
+    }
+  }
   dispatch({type: TYPES.FETCH_EXERCISES_INIT })
 
-  axios.get(`${ROOT_URL}/exercises`)
+  return axios.get(`${ROOT_URL}/exercises`)
   .then(response => response.data)
   .then(payload => {
     dispatch({
@@ -32,14 +37,20 @@ export const fetchExercises = () => (dispatch, getState) => {
       payload
     })
   })
-  .then(() => {
-    const selectedExerciseId = getState().exercisesList[0] // just pick the first one off
-    dispatch({
-      type: TYPES.SELECT_EXERCISE,
-      payload: selectedExerciseId
-    })
+}
+
+export const selectExercise = (id = null) => (dispatch, getState) => {
+  if(!getState().exercisesList) return
+  // if we have an id, get that exercise. otherwise pick a random id from the list.
+  // TODO: replace exercisesList with exercisesLeftList
+  const selectedExerciseId = id || getState().exercisesList[Math.floor(Math.random() * getState().exercisesList.length)] 
+  dispatch({
+    type: TYPES.SELECT_EXERCISE,
+    payload: selectedExerciseId
   })
 }
+
+
 
 export const doShowCodons = (on) => ({
   type: TYPES.TOGGLE_CODONS,

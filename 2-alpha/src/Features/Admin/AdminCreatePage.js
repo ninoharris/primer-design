@@ -4,6 +4,18 @@ import { Link } from 'react-router-dom'
 
 import ExerciseEditor from './ExerciseEditor'
 
+const data = {
+  // used to populate "account" reducer when "Load" is clicked
+  constructStart: '4',
+  constructEnd: '100',
+  haystack: 'TCGCATATTACAAGCGACAAGATTCGTATAAATGGTCCAATTAGTGACCAGTGAGATCGATGTATTGTGTCCCCGACCACATCTACGTATATTGCAAGCTATGTATCGCATAAGAGACTTCGTTATTATAAGTTTCTTCTCCGGGACTGTGTATCACGCCTGGGCGTGTGCGGGCATGGCGTCGGTCCGCGTGATTATGC',
+  vectorFusionEnd: false,
+  vectorFusionStart: false,
+  vectorStart: '14',
+  vectorEnd: '78',
+  vector: 'ACAGCGACCGCGAGTTCTAGCCTAACAAATTCCGGGTACATCTTCTGGACACCACCGTATGGAAGTATTGTATTGTGACGCAATAGATCGGTAATTCCAC',
+}
+
 class AdminCreatePage extends Component {
   doSomething = (values) => {
     console.log(values)
@@ -21,7 +33,7 @@ class AdminCreatePage extends Component {
             </div>
           </div>
         </div>
-        <ExerciseEditor onSubmit={this.doSomething} />
+        <ExerciseEditor onSubmit={this.doSomething} data={data} />
       </div>
     )
   }

@@ -35,7 +35,7 @@ class Evaluation extends Component {
     )
   }
   render() {
-    console.log('rerender!!!!', this.props.messageIDsList)
+    console.log('rerender of evaluation:', this.props.messageIDsList)
     if(this.props.loading) return null
     const allMessages = this.props.messageIDsList
     

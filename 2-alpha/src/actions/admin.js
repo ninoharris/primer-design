@@ -3,18 +3,17 @@ import { v4 } from 'uuid'
 import fetch from 'axios'
 
 export const addExercise = (data) => (dispatch) => {
-  const id = v4()
   dispatch({
     type: TYPES.ADD_EXERCISE_INIT,
-    id,
+    id: data.id,
   })
-  fetch('https://server', {
+  fetch('http://localhost:3939/exercises', {
     method: 'POST',
     body: JSON.stringify(data)
   }).then(() => {
     dispatch({
       type: TYPES.ADD_EXERCISE_SUCCESS,
-      id
+      id: data.id
     })
   })
 }

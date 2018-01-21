@@ -13,12 +13,16 @@ import { fetchExercises } from '../actions'
 // }
 
 
-const withLoading = (WrappedComponent, alwaysFetch) => {
+const withLoading = (alwaysFetch = false, admin = false) => (WrappedComponent) => {
   const displayName = WrappedComponent.displayName || WrappedComponent.name || 'Component'
 
   class WithLoading extends Component {
     componentDidMount() {
-      this.props.fetchExercises(alwaysFetch)
+      this.props.fetchExercises(alwaysFetch).then(() => {
+        if(admin) {
+          
+        }
+      })
     }
     render() {
       if (this.props.loading) {
