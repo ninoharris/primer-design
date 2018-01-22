@@ -26,7 +26,7 @@ const initialState = {
     FV: 'tctagaa', // Xba1
     FG: 'gcatggcgat',
     RV: 'gagctccc', //NcoI
-    RG: 'tcagacacacctt'
+    RG: 'catcagcatcagcta'
   },
   showCodons: false,
 }

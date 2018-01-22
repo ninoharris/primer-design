@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import axios from 'axios'
 import * as TYPES from './types'
 import { getIsSuccessful } from '../selectors'
@@ -31,6 +32,9 @@ export const fetchExercises = (alwaysFetch = false) => (dispatch, getState) => {
 
   return axios.get(`${ROOT_URL}/exercises`)
   .then(response => response.data)
+  .then(payload => payload.reduce((prev, curr) => ({ 
+    ...prev, [curr.id]: curr
+  }), {}))
   .then(payload => {
     dispatch({
       type: TYPES.FETCH_EXERCISES_SUCCESS,
@@ -43,6 +47,7 @@ export const selectExercise = (id = null) => (dispatch, getState) => {
   if(!getState().exercisesList) return
   // if we have an id, get that exercise. otherwise pick a random id from the list.
   // TODO: replace exercisesList with exercisesLeftList
+  console.log('Selecting ex')
   const selectedExerciseId = id || getState().exercisesList[Math.floor(Math.random() * getState().exercisesList.length)] 
   dispatch({
     type: TYPES.SELECT_EXERCISE,

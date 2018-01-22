@@ -4,7 +4,7 @@ import { createSelector } from 'reselect'
 import { messages as MSG } from './messages'
 import { shotgunComplementMatch, isTooShort, complementFromString, reverse } from '../api';
 
-export const loadingSelector = state => state.loading
+export const loadingSelector = state => state.fetchingExercises
 export const showCodons = state => state.showCodons
 
 export const exercisesListSelector = state => state.exercisesList
@@ -19,11 +19,10 @@ export const getFilteredExercises = createSelector(
   exercisesByIdSelector,
   filterTextSelector,
   (IDsList, exercisesById, filterText) => IDsList.filter(ID => {
-    const { question, authorId } = exercisesById[ID]
-    const { part1, part2 } = question
+    const { questionPart1, questionPart2, authorId } = exercisesById[ID]
     filterText = filterText.toLowerCase()
-    return part1.toLowerCase().includes(filterText) || 
-      part2.toLowerCase().includes(filterText) 
+    return questionPart1.toLowerCase().includes(filterText) || 
+      questionPart2.toLowerCase().includes(filterText) 
       // TODO: include author names in this
   })
 )
@@ -119,13 +118,13 @@ export const getReverseVectorStrand = createSelector(
 
 export const getQuestion = createSelector(
   getCurrentExercise,
-  ({ question }) => question
+  ({ questionPart1, questionPart2 }) => ({ questionPart1, questionPart2 })
 )
 
 export const getVectorRestrictionSites = createSelector(
   restrictionSitesSelector,
   getBothVectorStrands,
-  (RESites, { forward, reverse }) => {
+  (RESites, { forward }) => {
     return api.getRestrictionSiteMatches(RESites, forward)
     // 20: { pos: 20, name: 'X', seq: 'AAAAAA' }
   }
@@ -179,22 +178,6 @@ export const getUserVectorMatchForward = createSelector(
   }
 )
 
-// export const getUserVectorMatchesReverse = createSelector(
-//   getURVHund80,
-//   getVectorRestrictionSites,
-//   (input, RESites) => {
-//     const matchesObj = _.pickBy(RESites, (RESite) => input.includes(RESite.seq))
-//     const matchesObjSeqReverse = _.map(matchesObj, (RESite => ({ ...RESite, seq: api.reverse(RESite.seq) }) ))
-//     const matches = _.values(matchesObjSeqReverse)
-//     if (matches.length === 1) { // only one match, return the match object
-//       return matches[0]
-//     }
-//     return matches
-//   }
-// )
-// let x = 'ATGCATGCGGG'
-// console.log(x, reverse(x), complementFromString(x), reverse(complementFromString(x)))
-
 export const getUserVectorMatchReverse = createSelector(
   getURVHund80,
   getURVReverse,
@@ -239,7 +222,6 @@ export const getHaystackForwardMatches = createSelector(
       tooLong: api.isTooLong(input),
       pos: constructStart,
       endPos: constructStart + input.length,
-      // ...api.containsMatch({ haystack: forward, query: input, pos: constructStart })
       ...api.shotgunAllPotentialMatches({ haystack: forward, query: input, pos: constructStart })
     }
     return forwardMatches
@@ -251,7 +233,6 @@ export const getHaystackReverseMatches = createSelector(
   getBothHaystackStrands,
   getCurrentExercise,
   (input, {reverse}, { constructEnd }) => {
-    // console.log('Haystack reverse')
     if (input.length < 4) return {}
     // for this, we keep the haystack the same and reverse the users input. Substring the haystack by the input length for checking.
     const pos = constructEnd - input.length
@@ -357,7 +338,7 @@ export const getVectorEvaluations = createSelector(
   if (Eval.hasErrors()) return Eval.getEvaluation()
   FVRV.success("VECTOR_PRIMERS_APART")
 
-
+  // go to final evaluations!
   return Eval.getEvaluation()
 })
 
@@ -384,7 +365,7 @@ export const getAllEvaluations = createSelector(
 
       if (needsStartCodon) {
         // yes: check in-frame with constructStart and placed start codon
-        console.log('needs start codon')
+        
       } else {
         // no: check in-frame with constructStart and vectorStart
         const diffBetweenForwardFrameAndDesired = (FV.singleMatch.toGetDesiredFrame - FV.singleMatch.trailingSeq.length)
@@ -416,7 +397,7 @@ export const getAllEvaluations = createSelector(
 
 
     // COMPLETED EXERCISE. Ready to go
-    if(!Eval.hasErrors()) {
+    if(Eval.contains('VECTOR_PRIMERS_APART') && Eval.contains('REVERSE_BOTH_IN_FRAME') && Eval.contains('FORWARD_BOTH_IN_FRAME')) {
       EvalALL.success('READY')
     }
     const result = Eval.getEvaluation()

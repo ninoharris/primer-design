@@ -1,20 +1,18 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getQuestion} from '../../selectors'
+import { getQuestion } from '../../selectors'
 
-import withLoading from '../../components/withLoading'
 import Vector from '../Vector'
 import Haystack from '../Haystack'
 
 class Display extends Component {
   render() {
-    const { part1, part2 } = this.props.question
     return (
       <div className="col-12">
         <div /* Invisible div to see width of 100 chars */ className="dummy-sizing"></div>
-        <div className="question part-1">{part1}</div>
+        <div className="question part-1">{this.props.questionPart1}</div>
         <Vector />
-        <div className="question part-2 mt-5">{part2}</div>
+        <div className="question part-2 mt-5">{this.props.questionPart2}</div>
         <Haystack />
       </div>
     )
@@ -22,9 +20,9 @@ class Display extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return { 
-    question: getQuestion(state),
-  }
+  const { questionPart1, questionPart2 } = getQuestion(state)
+  return { questionPart1, questionPart2 }
+
 }
 
-export default withLoading()(connect(mapStateToProps)(Display))
+export default connect(mapStateToProps)(Display)

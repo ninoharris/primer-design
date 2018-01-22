@@ -36,8 +36,8 @@ class Evaluation extends Component {
   }
   render() {
     console.log('rerender of evaluation:', this.props.messageIDsList)
-    if(this.props.loading) return null
     const allMessages = this.props.messageIDsList
+    if(!allMessages) return null
     
     const successMessages = allMessages.filter(msg => msg.success)
     const failureMessage = allMessages.find(msg => !msg.success)
@@ -50,11 +50,9 @@ class Evaluation extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  if(state.loading) return { loading: true }
-  return {
-    messageIDsList: getAllEvaluations(state)
-  }
-}
+const mapStateToProps = (state) => ({
+  messageIDsList: getAllEvaluations(state)
+})
+  
 
 export default connect(mapStateToProps, dispatch => ({ dispatch }))(Evaluation)

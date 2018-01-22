@@ -31,7 +31,7 @@ class Form extends Component {
   render() {
     const { FV, FG, RV, RG, FV_TS } = this.props
     return (
-      <form className="form-group primer-form" onSubmit={this.handleSubmit} autocomplete="prevent-autocomplete">
+      <form className="form-group primer-form" onSubmit={this.handleSubmit} autoComplete="prevent-autoComplete">
         <div className="text-center"><strong>Forward Primer</strong></div>
         <div className="input-group">
           <div className="input-group-prepend">
@@ -39,11 +39,11 @@ class Form extends Component {
           </div>
           <input className={'form-control FV ' + (FV_TS ? 'glow' : '')}
             name='FV' value={FV}
-            type="text" onChange={this.handleChange} autocomplete="prevent-autocomplete"
+            type="text" onChange={this.handleChange} autoComplete="prevent-autoComplete"
           />
           <input className="form-control FG"
             name='FG' value={FG}
-            type="text" onChange={this.handleChange} autocomplete="prevent-autocomplete"
+            type="text" onChange={this.handleChange} autoComplete="prevent-autoComplete"
           />
           <div className="input-group-append">
             <div className="input-group-text">3'</div>
@@ -58,11 +58,11 @@ class Form extends Component {
           </div>
           <input className="form-control RV"
             name='RV' value={RV}
-            type="text" onChange={this.handleChange} autocomplete="prevent-autocomplete"
+            type="text" onChange={this.handleChange} autoComplete="prevent-autoComplete"
           />
           <input className="form-control RG"
             name='RG' value={RG}
-            type="text" onChange={this.handleChange} autocomplete="prevent-autocomplete"
+            type="text" onChange={this.handleChange} autoComplete="prevent-autoComplete"
           />
           <div className="input-group-append">
             <div className="input-group-text">3'</div>

@@ -50,7 +50,7 @@ class FinalClone extends Component {
     const reverse = _.mapValues(forward, (o) => ({...o, seq: api.complementFromString(o.seq)}))
     return (
       <div className="Final-Clone">
-        <HelperPosition length={151} />
+        <HelperPosition length={100} />
         <div className="multiline">
           <div className="forward">
             <div className="sequence">

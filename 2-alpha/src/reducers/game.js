@@ -6,11 +6,12 @@ export const game = (state = {}, action) => {
   }
 }
 
-export const loading = (state = true, action) => {
+export const fetchingExercises = (state = true, action) => {
   switch (action.type) {
     case TYPES.FETCH_EXERCISES_INIT:
       return true
-    case TYPES.SELECT_EXERCISE:
+    case TYPES.FETCH_EXERCISES_SUCCESS:
+    case TYPES.FETCHED_EXERCISES_FROM_CACHED:
       return false
     default: return state
   }

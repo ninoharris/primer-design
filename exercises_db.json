@@ -1,10 +1,8 @@
 {
-  "exercises": {
-    "boogie": {
-      "question": {
-        "part1": "We wish, to insert a gene into the plasmid vector below. This gene will have a GST (orange) tag added at the end.",
-        "part2": "The gene is contained within the sequence below, and is contained between positions 1 and 98 inclusive, where the stop codon ($) finishes."
-      },
+  "exercises": [
+    {
+      "questionPart1": "We wish, to insert a gene into the plasmid vector below. This gene will have a GST (orange) tag added at the end.",
+      "questionPart2": "The gene is contained within the sequence below, and is contained between positions 1 and 98 inclusive, where the stop codon ($) finishes.",
       "haystack": "GCATGGCGATGAAAAAGTTGCTCATAGCGTCGCTGCTGTTTGTCGTCTGATGCTGATCGATGCT.................CGTAGCTGATGCTGATGCTAGTCGACCGTTTGCTGCTCGCTGATGATATAGCTGCTCGTCCCGTTAGAGTGTTGACCTAAAACTGGTGTTCCAGGAAGGTGTGTCTGAAAT",
       "vector": "CGATGCCGAGGAGGTCGATGCCCCGGGGTAGCGTCTAGACGCCATGGGTCGACCGTGGTAACTCGAGGAGCTCCCCTAAAGGTCGACGGGTCTGATCGACTGC",
       "constructStart": false,
@@ -30,16 +28,14 @@
         }
       }
     },
-    "wonderbar": {
-      "question": {
-        "part1": "WONDERBAR",
-        "part2": "The gene is contained within the sequence below, and is contained between positions 1 and 98 inclusive, where the stop codon ($) finishes."
-      },
+    {
+      "questionPart1": "WONDERBAR",
+      "questionPart2": "The gene is contained within the sequence below, and is contained between positions 1 and 98 inclusive, where the stop codon ($) finishes.",
       "haystack": "GCATGGCGATGAAAAAGTTGCTCATAGCGTCGCTGCTGTTTGTCGTCTGATGCTGATCGATGCT.................CGTAGCTGATGCTGATGCTAGTCGACCGTTTGCTGCTCGCTGATGATATAGCTGCTCGTCCCGTTAGAGTGTTGACCTAAAACTGGTGTTCCAGGAAGGTGTGTCTGAAAT",
       "vector": "CGATGCCGAGGAGGTCGATGCCCCGGGGTAGCGTCTAGACGCCATGGGTCGACCGTGGTAACTCGAGGAGCTCCCCTAAAGGTCGACGGGTCTGATCGACTGC",
       "constructStart": false,
       "constructEnd": 98,
-      "id": "boogie",
+      "id": "wonderbar",
       "vectorStart": 11,
       "lastModified": 1516124255741,
       "createdAt": 1515628800000,
@@ -59,6 +55,49 @@
           "color": "#f78f65"
         }
       }
+    },
+    {
+      "id": "5638c0bc-de3f-447e-9340-eb38f5cb868e",
+      "authorId": "sedm4648",
+      "lastModified": "2018-01-22T12:50:10.167Z",
+      "createdAt": "2018-01-22T12:50:10.168Z",
+      "questionPart1": "plz guys",
+      "questionPart2": "i need this",
+      "haystack": "TCGCATATTACAAGCGACAAGATTCGTATAAATGGTCCAATTAGTGACCAGTGAGATCGATGTATTGTGTCCCCGACCACATCTACGTATATTGCAAGCTATGTATCGCATAAGAGACTTCGTTATTATAAGTTTCTTCTCCGGGACTGTGTATCACGCCTGGGCGTGTGCGGGCATGGCGTCGGTCCGCGTGATTATGC",
+      "vector": "ACAGCGACCGCGAGTTCTAGCCTAACAAATTCCGGGTACATCTTCTGGACACCACCGTATGGAAGTATTGTATTGTGACGCAATAGATCGGTAATTCCAC",
+      "constructStart": 4,
+      "constructEnd": 100,
+      "vectorStart": 14,
+      "vectorEnd": 78
+    },
+    {
+      "id": "27a3b1e3-ab3e-4027-a581-084799e0dea6",
+      "authorId": "sedm4648",
+      "lastModified": "2018-01-22T13:03:31.100Z",
+      "createdAt": "2018-01-22T13:03:31.100Z",
+      "questionPart1": "sayohhhh",
+      "questionPart2": "sian likes dead people",
+      "haystack": "TCGCATATTACAAGCGACAAGATTCGTATAAATGGTCCAATTAGTGACCAGTGAGATCGATGTATTGTGTCCCCGACCACATCTACGTATATTGCAAGCTATGTATCGCATAAGAGACTTCGTTATTATAAGTTTCTTCTCCGGGACTGTGTATCACGCCTGGGCGTGTGCGGGCATGGCGTCGGTCCGCGTGATTATGC",
+      "vector": "ACAGCGACCGCGAGTTCTAGCCTAACAAATTCCGGGTACATCTTCTGGACACCACCGTATGGAAGTATTGTATTGTGACGCAATAGATCGGTAATTCCAC",
+      "constructStart": 4,
+      "constructEnd": 100,
+      "vectorStart": 14,
+      "vectorEnd": 78
+    },
+    {
+      "id": "d4327d16-a8a1-4a68-b1a7-e51009c5329b",
+      "authorId": "sedm4648",
+      "lastModified": "2018-01-22T13:04:06.166Z",
+      "createdAt": "2018-01-22T13:04:06.167Z",
+      "questionPart1": "eat fish motherfucker\n",
+      "haystack": "TCGCATATTACAAGCGACAAGATTCGTATAAATGGTCCAATTAGTGACCAGTGAGATCGATGTATTGTGTCCCCGACCACATCTACGTATATTGCAAGCTATGTATCGCATAAGAGACTTCGTTATTATAAGTTTCTTCTCCGGGACTGTGTATCACGCCTGGGCGTGTGCGGGCATGGCGTCGGTCCGCGTGATTATGC",
+      "vector": "ACAGCGACCGCGAGTTCTAGCCTAACAAATTCCGGGTACATCTTCTGGACACCACCGTATGGAAGTATTGTATTGTGACGCAATAGATCGGTAATTCCAC",
+      "constructStart": 4,
+      "constructEnd": 100,
+      "vectorStart": 14,
+      "vectorEnd": 78,
+      "vectorContainsStart": false,
+      "vectorContainsEnd": false
     }
-  }
+  ]
 }

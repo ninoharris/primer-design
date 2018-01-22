@@ -124,27 +124,24 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     const newPost = !ownProps.id
     const id = ownProps.id || v4()
     const payload = {
-      [id]: {
-        id,
-        authorId: 'sedm4648',
-        lastModified: moment(),
-        createdAt: ownProps.createdAt || moment(),
-        question: {
-          part1: values.questionPart1,
-          part2: values.questionPart2,
-        },
-        haystack: values.haystack,
-        vector: values.vector,
-        constructStart: values.constructStart,
-        constructEnd: values.constructEnd,
-        vectorStart: values.vectorStart,
-        vectorEnd: values.vectorEnd,
-        vectorContainsStart: values.vectorContainsStart,
-        vectorContainsEnd: values.vectorContainsEnd,
-      }
+      id,
+      authorId: 'sedm4648',
+      lastModified: moment(),
+      createdAt: ownProps.createdAt || moment(),
+      questionPart1: values.questionPart1,
+      questionPart2: values.questionPart2,
+      haystack: values.haystack,
+      vector: values.vector,
+      constructStart: Number(values.constructStart),
+      constructEnd: Number(values.constructEnd),
+      vectorStart: Number(values.vectorStart),
+      vectorEnd: Number(values.vectorEnd),
+      vectorContainsStart: !!values.vectorContainsStart,
+      vectorContainsEnd: !!values.vectorContainsEnd,
     }
+    console.log(payload)
     if(newPost) {
-      dispatch(addExercise({ payload }))
+      dispatch(addExercise({ id, payload }))
     } else {
       console.log('existing post with id of:', id, 'and content of:', payload)
     }

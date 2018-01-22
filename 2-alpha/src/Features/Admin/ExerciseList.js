@@ -9,7 +9,7 @@ class ExerciseList extends Component {
   renderExerciseItem = (exercise) => {
     return (
       <tr key={exercise.id}>
-        <td>{exercise.question.part1}</td>
+        <td>{exercise.questionPart1}</td>
         <td>{new Date(exercise.createdAt).toLocaleDateString()}</td>
         <td>{new Date(exercise.lastModified).toLocaleDateString()}</td>
         <td>{exercise.authorId}</td>

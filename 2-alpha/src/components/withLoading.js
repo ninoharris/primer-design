@@ -18,11 +18,7 @@ const withLoading = (alwaysFetch = false, admin = false) => (WrappedComponent) =
 
   class WithLoading extends Component {
     componentDidMount() {
-      this.props.fetchExercises(alwaysFetch).then(() => {
-        if(admin) {
-          
-        }
-      })
+      this.props.fetchExercises(alwaysFetch)
     }
     render() {
       if (this.props.loading) {

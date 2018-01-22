@@ -1,3 +1,7 @@
+@font-face {
+    font-family: 'CourierPrimeCode'; /*a name to be used later*/
+    src: url('./CourierPrimeCode.ttf'); /*URL to font*/
+}
 body {
   margin: 0;
   padding: 0;
@@ -33,11 +37,12 @@ body {
 /* PRIMER PREVIEW */
 [class^='primer-preview'] {
   white-space: pre-wrap;
-  font-family: monospace;
   font-size: 1.1rem;
   margin-bottom: 1rem;
   text-align: center;
   text-transform: uppercase;
+  letter-spacing: 1px;
+  filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0\'/></filter></svg>#grayscale");
 }
 .RV {
   color: pink;
@@ -54,6 +59,7 @@ body {
 .primer-preview-reverse.active {
   animation: preview-swivel 5s ease;
   animation-fill-mode: forwards;
+  font-smoothing: antialiased !important;
 }
 .primer-preview-reverse.active span.l {
   animation: preview-swivel-inner 5s ease;
@@ -88,7 +94,7 @@ body {
 
 
 .sequence {
-  font-family: monospace;
+  font-family: 'CourierPrimeCode', monospace;
   white-space: pre-wrap;
   line-height: 1;
 }
@@ -193,7 +199,7 @@ body {
   cursor: default;
   position: absolute;
   top: 0;
-  
+  z-index: 2;
   height: 100%;
 }
 .position-helper > span {
@@ -209,10 +215,14 @@ body {
   color: lightblue;
   position: absolute;
 }
-
-.haystack .position-helper.sequence {
-  line-height: 1;
-  z-index: -1;
+.position-helper span:hover {
+  border-left-width: 3px;
+  margin-left: -3px;
+  background: rgba(0,0,0,0.02);
+}
+.position-helper span:hover span {
+  font-size: 1.3rem;
+  margin-top: -0.7rem;
 }
 
 
@@ -381,10 +391,12 @@ body {
   padding: 0;
 }
 .evaluation-item:first-child {
-  border-radius: 4px 4px 0 0;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px; 
 }
 .evaluation-item:last-child {
-  border-radius: 0 0 4px 4px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px; 
 }
 .evaluation-item {
   // transition: all 0.2s ease-in-out;
@@ -439,7 +451,9 @@ body {
   position: relative;
   z-index: 2;
 }
-
+.Final-Clone-Seq-Chunk {
+  cursor: pointer;
+}
 .Final-Clone-Seq-Chunk:hover {
   background: #eeeeee;
 }
@@ -452,20 +466,26 @@ body {
 }
 .Final-Clone .multiline .sequence {
   line-height: 2rem;
-  width: 151ch;
+  width: 100ch;
+  letter-spacing: normal;
 }
 .Final-Clone .multiline .sequence span {
   display: inline;
+}
+.Final-Clone .position-helper {
+  z-index: -1;
 }
 .markers {
   position: absolute;
   top: -0.2rem;
   white-space: pre-wrap;
   z-index: -1;
+  border-color: lightblue;
 }
 .marker {
   position: relative;
   text-indent: -9999px;
+  border-color: inherit;
 }
 .marker::before, .marker::after {
   content: '';
@@ -474,7 +494,8 @@ body {
   width: 6px;
   position: absolute;
   top: 0.6rem;
-  border: solid #8eb92a;
+  border: solid;
+  border-color: inherit;
   border-width: 0 3px 3px 0;
   transform: rotate(45deg);
 }

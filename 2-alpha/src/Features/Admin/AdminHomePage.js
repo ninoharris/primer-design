@@ -35,6 +35,6 @@ class AdminHomePage extends Component {
   }
 }
 
-AdminHomePage = withLoading(AdminHomePage, true)
+AdminHomePage = withLoading(true, true)(AdminHomePage, true)
 
 export default connect()(AdminHomePage)

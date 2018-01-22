@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { fetchExercises, selectExercise, showModal, hideModal } from '../../actions'
+import { currentExerciseSelector } from '../../selectors'
 
 // Components
 import Form from '../Form'
@@ -20,6 +21,7 @@ class App extends Component {
 
   }
   render() {
+    console.log('current ex:', this.props.currentExercise)
     if (!this.props.currentExercise) return (
       <div className="main-loading">Loading game...</div>
     )
@@ -55,6 +57,6 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({ currentExercise: state.currentExercise })
+const mapStateToProps = (state) => ({ currentExercise: currentExerciseSelector(state) })
 
 export default connect(mapStateToProps, { fetchExercises, selectExercise })(App)
