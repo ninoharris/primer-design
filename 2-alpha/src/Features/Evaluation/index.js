@@ -26,6 +26,7 @@ class Evaluation extends Component {
         className={className}
         key={msg.ID}
         onMouseEnter={() => this.doActions(details.actions)}
+        // onMouseLeave={() => this.doActions(details.actions)}
         // style={{ transitionDelay: `${100 * (5-i)}ms`}}
         >
         {/* <strong>{msg.inputs.join(' & ')}: </strong> */}

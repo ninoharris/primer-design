@@ -6,7 +6,8 @@ export const messageIDsToDetails = {
   "NO_MATCH_FV": () => ({
     title: "Forward primer has no matches in vector.",
     additional: "Choose a restriction site towards the left, and use its 5'-3' sequence on the leading strand.",
-    url: "/"
+    url: "/",
+    actions: [actions.troubleshootFV]
   }),
   "NO_MATCH_RV": () => ({
     title: "Reverse primer has no matches in vector.",
@@ -15,10 +16,11 @@ export const messageIDsToDetails = {
   }),
   "EXCEED_MATCH_FV": () => ({
     title: "Forward primer matches more than one restriction site.",
-    actions: [actions.troubleshootFV]
+    actions: [actions.troubleshootFV],
   }),
   "EXCEED_MATCH_RV": () => ({
     title: "Reverse primer matches more than one restriction site.",
+    actions: [actions.troubleshootRV]
   }),
   "FV_MATCHES_ONCE": () => ({
     title: "Forward primer matches just one restriction site."
@@ -31,9 +33,11 @@ export const messageIDsToDetails = {
   }),
   "VECTOR_OVERLAP": () => ({
     title: "Reverse primer cannot overlap forward primer.",
+    actions: [actions.troubleshootFV, actions.troubleshootRV]
   }),
   "VECTORS_TOO_CLOSE": (num) => ({
     title: `Primers are too close by ${num} spaces!`,
+    actions: [actions.troubleshootFV, actions.troubleshootRV]
   }),
   "VECTOR_PRIMERS_APART": () => ({
     title: "Vector primers are away from each other.",
@@ -56,7 +60,7 @@ export const messageIDsToDetails = {
   }),
   "FORWARD_HAYSTACK_OUT_OF_FRAME": (frame) => ({
     title: `Out of frame by ${Math.abs(frame)} to the ${frame > 0 ? 'right': 'left'}`,
-    additional: `Try ${frame > 0 ? 'adding' : 'removing'} a base at the start of the forward primer's sequence`
+    additional: `Try ${frame > 0 ? 'adding' : 'removing'} a base at the start of your primer which matches the construct`
   }),
   "FORWARD_BOTH_IN_FRAME": () => ({
     title: 'Forward primer is in frame!',
@@ -83,14 +87,15 @@ export const messageIDsToDetails = {
   }),
   "REVERSE_HAYSTACK_OUT_OF_FRAME": (frame) => ({
     title: `Out of frame by ${Math.abs(frame)} to the ${frame > 0 ? 'right' : 'left'}`,
-    additional: `Try ${frame > 0 ? 'removing' : 'adding'} a base at the end of the reverse primer's sequence`
+    additional: `Try ${frame > 0 ? 'removing' : 'adding'} a base at the end of the reverse primer's sequence which matches the construct`,
   }),
   "REVERSE_BOTH_IN_FRAME": () => ({
     title: 'Reverse primer is in frame!',
   }),
   "REVERSE_BOTH_OUT_OF_FRAME": (frame) => ({
     title: `Reverse primer is out of frame by ${Math.abs(frame)}`,
-    additional: `At the reverse primer sequence, try adding ${frame} base${frame > 1 ? 's' : ''} at the end of the vector part.`
+    additional: `At the reverse primer sequence, try adding ${frame} base${frame > 1 ? 's' : ''} at the end of the vector part.`,
+    actions: [actions.troubleshootRV],
   }),
   "READY": () => ({
     title: 'All primers look ready! Hooray!'

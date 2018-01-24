@@ -12,40 +12,131 @@ firebase.initializeApp(config)
 
 const db = firebase.database()
 
-db.ref('expenses')
-.orderByKey()
-.on('value', (snapshot => {
-  const expenses = []
-  snapshot.forEach(childSnapshot => {
-    expenses.push({
-      id: childSnapshot.key,
-      ...childSnapshot.val()
-    })
-  })
+export {
+  db as default,
+  firebase
+}
 
-    const counts = []
-  const repeatedExpensesList = []
+// db.ref('expenses')
+// .orderByKey()
+// .on('value', (snapshot => {
+//   const expenses = []
+//   snapshot.forEach(childSnapshot => {
+//     expenses.push({
+//       id: childSnapshot.key,
+//       ...childSnapshot.val()
+//     })
+//   })
 
-  expenses.forEach((expense) => {
-    if(counts.includes(expense.description)) {
-      repeatedExpensesList.push(expense.id)
-    } else {
-      counts.push(expense.description)
-    }
-  })
+//     const counts = []
+//   const repeatedExpensesList = []
 
-  Promise.all(repeatedExpensesList.map(id => {
-    return db.ref(`expenses/${id}`).remove()
-  })).then(() => console.log('The following expenses were deleted:', repeatedExpensesList || 'oh, none...'))
-}))
+//   expenses.forEach((expense) => {
+//     if(counts.includes(expense.description)) {
+//       repeatedExpensesList.push(expense.id)
+//     } else {
+//       counts.push(expense.description)
+//     }
+//   })
 
-db.ref('expenses').on('child_removed', (snapshot) => {
-  console.log('Expense removed with id of `', snapshot.key, '` with value of: ', snapshot.val())
-})
+//   Promise.all(repeatedExpensesList.map(id => {
+//     return db.ref(`expenses/${id}`).remove()
+//   })).then(() => console.log('The following expenses were deleted:', repeatedExpensesList || 'oh, none...'))
+// }))
 
-db.ref('expenses').on('child_changed', (snapshot) => {
-  console.log('Expense changed with id of `', snapshot.key, '` with a new value of ', snapshot.val())
-})
+// db.ref('expenses').on('child_removed', (snapshot) => {
+//   console.log('Expense removed with id of `', snapshot.key, '` with value of: ', snapshot.val())
+// })
+
+// db.ref('expenses').on('child_changed', (snapshot) => {
+//   console.log('Expense changed with id of `', snapshot.key, '` with a new value of ', snapshot.val())
+// })
+//   databaseURL: "https://primer-design-dd8e7.firebaseio.com",
+//   projectId: "primer-design-dd8e7",
+//   storageBucket: "primer-design-dd8e7.appspot.com",
+//   messagingSenderId: "1072741661175"
+// }
+// firebase.initializeApp(config)
+
+// const db = firebase.database()
+
+// db.ref('expenses')
+// .orderByKey()
+// .on('value', (snapshot => {
+//   const expenses = []
+//   snapshot.forEach(childSnapshot => {
+//     expenses.push({
+//       id: childSnapshot.key,
+//       ...childSnapshot.val()
+//     })
+//   })
+
+//     const counts = []
+//   const repeatedExpensesList = []
+
+//   expenses.forEach((expense) => {
+//     if(counts.includes(expense.description)) {
+//       repeatedExpensesList.push(expense.id)
+//     } else {
+//       counts.push(expense.description)
+//     }
+//   })
+
+//   Promise.all(repeatedExpensesList.map(id => {
+//     return db.ref(`expenses/${id}`).remove()
+//   })).then(() => console.log('The following expenses were deleted:', repeatedExpensesList || 'oh, none...'))
+// }))
+
+// db.ref('expenses').on('child_removed', (snapshot) => {
+//   console.log('Expense removed with id of `', snapshot.key, '` with value of: ', snapshot.val())
+// })
+
+// db.ref('expenses').on('child_changed', (snapshot) => {
+//   console.log('Expense changed with id of `', snapshot.key, '` with a new value of ', snapshot.val())
+// })
+//   databaseURL: "https://primer-design-dd8e7.firebaseio.com",
+//   projectId: "primer-design-dd8e7",
+//   storageBucket: "primer-design-dd8e7.appspot.com",
+//   messagingSenderId: "1072741661175"
+// }
+// firebase.initializeApp(config)
+
+// const db = firebase.database()
+
+// db.ref('expenses')
+// .orderByKey()
+// .on('value', (snapshot => {
+//   const expenses = []
+//   snapshot.forEach(childSnapshot => {
+//     expenses.push({
+//       id: childSnapshot.key,
+//       ...childSnapshot.val()
+//     })
+//   })
+
+//     const counts = []
+//   const repeatedExpensesList = []
+
+//   expenses.forEach((expense) => {
+//     if(counts.includes(expense.description)) {
+//       repeatedExpensesList.push(expense.id)
+//     } else {
+//       counts.push(expense.description)
+//     }
+//   })
+
+//   Promise.all(repeatedExpensesList.map(id => {
+//     return db.ref(`expenses/${id}`).remove()
+//   })).then(() => console.log('The following expenses were deleted:', repeatedExpensesList || 'oh, none...'))
+// }))
+
+// db.ref('expenses').on('child_removed', (snapshot) => {
+//   console.log('Expense removed with id of `', snapshot.key, '` with value of: ', snapshot.val())
+// })
+
+// db.ref('expenses').on('child_changed', (snapshot) => {
+//   console.log('Expense changed with id of `', snapshot.key, '` with a new value of ', snapshot.val())
+// })
 // .then(expenses => {
 //   const counts = []
 //   const repeatedExpensesList = []

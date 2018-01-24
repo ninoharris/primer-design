@@ -37,7 +37,7 @@ export const success = (state = false, action) => {
   switch (action.type) {
     case TYPES.EXERCISE_SUCCESS:
       return true
-    case TYPES.NEW_EXERCISE:
+    case TYPES.ADD_EXERCISE:
     case TYPES.EXERCISE_FAIL:
       return false
     default: return state

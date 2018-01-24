@@ -1,17 +1,16 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 import { v4 } from 'uuid'
 import moment from 'moment'
 import { Field, FieldArray,  reduxForm, formValueSelector } from 'redux-form';
-import { addExercise } from '../../actions/admin'
 
 // Below should ALL be taken out
 import { Left3, Left5, Right3, Right5 } from '../../components/HelperEnds'
 import Codons from '../../components/Codons'
 import HelperPosition from '../../components/HelperPosition'
 import * as api from '../../api'
+import { addExercise } from '../../actions/index';
 
 class ExerciseEditor extends Component {
   renderField = ({ name, input, label, type, meta: { touched, error, warning }, ...props }) => (
@@ -37,25 +36,28 @@ class ExerciseEditor extends Component {
   }
   renderHelpers = ({ fields, meta: { error, submitted }}) => {
     return (
-      <ul>
-        <li>
-          <button type="button" onClick={() => fields.push({})} className="btn btn-success">Add helper</button>
-        </li>
+      <ul className="list-group">
         {fields.map((helper, i) => (
-          <li key={i}>
-            <button type="button" onClick={() => fields.remove(i)} className="btn btn-warning">X</button>
-            <Field name={`${helper}.name`} type="text" component={this.renderField} label="Helper text" />
-            <Field name={`${helper}.pos`} type="number" component={this.renderField} label="Start position" />
-            <Field name={`${helper}.len`} type="number" component={this.renderField} label="NT length" />
-            <Field name={`${helper}.color`} type="text" component={this.renderField} label="Color (#FF0000)" />
+          <li key={i} className="list-group-item">
+            <button type="button" style={{position: 'absolute', right: -10, backgroundColor: 'red', color: 'white', border: 'none'}} onClick={() => fields.remove(i)}>X</button>
+            <div className="row">
+              <div className="col-6"><Field name={`${helper}.name`} type="text" component={this.renderField} label="Helper text" /></div>
+              <div className="col-6"><Field name={`${helper}.pos`} type="number" component={this.renderField} label="Start position" /></div>
+            </div>
+            <div className="row">
+              <div className="col-6"><Field name={`${helper}.len`} type="number" component={this.renderField} label="NT length" /></div>
+              <div className="col-6"><Field name={`${helper}.color`} type="text" component={this.renderField} label="Color (#FF0000)" /></div>
+            </div>
           </li>
         ))}
+        <li className="text-center mt-3">
+          <button type="button" onClick={() => fields.push({})} className="btn btn-success">Add helper</button>
+        </li>
       </ul>
     )
   }
   render() {
     const { pristine, submitting, submitText = 'Create exercise', haystack, vector } = this.props
-    console.log('rerender!', haystack)
     return (
       <form onSubmit={this.props.handleSubmit} className="Admin-Exercise-Form" method="POST">
         <div className="row">
@@ -135,7 +137,7 @@ ExerciseEditor = reduxForm({
 
 const selector = formValueSelector('exerciseEditor')
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state, { data = {}}) => {
   const { haystack = ' ', vector = ' ', vectorStart = null, vectorEnd = null, constructStart = null, constructEnd = null, helpers = [] } = selector(state, 
     'haystack', 'vector', 'vectorStart', 'vectorEnd', 'constructStart', 'constructEnd', 'helpers')
   const previews = {
@@ -157,27 +159,32 @@ const mapStateToProps = (state, ownProps) => {
     ],
     helpers
   }
-  return { ...previews, initialValues: ownProps.data}
+  const helpersArray = _.keys(data.helpers).map(pos => ({ ...data.helpers[pos] }))
+
+  const initialValues = {
+    ...data,
+    helpers: helpersArray,
+  }
+  return { ...previews, initialValues}
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   const onSubmit = (values) => {
-    const newPost = !ownProps.id
-    const id = ownProps.id || v4()
-    const helpers = values.helpers.reduce((prev, helper) => ({
+    const newPost = true
+    // convert helpers array to an object
+    const helpersObject = values.helpers.reduce((prev, helper) => ({
       ...prev,
-      [helper.name]: {
+      [helper.pos]: {
         name: helper.name,
         pos: parseInt(helper.pos, 10),
         len: parseInt(helper.len, 10),
         color: helper.color,
       }
     }), {})
-    const payload = {
-      id,
+    const exerciseData = {
       authorId: 'sedm4648',
-      lastModified: moment(),
-      createdAt: ownProps.createdAt || moment(),
+      lastModified: moment().valueOf(),
+      createdAt: ownProps.createdAt || moment().valueOf(),
       questionPart1: values.questionPart1,
       questionPart2: values.questionPart2,
       haystack: values.haystack,
@@ -188,13 +195,14 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       vectorEnd: parseInt(values.vectorEnd, 10),
       vectorContainsStart: !!values.vectorContainsStart,
       vectorContainsEnd: !!values.vectorContainsEnd,
-      helpers,
+      helpers: helpersObject,
     }
-    console.log(payload)
+    console.log(exerciseData)
+
     if(newPost) {
-      dispatch(addExercise({ id, payload }))
+      dispatch(addExercise(exerciseData))
     } else {
-      console.log('existing post with id of:', id, 'and content of:', payload)
+      // dispatch(updateExercise)
     }
   }
   
