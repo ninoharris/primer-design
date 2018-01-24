@@ -9,7 +9,7 @@ const HelperPosition = ({length, padLeft, ...rest}) => {
     }
   }
   return (
-  <div className="sequence position-helper" {...rest}>
+  <div className="sequence sequence-102 position-helper" {...rest}>
     {padLeft ? <span className="sequence">{_.pad('', padLeft)}</span> : ''}
     {positionHelpers}
   </div>)

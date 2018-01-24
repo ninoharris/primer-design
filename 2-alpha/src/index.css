@@ -1,7 +1,9 @@
+/*
 @font-face {
-    font-family: 'CourierPrimeCode'; /*a name to be used later*/
-    src: url('./CourierPrimeCode.ttf'); /*URL to font*/
+  font-family: 'CourierPrimeCode'; 
+  src: url('./CourierPrimeCode.ttf');
 }
+*/
 body {
   margin: 0;
   padding: 0;
@@ -42,7 +44,6 @@ body {
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 1px;
-  filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0\'/></filter></svg>#grayscale");
 }
 .RV {
   color: pink;
@@ -75,7 +76,6 @@ body {
   80%, 100% { transform: rotateY(180deg); };
 }
 
-
 .Nav {
   display: flex;
   justify-content: space-between;
@@ -94,7 +94,7 @@ body {
 
 
 .sequence {
-  font-family: 'CourierPrimeCode', monospace;
+  font-family: monospace;
   white-space: pre-wrap;
   line-height: 1;
 }
@@ -137,7 +137,6 @@ body {
   position: relative;
 }
 .multiline .sequence {
-  width: 100ch;
   word-break: break-all;
   line-height: 10;
 }
@@ -149,6 +148,9 @@ body {
 }
 .reverse .multiline .user-sequence {
   top: -0.7rem;
+}
+.user-sequence [class^="offset"] {
+  z-index: 5; /* So the offset is on top of the background arrows */
 }
 .multiline .sequence [class^="offset"] {
   word-break: keep-all;
@@ -201,6 +203,7 @@ body {
   top: 0;
   z-index: 2;
   height: 100%;
+  overflow: visible;
 }
 .position-helper > span {
   margin-left: -1px;
@@ -366,16 +369,16 @@ body {
   background-size: 120px;
   margin-left: -25px;
   margin-right: -25px;
-  z-index: -10;
+  z-index: -15;
   position: relative;
 }
 .forward-arrow {
   background-image: url('./images/forward-arrow.png');
-  
+  background-position: center right;
 }
 .reverse-arrow {
   background-image: url('./images/reverse-arrow.png');
-  
+  background-position: center left;
 }
 
 
@@ -517,6 +520,7 @@ body {
 }
 .Admin-Exercise-Form input, .Admin-Exercise-Form textarea {
   font-size: 0.8rem;
+  letter-spacing: 1px;
 }
 .Admin-Exercise-Form .vector-input, .Admin-Exercise-Form .haystack-input {
   height: auto;
@@ -527,4 +531,13 @@ body {
 .Admin-Exercise-Form .haystack-input {
   width: 100ch;
 }
-
+.Admin-Markers {
+  position: absolute;
+  top: 0;
+  color: red;
+  font-weight: bold;
+  white-space: pre-wrap;
+}
+.Admin-Markers .admin-marker {
+  border-right: 1px solid red;
+}

@@ -11,6 +11,9 @@ import configureStore from './configureStore'
 
 import App from './routers'
 
+import firebase from './firebase/firebase'
+
+
 ReactDOM.render(
   <Provider store={configureStore}><App /></Provider>, 
   document.getElementById('root'));

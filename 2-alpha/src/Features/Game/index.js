@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { fetchExercises, selectExercise, showModal, hideModal } from '../../actions'
+import { fetchExercises, selectExercise } from '../../actions'
 import { currentExerciseSelector } from '../../selectors'
 
 // Components
@@ -8,7 +8,6 @@ import Form from '../Form'
 import EvaluationTemp from '../Evaluation/Evaluation-temp'
 import Evaluation from '../Evaluation'
 import Display from '../Display'
-// import Modal from '../../components/Modal';
 import Options from '../Options'
 import Modals from '../modals'
 
@@ -18,7 +17,6 @@ class App extends Component {
     this.props.fetchExercises().then(() => {
       this.props.selectExercise(this.props.match.params.id) // TODO: when deploying, remove id bit. let it pick it randomly
     })
-
   }
   render() {
     console.log('current ex:', this.props.currentExercise)

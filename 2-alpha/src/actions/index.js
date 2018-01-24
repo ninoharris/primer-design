@@ -55,6 +55,10 @@ export const selectExercise = (id = null) => (dispatch, getState) => {
   })
 }
 
+export const set100CharsWidth = (width) => ({
+  type: TYPES.SET_100_CHARS_WIDTH,
+  payload: width,
+})
 
 
 export const doShowCodons = (on) => ({
@@ -80,3 +84,4 @@ export const newExercise = () => (dispatch, getState) => {
     type: TYPES.NEW_EXERCISE
   })
 }
+

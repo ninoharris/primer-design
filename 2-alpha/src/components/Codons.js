@@ -1,10 +1,12 @@
 import React from 'react';
+import { showCodons } from '../selectors'
 import { connect } from 'react-redux'
 import { getAASeq } from '../api'
-// import { showCodons } from '../selectors/index';
 
 const Codons = ({ seq = '', showCodons }) => {
+
   if(!showCodons) return null
+  
   return (
     <div className="codons">
       <div className="codon sequence">
@@ -20,6 +22,9 @@ const Codons = ({ seq = '', showCodons }) => {
   )
 }
 
-const mapStateToProps = ({ showCodons }) => ({ showCodons })
+const mapStateToProps = (state, ownProps) => {
+  if(ownProps.showCodons !== 'undefined') return { showCodons: ownProps.showCodons} 
+  return { showCodons: showCodons(state) }
+}
 
 export default connect(mapStateToProps)(Codons)

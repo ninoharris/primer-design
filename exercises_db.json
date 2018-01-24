@@ -57,39 +57,11 @@
       }
     },
     {
-      "id": "5638c0bc-de3f-447e-9340-eb38f5cb868e",
+      "id": "12c13d78-3ddc-4fdc-a69b-9f87a26f6a5b",
       "authorId": "sedm4648",
-      "lastModified": "2018-01-22T12:50:10.167Z",
-      "createdAt": "2018-01-22T12:50:10.168Z",
-      "questionPart1": "plz guys",
-      "questionPart2": "i need this",
-      "haystack": "TCGCATATTACAAGCGACAAGATTCGTATAAATGGTCCAATTAGTGACCAGTGAGATCGATGTATTGTGTCCCCGACCACATCTACGTATATTGCAAGCTATGTATCGCATAAGAGACTTCGTTATTATAAGTTTCTTCTCCGGGACTGTGTATCACGCCTGGGCGTGTGCGGGCATGGCGTCGGTCCGCGTGATTATGC",
-      "vector": "ACAGCGACCGCGAGTTCTAGCCTAACAAATTCCGGGTACATCTTCTGGACACCACCGTATGGAAGTATTGTATTGTGACGCAATAGATCGGTAATTCCAC",
-      "constructStart": 4,
-      "constructEnd": 100,
-      "vectorStart": 14,
-      "vectorEnd": 78
-    },
-    {
-      "id": "27a3b1e3-ab3e-4027-a581-084799e0dea6",
-      "authorId": "sedm4648",
-      "lastModified": "2018-01-22T13:03:31.100Z",
-      "createdAt": "2018-01-22T13:03:31.100Z",
-      "questionPart1": "sayohhhh",
-      "questionPart2": "sian likes dead people",
-      "haystack": "TCGCATATTACAAGCGACAAGATTCGTATAAATGGTCCAATTAGTGACCAGTGAGATCGATGTATTGTGTCCCCGACCACATCTACGTATATTGCAAGCTATGTATCGCATAAGAGACTTCGTTATTATAAGTTTCTTCTCCGGGACTGTGTATCACGCCTGGGCGTGTGCGGGCATGGCGTCGGTCCGCGTGATTATGC",
-      "vector": "ACAGCGACCGCGAGTTCTAGCCTAACAAATTCCGGGTACATCTTCTGGACACCACCGTATGGAAGTATTGTATTGTGACGCAATAGATCGGTAATTCCAC",
-      "constructStart": 4,
-      "constructEnd": 100,
-      "vectorStart": 14,
-      "vectorEnd": 78
-    },
-    {
-      "id": "d4327d16-a8a1-4a68-b1a7-e51009c5329b",
-      "authorId": "sedm4648",
-      "lastModified": "2018-01-22T13:04:06.166Z",
-      "createdAt": "2018-01-22T13:04:06.167Z",
-      "questionPart1": "eat fish motherfucker\n",
+      "lastModified": "2018-01-22T18:53:53.786Z",
+      "createdAt": "2018-01-22T18:53:53.786Z",
+      "questionPart1": "work daammmit",
       "haystack": "TCGCATATTACAAGCGACAAGATTCGTATAAATGGTCCAATTAGTGACCAGTGAGATCGATGTATTGTGTCCCCGACCACATCTACGTATATTGCAAGCTATGTATCGCATAAGAGACTTCGTTATTATAAGTTTCTTCTCCGGGACTGTGTATCACGCCTGGGCGTGTGCGGGCATGGCGTCGGTCCGCGTGATTATGC",
       "vector": "ACAGCGACCGCGAGTTCTAGCCTAACAAATTCCGGGTACATCTTCTGGACACCACCGTATGGAAGTATTGTATTGTGACGCAATAGATCGGTAATTCCAC",
       "constructStart": 4,
@@ -97,7 +69,39 @@
       "vectorStart": 14,
       "vectorEnd": 78,
       "vectorContainsStart": false,
-      "vectorContainsEnd": false
+      "vectorContainsEnd": false,
+      "helpers": {
+        "asdfgh": {
+          "name": "asdfgh",
+          "pos": 12,
+          "len": 5,
+          "color": "#eeeeee"
+        }
+      }
+    },
+    {
+      "id": "88faf20f-4dfa-4c41-a7ee-2adf583445cf",
+      "authorId": "sedm4648",
+      "lastModified": "2018-01-22T20:10:38.562Z",
+      "createdAt": "2018-01-22T20:10:38.562Z",
+      "questionPart1": "do a thing",
+      "questionPart2": "lets see if this works",
+      "haystack": "TCGCATATTACAAGCGACAAGATTCGTATAAATGGTCCAATTAGTGACCAGTGAGATCGATGTATTGTGTCCCCGACCACATCTACGTATATTGCAAGCTATGTATCGCATAAGAGACTTCGTTATTATAAGTTTCTTCTCCGGGACTGTGTATCACGCCTGGGCGTGTGCGGGCATGGCGTCGGTCCGCGTGATTATGC",
+      "vector": "ACAGCGACCGCGAGTTCTAGCCTAACAAATTCCGGGTACATCTTCTGGACACCACCGTATGGAAGTATTGTATTGTGACGCAATAGATCGGTAATTCCAC",
+      "constructStart": 10,
+      "constructEnd": 84,
+      "vectorStart": 14,
+      "vectorEnd": 78,
+      "vectorContainsStart": false,
+      "vectorContainsEnd": false,
+      "helpers": {
+        "blam": {
+          "name": "blam",
+          "pos": 3,
+          "len": 10,
+          "color": "#f0f0f0"
+        }
+      }
     }
   ]
 }
