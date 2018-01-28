@@ -1,20 +1,27 @@
-// import _ from 'lodash'
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import 'csshake'
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 
+
 // Redux
-import { Provider, connect } from 'react-redux'
+import { Provider } from 'react-redux'
+import { fetchExercises } from './actions'
 import configureStore from './configureStore'
 
+import Loading from './components/Loading'
 import App from './routers'
 
-import firebase from './firebase/firebase'
+const store = configureStore()
 
+ReactDOM.render(<Loading />, document.getElementById('root'))
 
-ReactDOM.render(
-  <Provider store={configureStore}><App /></Provider>, 
-  document.getElementById('root'));
+store.dispatch(fetchExercises()).then(() => {
+  ReactDOM.render(
+    <Provider store={store}><App /></Provider>,
+    document.getElementById('root')
+  )
+})
+  
 registerServiceWorker();

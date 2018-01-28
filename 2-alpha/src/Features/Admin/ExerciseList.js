@@ -4,17 +4,17 @@ import { Link } from 'react-router-dom'
 import { getFilteredExercises, exercisesByIdSelector } from '../../selectors/index'
 import { exercisesList, exercisesById } from '../../reducers/exercises';
 
-
 class ExerciseList extends Component {
-  renderExerciseItem = (exercise) => {
+  renderExerciseItem = (exercise, ID) => {
+    console.log(exercise)
     return (
-      <tr key={exercise.id}>
+      <tr key={ID}>
         <td>{exercise.questionPart1}</td>
         <td>{new Date(exercise.createdAt).toLocaleDateString()}</td>
         <td>{new Date(exercise.lastModified).toLocaleDateString()}</td>
         <td>{exercise.authorId}</td>
         <td>
-          <Link to={`/admin/edit/${exercise.id}`}>
+          <Link to={`/admin/edit/${ID}`}>
             <button className="btn btn-primary">Edit exercise</button>
           </Link>
         </td>
@@ -35,7 +35,7 @@ class ExerciseList extends Component {
         </thead>
         <tbody>
           {this.props.exercisesList.map(
-            (ID) => this.renderExerciseItem(this.props.exercisesById[ID]))}
+            (ID) => this.renderExerciseItem(this.props.exercisesById[ID], ID))}
         </tbody>
       </table>
     )

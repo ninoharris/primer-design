@@ -1,5 +1,4 @@
 import _ from 'lodash'
-import axios from 'axios'
 import * as TYPES from './types'
 import { getIsSuccessful } from '../selectors'
 import db from '../firebase/firebase'
@@ -23,23 +22,38 @@ export const endAnimatePreview = () => ({
   type: TYPES.ANIMATE_PREVIEW_END,
 })
 export const fetchExercises = (alwaysFetch = false) => (dispatch, getState) => {
+  // if(!alwaysFetch) {
+  //   if(getState().exercisesList.length > 0) {
+  //     dispatch({ type: TYPES.FETCHED_EXERCISES_FROM_CACHED })
+  //     return Promise.resolve() // fetchExercises must always be then-able (eg for selectExercise after exercises are loaded)
+  //   }
+  // }
+  // dispatch({type: TYPES.FETCH_EXERCISES_INIT })
+
+  // return axios.get(`${ROOT_URL}/exercises`)
+  // .then(response => response.data)
+  // .then(payload => payload.reduce((prev, curr) => ({ 
+  //   ...prev, [curr.id]: curr
+  // }), {}))
+  // .then(payload => {
+  //   dispatch({
+  //     type: TYPES.FETCH_EXERCISES_SUCCESS,
+  //     payload
+  //   })
+  // })
   if(!alwaysFetch) {
     if(getState().exercisesList.length > 0) {
       dispatch({ type: TYPES.FETCHED_EXERCISES_FROM_CACHED })
       return Promise.resolve() // fetchExercises must always be then-able (eg for selectExercise after exercises are loaded)
     }
   }
-  dispatch({type: TYPES.FETCH_EXERCISES_INIT })
+  dispatch({ type: TYPES.FETCH_EXERCISES_INIT })
 
-  return axios.get(`${ROOT_URL}/exercises`)
-  .then(response => response.data)
-  .then(payload => payload.reduce((prev, curr) => ({ 
-    ...prev, [curr.id]: curr
-  }), {}))
-  .then(payload => {
+  return db.ref('exercises').once('value', (snapshot) => {
+    const payload = snapshot.val()
     dispatch({
       type: TYPES.FETCH_EXERCISES_SUCCESS,
-      payload
+      payload,
     })
   })
 }
