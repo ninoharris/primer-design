@@ -109,8 +109,9 @@ const mapStateToProps = (state, ownProps) => {
     ...data,
     helpers: helpersArray,
   }
+  const createdAt = data.createdAt || moment().valueOf()
   const onSubmit = (values) => {
-    const createdAt = ownProps.createdAt || moment().valueOf()
+    
 
     // convert helpers array to an object
     const helpersObject = values.helpers.reduce((prev, helper) => ({

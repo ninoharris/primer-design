@@ -1,28 +1,48 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
-import { exercisesByIdSelector } from '../selectors' 
+import { getExercise } from '../selectors' 
+import { updateExercise, removeExercise } from '../actions/admin'
 
 import Header from './Header'
 import ExerciseEditor from './ExerciseEditor'
 
 class AdminEditPage extends Component {
+  outerSubmit = (values) => {
+    const id = this.props.id
+    this.props.updateExercise(id, values).then(() => {
+      this.props.history.push('/admin')
+    })
+  }
+  removeExercise = () => {
+    const carryOn = window.confirm('Are you sure? This cant be undone')
+    if(carryOn) {
+      this.props.removeExercise(this.props.id).then(() => {
+        this.props.history.push('/admin')
+      })
+    }
+  }
   render() {
-    console.log('exercise for editing is: ', this.props.exercise)
+    const { id } = this.props
     return (
       <div className="container-fluid">
-        <Header />
-        <ExerciseEditor onSubmit={this.doSomething} data={this.props.exercise} />
+        <Header title={`Editing exercise with id: ${id}`}>
+          <button onClick={this.removeExercise} className="btn btn-danger mr-2">Delete exercise</button>
+        </Header>
+        <ExerciseEditor outerSubmit={this.outerSubmit} data={this.props.exercise} />
       </div>
     )
   }
 }
 
-const mapStateToProps = (state, { match }) => {
-  console.log(exercisesByIdSelector(match.params.id))
+const mapStateToProps = (state, ownProps) => {
+  const { id } = ownProps.match.params
+  const exercise = getExercise(state, { id })
+  console.log('exercise is:', exercise)
   return {
-    data: exercisesByIdSelector(match.params.id)
+    exercise,
+    id,
   }
 }
 
-export default withRouter(connect(mapStateToProps)(AdminEditPage))
+export default withRouter(connect(mapStateToProps, { updateExercise, removeExercise })(AdminEditPage))

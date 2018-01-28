@@ -15,6 +15,7 @@ export const sortBySelector = state => state.sortBy
 export const filterTextSelector = state => state.filterText
 
 export const get100CharWidth = state => state.charWidth100
+export const getExercise = (state, { id }) => state.exercisesById[id]
 
 export const getFilteredExercises = createSelector(
   exercisesListSelector,
