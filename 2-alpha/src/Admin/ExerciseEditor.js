@@ -1,16 +1,10 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { v4 } from 'uuid'
 import moment from 'moment'
-import { Field, FieldArray,  reduxForm, formValueSelector } from 'redux-form';
+import { Field, FieldArray, reduxForm } from 'redux-form';
 
-// Below should ALL be taken out
-import { Left3, Left5, Right3, Right5 } from '../../components/HelperEnds'
-import Codons from '../../components/Codons'
-import HelperPosition from '../../components/HelperPosition'
-import * as api from '../../api'
-import { addExercise } from '../../actions/index';
+import HaystackPreview from './HaystackPreview'
 
 class ExerciseEditor extends Component {
   renderField = ({ name, input, label, type, meta: { touched, error, warning }, ...props }) => (
@@ -24,16 +18,6 @@ class ExerciseEditor extends Component {
       </div>
     </div>
   )
-  getMarkers = (markers = []) => {
-    return (
-      <div className="Admin-Markers sequence"> 
-        {markers.map(marker => {
-          if(isNaN(marker)) return null
-          return <span className="admin-marker" key={marker}>{_.padStart('|', marker, ' ')}</span>
-        })}
-      </div>
-    )
-  }
   renderHelpers = ({ fields, meta: { error, submitted }}) => {
     return (
       <ul className="list-group">
@@ -57,12 +41,11 @@ class ExerciseEditor extends Component {
     )
   }
   render() {
-    const { pristine, submitting, submitText = 'Create exercise', haystack, vector } = this.props
+    const { pristine, submitting, submitText = 'Create exercise' } = this.props
     return (
       <form onSubmit={this.props.handleSubmit} className="Admin-Exercise-Form" method="POST">
         <div className="row">
           <div className="col-4">
-            Sidebar. Will contain: haystack start, end. vector start, end. helpers (pos, length, name, color).
             <div className="row mb-3">
               <div className="col-12"><strong>Haystack</strong></div>
               <div className="col-6">
@@ -104,25 +87,7 @@ class ExerciseEditor extends Component {
               <label className="d-block" htmlFor="haystack">Haystack forward sequence</label>
               <Field className="form-control haystackInput" name="haystack" component="textarea" type="text" />
             </div>
-            <div className="haystack admin-haystack">
-              <HelperPosition length={100} />
-              <div className="forward">
-                <div className="multiline">
-                  <div className="sequence">
-                    {this.getMarkers(this.props.haystackMarkers)}
-                    <Left5 />{haystack.forward}<Right3 />
-                  </div>
-                </div>
-              </div>
-              <div className="reverse">
-                <div className="multiline">
-                  <div className="sequence">
-                    <Left3 />{haystack.reverse}<Right5 />
-                  </div>
-                  <Codons seq={haystack.forward} showCodons={true} />
-                </div>
-              </div>
-            </div>
+            {/* <HaystackPreview /> */}
             <button type="submit" disabled={pristine || submitting}>{submitText}</button>
           </div>
         </div>
@@ -135,42 +100,18 @@ ExerciseEditor = reduxForm({
   form: 'exerciseEditor',
 })(ExerciseEditor)
 
-const selector = formValueSelector('exerciseEditor')
 
-const mapStateToProps = (state, { data = {}}) => {
-  const { haystack = ' ', vector = ' ', vectorStart = null, vectorEnd = null, constructStart = null, constructEnd = null, helpers = [] } = selector(state, 
-    'haystack', 'vector', 'vectorStart', 'vectorEnd', 'constructStart', 'constructEnd', 'helpers')
-  const previews = {
-    haystack: {
-      forward: haystack,
-      reverse: api.complementFromString(haystack),
-    },
-    vector: {
-      forward: vector,
-      reverse: api.complementFromString(vector)
-    },
-    haystackMarkers: [
-      parseInt(constructStart, 10),
-      parseInt(constructEnd, 10),
-    ],
-    vectorMarkers: [
-      parseInt(vectorStart, 10),
-      parseInt(vectorEnd, 10),
-    ],
-    helpers
-  }
+
+const mapStateToProps = (state, ownProps) => {
+  const { data = {}, outerSubmit } = ownProps
   const helpersArray = _.keys(data.helpers).map(pos => ({ ...data.helpers[pos] }))
-
   const initialValues = {
     ...data,
     helpers: helpersArray,
   }
-  return { ...previews, initialValues}
-}
-
-const mapDispatchToProps = (dispatch, ownProps) => {
   const onSubmit = (values) => {
-    const newPost = true
+    const createdAt = ownProps.createdAt || moment().valueOf()
+
     // convert helpers array to an object
     const helpersObject = values.helpers.reduce((prev, helper) => ({
       ...prev,
@@ -184,7 +125,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     const exerciseData = {
       authorId: 'sedm4648',
       lastModified: moment().valueOf(),
-      createdAt: ownProps.createdAt || moment().valueOf(),
+      createdAt,
       questionPart1: values.questionPart1,
       questionPart2: values.questionPart2,
       haystack: values.haystack,
@@ -197,18 +138,15 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       vectorContainsEnd: !!values.vectorContainsEnd,
       helpers: helpersObject,
     }
-    console.log(exerciseData)
-
-    if(newPost) {
-      dispatch(addExercise(exerciseData))
-    } else {
-      // dispatch(updateExercise)
-    }
+    console.log('Exercise data: ', exerciseData)
+    outerSubmit(exerciseData)
   }
-  
-  return { onSubmit }
+  return {
+    initialValues,
+    onSubmit,
+  }
 }
 
-ExerciseEditor = connect(mapStateToProps, mapDispatchToProps)(ExerciseEditor)
+ExerciseEditor = connect(mapStateToProps)(ExerciseEditor)
 
 export default ExerciseEditor

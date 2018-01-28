@@ -3,23 +3,27 @@ import * as TYPES from '../actions/types'
 
 export const exercisesById = (state = {}, action) => {
   switch (action.type) {
-    case 'FETCH_EXERCISES_SUCCESS':
-      return {...state, ...action.payload}
+    case TYPES.FETCH_EXERCISES_SUCCESS:
+      return action.payload
+    case TYPES.ADD_EXERCISE_SUCCESS:
+      return {...state, [action.id]: action.payload}
     default: return state
   }
 }
 
 export const exercisesList = (state = [], action) => {
   switch (action.type) {
-    case 'FETCH_EXERCISES_SUCCESS':
-      return _.union(state, _.keys(action.payload))
+    case TYPES.FETCH_EXERCISES_SUCCESS:
+      return _.keys(action.payload)
+    case TYPES.ADD_EXERCISE_SUCCESS:
+      return [...state, action.id] // add exercise to end of array
     default: return state
   }
 }
 
 export const currentExercise = (state = null, action) => {
   switch (action.type) {
-    case 'SELECT_EXERCISE':
+    case TYPES.SELECT_EXERCISE:
       return action.payload // id of exercise
     default: return state
   }

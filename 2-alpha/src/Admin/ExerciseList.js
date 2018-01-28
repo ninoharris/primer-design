@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { getFilteredExercises, exercisesByIdSelector } from '../../selectors/index'
-import { exercisesList, exercisesById } from '../../reducers/exercises';
+import { getFilteredExercises, exercisesByIdSelector } from '../selectors/index'
+import { exercisesList, exercisesById } from '../reducers/exercises';
 
 class ExerciseList extends Component {
   renderExerciseItem = (exercise, ID) => {

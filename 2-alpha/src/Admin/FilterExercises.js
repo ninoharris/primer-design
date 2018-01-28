@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { updateExerciseFilter } from '../../actions/admin'
-import { filterTextSelector, sortOrderSelector, sortBySelector} from '../../selectors'
+import { updateExerciseFilter } from '../actions/admin'
+import { filterTextSelector, sortOrderSelector, sortBySelector} from '../selectors'
 
 const ExerciseListFilters = (props) => {
   const updateFilter = (e) => {
@@ -22,11 +22,6 @@ const ExerciseListFilters = (props) => {
         <option value="last_modified">Last modified</option>
         <option value="author">Author</option>
         <option value="id">ID</option>
-      </select>
-      <select className="custom-select" value={props.sortOrder}>
-        <option value="asc">Asc</option>
-        <option value="desc">Desc</option>
-        {/* Show mine only */}
       </select>
     </div>
   )

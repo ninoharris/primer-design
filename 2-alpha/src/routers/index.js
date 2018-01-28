@@ -2,7 +2,7 @@ import React from 'react'
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
 
 import Game from '../Features/Game'
-import AdminRouter from '../Features/Admin/AdminRouter'
+import AdminRouter from './admin'
 
 import Width100 from '../components/Width100' // used throughout admin and user-facing for width of 100 chars.
 
