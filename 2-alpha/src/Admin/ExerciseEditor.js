@@ -2,7 +2,7 @@ import _ from 'lodash'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import moment from 'moment'
-import { Field, FieldArray, reduxForm } from 'redux-form';
+import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form';
 
 import validate from './exerciseValidate'
 import HaystackPreview from './HaystackPreview'
@@ -24,6 +24,19 @@ class ExerciseEditor extends Component {
       <label htmlFor={name}>{label}</label>
       <div>
         <textarea {...input} id={name} placeholder={label} type={type} {...props} />
+        {!pristine &&
+          ((error && <span className="editor-error">{error}</span>) ||
+            (warning && <span className="editor-warning">{warning}</span>))}
+      </div>
+    </div>
+  )
+  renderCheckbox = ({ name, input, label, type, meta: { pristine, touched, error, warning }, ...props }) => (
+    <div className="">
+      <div>
+        <checkbox {...input} id={name} placeholder={label} type={type} {...props} />
+        <label htmlFor={name}>{label}</label>
+      </div>
+      <div>
         {!pristine &&
           ((error && <span className="editor-error">{error}</span>) ||
             (warning && <span className="editor-warning">{warning}</span>))}
@@ -70,11 +83,12 @@ class ExerciseEditor extends Component {
             <div className="row mb-3">
               <div className="col-12"><strong>Vector</strong></div>
               <div className="col-6">
-                <Field component={this.renderField} className="form-control" type="checkbox" name="vectorContainsStart" label="Fusion protein at start" />
+                <Field component={this.renderCheckbox} type="checkbox" name="fusionStart" label="Fusion protein at start" />
+                
                 <Field component={this.renderField} className="form-control" type="number" name="vectorStart" label="Start Position" />
               </div>
               <div className="col-6">
-                <Field component={this.renderField} className="form-control" type="checkbox" name="vectorContainsEnd" label="Fusion protein at end" />
+                <Field component={this.renderField} className="form-control" type="checkbox" name="fusionEnd" label="Fusion protein at end" />
                 <Field component={this.renderField} className="form-control" type="number" name="vectorEnd" label="End Position" />
               </div>
             </div>
@@ -112,20 +126,24 @@ ExerciseEditor = reduxForm({
   form: 'exerciseEditor',
   validate,
 })(ExerciseEditor)
-
+const selector = formValueSelector('exerciseEditor')
 
 
 const mapStateToProps = (state, ownProps) => {
   const { data = {}, outerSubmit } = ownProps
+  // Setup initial data, such as from editing (not creating) an exercise
   const helpersArray = _.keys(data.helpers).map(pos => ({ ...data.helpers[pos] }))
   const initialValues = {
     ...data,
     helpers: helpersArray,
   }
   const createdAt = data.createdAt || moment().valueOf()
-  const onSubmit = (values) => {
-    
 
+  // Get value of isFusionStart and isFusionEnd
+  const fusionStart = selector(state, 'fusionStart')
+  const fusionEnd = selector(state, 'fusionStart')
+
+  const onSubmit = (values) => {
     // convert helpers array to an object
     const helpersObject = values.helpers.reduce((prev, helper) => ({
       ...prev,
@@ -148,16 +166,19 @@ const mapStateToProps = (state, ownProps) => {
       constructEnd: parseInt(values.constructEnd, 10),
       vectorStart: parseInt(values.vectorStart, 10),
       vectorEnd: parseInt(values.vectorEnd, 10),
-      vectorContainsStart: !!values.vectorContainsStart,
-      vectorContainsEnd: !!values.vectorContainsEnd,
+      fusionStart: !!values.fusionStart,
+      fusionEnd: !!values.fusionEnd,
       helpers: helpersObject,
     }
     console.log('Exercise data: ', exerciseData)
     outerSubmit(exerciseData)
   }
+
   return {
     initialValues,
     onSubmit,
+    fusionStart,
+    fusionEnd,
   }
 }
 

@@ -17,8 +17,8 @@ const data = {
   constructEnd: 0,
   vectorStart: 0,
   vectorEnd: 0,
-  vectorContainsStart: true,
-  vectorContainsEnd: true,
+  fusionStart: true,
+  fusionEnd: true,
 }
 
 class AdminCreatePage extends Component {

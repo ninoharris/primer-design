@@ -41,6 +41,8 @@ export const validate = values => {
   const helpersArrayErrors = []
   // check if each one is complete
   values.helpers.forEach(({name, pos, len, color}, index) => {
+    pos = Number(pos)
+    len = Number(len)
     const helperErrors = {}
     if (!name) {
       helperErrors.name = 'Required'
@@ -50,7 +52,7 @@ export const validate = values => {
       helperErrors.pos = 'Required'
       helpersArrayErrors[index] = helperErrors
     }
-    if (isNaN(Number(pos))) {
+    if (isNaN(pos)) {
       helperErrors.pos = 'Must be a number'
       helpersArrayErrors[index] = helperErrors
     }
@@ -58,16 +60,18 @@ export const validate = values => {
       helperErrors.len = 'Required'
       helpersArrayErrors[index] = helperErrors
     }
-    if (isNaN(Number(len))) {
+    if (isNaN(len)) {
       helperErrors.len = 'Must be a number'
       helpersArrayErrors[index] = helperErrors
     }
     if (!color || !/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(color)) {
-      helperErrors.color = 'Required in a format of #XXXXXX, where X is 0-9,A-F'
+      helperErrors.color = 'Color required in hexadecimal (#FF0000) format'
       helpersArrayErrors[index] = helperErrors
     }
+    
+    // check if each one starts and ends before the end
     if (pos > values.vector.length) {
-      helperErrors.len = 'Helper must start within the length of the vector'
+      helperErrors.pos = 'Helper must start within the length of the vector'
       helpersArrayErrors[index] = helperErrors
     }
     if((pos + len) > values.vector.length) {
@@ -75,13 +79,25 @@ export const validate = values => {
       helpersArrayErrors[index] = helperErrors
     }
   })
-
-  // run through all helpers and check for no overlaps
-  // values.helpers.reduce((helper,)
-
-  // check if each one starts and ends before the end
-  if(helpersArrayErrors.length > 0) {
+  
+  if (helpersArrayErrors.length > 0) {
     errors.helpers = helpersArrayErrors
+  }
+
+  // // run through all helpers and check for no overlaps
+  const overlapping = values.helpers.slice()
+    .sort((a, b) => (b.pos - a.pos) > 0 ? -1 : 1)
+    .reduce((acc, helper, i) => {
+      const pos = Number(helper.pos), len = Number(helper.len)
+      if (pos < acc.prevPos) {
+        acc.errors = `Helper with name of ${helper.name} overlaps another helper`
+      }
+      console.log(acc)
+      return { ...acc, prevPos: pos + len}
+    }, { prevPos: 0, errors: null })
+    
+  if(overlapping.errors) {
+    errors.helpers = { _error: overlapping.errors }
   }
   return errors
 }
