@@ -4,17 +4,29 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 import { Field, FieldArray, reduxForm } from 'redux-form';
 
+import validate from './exerciseValidate'
 import HaystackPreview from './HaystackPreview'
 
 class ExerciseEditor extends Component {
-  renderField = ({ name, input, label, type, meta: { touched, error, warning }, ...props }) => (
+  renderField = ({ name, input, label, type, meta: { pristine, touched, error, warning }, ...props }) => (
     <div>
       <label htmlFor={name}>{label}</label>
       <div>
         <input {...input} id={name} placeholder={label} type={type} {...props} />
-        {touched &&
-          ((error && <span>{error}</span>) ||
-            (warning && <span>{warning}</span>))}
+        {!pristine &&
+          ((error && <span className="editor-error">{error}</span>) ||
+            (warning && <span className="editor-warning">{warning}</span>))}
+      </div>
+    </div>
+  )
+  renderTextarea = ({ name, input, label, type, meta: { pristine, touched, error, warning }, ...props }) => (
+    <div className="">
+      <label htmlFor={name}>{label}</label>
+      <div>
+        <textarea {...input} id={name} placeholder={label} type={type} {...props} />
+        {!pristine &&
+          ((error && <span className="editor-error">{error}</span>) ||
+            (warning && <span className="editor-warning">{warning}</span>))}
       </div>
     </div>
   )
@@ -72,20 +84,20 @@ class ExerciseEditor extends Component {
           </div>
           <div className="col-8">
             <div className="form-group">
-              <label className="d-block" htmlFor="questionPart1">Question part 1</label>
-              <Field className="form-control" name="questionPart1" component="textarea" type="text" />
+              <label className="d-block" htmlFor="questionPart1">Question part 1: This introduces the general question and information about the vector.</label>
+              <Field className="form-control" name="questionPart1" component={this.renderTextarea} type="text" />
             </div>
             <div className="form-group">
-              <label className="d-block" htmlFor="vector">Vector forward sequence</label>
-              <Field className="form-control vectorInput" name="vector" component="textarea" type="text" />
+              <label className="d-block" htmlFor="vector">Vector forward sequence (reverse is calculated)</label>
+              <Field className="form-control vectorInput" name="vector" component={this.renderTextarea} type="text" />
             </div>
             <div className="form-group">
-              <label className="d-block" htmlFor="questionPart2">Question part 2</label>
-              <Field className="form-control" name="questionPart2" component="textarea" type="text" />
+              <label className="d-block" htmlFor="questionPart2">Question part 2: This contains information specific to the construct below.</label>
+              <Field className="form-control" name="questionPart2" component={this.renderTextarea} type="text" />
             </div>
             <div className="form-group">
-              <label className="d-block" htmlFor="haystack">Haystack forward sequence</label>
-              <Field className="form-control haystackInput" name="haystack" component="textarea" type="text" />
+              <label className="d-block" htmlFor="haystack">Haystack forward sequence (reverse is calculated)</label>
+              <Field className="form-control haystackInput" name="haystack" component={this.renderTextarea} type="text" />
             </div>
             {/* <HaystackPreview /> */}
             <button type="submit" disabled={pristine || submitting}>{submitText}</button>
@@ -98,6 +110,7 @@ class ExerciseEditor extends Component {
 
 ExerciseEditor = reduxForm({
   form: 'exerciseEditor',
+  validate,
 })(ExerciseEditor)
 
 

@@ -13,7 +13,7 @@ import configureStore from './configureStore'
 import Loading from './components/Loading'
 import App from './routers'
 
-const store = configureStore()
+export const store = configureStore()
 
 ReactDOM.render(<Loading />, document.getElementById('root'))
 

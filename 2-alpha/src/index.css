@@ -541,3 +541,14 @@ body {
 .Admin-Markers .admin-marker {
   border-right: 1px solid red;
 }
+.editor-error, .editor-warning {
+  border-radius: 2px;
+  padding: 3px;
+}
+.editor-error {
+  background: red;
+  color: white;
+}
+.editor-warning {
+  background: orange;
+}
