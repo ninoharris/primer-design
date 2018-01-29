@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import db from '../firebase/firebase'
 import * as TYPES from './types'
 import { getIsSuccessful } from '../selectors'
@@ -60,8 +59,8 @@ export const endAnimatePreview = () => ({
 
 
 
-export const set100CharsWidth = (width) => ({
-  type: TYPES.SET_100_CHARS_WIDTH,
+export const setMultilineWidth = (width) => ({
+  type: TYPES.SET_MULTILINE_WIDTH,
   payload: width,
 })
 

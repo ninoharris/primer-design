@@ -478,19 +478,19 @@ body {
 .Final-Clone .position-helper {
   z-index: -1;
 }
-.markers {
+.Game .markers {
   position: absolute;
   top: -0.2rem;
   white-space: pre-wrap;
   z-index: -1;
   border-color: lightblue;
 }
-.marker {
+.Game .marker {
   position: relative;
   text-indent: -9999px;
   border-color: inherit;
 }
-.marker::before, .marker::after {
+.Game .marker::before, .Game .marker::after {
   content: '';
   display: block;
   height: 6px;
@@ -502,10 +502,10 @@ body {
   border-width: 0 3px 3px 0;
   transform: rotate(45deg);
 }
-.marker::before {
+.Game .marker::before {
   left: -3px;
 }
-.marker::after {
+.Game .marker::after {
   right: -3px;
 }
 
@@ -534,12 +534,16 @@ body {
 .Admin-Markers {
   position: absolute;
   top: 0;
-  color: red;
-  font-weight: bold;
   white-space: pre-wrap;
 }
 .Admin-Markers .admin-marker {
+  position: absolute;
+  left: 0;
+}
+.Admin-Markers .admin-marker:after {
+  content: "";
   border-right: 1px solid red;
+  height: 1ch;
 }
 .editor-checkbox label { 
   padding-left: 10px;
@@ -570,8 +574,28 @@ body {
   flex-wrap: wrap;
   padding: 0;
 }
-.RESites-list li {
-  text-align: right;
+.RESites-list-item {
   flex: 1;
+  display: flex;
+  flex-direction: row;
   padding: 10px;
+  margin: 8px;
+  border: 1px solid grey;
+}
+.RESites-list-item .name {
+}
+.RESites-list .preview {
+  text-align: left;
+  position: relative;
+  margin-left: 15px;
+}
+.RESites-list .preview .marker {
+  position: absolute;
+  left: -1px;
+  border-right: 1px dashed rgba(0,0,0,0.3);
+}
+.RESites-list .preview .cut-center {
+  border-top: 1px dashed rgba(0,0,0,0.3);
+  position: relative;
+  top: 2px; /* Move slightly down to show cut */
 }

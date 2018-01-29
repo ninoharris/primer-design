@@ -17,9 +17,9 @@ const animatingPreview = (state = false, action) => {
   }
 }
 
-const charWidth100 = (state = null, action) => {
+const charMultilineWidth = (state = null, action) => {
   switch (action.type) {
-    case TYPES.SET_100_CHARS_WIDTH:
+    case TYPES.SET_MULTILINE_WIDTH:
       return action.payload
     default: return state
   }
@@ -28,7 +28,7 @@ const charWidth100 = (state = null, action) => {
 const reducer = combineReducers({
   ...game,
   ...exercises,
-  charWidth100,
+  charMultilineWidth,
   animatingPreview,
   troubleshooter,
   form: formReducer

@@ -14,7 +14,7 @@ class HaystackPreview extends Component {
       <div className="Admin-Markers sequence">
         {markers.map(marker => {
           if (isNaN(marker)) return null
-          return <span className="admin-marker" key={marker}>{_.padStart('|', marker, ' ')}</span>
+          return <span className="admin-marker" key={marker}>{_.padStart('', marker, ' ')}</span>
         })}
       </div>
     )
@@ -23,7 +23,7 @@ class HaystackPreview extends Component {
     const { haystack } = this.props
     return (
       <div className="haystack admin-haystack">
-        <HelperPosition length={100} />
+        <HelperPosition length={90} interval={3} />
         <div className="forward">
           <div className="multiline">
             <div className="sequence">

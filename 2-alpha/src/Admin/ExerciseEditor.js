@@ -106,31 +106,24 @@ class ExerciseEditor extends Component {
                 <div className="col-12 mt-2"><div className="editor-warning ">'User provides stop/start': application checks if start/stop codon(s) have been added.</div></div>
               }
             </div>
-            <div>
-              <FieldArray name="helpers" component={this.renderHelpers} />
-            </div>
-            <div>
-              <RestrictionSitesPreview />
-            </div>
+            <FieldArray name="helpers" component={this.renderHelpers} />
+            <RestrictionSitesPreview />
           </div>
           <div className="col-8">
             <div className="form-group">
-              <label className="d-block" htmlFor="questionPart1">Question part 1: This introduces the general question and information about the vector.</label>
-              <Field className="form-control" name="questionPart1" component={this.renderTextarea} type="text" />
+              <Field className="form-control" name="questionPart1" component={this.renderTextarea} type="text" label="Question part 1: This introduces the general question and information about the vector." />
             </div>
             <div className="form-group">
-              <label className="d-block" htmlFor="vector">Vector forward sequence (reverse is calculated)</label>
-              <Field className="form-control vectorInput" name="vector" component={this.renderTextarea} type="text" />
+              <Field className="form-control vectorInput" name="vector" component={this.renderTextarea} type="text" label="Vector forward sequence (reverse is calculated)" />
             </div>
             <div className="form-group">
-              <label className="d-block" htmlFor="questionPart2">Question part 2: This contains information specific to the construct below.</label>
-              <Field className="form-control" name="questionPart2" component={this.renderTextarea} type="text" />
+              <Field className="form-control" name="questionPart2" component={this.renderTextarea} type="text" label="Question part 2: This contains information specific to the construct below." />
             </div>
             <div className="form-group">
-              <label className="d-block" htmlFor="haystack">Haystack forward sequence (reverse is calculated)</label>
-              <Field className="form-control haystackInput" name="haystack" component={this.renderTextarea} type="text" />
+              <label className="d-block" htmlFor="haystack"></label>
+              <Field className="form-control haystackInput" name="haystack" component={this.renderTextarea} type="text" label="Haystack forward sequence (reverse is calculated)" />
             </div>
-            {/* <HaystackPreview /> */}
+            <HaystackPreview />
             <button type="submit" disabled={pristine || submitting}>{submitText}</button>
           </div>
         </div>

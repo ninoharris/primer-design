@@ -24,7 +24,7 @@ class App extends Component {
       <div className="main-loading">Loading game...</div>
     )
     return (
-      <div className="container-fluid mb-10 mt-10">
+      <div className="container-fluid mb-10 mt-10 Game">
         <Modals />
         <div className="row">
           <div className="Nav">

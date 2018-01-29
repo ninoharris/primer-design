@@ -29,7 +29,7 @@ class Haystack extends Component {
               <HaystackForward />
               <Left3 />{reverse}<Right5 />
             </div>
-            {showCodons ? <Codons seq={forward} /> : ''}
+            <Codons seq={forward} />
           </div>
         </div>
       </div>
@@ -42,7 +42,6 @@ const mapStateToProps = (state) => {
     ...getBothHaystackStrands(state),
     FG: getUFG(state),
     RG: getURG(state),
-    showCodons: showCodons(state),
   }
 }
 

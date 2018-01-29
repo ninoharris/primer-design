@@ -6,7 +6,6 @@ import { getAASeq } from '../api'
 const Codons = ({ seq = '', showCodons }) => {
 
   if(!showCodons) return null
-  
   return (
     <div className="codons">
       <div className="codon sequence">
@@ -23,8 +22,9 @@ const Codons = ({ seq = '', showCodons }) => {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  if(ownProps.showCodons !== 'undefined') return { showCodons: ownProps.showCodons} 
-  return { showCodons: showCodons(state) }
+  return { 
+    showCodons: ownProps.showCodons || showCodons(state)
+  } 
 }
 
 export default connect(mapStateToProps)(Codons)
