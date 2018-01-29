@@ -541,6 +541,9 @@ body {
 .Admin-Markers .admin-marker {
   border-right: 1px solid red;
 }
+.editor-checkbox label { 
+  padding-left: 10px;
+}
 .editor-error, .editor-warning {
   border-radius: 2px;
   padding: 3px;
@@ -551,4 +554,24 @@ body {
 }
 .editor-warning {
   background: orange;
+}
+
+.editor-helpers {
+
+}
+.editor-helpers li {
+  margin-bottom: 10px;
+}
+
+.RESites-list {
+  display: flex;
+  list-style: none;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 0;
+}
+.RESites-list li {
+  text-align: right;
+  flex: 1;
+  padding: 10px;
 }

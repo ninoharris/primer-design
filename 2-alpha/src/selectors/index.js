@@ -1,11 +1,10 @@
 import _ from 'lodash'
 import * as api from '../api'
 import { createSelector } from 'reselect'
-import { messages as MSG } from './messages'
-import { shotgunComplementMatch, isTooShort, complementFromString, reverse } from '../api';
 
 export const loadingSelector = state => state.fetchingExercises
 export const showCodons = state => state.showCodons
+export const getAllRestrictionSites = state => state.restrictionSites
 
 export const exercisesListSelector = state => state.exercisesList
 export const exercisesByIdSelector = state => state.exercisesById
@@ -270,7 +269,7 @@ export const getHaystackEvaluations = createSelector(
     if (FG.reverseMatch) EvalFG.failure('FORWARD_WRONG_DIRECTION')
     if (FG.frame && FG.frame !== 0) EvalFG.failure('FORWARD_HAYSTACK_OUT_OF_FRAME', FG.frame)
     if (!FG.normalMatch && !FG.complementMatch && !FG.reverseMatch) EvalFG.failure("FORWARD_NO_MATCH")
-    if (isTooShort(FG.input)) EvalFG.failure('FORWARD_TOO_SHORT')
+    if (api.isTooShort(FG.input)) EvalFG.failure('FORWARD_TOO_SHORT')
   }
   
   if(RG.input) {
@@ -279,7 +278,7 @@ export const getHaystackEvaluations = createSelector(
     if (RG.reverseMatch) EvalRG.failure('REVERSE_WRONG_DIRECTION')
     if (RG.frame && RG.frame !== 0) EvalRG.failure('REVERSE_HAYSTACK_OUT_OF_FRAME', RG.frame)
     if (!RG.normalMatch && !RG.complementMatch && !RG.reverseMatch) EvalRG.failure("REVERSE_NO_MATCH")
-    if (isTooShort(RG.input)) EvalRG.failure('REVERSE_TOO_SHORT')
+    if (api.isTooShort(RG.input)) EvalRG.failure('REVERSE_TOO_SHORT')
   }
   // go to vector evaluations!
   return Eval.getEvaluation()

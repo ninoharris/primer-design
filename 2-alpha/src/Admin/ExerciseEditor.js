@@ -6,13 +6,14 @@ import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form';
 
 import validate from './exerciseValidate'
 import HaystackPreview from './HaystackPreview'
+import RestrictionSitesPreview from './RestrictionSitesPreview';
 
 class ExerciseEditor extends Component {
   renderField = ({ name, input, label, type, meta: { pristine, touched, error, warning }, ...props }) => (
     <div>
-      <label htmlFor={name}>{label}</label>
+      <label htmlFor={input.name}>{label}</label>
       <div>
-        <input {...input} id={name} placeholder={label} type={type} {...props} />
+        <input {...input} id={input.name} placeholder={label} type={type} {...props} />
         {!pristine &&
           ((error && <span className="editor-error">{error}</span>) ||
             (warning && <span className="editor-warning">{warning}</span>))}
@@ -21,20 +22,20 @@ class ExerciseEditor extends Component {
   )
   renderTextarea = ({ name, input, label, type, meta: { pristine, touched, error, warning }, ...props }) => (
     <div className="">
-      <label htmlFor={name}>{label}</label>
+      <label htmlFor={input.name}>{label}</label>
       <div>
-        <textarea {...input} id={name} placeholder={label} type={type} {...props} />
+        <textarea {...input} id={input.name} placeholder={label} type={type} {...props} />
         {!pristine &&
           ((error && <span className="editor-error">{error}</span>) ||
             (warning && <span className="editor-warning">{warning}</span>))}
       </div>
     </div>
   )
-  renderCheckbox = ({ name, input, label, type, meta: { pristine, touched, error, warning }, ...props }) => (
-    <div className="">
+  renderCheckbox = ({ input, label, type, meta: { pristine, touched, error, warning }, ...props }) => (
+    <div className="editor-checkbox">
       <div>
-        <checkbox {...input} id={name} placeholder={label} type={type} {...props} />
-        <label htmlFor={name}>{label}</label>
+        <input {...input} id={input.name} placeholder={label} type={type} {...props} />
+        <label htmlFor={input.name}>{label}</label>
       </div>
       <div>
         {!pristine &&
@@ -45,7 +46,7 @@ class ExerciseEditor extends Component {
   )
   renderHelpers = ({ fields, meta: { error, submitted }}) => {
     return (
-      <ul className="list-group">
+      <ul className="list-group editor-helpers">
         {fields.map((helper, i) => (
           <li key={i} className="list-group-item">
             <button type="button" style={{position: 'absolute', right: -10, backgroundColor: 'red', color: 'white', border: 'none'}} onClick={() => fields.remove(i)}>X</button>
@@ -59,6 +60,7 @@ class ExerciseEditor extends Component {
             </div>
           </li>
         ))}
+        {error && <li className="editor-error">{error}</li>}
         <li className="text-center mt-3">
           <button type="button" onClick={() => fields.push({})} className="btn btn-success">Add helper</button>
         </li>
@@ -66,7 +68,7 @@ class ExerciseEditor extends Component {
     )
   }
   render() {
-    const { pristine, submitting, submitText = 'Create exercise' } = this.props
+    const { pristine, submitting, submitText = 'Create exercise', fusionStart, fusionEnd } = this.props
     return (
       <form onSubmit={this.props.handleSubmit} className="Admin-Exercise-Form" method="POST">
         <div className="row">
@@ -84,16 +86,31 @@ class ExerciseEditor extends Component {
               <div className="col-12"><strong>Vector</strong></div>
               <div className="col-6">
                 <Field component={this.renderCheckbox} type="checkbox" name="fusionStart" label="Fusion protein at start" />
-                
-                <Field component={this.renderField} className="form-control" type="number" name="vectorStart" label="Start Position" />
+                {!fusionStart && 
+                  <Field component={this.renderCheckbox} type="checkbox" name="userProvidesStartCodon" label="User provides start" />
+                }
+                {fusionStart && 
+                  <Field component={this.renderField} className="form-control" type="number" name="vectorStart" label="Start Position" />
+                }
               </div>
               <div className="col-6">
-                <Field component={this.renderField} className="form-control" type="checkbox" name="fusionEnd" label="Fusion protein at end" />
-                <Field component={this.renderField} className="form-control" type="number" name="vectorEnd" label="End Position" />
+                <Field component={this.renderCheckbox} type="checkbox" name="fusionEnd" label="Fusion protein at end" />
+                {!fusionEnd &&
+                  <Field component={this.renderCheckbox} type="checkbox" name="userProvidesStopCodon" label="User provides stop" />
+                }
+                {fusionEnd && 
+                  <Field component={this.renderField} className="form-control" type="number" name="vectorEnd" label="End Position" />
+                }
               </div>
+              {(!fusionEnd || !fusionStart) &&
+                <div className="col-12 mt-2"><div className="editor-warning ">'User provides stop/start': application checks if start/stop codon(s) have been added.</div></div>
+              }
             </div>
             <div>
               <FieldArray name="helpers" component={this.renderHelpers} />
+            </div>
+            <div>
+              <RestrictionSitesPreview />
             </div>
           </div>
           <div className="col-8">
@@ -141,7 +158,7 @@ const mapStateToProps = (state, ownProps) => {
 
   // Get value of isFusionStart and isFusionEnd
   const fusionStart = selector(state, 'fusionStart')
-  const fusionEnd = selector(state, 'fusionStart')
+  const fusionEnd = selector(state, 'fusionEnd')
 
   const onSubmit = (values) => {
     // convert helpers array to an object

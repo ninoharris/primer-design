@@ -68,7 +68,7 @@ export const validate = values => {
       helperErrors.color = 'Color required in hexadecimal (#FF0000) format'
       helpersArrayErrors[index] = helperErrors
     }
-    
+
     // check if each one starts and ends before the end
     if (pos > values.vector.length) {
       helperErrors.pos = 'Helper must start within the length of the vector'
@@ -90,7 +90,7 @@ export const validate = values => {
     .reduce((acc, helper, i) => {
       const pos = Number(helper.pos), len = Number(helper.len)
       if (pos < acc.prevPos) {
-        acc.errors = `Helper with name of ${helper.name} overlaps another helper`
+        acc.errors = `Helper #${i+1} ${helper.name ? `with name of ${helper.name}` : ''} overlaps another helper`
       }
       console.log(acc)
       return { ...acc, prevPos: pos + len}
