@@ -50,7 +50,7 @@ class ExerciseEditor extends Component {
       <ul className="list-group editor-helpers">
         {fields.map((helper, i) => (
           <li key={i} className="list-group-item">
-            <button type="button" style={{position: 'absolute', right: -10, backgroundColor: 'red', color: 'white', border: 'none'}} onClick={() => fields.remove(i)}>X</button>
+            <button type="button" style={{position: 'absolute', right: -10, backgroundColor: 'red', color: 'white', border: 'none', cursor: 'pointer', zIndex: 10}} onClick={() => fields.remove(i)}>X</button>
             <div className="row">
               <div className="col-6"><Field name={`${helper}.name`} type="text" component={this.renderField} label="Helper text" /></div>
               <div className="col-6"><Field name={`${helper}.pos`} type="number" component={this.renderField} label="Start position" /></div>

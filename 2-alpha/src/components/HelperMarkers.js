@@ -3,6 +3,7 @@ import React from 'react'
 
 const HelperMarkers = ({ helpers }) => {
   const helpersList = _.map(helpers, (helper) => {
+    if(!helper.pos || !helper.len) return null
     const pad = _.pad('', helper.pos, ' ')
     const style = {
       color: helper.color || '#666666'

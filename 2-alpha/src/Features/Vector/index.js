@@ -1,5 +1,4 @@
 // THIS FILE MUST NOT CONTAIN ANYTHING RELATED TO THE USER'S INPUT.
-import * as api from '../../api' 
 import _ from 'lodash'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
@@ -9,27 +8,11 @@ import VectorForward from './VectorForward'
 import VectorReverse from './VectorReverse'
 import HelperPosition from '../../components/HelperPosition';
 import HelperMarkers from '../../components/HelperMarkers'
+import HighlightedSequence from '../../components/HighlightedSequence'
 import { Left5, Left3, Right5, Right3 } from '../../components/HelperEnds'
 
 
 class Vector extends Component {
-  getHighlights = (helpers, sequence, dir) => {
-    console.log('helpers', helpers)
-    let lastIndex = 0, output = []
-    _.map(helpers, ({pos, name, len, color}) => {
-      if(pos > lastIndex) {
-        output.push(<span key={lastIndex} className="in-between">{sequence.slice(lastIndex, pos)}</span>)
-      }
-      const text = sequence.substr(pos, len)
-      const style = { color: api.pickTextColor(color), backgroundColor: color }
-      output.push(<span key={pos} className={`hl ${dir}-hl ${name}`} style={style}>{text}</span>)
-      lastIndex = len + pos
-    })
-    if(lastIndex < sequence.length) { // we're not done yet...
-      output.push(<span key={lastIndex} className="in-between">{sequence.slice(lastIndex)}</span>)
-    }
-    return output
-  }
   render() {
     const { forward, reverse, helpers } = this.props
     return (
@@ -39,17 +22,16 @@ class Vector extends Component {
           <HelperMarkers helpers={helpers} />
           <div className="sequence">
             <Left5 />
-            {this.getHighlights(helpers, forward, 'forward')}
+            <HighlightedSequence helpers={helpers} sequence={forward} direction='forward' />
             <Right3 />
           </div>
           <VectorReverse />
-
         </div>
         <div className="reverse">
           <VectorForward />
           <div className="sequence">
             <Left3 />
-            {this.getHighlights(helpers, reverse, 'reverse')}
+            <HighlightedSequence helpers={helpers} sequence={reverse} direction='reverse' />
             <Right5 />
           </div>
         </div>
@@ -60,9 +42,6 @@ class Vector extends Component {
 
 const mapStateToProps = (state) => {
   const { forward, reverse } = getBothVectorStrands(state)
-  // const helpersObj = 
-  // const helpers = _.keys(helpersObj, (helper) => helpersObj[helper])
-
   return {
     forward,
     reverse,

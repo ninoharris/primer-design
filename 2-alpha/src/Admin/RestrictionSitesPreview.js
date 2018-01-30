@@ -9,7 +9,7 @@ const RestrictionSitesPreview = ({ restrictionSites }) => {
   const RESitesList = _.keys(restrictionSites).map(seq => {
     const RESite = restrictionSites[seq]
     return (
-      <div className="RESites-list-item">
+      <div key={seq} className="RESites-list-item">
         <div className="name" style={{ backgroundColor: RESite.color, color: api.pickTextColor(RESite.color) }}>{RESite.name}:</div> 
         <div className="preview">
           <div className="sequence"><span className="marker">{_.pad('', RESite.cutsForward, ' ')}</span>{RESite.seq}</div>

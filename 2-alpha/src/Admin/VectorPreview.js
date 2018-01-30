@@ -4,10 +4,21 @@ import { connect } from 'react-redux'
 import { formValueSelector } from 'redux-form'
 import * as api from '../api'
 
-const VectorPreview = ({ }) => {
+import HelperPosition from '../components/HelperPosition'
+import HelperMarkers from '../components/HelperMarkers'
+import HighlightedSequence from '../components/HighlightedSequence'
+import Markers from '../components/Markers';
+import { getAllRestrictionSites } from '../selectors/index';
+
+const VectorPreview = ({ forward, reverse, helpers, vectorMarkers }) => {
+  console.log('I swear', helpers, vectorMarkers)
   return (
     <div className="vector admin-vector">
-
+      <HelperPosition length={90} />
+      <Markers markers={vectorMarkers} />
+      <HelperMarkers helpers={vectorMarkers} />
+      <div><HighlightedSequence helpers={helpers} sequence={forward} direction='forward' /></div>
+      <div><HighlightedSequence helpers={helpers} sequence={reverse} direction='reverse' /></div>
     </div>
   )
 }
@@ -15,28 +26,25 @@ const VectorPreview = ({ }) => {
 const selector = formValueSelector('exerciseEditor')
 
 const mapStateToProps = (state, ownProps) => {
-  const { haystack = ' ', vector = ' ', vectorStart = null, vectorEnd = null, constructStart = null, constructEnd = null, helpers = [] } = selector(state,
-    'haystack', 'vector', 'vectorStart', 'vectorEnd', 'constructStart', 'constructEnd', 'helpers')
-  const previews = {
-    haystack: {
-      forward: haystack,
-      reverse: api.complementFromString(haystack),
-    },
-    vector: {
-      forward: vector,
-      reverse: api.complementFromString(vector)
-    },
-    haystackMarkers: [
-      parseInt(constructStart, 10),
-      parseInt(constructEnd, 10),
-    ],
+  const { vector = ' ', vectorStart = null, vectorEnd = null, helpers = [] } = selector(state,
+    'vector', 'vectorStart', 'vectorEnd', 'helpers')
+  
+  const REHelpers = _.mapValues(
+    api.getRestrictionSiteMatches(getAllRestrictionSites(state), vector), 
+    ({ name, seq, pos, color = '#CCCCCC' }) => ({
+      name, seq, pos, len: seq.length, color
+    })
+  )
+  console.log(REHelpers)
+  return {
+    forward: vector,
+    reverse: api.complementFromString(vector),
     vectorMarkers: [
       parseInt(vectorStart, 10),
       parseInt(vectorEnd, 10),
     ],
-    helpers
+    helpers: [...helpers, ...REHelpers]
   }
-  return previews
 }
 
 export default connect(mapStateToProps)(VectorPreview)
