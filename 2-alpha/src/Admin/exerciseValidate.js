@@ -34,7 +34,7 @@ export const validate = values => {
 
   // Positions of constructEnd and constructStart
   if (constructStart >= constructEnd) errors.constructEnd = 'Construct end must be after construct start'
-  if ((constructEnd % 100) < 15 && (constructEnd % 100) !== 0) errors.constructEnd = 'For display reasons only, you cannot have the end of a construct within the first 15 bases per line (eg can be 16 to 100, 116 to 200, 216 to 300.'
+  if ((constructEnd % 90) < 15 && (constructEnd % 90) !== 0) errors.constructEnd = 'For display reasons only, you cannot have the end of a construct within the first 15 bases per line (eg can be 16 to 100, 116 to 200, 216 to 300.'
   
   // Vector start and vector end
   // TODO: is fusion protein at start? y -> do users need to add their own start codon?. n -> whats the start position.

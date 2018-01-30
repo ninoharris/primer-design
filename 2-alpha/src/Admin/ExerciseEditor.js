@@ -5,6 +5,7 @@ import moment from 'moment'
 import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form';
 
 import validate from './exerciseValidate'
+import VectorPreview from './VectorPreview'
 import HaystackPreview from './HaystackPreview'
 import RestrictionSitesPreview from './RestrictionSitesPreview';
 
@@ -116,6 +117,7 @@ class ExerciseEditor extends Component {
             <div className="form-group">
               <Field className="form-control vectorInput" name="vector" component={this.renderTextarea} type="text" label="Vector forward sequence (reverse is calculated)" />
             </div>
+            <VectorPreview />
             <div className="form-group">
               <Field className="form-control" name="questionPart2" component={this.renderTextarea} type="text" label="Question part 2: This contains information specific to the construct below." />
             </div>

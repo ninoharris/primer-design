@@ -8,25 +8,11 @@ import { getBothVectorStrands, getVectorHelpers } from '../../selectors'
 import VectorForward from './VectorForward'
 import VectorReverse from './VectorReverse'
 import HelperPosition from '../../components/HelperPosition';
+import HelperMarkers from '../../components/HelperMarkers'
 import { Left5, Left3, Right5, Right3 } from '../../components/HelperEnds'
 
 
 class Vector extends Component {
-  getHelpers = () => {
-    return _.map(this.props.helpers, (helper => {
-      const pad = _.pad('',helper.pos)
-      const style = {
-        color: helper.color || '#666666'
-      }
-      const text = _.padEnd(helper.name, helper.len)
-      return(
-        <div key={helper.pos} className="helper">
-          <span className="pad">{pad}</span>
-          <span style={style}>{text}</span>
-        </div>
-      )
-    }))
-  }
   getHighlights = (helpers, sequence, dir) => {
     console.log('helpers', helpers)
     let lastIndex = 0, output = []
@@ -44,18 +30,13 @@ class Vector extends Component {
     }
     return output
   }
-  getUserInputAligned = () => {
-
-  }
   render() {
-    const { forward, reverse, helpers, showCodons } = this.props
+    const { forward, reverse, helpers } = this.props
     return (
       <div className="vector pt-3 pb-3 mt-3">
         <HelperPosition length={90} />
         <div className="forward mb-3">
-          <div className="helpers sequence">
-            {this.getHelpers()}
-          </div>
+          <HelperMarkers helpers={helpers} />
           <div className="sequence">
             <Left5 />
             {this.getHighlights(helpers, forward, 'forward')}
@@ -79,11 +60,13 @@ class Vector extends Component {
 
 const mapStateToProps = (state) => {
   const { forward, reverse } = getBothVectorStrands(state)
-  
+  // const helpersObj = 
+  // const helpers = _.keys(helpersObj, (helper) => helpersObj[helper])
+
   return {
     forward,
     reverse,
-    helpers: getVectorHelpers(state)
+    helpers: getVectorHelpers(state),
   }
 }
 

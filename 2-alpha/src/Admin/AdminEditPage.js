@@ -29,7 +29,7 @@ class AdminEditPage extends Component {
         <Header title={`Editing exercise with id: ${id}`}>
           <button onClick={this.removeExercise} className="btn btn-danger mr-2">Delete exercise</button>
         </Header>
-        <ExerciseEditor outerSubmit={this.outerSubmit} data={this.props.exercise} />
+        <ExerciseEditor outerSubmit={this.outerSubmit} data={this.props.exercise} submitText='Update exercise' />
       </div>
     )
   }
