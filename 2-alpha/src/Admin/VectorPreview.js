@@ -35,14 +35,20 @@ const VectorPreview = ({ forward, reverse, helpers, vectorMarkers }) => {
 const selector = formValueSelector('exerciseEditor')
 
 const mapStateToProps = (state, ownProps) => {
-  const { vector = ' ', vectorStart = null, vectorEnd = null, helpers = [] } = selector(state,
+  const { vector = ' ', vectorStart = null, vectorEnd = null, helpers: helperUnparsed = [] } = selector(state,
     'vector', 'vectorStart', 'vectorEnd', 'helpers')
+
+  const helpers = helperUnparsed.map(helper => ({
+      ...helper,
+      pos: Number(helper.pos),
+      len: Number(helper.len),
+    }))
   
   const REHelpersObj = api.getRestrictionSiteMatches(getAllRestrictionSites(state), vector)
   const REHelpers = _.flatMap(
     REHelpersObj, 
     ({ name, seq, pos, color = '#CCCCCC' }) => ({
-      name, seq, pos: Number(pos), len: seq.length, color
+      name, seq, pos, len: seq.length, color
     })
   )
   return {
