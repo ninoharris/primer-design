@@ -42,7 +42,7 @@ const mapStateToProps = (state, ownProps) => {
   const REHelpers = _.flatMap(
     REHelpersObj, 
     ({ name, seq, pos, color = '#CCCCCC' }) => ({
-      name, seq, pos, len: seq.length, color
+      name, seq, pos: Number(pos), len: seq.length, color
     })
   )
   return {
@@ -52,7 +52,7 @@ const mapStateToProps = (state, ownProps) => {
       parseInt(vectorStart, 10),
       parseInt(vectorEnd, 10),
     ],
-    helpers: [...helpers, ...REHelpers]
+    helpers: [...helpers, ...REHelpers].sort((a,b) => a.pos - b.pos)
   }
 }
 
