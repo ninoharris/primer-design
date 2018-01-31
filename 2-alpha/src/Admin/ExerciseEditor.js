@@ -8,6 +8,7 @@ import validate from './exerciseValidate'
 import VectorPreview from './VectorPreview'
 import HaystackPreview from './HaystackPreview'
 import RestrictionSitesPreview from './RestrictionSitesPreview';
+import ColorPicker from './ColorPicker'
 
 class ExerciseEditor extends Component {
   renderField = ({ name, input, label, type, meta: { pristine, touched, error, warning }, ...props }) => (
@@ -57,7 +58,10 @@ class ExerciseEditor extends Component {
             </div>
             <div className="row">
               <div className="col-6"><Field name={`${helper}.len`} type="number" component={this.renderField} label="NT length" /></div>
-              <div className="col-6"><Field name={`${helper}.color`} type="text" component={this.renderField} label="Color (#FF0000)" /></div>
+              <div className="col-6">
+                {/* <Field name={`${helper}.color`} type="text" component={this.renderField} label="Color (#FF0000)" /> */}
+                <Field name={`${helper}.color`} component={ColorPicker} type="text" label="Color (#FF0000)" />
+              </div>
             </div>
           </li>
         ))}
