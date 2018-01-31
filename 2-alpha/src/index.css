@@ -534,6 +534,7 @@ body {
 .Admin-Markers {
   position: absolute;
   top: 0;
+  z-index: 10;
   white-space: pre-wrap;
 }
 .Admin-Markers .admin-marker {
@@ -544,6 +545,14 @@ body {
   content: "";
   border-right: 1px solid red;
   height: 1ch;
+}
+
+.Admin-Vector-Markers {
+  
+}
+.Admin-Vector-Markers .admin-marker {
+  width: 100%;
+  top: 0;
 }
 .editor-checkbox label { 
   padding-left: 10px;
@@ -598,4 +607,14 @@ body {
   border-top: 1px dashed rgba(0,0,0,0.3);
   position: relative;
   top: 2px; /* Move slightly down to show cut */
+}
+
+.Admin-Haystack .multiline .sequence {
+  line-height: 8;
+}
+.Admin-Vector {
+  
+}
+.Admin-Vector .sequence {
+  position: relative;
 }

@@ -2,6 +2,7 @@ import _ from 'lodash'
 import React from 'react'
 
 const Markers = ({ markers = [], className, ...rest }) => {
+  console.log('Markers:', markers)
   return (
     <div className={`${className} sequence`} {...rest}>
       {markers.map(marker => {

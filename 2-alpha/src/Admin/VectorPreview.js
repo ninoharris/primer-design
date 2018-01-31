@@ -13,12 +13,21 @@ import { getAllRestrictionSites } from '../selectors/index';
 const VectorPreview = ({ forward, reverse, helpers, vectorMarkers }) => {
   console.log('I swear', helpers, vectorMarkers)
   return (
-    <div className="vector admin-vector">
+    <div className="vector Admin-Vector pt-3 pb-3">
       <HelperPosition length={90} />
-      <Markers markers={vectorMarkers} />
       <HelperMarkers helpers={vectorMarkers} />
-      <div><HighlightedSequence helpers={helpers} sequence={forward} direction='forward' /></div>
-      <div><HighlightedSequence helpers={helpers} sequence={reverse} direction='reverse' /></div>
+      <div className="forward">
+        <div className="sequence">
+          <Markers markers={vectorMarkers} className="Admin-Markers Admin-Vector-Markers" />
+          <HighlightedSequence helpers={helpers} sequence={forward} direction='forward' />
+        </div>
+      </div>
+      <div className="reverse sequence">
+        <div className="sequence">
+          <Markers markers={vectorMarkers} className="Admin-Markers Admin-Vector-Markers" />
+          <HighlightedSequence helpers={helpers} sequence={reverse} direction='reverse' />
+        </div>
+      </div>
     </div>
   )
 }
@@ -29,13 +38,13 @@ const mapStateToProps = (state, ownProps) => {
   const { vector = ' ', vectorStart = null, vectorEnd = null, helpers = [] } = selector(state,
     'vector', 'vectorStart', 'vectorEnd', 'helpers')
   
-  const REHelpers = _.mapValues(
-    api.getRestrictionSiteMatches(getAllRestrictionSites(state), vector), 
+  const REHelpersObj = api.getRestrictionSiteMatches(getAllRestrictionSites(state), vector)
+  const REHelpers = _.flatMap(
+    REHelpersObj, 
     ({ name, seq, pos, color = '#CCCCCC' }) => ({
       name, seq, pos, len: seq.length, color
     })
   )
-  console.log(REHelpers)
   return {
     forward: vector,
     reverse: api.complementFromString(vector),

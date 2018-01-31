@@ -10,7 +10,7 @@ import Markers from '../components/Markers'
 import * as api from '../api'
 
 const HaystackPreview = ({ forward, reverse, haystackMarkers }) => (
-  <div className="haystack admin-haystack">
+  <div className="haystack Admin-Haystack">
     <HelperPosition length={90} interval={3} />
     <div className="forward">
       <div className="multiline">
@@ -23,6 +23,7 @@ const HaystackPreview = ({ forward, reverse, haystackMarkers }) => (
     <div className="reverse">
       <div className="multiline">
         <div className="sequence">
+          <Markers className="Admin-Markers" markers={haystackMarkers} />
           <Left3 />{reverse}<Right5 />
         </div>
         <Codons seq={forward} showCodons={true} />
