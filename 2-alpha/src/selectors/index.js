@@ -152,7 +152,7 @@ export const getUserVectorMatchForward = createSelector(
   getUFV,
   getCurrentExercise,
   getVectorRestrictionSites,
-  (input, { vectorStart = false, vector }, RESites) => {
+  (input, { fusionStart, vectorStart, vector }, RESites) => {
     const matchesObj = _.pickBy(RESites, (RESite) => input.includes(RESite.seq))
     const matches = _.values(matchesObj)
     if (matches.length !== 1) {
@@ -165,10 +165,10 @@ export const getUserVectorMatchForward = createSelector(
     singleMatch['trailingSeq'] = input.slice(REMatchPos + singleMatch.seq.length) // XXATAGCGYY (primer) -> YY
     singleMatch['positionInVector'] = singleMatch.pos - singleMatch['leadingSeq'].length  // position to put primer relative to vector.
     singleMatch['endPos'] = singleMatch['positionInVector'] + 6
-    singleMatch['frame'] = vectorStart // false (no required frame, ignore framing errors) or INT
-    if(typeof vectorStart !== 'number') return { singleMatch } // no required frame -> return now and say we dont need frame here
+
+    if(!fusionStart) return { singleMatch } // no required frame -> return now and say we dont need frame here
     console.log('Start of vector and RE match:', vectorStart, singleMatch.pos)
-    singleMatch['betweenStartAndREStr'] = vector.substring(vectorStart - 1, singleMatch.pos) // ZZZZZATAGCG (vector) -> ZZZZZ
+    singleMatch['betweenStartAndREStr'] = vector.substring(vectorStart, singleMatch.pos) // ZZZZZATAGCG (vector) -> ZZZZZ
     singleMatch['betweenStartAndRE'] = singleMatch['betweenStartAndREStr'].length // ZZZZZ -> 5
     singleMatch['toGetDesiredFrame'] = (3 - singleMatch['betweenStartAndRE'] % 3) % 3
     singleMatch['input'] = input
@@ -182,7 +182,7 @@ export const getUserVectorMatchReverse = createSelector(
   getURVReverse,
   getCurrentExercise,
   getVectorRestrictionSites,
-  (inputHund80, input, { vectorEnd = false, vector }, RESites) => {
+  (inputHund80, input, { fusionEnd, vectorEnd, vector }, RESites) => {
     const matchesObj = _.pickBy(RESites, (RESite) => inputHund80.includes(RESite.seq))
     const matchesObjSeqReverse = _.map(matchesObj, (RESite => ({ ...RESite, seq: api.reverse(RESite.seq) })))
     const matches = _.values(matchesObjSeqReverse)
@@ -195,10 +195,9 @@ export const getUserVectorMatchReverse = createSelector(
     singleMatch['leadingSeq'] = input.slice(REMatchPos + singleMatch.seq.length) // 5'-XXATAGCGYY-3' = 3'-YYGCGATAXX-5' (primer)-> XX
     singleMatch['trailingSeq'] = input.slice(0, REMatchPos) // XXATAGCGYY (primer) -> YY
     singleMatch['positionInVector'] = singleMatch['pos'] - singleMatch['trailingSeq'].length // position to put primer relative to vector.
-    singleMatch['frame'] = vectorEnd // false (no required frame, ignore framing errors) or INT
-    if (typeof vectorEnd !== 'number') return { singleMatch } // no required frame -> return now and say we dont need frame here
+    if (!fusionEnd) return { singleMatch } // no required frame -> return now and say we dont need frame here
 
-    singleMatch['betweenEndAndREStr'] = vector.slice(singleMatch.pos + 6, vectorEnd + 1) // ATAGCGZZZZZ (vector) -> ZZZZZ
+    singleMatch['betweenEndAndREStr'] = vector.slice(singleMatch.pos + 6, vectorEnd) // ATAGCGZZZZZ (vector) -> ZZZZZ
     singleMatch['betweenEndAndRE'] = singleMatch['betweenEndAndREStr'].length // ZZZZZ -> 5
     singleMatch['toGetDesiredFrame'] = (3 - singleMatch['betweenEndAndRE'] % 3) % 3
     singleMatch['input'] = input
@@ -358,36 +357,37 @@ export const getAllEvaluations = createSelector(
     console.log(Eval.getEvaluation())
     if(!FV.singleMatch || !RV.singleMatch) return Eval.getEvaluation()
 
-    // does Forward primer need a start codon in this exercise, if so:
+    // does Forward primer need a start codon in this exercise, if not:
     if (FG.isExact && FG.normalMatch) {
-      const needsStartCodon = !exercise.vectorStart
-
-      if (needsStartCodon) {
-        // yes: check in-frame with constructStart and placed start codon
-        
-      } else {
-        // no: check in-frame with constructStart and vectorStart
+      // check in-frame with constructStart and vectorStart
+      if (exercise.fusionStart) {
         const diffBetweenForwardFrameAndDesired = (FV.singleMatch.toGetDesiredFrame - FV.singleMatch.trailingSeq.length)
         if (diffBetweenForwardFrameAndDesired === 0) {
           EvalFV.success('FORWARD_BOTH_IN_FRAME')
         } else {
           EvalFV.failure('FORWARD_BOTH_OUT_OF_FRAME', diffBetweenForwardFrameAndDesired)
         }
+      // check in-frame with constructStart and placed start codon
+      } else {
+        
+
+
+
       }
     }
 
     if (RG.isExact && RG.normalMatch) {
-      const needsStopCodon = !exercise.vectorEnd
       // does Reverse primer need a stop codon in this exercise, if so:
-      if (needsStopCodon) {
-        console.log('Needs stop codon')
-      } else {
+      if (exercise.fusionEnd) { // no need for stop codon
         const diffBetweenReverseFrameAndDesired = (RV.singleMatch.toGetDesiredFrame - RV.singleMatch.trailingSeq.length)
         if (diffBetweenReverseFrameAndDesired === 0) {
           EvalRV.success('REVERSE_BOTH_IN_FRAME')
         } else {
           EvalRV.failure('REVERSE_BOTH_OUT_OF_FRAME', diffBetweenReverseFrameAndDesired)
         }
+      // check in-frame with constructEnd and placed end codon
+      } else {
+
       }
     }
 
