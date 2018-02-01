@@ -68,11 +68,14 @@ export const messageIDsToDetails = {
     title: `Forward primer is out of frame by ${Math.abs(frame)}`,
     additional: `At the forward primer sequence, try adding ${frame} base${frame > 1 ? 's':''} at the end of the vector part.`
   }),
+  "FORWARD_INCLUDES_START_CODON": () => ({
+    title: 'Construct contains a start codon as necessary.'
+  }),
   "FORWARD_MISSING_START_CODON": () => ({
     title: 'Your construct requires a start codon.'
   }),
   "FORWARD_START_CODON_OUT_OF_FRAME": (frame) => ({
-    title: `Your start codon is out of frame by ${frame} bases!`
+    title: `Your start codon is out of frame by ${frame} base${frame > 1 ? 's' : ''}!`
   }),
   "REVERSE_TOO_SHORT": () => ({
     title: 'Reverse haystack is too short!'
@@ -102,11 +105,14 @@ export const messageIDsToDetails = {
     additional: `At the reverse primer sequence, try adding ${frame} base${frame > 1 ? 's' : ''} at the end of the vector part.`,
     actions: [actions.troubleshootRV],
   }),
+  "REVERSE_INCLUDES_STOP_CODON": () => ({
+    title: 'Construct contains a stop codon as necessary.'
+  }),
   "REVERSE_MISSING_STOP_CODON": () => ({
     title: 'Your construct requires a stop codon.'
   }),
   "REVERSE_STOP_CODON_OUT_OF_FRAME": (frame) => ({
-    title: `Your stop codon is out of frame by ${frame} bases!`
+    title: `Your stop codon is out of frame by ${frame} base${frame > 1 ? 's' : ''}!`
   }),
   "READY": () => ({
     title: 'All primers look ready! Hooray!'

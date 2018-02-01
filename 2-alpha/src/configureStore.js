@@ -22,11 +22,17 @@ const initialState = {
     CCCGGG: { seq: "CCCGGG", name: "Sma1", cutsForward: 3, cutsReverse: 3, color: '#4f4367' },
     CCATGG: { seq: "CCATGG", name: "NcoI", cutsForward: 1, cutsReverse: 5, color: '#eec6d3' }
   },
-  formInputs: {
-    FV: 'actagt', 
-    FG: 'acggtggtaac',
-    RV: 'aagctt', //NcoI
-    RG: 'cgccactttgg'
+  // formInputs: { // no start no stop
+  //   FV: 'actagt', 
+  //   FG: 'acggtggtaac',
+  //   RV: 'aagctt', //NcoI
+  //   RG: 'cgccactttgg'
+  // },
+  formInputs: { // no start, a stop.
+    FV: 'ccatgga',
+    FG: 'cacagctacga',
+    RV: 'gtcgac', //NcoI
+    RG: 'tcatgcatat'
   },
   showCodons: false,
 }

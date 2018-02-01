@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import * as api from '../api'
+import { stopCodons, startCodon } from '../api/codons'
 import { createSelector } from 'reselect'
 
 export const loadingSelector = state => state.fetchingExercises
@@ -356,7 +357,7 @@ export const getAllEvaluations = createSelector(
     const EvalALL = Eval.createCategory('RV', 'FV', 'FG', 'RG')
     console.log(Eval.getEvaluation())
     if(!FV.singleMatch || !RV.singleMatch) return Eval.getEvaluation()
-
+    console.log(FV)
     // does Forward primer need a start codon in this exercise, if not:
     if (FG.isExact && FG.normalMatch) {
       // check in-frame with constructStart and vectorStart
@@ -369,10 +370,18 @@ export const getAllEvaluations = createSelector(
         }
       // check in-frame with constructStart and placed start codon
       } else {
-        
+        if (exercise.userProvidesStartCodon) {
+          const startCodonPos = FV.singleMatch.trailingSeq.toUpperCase().indexOf('ATG')
+          if(startCodonPos > -1) {
 
+            EvalFV.success('FORWARD_INCLUDES_START_CODON')
+            const startCodonFrame = FV.singleMatch.trailingSeq.slice(startCodonPos).length % 3
+            if (startCodonFrame !== 0) EvalFV.failure('FORWARD_START_CODON_OUT_OF_FRAME', startCodonFrame)
 
-
+          } else {
+            EvalFV.failure('FORWARD_MISSING_START_CODON')
+          }
+        }
       }
     }
 
@@ -387,7 +396,18 @@ export const getAllEvaluations = createSelector(
         }
       // check in-frame with constructEnd and placed end codon
       } else {
+        if (exercise.userProvidesStopCodon) {
+          const endCodonMatch = /(TAA)|(TAG)|(TGA)/i.exec(api.reverse(RV.singleMatch.trailingSeq))
+          if(endCodonMatch !== null) {
 
+            EvalFV.success('REVERSE_INCLUDES_START_CODON')
+            let endCodonFrame = FV.singleMatch.trailingSeq.slice(endCodonMatch.index).length % 3
+            if (endCodonFrame !== 0) EvalFV.failure('REVERSE_START_CODON_OUT_OF_FRAME', endCodonFrame)
+
+          } else {
+            EvalFV.failure('REVERSE_MISSING_START_CODON')
+          }
+        }
       }
     }
 
