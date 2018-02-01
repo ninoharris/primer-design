@@ -189,7 +189,7 @@ const mapStateToProps = (state, ownProps) => {
       fusionEnd: !!values.fusionEnd,
       helpers: helpersObject,
       userProvidesStartCodon: values.userProvidesStartCodon || false,
-      userProvidesEndCodon: values.userProvidesEndCodon || false,
+      userProvidesStopCodon: values.userProvidesStopCodon || false,
     }
     console.log('Exercise data: ', exerciseData)
     outerSubmit(exerciseData)

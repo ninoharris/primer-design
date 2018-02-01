@@ -400,12 +400,12 @@ export const getAllEvaluations = createSelector(
           const endCodonMatch = /(TAA)|(TAG)|(TGA)/i.exec(api.reverse(RV.singleMatch.trailingSeq))
           if(endCodonMatch !== null) {
 
-            EvalFV.success('REVERSE_INCLUDES_START_CODON')
-            let endCodonFrame = FV.singleMatch.trailingSeq.slice(endCodonMatch.index).length % 3
-            if (endCodonFrame !== 0) EvalFV.failure('REVERSE_START_CODON_OUT_OF_FRAME', endCodonFrame)
+            EvalRV.success('REVERSE_INCLUDES_STOP_CODON')
+            let endCodonFrame = FV.singleMatch.trailingSeq.slice(0, endCodonMatch.index).length % 3
+            if (endCodonFrame !== 0) EvalFV.failure('REVERSE_STOP_CODON_OUT_OF_FRAME', endCodonFrame)
 
           } else {
-            EvalFV.failure('REVERSE_MISSING_START_CODON')
+            EvalRV.failure('REVERSE_MISSING_STOP_CODON')
           }
         }
       }
