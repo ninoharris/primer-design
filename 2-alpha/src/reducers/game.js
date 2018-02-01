@@ -1,3 +1,4 @@
+import { combineReducers } from 'redux'
 import * as TYPES from '../actions/types'
 
 export const game = (state = {}, action) => {
@@ -48,17 +49,34 @@ export const restrictionSites = (state = {}, action) => {
   return state
 }
 
-export const formInputs = (state = { FV: '', FG: '', RV: '', RG: '' }, action) => {
+
+// export const formInputs = (state = { FV: '', FG: '', RV: '', RG: '' }, action) => {
+//   switch (action.type) {
+//     case 'UPDATE_FV':
+//       return { ...state, FV: action.userInput }
+//     case 'UPDATE_FG':
+//       return { ...state, FG: action.userInput }
+//     case 'UPDATE_RV':
+//       return { ...state, RV: action.userInput }
+//     case 'UPDATE_RG':
+//       return { ...state, RG: action.userInput }
+//     default:
+//       console.log('Initialising', state)
+//       return state
+//   }
+// }
+
+const inputReducer = (name) => (state = '', action) => {
   switch (action.type) {
-    case 'UPDATE_FV':
-      return { ...state, FV: action.userInput }
-    case 'UPDATE_FG':
-      return { ...state, FG: action.userInput }
-    case 'UPDATE_RV':
-      return { ...state, RV: action.userInput }
-    case 'UPDATE_RG':
-      return { ...state, RG: action.userInput }
-    default:
-      return state
+    case `UPDATE_${name}`:
+      return action.userInput
+    default: return state
   }
 }
+
+export const formInputs = combineReducers({
+  FV: inputReducer('FV'),
+  RV: inputReducer('RV'),
+  FG: inputReducer('FG'),
+  RG: inputReducer('RG'),
+})

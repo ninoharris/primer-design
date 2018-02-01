@@ -158,25 +158,22 @@ export const getUserVectorMatchForward = createSelector(
     if (matches.length !== 1) {
       return { matches, multipleMatches: true }
     }
-    const match = matches[0]
-    const singleMatch = { ...match}
+    const singleMatch = { ...matches[0] }
     // console.log('getUserVectorMatchForward', input, match)
-    const REMatchPos = singleMatch['REMatchPos'] = input.indexOf(match.seq) // XXATAGCGYY (primer) -> 2
+    const REMatchPos = singleMatch['REMatchPos'] = input.indexOf(singleMatch.seq) // XXATAGCGYY (primer) -> 2
     singleMatch['leadingSeq']  = input.slice(0, REMatchPos) // XXATAGCGYY (primer)-> XX
-    singleMatch['trailingSeq'] = input.slice(REMatchPos + match.seq.length) // XXATAGCGYY (primer) -> YY
-    singleMatch['positionInVector'] = match.pos - singleMatch['leadingSeq'].length  // position to put primer relative to vector.
+    singleMatch['trailingSeq'] = input.slice(REMatchPos + singleMatch.seq.length) // XXATAGCGYY (primer) -> YY
+    singleMatch['positionInVector'] = singleMatch.pos - singleMatch['leadingSeq'].length  // position to put primer relative to vector.
     singleMatch['endPos'] = singleMatch['positionInVector'] + 6
     singleMatch['frame'] = vectorStart // false (no required frame, ignore framing errors) or INT
-    if(!vectorStart) return singleMatch // no required frame -> return now and say we dont need frame here
-    console.log('Start of vector and RE match:', vectorStart, match.pos)
-    singleMatch['betweenStartAndREStr'] = vector.substring(vectorStart - 1, match.pos) // ZZZZZATAGCG (vector) -> ZZZZZ
+    if(typeof vectorStart !== 'number') return { singleMatch } // no required frame -> return now and say we dont need frame here
+    console.log('Start of vector and RE match:', vectorStart, singleMatch.pos)
+    singleMatch['betweenStartAndREStr'] = vector.substring(vectorStart - 1, singleMatch.pos) // ZZZZZATAGCG (vector) -> ZZZZZ
     singleMatch['betweenStartAndRE'] = singleMatch['betweenStartAndREStr'].length // ZZZZZ -> 5
     singleMatch['toGetDesiredFrame'] = (3 - singleMatch['betweenStartAndRE'] % 3) % 3
     singleMatch['input'] = input
     
-    
-
-    return { singleMatch }
+    return console.log('singleMatch:', {singleMatch}) || { singleMatch }
   }
 )
 
@@ -192,22 +189,21 @@ export const getUserVectorMatchReverse = createSelector(
     if (matches.length !== 1) {
       return { matches, multipleMatches: true }
     }
-    const match = matches[0]
-    const singleMatch = { ...match }
+    const singleMatch = { ...matches[0] }
 
-    const REMatchPos = singleMatch['REMatchPos'] = input.indexOf(match.seq) // XXATAGCGYY (primer) -> 2
-    singleMatch['leadingSeq'] = input.slice(REMatchPos + match.seq.length) // 5'-XXATAGCGYY-3' = 3'-YYGCGATAXX-5' (primer)-> XX
+    const REMatchPos = singleMatch['REMatchPos'] = input.indexOf(singleMatch.seq) // XXATAGCGYY (primer) -> 2
+    singleMatch['leadingSeq'] = input.slice(REMatchPos + singleMatch.seq.length) // 5'-XXATAGCGYY-3' = 3'-YYGCGATAXX-5' (primer)-> XX
     singleMatch['trailingSeq'] = input.slice(0, REMatchPos) // XXATAGCGYY (primer) -> YY
     singleMatch['positionInVector'] = singleMatch['pos'] - singleMatch['trailingSeq'].length // position to put primer relative to vector.
     singleMatch['frame'] = vectorEnd // false (no required frame, ignore framing errors) or INT
-    if (!vectorEnd) return singleMatch // no required frame -> return now and say we dont need frame here
+    if (typeof vectorEnd !== 'number') return { singleMatch } // no required frame -> return now and say we dont need frame here
 
-    singleMatch['betweenEndAndREStr'] = vector.slice(match.pos + 6, vectorEnd + 1) // ATAGCGZZZZZ (vector) -> ZZZZZ
+    singleMatch['betweenEndAndREStr'] = vector.slice(singleMatch.pos + 6, vectorEnd + 1) // ATAGCGZZZZZ (vector) -> ZZZZZ
     singleMatch['betweenEndAndRE'] = singleMatch['betweenEndAndREStr'].length // ZZZZZ -> 5
     singleMatch['toGetDesiredFrame'] = (3 - singleMatch['betweenEndAndRE'] % 3) % 3
     singleMatch['input'] = input
 
-    return { singleMatch }
+    return console.log('singleMatch:', { singleMatch }) || { singleMatch }
   }
 )
 
@@ -326,6 +322,7 @@ export const getVectorEvaluations = createSelector(
   }
   
   // FVRV.success("EACH_VECTOR_PRIMER_MATCHES_ONCE")
+  console.log('Were down to single matches:', FV, RV)
 
   // For readability
   FV = FV.singleMatch

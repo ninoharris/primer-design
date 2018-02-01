@@ -8,14 +8,16 @@ class HaystackForward extends Component {
   showExact = () => {
     return this.props.input
   }
+
   showMismatches = () => {
-    const { correctChars, wrongSeqQuery } = this.props
-    return (
-      <span className="multiple-matches">
-        <span className="multiple-match mismatch">{wrongSeqQuery}</span>
-        <span className="multiple-match match">{correctChars}</span>
-      </span>
-    )
+    const { correctChars, wrongSeqQuery, input } = this.props
+    return input.split('').map((char, i) => {
+      if (char === correctChars[i]) {
+        return <span style={{ fontWeight: 'bold' }}>{char}</span>
+      } else {
+        return <span style={{ color: 'red' }}>{char}</span>
+      }
+    })
   }
   render() {
     const { pos, isExact, normalMatch, tooShort, FV, input } = this.props

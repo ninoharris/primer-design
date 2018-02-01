@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 const PrimerPreviewSmall = ({ strand, plasmidSegment, geneSegment, animatingPreview }) => {
-  const displayBases = (bases) => bases.split('').map((l,i) =>
+  const displayBases = (bases = '') => bases.split('').map((l,i) =>
     <span className="l" key={i}>{l}</span>
   )
   const activeClass = animatingPreview ? 'active' : ''

@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import { getUserVectorMatchReverse, getURGReverse } from '../../selectors'
@@ -47,6 +48,11 @@ class VectorReverse extends Component {
     }
     return this.singleMatch()
   }
+}
+VectorReverse.propTypes = {
+  multipleMatches: PropTypes.bool,
+  singleMatch: PropTypes.object,
+  matches: PropTypes.arrayOf(PropTypes.object)
 }
 
 const mapStateToProps = (state) => {
