@@ -14,11 +14,14 @@ const VectorPreview = ({ forward, reverse, helpers, vectorMarkers }) => {
   console.log('I swear', helpers, vectorMarkers)
   return (
     <div className="vector Admin-Vector pt-3 pb-3">
-      <HelperPosition length={90} />
-      <HelperMarkers helpers={vectorMarkers} />
+      
+      
+
       <div className="forward">
         <div className="sequence">
+          <HelperPosition length={forward.length} className="fullheight" />
           <Markers markers={vectorMarkers} className="Admin-Markers Admin-Vector-Markers" />
+          <HelperMarkers helpers={helpers} />
           <HighlightedSequence helpers={helpers} sequence={forward} direction='forward' />
         </div>
       </div>
@@ -35,14 +38,14 @@ const VectorPreview = ({ forward, reverse, helpers, vectorMarkers }) => {
 const selector = formValueSelector('exerciseEditor')
 
 const mapStateToProps = (state, ownProps) => {
-  const { vector = ' ', vectorStart = null, vectorEnd = null, helpers: helperUnparsed = [] } = selector(state,
+  const { vector = ' ', vectorStart = null, vectorEnd = null, helpers: userMadeHelpers = [] } = selector(state,
     'vector', 'vectorStart', 'vectorEnd', 'helpers')
 
-  const helpers = helperUnparsed.map(helper => ({
+  const helpers = userMadeHelpers.map(helper => ({
       ...helper,
       pos: Number(helper.pos),
       len: Number(helper.len),
-    }))
+  })).filter(helper => helper.pos && helper.len && helper.name && helper.color)
   
   const REHelpersObj = api.getRestrictionSiteMatches(getAllRestrictionSites(state), vector)
   const REHelpers = _.flatMap(

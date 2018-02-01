@@ -11,10 +11,11 @@ import * as api from '../api'
 
 const HaystackPreview = ({ forward, reverse, haystackMarkers }) => (
   <div className="haystack Admin-Haystack">
-    <HelperPosition length={90} interval={3} />
+    
     <div className="forward">
       <div className="multiline">
         <div className="sequence">
+          <HelperPosition length={forward.length} interval={3} />
           <Markers className="Admin-Markers" markers={haystackMarkers} />
           <Left5 />{forward}<Right3 />
         </div>

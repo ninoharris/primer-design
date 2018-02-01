@@ -13,23 +13,24 @@ class Haystack extends Component {
     const className = "haystack mt-3" + (FG.length > 3 ? ' haystack-with-UFG' : '') + (RG.length > 3 ? ' haystack-with-URG' : '')
     return (
       <div className={className}>
-        <HelperPosition length={100} />
-        <div className="forward">        
-          <div className="multiline">
-            <div className="sequence">
-              <Left5 />{forward}<Right3 />
-              <HaystackReverse />
+        <div style={{position: 'relative', top: '-1rem'}}>
+          <div className="forward">        
+            <div className="multiline">
+              <div className="sequence">
+                <HelperPosition length={forward.length} />
+                <Left5 />{forward}<Right3 />
+                <HaystackReverse />
+              </div>
             </div>
           </div>
-        </div>
-        <div className="reverse">
-          <div className="multiline">
-            
-            <div className="sequence">
-              <HaystackForward />
-              <Left3 />{reverse}<Right5 />
+          <div className="reverse">
+            <div className="multiline">
+              <div className="sequence">
+                <HaystackForward />
+                <Left3 />{reverse}<Right5 />
+              </div>
+              <Codons seq={forward} />
             </div>
-            <Codons seq={forward} />
           </div>
         </div>
       </div>

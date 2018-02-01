@@ -60,7 +60,7 @@ class ExerciseEditor extends Component {
               <div className="col-6"><Field name={`${helper}.len`} type="number" component={this.renderField} label="NT length" /></div>
               <div className="col-6">
                 {/* <Field name={`${helper}.color`} type="text" component={this.renderField} label="Color (#FF0000)" /> */}
-                <Field name={`${helper}.color`} component={ColorPicker} type="text" label="Color (#FF0000)" />
+                <Field name={`${helper}.color`} component={ColorPicker} type="text" label="Color (#FF0000)" defaultValue="#FF0000" />
               </div>
             </div>
           </li>
@@ -127,7 +127,10 @@ class ExerciseEditor extends Component {
             </div>
             <div className="form-group">
               <label className="d-block" htmlFor="haystack"></label>
-              <Field className="form-control haystackInput" name="haystack" component={this.renderTextarea} type="text" label="Haystack forward sequence (reverse is calculated)" />
+              <Field className="form-control haystackInput" 
+                name="haystack"
+                component={this.renderTextarea} type="text" rows="6" 
+                label="Haystack forward sequence (reverse is calculated)" />
             </div>
             <HaystackPreview />
             <button type="submit" disabled={pristine || submitting}>{submitText}</button>

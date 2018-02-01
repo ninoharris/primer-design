@@ -17,7 +17,7 @@ class Vector extends Component {
     const { forward, reverse, helpers } = this.props
     return (
       <div className="vector pt-3 pb-3 mt-3">
-        <HelperPosition length={90} />
+        <HelperPosition length={90} className="fullheight" />
         <div className="forward mb-3">
           <HelperMarkers helpers={helpers} />
           <div className="sequence">
