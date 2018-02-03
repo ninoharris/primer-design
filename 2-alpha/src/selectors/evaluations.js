@@ -27,7 +27,6 @@ const createEvaluation = (...initialStates) => {
     return // to send back true or false or null here?
   }
   const getEvaluation = () => {
-    // console.log('getEvaluation called: ', state)
     return state
   }
   const hasErrors = () => anyErrors
@@ -65,7 +64,6 @@ export const getUserVectorMatchForward = createSelector(
       return { matches, multipleMatches: true }
     }
     const singleMatch = { ...matches[0] }
-    // console.log('getUserVectorMatchForward', input, match)
     const REMatchPos = singleMatch['REMatchPos'] = input.indexOf(singleMatch.seq) // XXATAGCGYY (primer) -> 2
     singleMatch['leadingSeq'] = input.slice(0, REMatchPos) // XXATAGCGYY (primer)-> XX
     singleMatch['trailingSeq'] = input.slice(REMatchPos + singleMatch.seq.length) // XXATAGCGYY (primer) -> YY
@@ -73,13 +71,13 @@ export const getUserVectorMatchForward = createSelector(
     singleMatch['endPos'] = singleMatch['positionInVector'] + 6
 
     if (!fusionStart) return { singleMatch } // no required frame -> return now and say we dont need frame here
-    console.log('Start of vector and RE match:', vectorStart, singleMatch.pos)
     singleMatch['betweenStartAndREStr'] = vector.substring(vectorStart, singleMatch.pos) // ZZZZZATAGCG (vector) -> ZZZZZ
     singleMatch['betweenStartAndRE'] = singleMatch['betweenStartAndREStr'].length // ZZZZZ -> 5
     singleMatch['toGetDesiredFrame'] = (3 - singleMatch['betweenStartAndRE'] % 3) % 3
     singleMatch['input'] = input
 
-    return console.log('singleMatch:', { singleMatch }) || { singleMatch }
+    // return console.log('singleMatch:', { singleMatch }) || { singleMatch }
+    return { singleMatch }
   }
 )
 
@@ -204,20 +202,14 @@ export const getVectorEvaluations = createSelector(
 
     // If no match or too many matches, then return early as later logic requires a single match
     if (UFVReadyToCheck) {
-      if (FV.matches && FV.matches.length === 0) return EvalFV.failure("NO_MATCH_FV")
-      if (FV.matches) {
-        EvalFV.failure("EXCEED_MATCH_FV")
-      } else {
-        EvalFV.success('FV_MATCHES_ONCE')
-      }
+      if (FV.matches && FV.matches.length === 0) EvalFV.failure("NO_MATCH_FV")
+      if (FV.matches && FV.matches.length > 0) EvalFV.failure("EXCEED_MATCH_FV")
+      if (FV.singleMatch) EvalFV.success('FV_MATCHES_ONCE')
     }
     if (URVReadyToCheck) {
-      if (RV.matches && RV.matches.length === 0) return EvalRV.failure("NO_MATCH_RV")
-      if (RV.matches) {
-        EvalRV.failure("EXCEED_MATCH_RV")
-      } else {
-        EvalRV.success('RV_MATCHES_ONCE')
-      }
+      if (RV.matches && RV.matches.length === 0) EvalRV.failure("NO_MATCH_RV")
+      if (RV.matches && RV.matches.length > 0) EvalRV.failure("EXCEED_MATCH_RV")
+      if (RV.singleMatch) EvalRV.success('RV_MATCHES_ONCE')
     }
 
 
@@ -225,9 +217,6 @@ export const getVectorEvaluations = createSelector(
     if (Eval.doesntContain('FV_MATCHES_ONCE') || Eval.doesntContain('RV_MATCHES_ONCE')) {
       return Eval.getEvaluation()
     }
-
-    // FVRV.success("EACH_VECTOR_PRIMER_MATCHES_ONCE")
-    console.log('Were down to single matches:', FV, RV)
 
     // For readability
     FV = FV.singleMatch
@@ -260,9 +249,7 @@ export const getAllEvaluations = createSelector(
     const EvalFV = Eval.createCategory('FV')
     const EvalRV = Eval.createCategory('RV')
     const EvalALL = Eval.createCategory('RV', 'FV', 'FG', 'RG')
-    console.log(Eval.getEvaluation())
     if (!FV.singleMatch || !RV.singleMatch) return Eval.getEvaluation()
-    console.log(FV)
     // does Forward primer need a start codon in this exercise, if not:
     if (FG.isExact && FG.normalMatch) {
       // check in-frame with constructStart and vectorStart
@@ -390,8 +377,6 @@ export const getFinalClone = createSelector(
 
     const markers = _.map(forward, ({ seq, text }) => seq)
 
-    // console.log('Markers', markers)
-    // console.log('Forward', forward, forward.length)
     return {
       forward,
       markers,
