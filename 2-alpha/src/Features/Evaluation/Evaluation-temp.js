@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { 
-  getCurrentExercise, 
-  getHaystackForwardMatches, 
+import {  getCurrentExercise } from '../../selectors'
+ import {
+  getHaystackForwardMatches,
   getHaystackReverseMatches,
   getUserVectorMatchForward,
   getUserVectorMatchReverse,
- } from '../../selectors/index';
+ } from '../../selectors/evaluations'
 
 class Evaluation extends Component {
   renderEval(title, matches) {

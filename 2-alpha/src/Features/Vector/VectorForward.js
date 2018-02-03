@@ -3,7 +3,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
-import { getUserVectorMatchForward, getUFG} from '../../selectors'
+import { getUFG } from '../../selectors'
+import { getUserVectorMatchForward } from '../../selectors/evaluations'
 import { Left5, Right3 } from '../../components/HelperEnds'
 
 // Goes like so: check if multiple matches exist or no matches at all, then show matches as warnings

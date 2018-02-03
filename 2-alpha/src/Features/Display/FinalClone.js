@@ -2,16 +2,14 @@ import _ from 'lodash'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import HelperPosition from '../../components/HelperPosition'
-import { getFinalClone } from '../../selectors/index';
+import { getFinalClone } from '../../selectors/evaluations';
 import * as api from '../../api'
 
 class FinalClone extends Component {
   getMarkers = (markers) => {
-    let lastIndex = 0
     console.log('markers', markers)
     return markers.map(seq => {
       const marker = <span className="marker" key={seq}>{_.padStart('', seq.length, ' ')}</span>
-      lastIndex += seq.length
       return marker
     })
   }
@@ -47,7 +45,7 @@ class FinalClone extends Component {
   }
   render() {
     const { helpers, forward, markers } = this.props.finalClone
-    const reverse = _.mapValues(forward, (o) => ({...o, seq: api.complementFromString(o.seq)}))
+    // const reverse = _.mapValues(forward, (o) => ({...o, seq: api.complementFromString(o.seq)}))
     return (
       <div className="Final-Clone">
         <HelperPosition length={100} />

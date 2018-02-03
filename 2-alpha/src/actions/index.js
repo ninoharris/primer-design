@@ -1,6 +1,6 @@
 import db from '../firebase/firebase'
 import * as TYPES from './types'
-import { getIsSuccessful } from '../selectors'
+import { getIsSuccessful } from '../selectors/evaluations'
 export * from './troubleshooter'
 
 

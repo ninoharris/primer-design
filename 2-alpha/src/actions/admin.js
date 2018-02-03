@@ -45,9 +45,12 @@ export const updateExercise = (id, exerciseData) => (dispatch) => {
   })
 }
 
-export const removeExercise = (id) => (dispatch) => {
+// export const removeExercise = (id) => 
+
+export const startRemoveExercise = (id) => (dispatch) => {
   dispatch({
-    type: TYPES.DELETE_EXERCISE_INIT
+    type: TYPES.DELETE_EXERCISE_INIT,
+    id
   })
 
   return db.ref(`exercises/${id}`).set(null).then(() => {
@@ -68,4 +71,19 @@ export const updateExerciseFilter = (text) => {
     type: TYPES.FILTER_EXERCISES_BY_TEXT,
     payload: text,
   }
+}
+
+
+// Notifications
+const notifyDeleted = (id) => (dispatch) => {
+  dispatch({
+    type: TYPES.NOTIFY_DELETED,
+    id,
+  })
+  setTimeout(() => {
+    dispatch({
+      type: TYPES.NOTIFY_DELETED,
+      id,
+    })
+  })
 }

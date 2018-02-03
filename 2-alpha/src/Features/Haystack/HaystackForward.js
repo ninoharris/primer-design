@@ -1,7 +1,8 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getHaystackForwardMatches, getUFV } from '../../selectors'
+import { getUFV } from '../../selectors'
+import { getHaystackForwardMatches } from '../../selectors/evaluations'
 import { Left5, Right3 } from '../../components/HelperEnds'
 
 class HaystackForward extends Component {

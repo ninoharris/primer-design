@@ -2,7 +2,7 @@ import _ from 'lodash'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
-import { getAllEvaluations } from '../../selectors'
+import { getAllEvaluations } from '../../selectors/evaluations'
 import { messageIDsToDetails } from '../../selectors/messages'
 
 // const Fade = ({ children, ...props}) => (
