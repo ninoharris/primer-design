@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getBothHaystackStrands, showCodons, getUFG, getURG } from '../../selectors'
+import { getBothHaystackStrands, getUFG, getURG } from '../../selectors'
 import HelperPosition from '../../components/HelperPosition'
 import HaystackForward from './HaystackForward';
 import HaystackReverse from './HaystackReverse'

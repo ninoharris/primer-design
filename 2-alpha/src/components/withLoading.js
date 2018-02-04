@@ -1,7 +1,6 @@
 // Higher order component
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { loadingSelector } from '../selectors'
 import { fetchExercises } from '../actions'
 
 // const withLoading = (WrappedComponent) => (props) => { // Cant do stateless!

@@ -87,7 +87,22 @@ describe('Evaluations', () => {
       expect(result).toContainEqual({ "ID": "FV_MATCHES_ONCE", "inputs": ["FV"], "success": true })
     })
 
+    test('RV should succeed with just one match', () => {
+      state = {
+        ...state,
+        formInputs: {
+          FV: '',
+          RV: 'actagt',
+          FG: '',
+          RG: '',
+        }
+      }
+      const result = getAllEvaluations(state)
+      expect(result).toContainEqual({ "ID": "RV_MATCHES_ONCE", "inputs": ["RV"], "success": true })
+    })
+
   })
+
 
 
 

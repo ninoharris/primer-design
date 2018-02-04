@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { codonTable, stopCodons } from './codons'
+import { codonTable } from './codons'
 
 export const repeatChar = function (count, ch) {
   if (!ch || ch.length === 0) ch = " " // Default repeated char is space

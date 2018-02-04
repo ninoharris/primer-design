@@ -11,17 +11,17 @@ class HaystackForward extends Component {
   }
 
   showMismatches = () => {
-    const { correctChars, wrongSeqQuery, input } = this.props
+    const { correctChars, input } = this.props
     return input.split('').map((char, i) => {
       if (char === correctChars[i]) {
-        return <span style={{ fontWeight: 'bold' }}>{char}</span>
+        return <span key={i} style={{ fontWeight: 'bold' }}>{char}</span>
       } else {
-        return <span style={{ color: 'red' }}>{char}</span>
+        return <span key={i} style={{ color: 'red' }}>{char}</span>
       }
     })
   }
   render() {
-    const { pos, isExact, normalMatch, tooShort, FV, input } = this.props
+    const { pos, isExact, normalMatch, FV, input } = this.props
     if(!input) return null
     return (
       <div className="sequence FG user-sequence">
