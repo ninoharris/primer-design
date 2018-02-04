@@ -30,6 +30,9 @@ export const messageIDsToDetails = {
   "EACH_VECTOR_PRIMER_MATCHES_ONCE": () => ({
     title: "Each primer only matches one restriction site",
   }),
+  "SAME_RESTRICTION_SITES": () => ({
+    title: 'Forward and reverse primers cannot target the same restriction sites.'
+  }),
   "VECTOR_OVERLAP": () => ({
     title: "Reverse primer cannot overlap forward primer.",
     actions: [actions.troubleshootFV, actions.troubleshootRV]

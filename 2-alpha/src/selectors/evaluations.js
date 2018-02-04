@@ -223,6 +223,10 @@ export const getVectorEvaluations = createSelector(
     RV = RV.singleMatch
 
     // TODO: either restriction site matches inside haystack:
+
+    // restriction sites cannot be the same
+    if (FV.seq === api.reverse(RV.seq)) FVRV.failure("SAME_RESTRICTION_SITES")
+
     // Spacing between primers
     if (FV.endPos >= RV.pos) FVRV.failure("VECTOR_OVERLAP")
     const differenceBetweenVectorPrimers = RV.pos - FV.endPos
