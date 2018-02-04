@@ -70,6 +70,11 @@ export const doShowCodons = (on) => ({
   payload: on
 })
 
+export const doShowAdminEvaluation = (on) => ({
+  type: TYPES.TOGGLE_ADMIN_EVALUATION,
+  payload: on,
+})
+
 export const attemptCompletion = () => (dispatch, getState) => {
   if(getIsSuccessful(getState())) {
     dispatch({

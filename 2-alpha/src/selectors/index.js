@@ -4,6 +4,7 @@ import { createSelector } from 'reselect'
 
 export const loadingSelector = state => state.fetchingExercises
 export const showCodons = state => state.showCodons
+export const showAdminEvaluation = state => state.showAdminEvaluation
 export const getAllRestrictionSites = state => state.restrictionSites
 
 export const exercisesListSelector = state => state.exercisesList
@@ -70,6 +71,24 @@ export const getVectorRestrictionSites = createSelector(
   getBothVectorStrands,
   (RESites, { forward }) => {
     return api.getRestrictionSiteMatches(RESites, forward)
+    // 20: { pos: 20, name: 'X', seq: 'AAAAAA' }
+  }
+)
+
+export const getHaystackForwardRestrictionSites = createSelector(
+  restrictionSitesSelector,
+  getBothHaystackStrands,
+  (RESites, { forward }) => {
+    return api.getRestrictionSiteMatches(RESites, forward)
+    // 20: { pos: 20, name: 'X', seq: 'AAAAAA' }
+  }
+)
+
+export const getHaystackReverseRestrictionSites = createSelector(
+  restrictionSitesSelector,
+  getBothHaystackStrands,
+  (RESites, { reverse }) => {
+    return api.getRestrictionSiteMatches(RESites, reverse)
     // 20: { pos: 20, name: 'X', seq: 'AAAAAA' }
   }
 )

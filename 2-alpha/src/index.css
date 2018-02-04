@@ -242,9 +242,10 @@ body {
 }
 .Haystack-Restriction-Sites .Restriction-Site .Name {
   position: absolute;
-  top: -4.3rem;
   left: 0;
+  top: -0.7rem;
   opacity: 0.4;
+  line-height: 1;
 }
 
 .helpers {

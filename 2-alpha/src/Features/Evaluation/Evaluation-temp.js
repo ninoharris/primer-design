@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import {  getCurrentExercise } from '../../selectors'
+import { getCurrentExercise, showAdminEvaluation } from '../../selectors'
  import {
   getHaystackForwardMatches,
   getHaystackReverseMatches,
@@ -18,6 +18,7 @@ class Evaluation extends Component {
     )
   }
   render() {
+    if(!this.props.showAdminEvaluation) return null
     return (
       <div>
         <div className="evaluations row">
@@ -46,6 +47,7 @@ class Evaluation extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    showAdminEvaluation: showAdminEvaluation(state),
     exerciseData: getCurrentExercise(state),
 
     FGMatches: getHaystackForwardMatches(state), 

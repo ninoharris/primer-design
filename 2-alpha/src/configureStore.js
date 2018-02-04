@@ -28,11 +28,17 @@ const initialState = {
   //   RV: 'aagctt', //NcoI
   //   RG: 'cgccactttgg'
   // },
-  formInputs: { // no start, a stop.
-    FV: 'ccatgga',
-    FG: 'cacagctacga',
-    RV: 'gtcgac', //NcoI
-    RG: 'tcatgcatat'
+  // formInputs: { // no start, a stop.
+  //   FV: 'ccatgga',
+  //   FG: 'cacagctacga',
+  //   RV: 'gtcgac', //NcoI
+  //   RG: 'tcatgcatat'
+  // },
+  formInputs: {
+    FV: '',
+    FG: '',
+    RV: '',
+    RG: '',
   },
   showCodons: false,
 }

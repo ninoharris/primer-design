@@ -1,17 +1,22 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Toggle from '../../components/Toggle'
-import { showCodons } from '../../selectors'
-import { doShowCodons } from '../../actions'
+import { showCodons, showAdminEvaluation } from '../../selectors'
+import { doShowCodons, doShowAdminEvaluation } from '../../actions'
 
 class Options extends Component {
   render() {
-    const { showCodons, doShowCodons } = this.props
+    const { showCodons, doShowCodons, showAdminEvaluation, doShowAdminEvaluation } = this.props
     return (
       <div>
         <Toggle on={showCodons} onToggle={on => doShowCodons(on)} className="mb-2">
           <Toggle.On>Showing codons</Toggle.On>
           <Toggle.Off>Hiding codons</Toggle.Off>
+          <Toggle.Button />
+        </Toggle>
+        <Toggle on={showAdminEvaluation} onToggle={on => doShowAdminEvaluation(on)} className="mb-2">
+          <Toggle.On>Showing evaluation objects</Toggle.On>
+          <Toggle.Off>Hiding evaluation objects</Toggle.Off>
           <Toggle.Button />
         </Toggle>
       </div>
@@ -21,8 +26,9 @@ class Options extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    showCodons: showCodons(state)
+    showCodons: showCodons(state),
+    showAdminEvaluation: showAdminEvaluation(state),
   }
 }
 
-export default connect(mapStateToProps, { doShowCodons })(Options)
+export default connect(mapStateToProps, { doShowCodons, doShowAdminEvaluation })(Options)

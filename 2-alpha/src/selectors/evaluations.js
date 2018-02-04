@@ -11,6 +11,8 @@ import {
   getURVHund80, 
   getURVReverse, 
   getURGReverse,
+  getHaystackForwardRestrictionSites,
+  getHaystackReverseRestrictionSites,
 } from './index'
 
 // function that returns an object which can be used to createMessage directly, or through a shorthand:
@@ -106,7 +108,8 @@ export const getUserVectorMatchReverse = createSelector(
     singleMatch['toGetDesiredFrame'] = (3 - singleMatch['betweenEndAndRE'] % 3) % 3
     singleMatch['input'] = input
 
-    return console.log('singleMatch:', { singleMatch }) || { singleMatch }
+    // console.log('singleMatch:', { singleMatch })
+    return { singleMatch }
   }
 )
 
@@ -189,7 +192,9 @@ export const getVectorEvaluations = createSelector(
   getUserVectorMatchReverse,
   getUFV,
   getURV,
-  (FV, RV, UFV, URV) => {
+  getHaystackForwardRestrictionSites,
+  getHaystackReverseRestrictionSites,
+  (FV, RV, UFV, URV, FG_RE_Sites, RG_RE_Sites) => {
     const Eval = createEvaluation()
     const EvalFV = Eval.createCategory('FV')
     const EvalRV = Eval.createCategory('RV')
@@ -225,8 +230,12 @@ export const getVectorEvaluations = createSelector(
     // restriction sites cannot be the same
     if (FV.seq === api.reverse(RV.seq)) FVRV.failure("SAME_RESTRICTION_SITES")
 
+    // // Check that restriction sites aren't in the haystack in either direction
+    if (_.findKey(FG_RE_Sites, site => UFV.includes(site.seq))) EvalFV.failure('HAYSTACK_CONTAINS_FV_SITE')
+    if (_.findKey(RG_RE_Sites, site => URV.includes(site.seq))) EvalFV.failure('HAYSTACK_CONTAINS_RV_SITE')
+
     // Spacing between primers
-    if (FV.endPos >= RV.pos) FVRV.failure("VECTOR_OVERLAP")
+    if (FV.endPos > RV.pos) FVRV.failure("VECTOR_OVERLAP")
     const differenceBetweenVectorPrimers = RV.pos - FV.endPos
     if (differenceBetweenVectorPrimers <= 4) FVRV.failure("VECTORS_TOO_CLOSE", differenceBetweenVectorPrimers)
 
@@ -306,9 +315,7 @@ export const getAllEvaluations = createSelector(
     }
 
     // check if picked restriction sites are not in haystack
-    console.log('restrictionSiteMatches', api.getRestrictionSiteMatches(exercise.haystack))
-    if (_.mapKeys(api.getRestrictionSiteMatches(exercise.haystack)).length > 0) EvalFV.failure('HAYSTACK_CONTAINS_FV_SITE')
-    if (_.mapKeysapi.getRestrictionSiteMatches(api.hund80(exercise.haystack)).length > 0) EvalRV.failure('HAYSTACK_CONTAINS_RV_SITE')
+    
 
     // check 3' GC end cap
 
@@ -323,7 +330,8 @@ export const getAllEvaluations = createSelector(
       EvalALL.success('READY')
     }
     const result = Eval.getEvaluation()
-    return console.log('Evaluations result: ', result) || result
+    // console.log('Evaluations result: ', result)
+    return result
   })
 
 // This means the user has entered successful inputs, but has not 'submitted' just yet.

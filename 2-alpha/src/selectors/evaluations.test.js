@@ -46,7 +46,7 @@ describe('Evaluations', () => {
         exercisesById: {
           '-L3d6TNs2PKt-fMf7_lS': {
             haystack: 'GTACACGGTGGTAACCCATAGGTCCGCTCCCCCAGCTTGGTGCATCAGGTCCTAATACAGCGGCCGGCTGCTGTAGGCCGTTGTAGAAACAGTAGACACGGGCACTCGGAACCTGCAGACCTCAGTGAGCTGAGTCGCCTTCTTTTGTCCCAAAGTGGCGTGCGCAGCACATGCCCCTCAGCGGGTGGCTATTACTGTCCAAGGGGGTCACACCCACCAATGTGCGACCGCGGAGCTGGACCACTTGTGCAAAGCTGTGCCACCCGACTTCGCTCGTGCAGGGTACGTGGGGCACAGCGA',
-            vector: 'ACAGCGAAATAGTTTCTAGATCTAGACGCTGATAGTGACTAGTATCTACCGCGGAAGAAGCTTCCGACTAGCTGCATACTGACTGATCGAT',
+            vector: 'ACAGCGAAATAGTTTCTAGATCTAGACGCTGATAGTGACTAGTATCTACCGCGGAAGAAGCTTGTCGACAGCTGCATACTGACTGATCGAT',
             constructEnd: 160,
             constructStart: 4,
             fusionEnd: true,
@@ -76,16 +76,18 @@ describe('Evaluations', () => {
         formInputs: {
           FV: 'ccatgga',
           FG: 'cacagctacga',
-          RV: 'gtcgac',
+          RV: 'gtcgcac',
           RG: 'tcatgcatat',
         }
       }
 
       const result = getAllEvaluations(state)
-      expect(result).toContainEqual({ "ID": "FORWARD_NO_MATCH", "inputs": ["FG"], "success": false })
-      expect(result).toContainEqual({ "ID": "REVERSE_NO_MATCH", "inputs": ["RG"], "success": false })
-      expect(result).toContainEqual({ "ID": "NO_MATCH_FV", "inputs": ["FV"], "success": false })
-      expect(result).toContainEqual({ "ID": "NO_MATCH_RV", "inputs": ["RV"], "success": false })
+      expect(result).toMatchObject([
+        { "ID": "FORWARD_NO_MATCH", "inputs": ["FG"], "success": false },
+        { "ID": "REVERSE_NO_MATCH", "inputs": ["RG"], "success": false },
+        { "ID": "NO_MATCH_FV", "inputs": ["FV"], "success": false },
+        { "ID": "NO_MATCH_RV", "inputs": ["RV"], "success": false },
+      ])
     })
 
     test('Should have exceeded matches when only FV is entered', () => {
@@ -133,8 +135,8 @@ describe('Evaluations', () => {
       state = {
         ...state,
         formInputs: {
-          FV: 'actagt',
-          RV: 'actagt',
+          FV: 'aagctt',
+          RV: 'aagctt',
           FG: '',
           RG: '',
         }
@@ -153,26 +155,8 @@ describe('Evaluations', () => {
       state = {
         ...state,
         formInputs: {
-          FV: 'ccgcgg',
-          RV: 'aagctt',
-          FG: '',
-          RG: '',
-        }
-      }
-      const result = getAllEvaluations(state)
-      expect(result).toMatchObject([
-        { ID: "FV_MATCHES_ONCE" },
-        { ID: "RV_MATCHES_ONCE" },
-        { ID: "VECTORS_TOO_CLOSE" },
-      ])
-    })
-
-    test('FV and RV are tested for being too close', () => {
-      state = {
-        ...state,
-        formInputs: {
           FV: 'aagctt',
-          RV: 'ccgcgg',
+          RV: 'actagt',
           FG: '',
           RG: '',
         }
@@ -182,6 +166,24 @@ describe('Evaluations', () => {
         { ID: "FV_MATCHES_ONCE" },
         { ID: "RV_MATCHES_ONCE" },
         { ID: "VECTOR_OVERLAP" },
+        { ID: "VECTORS_TOO_CLOSE" },
+      ])
+    })
+
+    test('FV and RV are tested for being too close', () => {
+      state = {
+        ...state,
+        formInputs: {
+          FV: 'AAGCTT',
+          RV: 'gtcgac',
+          FG: '',
+          RG: '',
+        }
+      }
+      const result = getAllEvaluations(state)
+      expect(result).toMatchObject([
+        { ID: "FV_MATCHES_ONCE" },
+        { ID: "RV_MATCHES_ONCE" },
         { ID: "VECTORS_TOO_CLOSE" },
       ])
     })
@@ -274,13 +276,15 @@ describe('Evaluations', () => {
         ...state,
         formInputs: {
           FV: 'ccgcgg',
-          RV: '',
+          RV: 'gtcgac',
           FG: '',
           RG: '',
         }
       }
       const result = getAllEvaluations(state)
       expect(result).toMatchObject([
+        { ID: "FV_MATCHES_ONCE" },
+        { ID: "RV_MATCHES_ONCE" },
         { ID: "HAYSTACK_CONTAINS_FV_SITE" },
       ])
     })

@@ -1,10 +1,9 @@
-import React, { Component } from 'react'
+import React from 'react'
 import _ from 'lodash'
 import * as api from '../../api'
 
 const HaystackRestrictionSites = ({ seq, restrictionSites }) => {
-  const RESites = api.getRestrictionSiteMatches(seq)
-  const RESitesDOM = _.map(RESites, (site) => {
+  const RESitesDOM = _.map(restrictionSites, (site) => {
     return (
       <div className="Restriction-Site-Container" key={site.pos}>
         <div>

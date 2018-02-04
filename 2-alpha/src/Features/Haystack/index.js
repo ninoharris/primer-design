@@ -1,36 +1,17 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import _ from 'lodash'
 import * as api from '../../api'
-import { getBothHaystackStrands, getUFG, getURG, getAllRestrictionSites } from '../../selectors'
+import { getBothHaystackStrands, getUFG, getURG, getHaystackForwardRestrictionSites, getHaystackReverseRestrictionSites } from '../../selectors'
 import HelperPosition from '../../components/HelperPosition'
 import HaystackForward from './HaystackForward';
 import HaystackReverse from './HaystackReverse'
 import Codons from '../../components/Codons'
 import { Left5, Left3, Right5, Right3 } from '../../components/HelperEnds'
+import HaystackRestrictionSites from './HaystackRestrictionSites';
 
 class Haystack extends Component {
-  getRestrictionSites = (seq) => {
-    const RESites = api.getRestrictionSiteMatches(this.props.restrictionSites, seq)
-    const RESitesDOM = _.map(RESites, (site) => {
-      return (
-      <span>
-        {_.pad('', site.pos)}
-        <span className="Restriction-Site">
-          <span className="Name">{site.name}</span>
-          {site.seq}
-        </span>
-      </span>
-      )
-    })
-    return (
-      <div className="Haystack-Restriction-Sites">
-        {RESitesDOM}
-      </div>
-    )
-  }
   render() {
-    const { forward, reverse, FG, RG } = this.props
+    const { forward, reverse, FG, RG, restrictionSites } = this.props
     const className = "haystack mt-3" + (FG.length > 3 ? ' haystack-with-UFG' : '') + (RG.length > 3 ? ' haystack-with-URG' : '')
     return (
       <div className={className}>
@@ -39,7 +20,7 @@ class Haystack extends Component {
             <div className="multiline">
               <div className="sequence">
                 <HelperPosition length={forward.length} />
-                {this.getRestrictionSites(forward)}
+                <HaystackRestrictionSites seq={forward} restrictionSites={restrictionSites}/>
                 <Left5 />{forward}<Right3 />
                 <HaystackReverse />
               </div>
@@ -65,7 +46,7 @@ const mapStateToProps = (state) => {
     ...getBothHaystackStrands(state),
     FG: getUFG(state),
     RG: getURG(state),
-    restrictionSites: getAllRestrictionSites(state),
+    restrictionSites: { ...getHaystackForwardRestrictionSites(state), ...getHaystackReverseRestrictionSites(state) }
   }
 }
 
