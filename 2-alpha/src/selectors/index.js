@@ -9,25 +9,9 @@ export const getAllRestrictionSites = state => state.restrictionSites
 export const exercisesListSelector = state => state.exercisesList
 export const exercisesByIdSelector = state => state.exercisesById
 export const currentExerciseSelector = state => state.currentExercise
-export const sortOrderSelector = state => state.sortOrder
-export const sortBySelector = state => state.sortBy
-export const filterTextSelector = state => state.filterText
 
 export const getMultilineWidth = state => state.charMultilineWidth
 export const getExercise = (state, { id }) => state.exercisesById[id]
-
-export const getFilteredExercises = createSelector(
-  exercisesListSelector,
-  exercisesByIdSelector,
-  filterTextSelector,
-  (IDsList, exercisesById, filterText) => IDsList.filter(ID => {
-    const { questionPart1, questionPart2, authorId } = exercisesById[ID]
-    filterText = filterText.toLowerCase()
-    return questionPart1.toLowerCase().includes(filterText) || 
-      questionPart2.toLowerCase().includes(filterText) 
-      // TODO: include author names in this
-  })
-)
 
 const uFV = state => state.formInputs.FV
 const uFG = state => state.formInputs.FG

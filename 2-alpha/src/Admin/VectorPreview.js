@@ -38,8 +38,8 @@ const VectorPreview = ({ forward, reverse, helpers, vectorMarkers }) => {
 const selector = formValueSelector('exerciseEditor')
 
 const mapStateToProps = (state, ownProps) => {
-  const { vector = ' ', vectorStart = null, vectorEnd = null, helpers: userMadeHelpers = [] } = selector(state,
-    'vector', 'vectorStart', 'vectorEnd', 'helpers')
+  const { vector = ' ', vectorStart = null, vectorEnd = null, fusionStart = false, fusionEnd = false, helpers: userMadeHelpers = [] } = selector(state,
+    'vector', 'vectorStart', 'vectorEnd', 'fusionStart', 'fusionEnd', 'helpers')
 
   const helpers = userMadeHelpers.map(helper => ({
       ...helper,
@@ -54,13 +54,14 @@ const mapStateToProps = (state, ownProps) => {
       name, seq, pos, len: seq.length, color
     })
   )
+  const vectorMarkers = []
+  if (fusionStart) { vectorMarkers.push(parseInt(vectorStart, 10))}
+  if (fusionEnd) { vectorMarkers.push(parseInt(vectorEnd, 10)) }
+
   return {
     forward: vector,
     reverse: api.complementFromString(vector),
-    vectorMarkers: [
-      parseInt(vectorStart, 10),
-      parseInt(vectorEnd, 10),
-    ],
+    vectorMarkers,
     helpers: [...helpers, ...REHelpers].sort((a,b) => a.pos - b.pos)
   }
 }

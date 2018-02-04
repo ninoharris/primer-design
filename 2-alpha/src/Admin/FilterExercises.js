@@ -1,13 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { updateExerciseFilter } from '../actions/admin'
-import { filterTextSelector, sortOrderSelector, sortBySelector} from '../selectors'
+import { updateExerciseFilter, updateSortBy } from '../actions/admin'
+import { filterTextSelector, sortOrderSelector, sortBySelector} from '../selectors/admin'
 
 const ExerciseListFilters = (props) => {
   const updateFilter = (e) => {
     props.updateExerciseFilter(e.target.value)
   }
-
+  const updateSortBy = (e) => {
+    props.updateSortBy(e.target.value)
+  }
   return (
     <div className="input-group mb-3">
       <div className="input-group-prepend">
@@ -17,10 +19,10 @@ const ExerciseListFilters = (props) => {
         </div>
       </div>
       <input type="text" className="form-control" value={props.filterText} onChange={updateFilter} />
-      <select className="custom-select" value={props.sortBy}>
-        <option value="date_added">Date added</option>
-        <option value="last_modified">Last modified</option>
-        <option value="author">Author</option>
+      <select className="custom-select" value={props.sortBy} onChange={updateSortBy}>
+        <option value="createdAt">Date added</option>
+        <option value="lastModified">Last modified</option>
+        <option value="authorId">Author</option>
         <option value="id">ID</option>
       </select>
     </div>
@@ -35,4 +37,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { updateExerciseFilter })(ExerciseListFilters)
+export default connect(mapStateToProps, { updateExerciseFilter, updateSortBy })(ExerciseListFilters)

@@ -1,20 +1,23 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { getFilteredExercises, exercisesByIdSelector } from '../selectors/index'
-import { exercisesList, exercisesById } from '../reducers/exercises';
+import moment from 'moment'
+import { exercisesByIdSelector } from '../selectors/index'
+import { getFilteredSortedExercises } from '../selectors/admin'
 
 class ExerciseList extends Component {
-  renderExerciseItem = (exercise, ID) => {
-    console.log(exercise)
+  renderExerciseItem = (exercise) => {
     return (
-      <tr key={ID}>
-        <td>{exercise.questionPart1}</td>
-        <td>{new Date(exercise.createdAt).toLocaleDateString()}</td>
-        <td>{new Date(exercise.lastModified).toLocaleDateString()}</td>
+      <tr key={exercise.id}>
+        <td>
+          {exercise.questionPart1}
+          <small className="ID">{exercise.id}</small>
+        </td>
+        <td className="small">{moment(exercise.createdAt).format("ddd, Do MMM YY")}</td>
+        <td className="small">{moment(exercise.lastModified).format("ddd, Do MMM YY")}</td>
         <td>{exercise.authorId}</td>
         <td>
-          <Link to={`/admin/edit/${ID}`}>
+          <Link to={`/admin/edit/${exercise.id}`}>
             <button className="btn btn-primary">Edit exercise</button>
           </Link>
         </td>
@@ -23,7 +26,7 @@ class ExerciseList extends Component {
   }
   render() {
     return (
-      <table className="table">
+      <table className="table Admin-Exercises-List">
         <thead>
           <tr>
             <th>Exercise name</th>
@@ -34,8 +37,7 @@ class ExerciseList extends Component {
           </tr>
         </thead>
         <tbody>
-          {this.props.exercisesList.map(
-            (ID) => this.renderExerciseItem(this.props.exercisesById[ID], ID))}
+          {this.props.exercisesList.map(exercise => this.renderExerciseItem(exercise))}
         </tbody>
       </table>
     )
@@ -43,8 +45,7 @@ class ExerciseList extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  exercisesById: exercisesByIdSelector(state),
-  exercisesList: getFilteredExercises(state),
+  exercisesList: getFilteredSortedExercises(state),
 })
 
 export default connect(mapStateToProps)(ExerciseList)

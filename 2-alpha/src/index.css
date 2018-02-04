@@ -618,3 +618,10 @@ body {
 .Admin-Vector .sequence {
   position: relative;
 }
+.Admin-Exercises-List {
+
+}
+.Admin-Exercises-List .ID {
+  display: block;
+  opacity: 0.6;
+}

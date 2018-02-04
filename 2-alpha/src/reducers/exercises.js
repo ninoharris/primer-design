@@ -37,4 +37,12 @@ export const filterText = (state = '', action) => {
   }
 }
 
+export const sortBy = (state = 'lastModified', action) => {
+  switch (action.type) {
+    case TYPES.SORT_EXERCISES_BY:
+      return action.payload
+    default: return state
+  }
+}
+
 // export default exercises

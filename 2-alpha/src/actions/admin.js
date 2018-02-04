@@ -73,6 +73,12 @@ export const updateExerciseFilter = (text) => {
   }
 }
 
+export const updateSortBy = (val) => {
+  return {
+    type: TYPES.SORT_EXERCISES_BY,
+    payload: val,
+  }
+}
 
 // Notifications
 const notifyDeleted = (id) => (dispatch) => {
