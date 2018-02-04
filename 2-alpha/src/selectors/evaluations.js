@@ -306,8 +306,9 @@ export const getAllEvaluations = createSelector(
     }
 
     // check if picked restriction sites are not in haystack
-    if (api.getRestrictionSiteMatches(exercise.haystack).length > 0) EvalFV.failure('HAYSTACK_CONTAINS_FV_SITE')
-    if (api.getRestrictionSiteMatches(api.hund80(exercise.haystack)).length > 0) EvalRV.failure('HAYSTACK_CONTAINS_RV_SITE')
+    console.log('restrictionSiteMatches', api.getRestrictionSiteMatches(exercise.haystack))
+    if (_.mapKeys(api.getRestrictionSiteMatches(exercise.haystack)).length > 0) EvalFV.failure('HAYSTACK_CONTAINS_FV_SITE')
+    if (_.mapKeysapi.getRestrictionSiteMatches(api.hund80(exercise.haystack)).length > 0) EvalRV.failure('HAYSTACK_CONTAINS_RV_SITE')
 
     // check 3' GC end cap
 

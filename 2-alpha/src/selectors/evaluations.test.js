@@ -45,7 +45,7 @@ describe('Evaluations', () => {
         ...defaults,
         exercisesById: {
           '-L3d6TNs2PKt-fMf7_lS': {
-            haystack: 'GTACACGGTGGTAACCCATAGGTCCGCTCCCCCAGCTTGGTGCATCAGGTCCTAATACAGCGGCCGGCTGCTGTAGGCCGTTGTAGAAACAGTAGACACGGGCACTCGGAACCTGCAGACCTCAGTGAGCTGAGTCGCCTTCTTTTGTCCCAAAGTGGCGTGCGCAGCACATGCCCCTCAGCGGGTGGCTATTACTGTCCAAGGGGGTCACACCCACCAATGTGCGACCGATTAGCTGGACCACTTGTGCAAAGCTGTGCCACCCGACTTCGCTCGTGCAGGGTACGTGGGGCACAGCGA',
+            haystack: 'GTACACGGTGGTAACCCATAGGTCCGCTCCCCCAGCTTGGTGCATCAGGTCCTAATACAGCGGCCGGCTGCTGTAGGCCGTTGTAGAAACAGTAGACACGGGCACTCGGAACCTGCAGACCTCAGTGAGCTGAGTCGCCTTCTTTTGTCCCAAAGTGGCGTGCGCAGCACATGCCCCTCAGCGGGTGGCTATTACTGTCCAAGGGGGTCACACCCACCAATGTGCGACCGCGGAGCTGGACCACTTGTGCAAAGCTGTGCCACCCGACTTCGCTCGTGCAGGGTACGTGGGGCACAGCGA',
             vector: 'ACAGCGAAATAGTTTCTAGATCTAGACGCTGATAGTGACTAGTATCTACCGCGGAAGAAGCTTCCGACTAGCTGCATACTGACTGATCGAT',
             constructEnd: 160,
             constructStart: 4,
@@ -167,7 +167,7 @@ describe('Evaluations', () => {
       ])
     })
 
-    test('FV and RV are tested for being too close close', () => {
+    test('FV and RV are tested for being too close', () => {
       state = {
         ...state,
         formInputs: {
@@ -265,6 +265,23 @@ describe('Evaluations', () => {
       expect(result).toMatchObject([
         { ID: "FORWARD_HAYSTACK_MATCH" },
         { ID: "FORWARD_HAYSTACK_OUT_OF_FRAME" },
+      ])
+    })
+
+
+    test('Tests if a restriction site is contained within the haystack', () => {
+      state = {
+        ...state,
+        formInputs: {
+          FV: 'ccgcgg',
+          RV: '',
+          FG: '',
+          RG: '',
+        }
+      }
+      const result = getAllEvaluations(state)
+      expect(result).toMatchObject([
+        { ID: "HAYSTACK_CONTAINS_FV_SITE" },
       ])
     })
 
