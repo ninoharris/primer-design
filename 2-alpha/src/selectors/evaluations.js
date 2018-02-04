@@ -303,9 +303,13 @@ export const getAllEvaluations = createSelector(
       }
     }
 
-    // no: check in-frame with constructEnd and vectorEnd
-    // yes: check in-frame with constructEnd and placed stop codon
+    // check 3' GC end cap
 
+    // check GC content
+
+    // check melting temperature
+
+    // check 5' end cap
 
     // COMPLETED EXERCISE. Ready to go
     if (Eval.contains('VECTOR_PRIMERS_APART') && Eval.contains('REVERSE_BOTH_IN_FRAME') && Eval.contains('FORWARD_BOTH_IN_FRAME')) {

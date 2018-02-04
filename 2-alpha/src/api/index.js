@@ -51,6 +51,22 @@ export const getAASeq = function ({ seq, offset = 0, separator = '' }) {
   return output
 }
 
+export const getGCContent = (seq) => {
+  const GCCount = seq.toUpperCase().split('').filter(char => char === 'G' || char === 'C').length
+  return GCCount / seq.length
+}
+
+export const getMeltingTemperature = (seq) => {
+  // Tm = 4(G + C) + 2(A + T) °C
+  const chars = seq.toUpperCase().split('')
+  const ATCount = chars.filter(char => char === 'A' || char === 'T').length
+  const GCCount = chars.filter(char => char === 'G' || char === 'C').length
+  return 4 * GCCount + 2 * ATCount
+}
+
+
+
+
 export const getMatches = function (query, ref) {
   // returns a string like ---A-C--GT.
   ref = ref.slice('')

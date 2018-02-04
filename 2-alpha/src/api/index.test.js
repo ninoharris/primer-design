@@ -1,5 +1,7 @@
 import { 
-  seqInVector
+  seqInVector,
+  getMeltingTemperature,
+  getGCContent,
 } from './index'
 
 test('seqInVector gets the correct number of matches and positions', () => {
@@ -14,3 +16,12 @@ test('seqInVector gets the correct number of matches and positions', () => {
   expect(seqInVector(vector, doesntMatch ).length).toEqual(0)
 })
 
+test('gets the correct melting temperature', () => {
+  const result = getMeltingTemperature('gattacttgggcaaggccga')
+  expect(result).toEqual(62)
+})
+
+test('gets the right GC content of a primer', () => {
+  const result = getGCContent('ATGCGCGC')
+  expect(result).toEqual(0.75)
+})
