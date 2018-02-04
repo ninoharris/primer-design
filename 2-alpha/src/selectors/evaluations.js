@@ -222,8 +222,6 @@ export const getVectorEvaluations = createSelector(
     FV = FV.singleMatch
     RV = RV.singleMatch
 
-    // TODO: either restriction site matches inside haystack:
-
     // restriction sites cannot be the same
     if (FV.seq === api.reverse(RV.seq)) FVRV.failure("SAME_RESTRICTION_SITES")
 
@@ -306,6 +304,10 @@ export const getAllEvaluations = createSelector(
         }
       }
     }
+
+    // check if picked restriction sites are not in haystack
+    if (api.getRestrictionSiteMatches(exercise.haystack).length > 0) EvalFV.failure('HAYSTACK_CONTAINS_FV_SITE')
+    if (api.getRestrictionSiteMatches(api.hund80(exercise.haystack)).length > 0) EvalRV.failure('HAYSTACK_CONTAINS_RV_SITE')
 
     // check 3' GC end cap
 
