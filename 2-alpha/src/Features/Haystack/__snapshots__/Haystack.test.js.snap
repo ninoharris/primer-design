@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Haystack displays, example -L3d6TNs2PKt-fMf7_lS 1`] = `
+<div
+  className="haystack mt-3"
+>
+  <div
+    style={
+      Object {
+        "position": "relative",
+        "top": "-1rem",
+      }
+    }
+  >
+    <div
+      className="forward"
+    >
+      <div
+        className="multiline"
+      >
+        <div
+          className="sequence"
+        >
+          <HelperPosition
+            length={300}
+          />
+          <HaystackRestrictionSites
+            restrictionSites={
+              Object {
+                "112": Object {
+                  "color": "#aa4fc3",
+                  "cutsForward": 5,
+                  "cutsReverse": 1,
+                  "name": "PstI",
+                  "pos": 112,
+                  "seq": "CTGCAG",
+                },
+                "227": Object {
+                  "color": "#67a77f",
+                  "cutsForward": 4,
+                  "cutsReverse": 2,
+                  "name": "SacII",
+                  "pos": 227,
+                  "seq": "CCGCGG",
+                },
+              }
+            }
+            seq="GTACACGGTGGTAACCCATAGGTCCGCTCCCCCAGCTTGGTGCATCAGGTCCTAATACAGCGGCCGGCTGCTGTAGGCCGTTGTAGAAACAGTAGACACGGGCACTCGGAACCTGCAGACCTCAGTGAGCTGAGTCGCCTTCTTTTGTCCCAAAGTGGCGTGCGCAGCACATGCCCCTCAGCGGGTGGCTATTACTGTCCAAGGGGGTCACACCCACCAATGTGCGACCGCGGAGCTGGACCACTTGTGCAAAGCTGTGCCACCCGACTTCGCTCGTGCAGGGTACGTGGGGCACAGCGA"
+          />
+          <Left5 />
+          GTACACGGTGGTAACCCATAGGTCCGCTCCCCCAGCTTGGTGCATCAGGTCCTAATACAGCGGCCGGCTGCTGTAGGCCGTTGTAGAAACAGTAGACACGGGCACTCGGAACCTGCAGACCTCAGTGAGCTGAGTCGCCTTCTTTTGTCCCAAAGTGGCGTGCGCAGCACATGCCCCTCAGCGGGTGGCTATTACTGTCCAAGGGGGTCACACCCACCAATGTGCGACCGCGGAGCTGGACCACTTGTGCAAAGCTGTGCCACCCGACTTCGCTCGTGCAGGGTACGTGGGGCACAGCGA
+          <Right3 />
+          <Connect(HaystackForward) />
+        </div>
+      </div>
+    </div>
+    <div
+      className="reverse"
+    >
+      <div
+        className="multiline"
+      >
+        <div
+          className="sequence"
+        >
+          <Connect(HaystackForward) />
+          <Left3 />
+          CATGTGCCACCATTGGGTATCCAGGCGAGGGGGTCGAACCACGTAGTCCAGGATTATGTCGCCGGCCGACGACATCCGGCAACATCTTTGTCATCTGTGCCCGTGAGCCTTGGACGTCTGGAGTCACTCGACTCAGCGGAAGAAAACAGGGTTTCACCGCACGCGTCGTGTACGGGGAGTCGCCCACCGATAATGACAGGTTCCCCCAGTGTGGGTGGTTACACGCTGGCGCCTCGACCTGGTGAACACGTTTCGACACGGTGGGCTGAAGCGAGCACGTCCCATGCACCCCGTGTCGCT
+          <Right5 />
+        </div>
+        <Connect(Codons)
+          seq="GTACACGGTGGTAACCCATAGGTCCGCTCCCCCAGCTTGGTGCATCAGGTCCTAATACAGCGGCCGGCTGCTGTAGGCCGTTGTAGAAACAGTAGACACGGGCACTCGGAACCTGCAGACCTCAGTGAGCTGAGTCGCCTTCTTTTGTCCCAAAGTGGCGTGCGCAGCACATGCCCCTCAGCGGGTGGCTATTACTGTCCAAGGGGGTCACACCCACCAATGTGCGACCGCGGAGCTGGACCACTTGTGCAAAGCTGTGCCACCCGACTTCGCTCGTGCAGGGTACGTGGGGCACAGCGA"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;

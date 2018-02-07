@@ -10,6 +10,7 @@ import Evaluation from '../Evaluation'
 import Display from '../Display'
 import Options from '../Options'
 import Modals from '../modals'
+import Header from '../../components/Header'
 
 
 class App extends Component {
@@ -26,18 +27,7 @@ class App extends Component {
     return (
       <div className="container-fluid mb-10 mt-10 Game">
         <Modals />
-        <div className="row">
-          <div className="Nav">
-            <div className="Logo">
-              <h3 className="mb-0">Primer Designer</h3>
-            </div>
-            <div>
-              <button onClick={() => {}} className="btn btn-info" /* TODO: update with tutorial pages */>
-                See tutorial
-              </button>
-            </div>
-          </div>
-        </div>
+        <Header />
         <div className="row">
           <div className=" Sidebar col-3">
             <Form />
