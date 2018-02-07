@@ -23,6 +23,19 @@ exports[`should render correctly 1`] = `
       >
         See tutorial
       </button>
+      <div
+        className="logged-out"
+      >
+        <p>
+          Not currently signed in
+        </p>
+        <button
+          className="btn btn-success log-in"
+          onClick={[Function]}
+        >
+          Log Out
+        </button>
+      </div>
     </div>
   </div>
 </div>

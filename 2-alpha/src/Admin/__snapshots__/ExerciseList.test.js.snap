@@ -1,0 +1,166 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`exerciseList should render a table row that tells the user that there are no exercises within their filters. 1`] = `
+<table
+  className="table Admin-Exercises-List"
+>
+  <thead>
+    <tr>
+      <th>
+        Exercise name
+      </th>
+      <th>
+        Date added
+      </th>
+      <th>
+        Last modified
+      </th>
+      <th>
+        Author ID
+      </th>
+      <th />
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        No exercises found...
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
+exports[`exerciseList should render exerciseList with list of exercises 1`] = `
+<table
+  className="table Admin-Exercises-List"
+>
+  <thead>
+    <tr>
+      <th>
+        Exercise name
+      </th>
+      <th>
+        Date added
+      </th>
+      <th>
+        Last modified
+      </th>
+      <th>
+        Author ID
+      </th>
+      <th />
+    </tr>
+  </thead>
+  <tbody>
+    <tr
+      key="one"
+    >
+      <td>
+        <small
+          className="ID"
+        >
+          one
+        </small>
+      </td>
+      <td
+        className="small"
+      >
+        Thu, 1st Jan 70
+      </td>
+      <td
+        className="small"
+      >
+        Thu, 1st Jan 70
+      </td>
+      <td>
+        sedm1000
+      </td>
+      <td>
+        <Link
+          replace={false}
+          to="/admin/edit/one"
+        >
+          <button
+            className="btn btn-primary"
+          >
+            Edit exercise
+          </button>
+        </Link>
+      </td>
+    </tr>
+    <tr
+      key="two"
+    >
+      <td>
+        <small
+          className="ID"
+        >
+          two
+        </small>
+      </td>
+      <td
+        className="small"
+      >
+        Thu, 1st Jan 70
+      </td>
+      <td
+        className="small"
+      >
+        Thu, 1st Jan 70
+      </td>
+      <td>
+        some2999
+      </td>
+      <td>
+        <Link
+          replace={false}
+          to="/admin/edit/two"
+        >
+          <button
+            className="btn btn-primary"
+          >
+            Edit exercise
+          </button>
+        </Link>
+      </td>
+    </tr>
+    <tr
+      key="three"
+    >
+      <td>
+        <small
+          className="ID"
+        >
+          three
+        </small>
+      </td>
+      <td
+        className="small"
+      >
+        Thu, 1st Jan 70
+      </td>
+      <td
+        className="small"
+      >
+        Thu, 1st Jan 70
+      </td>
+      <td>
+        sedm4648
+      </td>
+      <td>
+        <Link
+          replace={false}
+          to="/admin/edit/three"
+        >
+          <button
+            className="btn btn-primary"
+          >
+            Edit exercise
+          </button>
+        </Link>
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;

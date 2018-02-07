@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 import { exercisesByIdSelector } from '../selectors/index'
 import { getFilteredSortedExercises } from '../selectors/admin'
 
-class ExerciseList extends Component {
+export class ExerciseList extends Component {
   renderExerciseItem = (exercise) => {
     return (
       <tr key={exercise.id}>
@@ -25,6 +26,7 @@ class ExerciseList extends Component {
     )
   }
   render() {
+    const { exercisesList = [] } = this.props 
     return (
       <table className="table Admin-Exercises-List">
         <thead>
@@ -37,11 +39,18 @@ class ExerciseList extends Component {
           </tr>
         </thead>
         <tbody>
-          {this.props.exercisesList.map(exercise => this.renderExerciseItem(exercise))}
+          {exercisesList.length > 0 ? 
+            exercisesList.map(exercise => this.renderExerciseItem(exercise)) :
+            <tr><td>No exercises found...</td></tr>
+          }
         </tbody>
       </table>
     )
   }
+}
+
+ExerciseList.propTypes = {
+  exercisesList: PropTypes.arrayOf(PropTypes.object)
 }
 
 const mapStateToProps = (state) => ({
