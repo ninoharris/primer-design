@@ -34,6 +34,7 @@ export const selectExercise = (id = null) => (dispatch, getState) => {
 }
 
 export const newExercise = () => (dispatch, getState) => {
+  // Todo: check which exercises the user hasn't done yet, and pick a random one from that list.
   dispatch({
     type: TYPES.NEW_EXERCISE
   })
