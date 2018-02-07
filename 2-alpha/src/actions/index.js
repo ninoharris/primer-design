@@ -7,7 +7,7 @@ export * from './troubleshooter'
 export const fetchExercises = (alwaysFetch = false) => (dispatch, getState) => {
   if (!alwaysFetch) {
     if (getState().exercisesList.length > 0) {
-      dispatch({ type: TYPES.FETCHED_EXERCISES_FROM_CACHED })
+      dispatch({ type: TYPES.FETCHED_EXERCISES_FROM_CACHED }) // this action does nothing. Just serves to notify devTools when developing.
       return Promise.resolve() // fetchExercises must always be then-able (eg for selectExercise after exercises are loaded)
     }
   }

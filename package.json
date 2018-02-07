@@ -30,6 +30,7 @@
     "bionode-ncbi": "^2.0.1",
     "body-parser": "^1.18.2",
     "colors": "^1.1.2",
+    "deep-freeze": "0.0.1",
     "ejs": "^2.5.7",
     "mongodb": "^2.2.33",
     "normalize": "^0.3.1",
