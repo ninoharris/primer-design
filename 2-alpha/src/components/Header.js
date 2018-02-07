@@ -6,17 +6,17 @@ const Header = ({
   completedCount = 0,
 }) => {
   const userDisplay = loggedIn ? (
-    <div className="logged-in">
-      <p>Logged in as: <span className="username">{username}</span></p>
-      <p className="exercises-completed">{completedCount} completed</p>
-      <button onClick={() => { }} className="btn btn-warning log-out">
+    <div className="float-right logged-in">
+      <span>Logged in as: <span className="username">{username}</span></span>
+      <span className="exercises-completed">{completedCount} completed</span>
+      <button onClick={() => { }} className="ml-2 btn btn-warning log-out">
         Log Out
       </button>
     </div>
     ) : (
-    <div className="logged-out">
-      <p>Not currently signed in</p>
-      <button onClick={() => { }} className="btn btn-success log-in">
+      <div className="float-right logged-out">
+      <span>Not currently signed in</span>
+      <button onClick={() => { }} className="ml-2 btn btn-success log-in">
           Log Out
       </button>
     </div>
@@ -28,8 +28,8 @@ const Header = ({
         <div className="Logo">
           <h3 className="mb-0">Primer Designer</h3>
         </div>
-        <div>
-          <button onClick={() => { }} className="btn btn-info" /* TODO: update with tutorial pages */>
+        <div className="text-right">
+          <button onClick={() => { }} className="btn btn-info mr-2" /* TODO: update with tutorial pages */>
             See tutorial
             </button>
           {userDisplay}

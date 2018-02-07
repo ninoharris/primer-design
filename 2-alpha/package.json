@@ -71,14 +71,16 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js --env=jsdom --config=jest.config.json"
+    "test": "node scripts/test.js --env=jsdom"
   },
   "jest": {
+    "snapshotSerializers": [ "enzyme-to-json/serializer" ],
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,mjs}"
     ],
     "setupFiles": [
-      "<rootDir>/config/polyfills.js"
+      "<rootDir>/config/polyfills.js",
+      "<rootDir>/src/tests/setup.js"
     ],
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.{js,jsx,mjs}",

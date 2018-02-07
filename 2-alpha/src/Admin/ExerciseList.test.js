@@ -13,5 +13,6 @@ describe('exerciseList', () => {
     const exercisesArray = _.flatMap(data, (val, key) => ({ ...val, id: key }))
     const wrapper = shallow(<ExerciseList exercisesList={exercisesArray} />)
     expect(wrapper).toMatchSnapshot()
+    expect(wrapper.find('tbody tr').length).toBe(exercisesArray.length)
   })
 })

@@ -16,21 +16,23 @@ exports[`should render correctly 1`] = `
         Primer Designer
       </h3>
     </div>
-    <div>
+    <div
+      className="text-right"
+    >
       <button
-        className="btn btn-info"
+        className="btn btn-info mr-2"
         onClick={[Function]}
       >
         See tutorial
       </button>
       <div
-        className="logged-out"
+        className="float-right logged-out"
       >
-        <p>
+        <span>
           Not currently signed in
-        </p>
+        </span>
         <button
-          className="btn btn-success log-in"
+          className="ml-2 btn btn-success log-in"
           onClick={[Function]}
         >
           Log Out

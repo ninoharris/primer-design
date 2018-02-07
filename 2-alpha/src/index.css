@@ -532,6 +532,8 @@ body {
 
 
 
+
+
 /* Admin Exercise Form */
 .Admin-Exercise-Form {
   font-family: monospace;
@@ -636,8 +638,20 @@ body {
 .Admin-Vector .sequence {
   position: relative;
 }
+
+/* Admin Exercise List */
 .Admin-Exercises-List {
 
+}
+.Admin-Exercises-List th {
+  cursor: pointer;
+  background: #EAEAEA;
+}
+.Admin-Exercises-List th:hover {
+  background: #DEDEDE;
+}
+.Admin-Exercises-List th:not(:first-of-type) {
+  min-width: 20ch;
 }
 .Admin-Exercises-List .ID {
   display: block;

@@ -6,16 +6,24 @@ exports[`exerciseList should render a table row that tells the user that there a
 >
   <thead>
     <tr>
-      <th>
+      <th
+        onClick={[Function]}
+      >
         Exercise name
       </th>
-      <th>
+      <th
+        onClick={[Function]}
+      >
         Date added
       </th>
-      <th>
+      <th
+        onClick={[Function]}
+      >
         Last modified
       </th>
-      <th>
+      <th
+        onClick={[Function]}
+      >
         Author ID
       </th>
       <th />
@@ -37,16 +45,24 @@ exports[`exerciseList should render exerciseList with list of exercises 1`] = `
 >
   <thead>
     <tr>
-      <th>
+      <th
+        onClick={[Function]}
+      >
         Exercise name
       </th>
-      <th>
+      <th
+        onClick={[Function]}
+      >
         Date added
       </th>
-      <th>
+      <th
+        onClick={[Function]}
+      >
         Last modified
       </th>
-      <th>
+      <th
+        onClick={[Function]}
+      >
         Author ID
       </th>
       <th />

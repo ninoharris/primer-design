@@ -3,7 +3,8 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
-import { exercisesByIdSelector } from '../selectors/index'
+
+import { updateSortBy } from '../actions/admin'
 import { getFilteredSortedExercises } from '../selectors/admin'
 
 export class ExerciseList extends Component {
@@ -26,15 +27,21 @@ export class ExerciseList extends Component {
     )
   }
   render() {
-    const { exercisesList = [] } = this.props 
+    const { 
+      exercisesList = [],
+      sortByName = () => { },
+      sortByCreatedAt = () => {},
+      sortByLastModified = () => {},
+      sortByAuthorId = () => {},
+     } = this.props 
     return (
       <table className="table Admin-Exercises-List">
         <thead>
           <tr>
-            <th>Exercise name</th>
-            <th>Date added</th>
-            <th>Last modified</th>
-            <th>Author ID</th>
+            <th onClick={sortByName}>Exercise name</th>
+            <th onClick={sortByCreatedAt}>Date added</th>
+            <th onClick={sortByLastModified}>Last modified</th>
+            <th onClick={sortByAuthorId}>Author ID</th>
             <th></th>
           </tr>
         </thead>
@@ -54,7 +61,12 @@ ExerciseList.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
-  exercisesList: getFilteredSortedExercises(state),
+  exercisesList: getFilteredSortedExercises(state)
 })
 
-export default connect(mapStateToProps)(ExerciseList)
+export default connect(mapStateToProps, dispatch => ({
+  sortByName: () => dispatch(updateSortBy('id')),
+  sortByCreatedAt: () => dispatch(updateSortBy('createdAt')),
+  sortByLastModified: () => dispatch(updateSortBy('lastModified')),
+  sortByAuthorId: () => dispatch(updateSortBy('authorId')),
+}))(ExerciseList)
