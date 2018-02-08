@@ -9,13 +9,14 @@ import HelperMarkers from '../components/HelperMarkers'
 import HighlightedSequence from '../components/HighlightedSequence'
 import Markers from '../components/Markers';
 
-export const VectorPreview = ({ forward, reverse, helpers, vectorMarkers }) => {
+export const VectorPreview = ({ forward, reverse, helpers, vectorMarkers, cursorPosition = null }) => {
   return (
     <div className="vector Admin-Vector pt-3 pb-3">
       <div className="forward">
         <div className="sequence">
           <HelperPosition length={forward.length} className="fullheight" />
           <Markers markers={vectorMarkers} className="Admin-Markers Admin-Vector-Markers" />
+          {isNaN(cursorPosition) ? '' : <Markers className="Admin-Markers Cursor-Position" markers={[cursorPosition]} />}
           <HelperMarkers helpers={helpers} />
           <HighlightedSequence helpers={helpers} sequence={forward} direction='forward' />
         </div>
@@ -23,6 +24,7 @@ export const VectorPreview = ({ forward, reverse, helpers, vectorMarkers }) => {
       <div className="reverse sequence">
         <div className="sequence">
           <Markers markers={vectorMarkers} className="Admin-Markers Admin-Vector-Markers" />
+          {isNaN(cursorPosition) ? '' : <Markers className="Admin-Markers Cursor-Position" markers={[cursorPosition]} />}
           <HighlightedSequence helpers={helpers} sequence={reverse} direction='reverse' />
         </div>
       </div>

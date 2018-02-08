@@ -6,18 +6,24 @@ import { Left3, Left5, Right3, Right5 } from '../components/HelperEnds'
 import Codons from '../components/Codons'
 import HelperPosition from '../components/HelperPosition'
 import Markers from '../components/Markers'
+import HaystackRestrictionSites from '../Features/Haystack/HaystackRestrictionSites'
 import * as api from '../api'
 
-const HaystackPreview = ({ forward, reverse, haystackMarkers }) => (
+const HaystackPreview = ({ forward, reverse, haystackMarkers, cursorPosition = null }) => (
   <div className="haystack Admin-Haystack">
-    
     <div className="forward">
       <div className="multiline">
         <div className="sequence">
           <HelperPosition length={forward.length} interval={3} />
           <Markers className="Admin-Markers" markers={haystackMarkers} />
+          {isNaN(cursorPosition) ? '' : <Markers className="Admin-Markers Cursor-Position" markers={[cursorPosition]} />}
           <Left5 />
-          {forward}
+          <HaystackRestrictionSites 
+            direction="forward" 
+            restrictionSites={api.getRestrictionSiteMatches(forward)}
+            alwaysShowName={true} 
+            seq={forward} />
+            {forward}
           <Right3 />
         </div>
       </div>
@@ -26,8 +32,14 @@ const HaystackPreview = ({ forward, reverse, haystackMarkers }) => (
       <div className="multiline">
         <div className="sequence">
           <Markers className="Admin-Markers" markers={haystackMarkers} />
+          {isNaN(cursorPosition) ? '' : <Markers className="Admin-Markers Cursor-Position" markers={[cursorPosition]} />}
           <Left3 />
-          {reverse}
+          <HaystackRestrictionSites 
+            direction="reverse" 
+            restrictionSites={api.getRestrictionSiteMatches(reverse)} 
+            alwaysShowName={true} 
+            seq={reverse} />
+            {reverse}
           <Right5 />
         </div>
         <Codons seq={forward} showCodons={true} />

@@ -11,6 +11,21 @@ import RestrictionSitesPreview from '../components/RestrictionSitesPreview';
 import ColorPicker from './ColorPicker'
 
 class ExerciseEditor extends Component {
+  state = {
+    cursor: {
+      'haystack': null,
+      'vector': null,
+    }
+  }
+  textareaInput = {} // textarea refs are captured so that we have the position of the user's text cursor as they're editing. this is used for preview markers.
+  getCursorPosition = (el) => {
+    const name = el.name
+    const cursorPosition = this.textareaInput[name].selectionStart // get position of cursor when editing
+    this.setState({ 
+      cursor: { [name]: cursorPosition }
+    })
+  }
+
   renderField = ({ name, input, label, type, meta: { pristine, touched, error, warning }, ...props }) => (
     <div>
       <label htmlFor={input.name}>{label}</label>
@@ -26,13 +41,23 @@ class ExerciseEditor extends Component {
     <div className="">
       <label htmlFor={input.name}>{label}</label>
       <div>
-        <textarea {...input} id={input.name} placeholder={label} type={type} {...props} />
+        <textarea 
+          {...input}
+          id={input.name} 
+          ref={(el => this.textareaInput[input.name] = el)}
+          onClick={(event) => this.getCursorPosition(event.nativeEvent.target)}
+          onKeyPress={(event) => this.getCursorPosition(event.target)}
+          placeholder={label} 
+          type={type} 
+          {...props} 
+        />
         {!pristine &&
           ((error && <span className="editor-error">{error}</span>) ||
             (warning && <span className="editor-warning">{warning}</span>))}
       </div>
     </div>
   )
+  // renderSequence = (props) TODO
   renderCheckbox = ({ input, label, type, meta: { pristine, touched, error, warning }, ...props }) => (
     <div className="editor-checkbox">
       <div>
@@ -59,7 +84,6 @@ class ExerciseEditor extends Component {
             <div className="row">
               <div className="col-6"><Field name={`${helper}.len`} type="number" component={this.renderField} label="NT length" /></div>
               <div className="col-6">
-                {/* <Field name={`${helper}.color`} type="text" component={this.renderField} label="Color (#FF0000)" /> */}
                 <Field name={`${helper}.color`} component={ColorPicker} type="text" label="Color (#FF0000)" defaultValue="#FF0000" />
               </div>
             </div>
@@ -74,6 +98,7 @@ class ExerciseEditor extends Component {
   }
   render() {
     const { pristine, submitting, submitText = 'Create exercise', fusionStart, fusionEnd } = this.props
+    const { haystack: haystackCursorPosition, vector: vectorCursorPosition } = this.state.cursor
     return (
       <form onSubmit={this.props.handleSubmit} className="Admin-Exercise-Form" method="POST">
         <div className="row">
@@ -121,7 +146,7 @@ class ExerciseEditor extends Component {
             <div className="form-group">
               <Field className="form-control vectorInput" name="vector" component={this.renderTextarea} type="text" label="Vector forward sequence (reverse is calculated)" />
             </div>
-            <VectorPreview />
+            <VectorPreview cursorPosition={vectorCursorPosition} />
             <div className="form-group">
               <Field className="form-control" name="questionPart2" component={this.renderTextarea} type="text" label="Question part 2: This contains information specific to the construct below." />
             </div>
@@ -132,7 +157,7 @@ class ExerciseEditor extends Component {
                 component={this.renderTextarea} type="text" rows="6" 
                 label="Haystack forward sequence (reverse is calculated)" />
             </div>
-            <HaystackPreview />
+            <HaystackPreview cursorPosition={haystackCursorPosition}/>
             <button type="submit" disabled={pristine || submitting}>{submitText}</button>
           </div>
         </div>

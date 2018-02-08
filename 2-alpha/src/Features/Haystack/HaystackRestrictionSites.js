@@ -3,12 +3,19 @@ import PropTypes from 'prop-types'
 import _ from 'lodash'
 import * as api from '../../api'
 
-const HaystackRestrictionSites = ({ seq, direction = 'forward', restrictionSites, hoveredItem = null, onHover = () => {} }) => {
+const HaystackRestrictionSites = ({ 
+  seq, 
+  direction = 'forward', 
+  restrictionSites, 
+  hoveredItem = null, 
+  onHover = () => {},
+  alwaysShowName = false,
+}) => {
   const RESitesDOM = restrictionSites
   .sort((a, b) => a.pos - b.pos)
   .map((site) => direction === 'forward' ? site : {...site, seq: api.reverse(site.seq) } )
   .map((site, i) => {
-    const className = hoveredItem === i ? 'hovered' : ''
+    const className = (hoveredItem === i || alwaysShowName) ? 'hovered' : ''
     return (
       <div className={"Restriction-Site-Container sequence " + className} key={site.pos}>
         <div>

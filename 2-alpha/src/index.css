@@ -240,7 +240,7 @@ body {
 }
 .Haystack-Restriction-Sites .Restriction-Site {
   position: relative;
-  z-index: 100; /* To make hover work, we layer it on top */
+  z-index: 5; /* To make hover work, we layer it on top */
   /* remove me below */
 }
 .Haystack-Restriction-Sites .Restriction-Site .Name {
@@ -568,10 +568,13 @@ body {
   position: absolute;
   left: 0;
 }
-.Admin-Markers .admin-marker:after {
+.Admin-Markers .admin-marker::after {
   content: "";
   border-right: 1px solid red;
   height: 1ch;
+}
+.Admin-Markers.Cursor-Position .admin-marker::after {
+  border-right-color: blue;
 }
 
 .Admin-Vector-Markers {
