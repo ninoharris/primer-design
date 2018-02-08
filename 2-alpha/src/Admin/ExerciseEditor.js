@@ -45,8 +45,9 @@ class ExerciseEditor extends Component {
           {...input}
           id={input.name} 
           ref={(el => this.textareaInput[input.name] = el)}
-          onClick={(event) => this.getCursorPosition(event.nativeEvent.target)}
-          onKeyPress={(event) => this.getCursorPosition(event.target)}
+          onClick={(event) => this.getCursorPosition(event.target)}
+          onKeyUp={(event) => this.getCursorPosition(event.target)}
+          onKeyDown={(event) => this.getCursorPosition(event.target)}
           placeholder={label} 
           type={type} 
           {...props} 

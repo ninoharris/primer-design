@@ -16,7 +16,9 @@ export const VectorPreview = ({ forward, reverse, helpers, vectorMarkers, cursor
         <div className="sequence">
           <HelperPosition length={forward.length} className="fullheight" />
           <Markers markers={vectorMarkers} className="Admin-Markers Admin-Vector-Markers" />
-          {isNaN(cursorPosition) ? '' : <Markers className="Admin-Markers Cursor-Position" markers={[cursorPosition]} />}
+          {typeof cursorPosition === 'number' && cursorPosition < forward.length && cursorPosition !== 0 ?
+            <Markers className="Admin-Markers Cursor-Position" markers={[cursorPosition]} /> : ''
+          }
           <HelperMarkers helpers={helpers} />
           <HighlightedSequence helpers={helpers} sequence={forward} direction='forward' />
         </div>
@@ -24,7 +26,9 @@ export const VectorPreview = ({ forward, reverse, helpers, vectorMarkers, cursor
       <div className="reverse sequence">
         <div className="sequence">
           <Markers markers={vectorMarkers} className="Admin-Markers Admin-Vector-Markers" />
-          {isNaN(cursorPosition) ? '' : <Markers className="Admin-Markers Cursor-Position" markers={[cursorPosition]} />}
+          {typeof cursorPosition === 'number' && cursorPosition < forward.length && cursorPosition !== 0 ?
+            <Markers className="Admin-Markers Cursor-Position" markers={[cursorPosition]} /> : ''
+          }
           <HighlightedSequence helpers={helpers} sequence={reverse} direction='reverse' />
         </div>
       </div>

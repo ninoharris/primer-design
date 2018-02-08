@@ -16,7 +16,9 @@ const HaystackPreview = ({ forward, reverse, haystackMarkers, cursorPosition = n
         <div className="sequence">
           <HelperPosition length={forward.length} interval={3} />
           <Markers className="Admin-Markers" markers={haystackMarkers} />
-          {isNaN(cursorPosition) ? '' : <Markers className="Admin-Markers Cursor-Position" markers={[cursorPosition]} />}
+          {typeof cursorPosition === 'number' && cursorPosition < forward.length && cursorPosition !== 0 ?
+            <Markers className="Admin-Markers Cursor-Position" markers={[cursorPosition]} /> : ''
+          }
           <Left5 />
           <HaystackRestrictionSites 
             direction="forward" 
@@ -32,7 +34,9 @@ const HaystackPreview = ({ forward, reverse, haystackMarkers, cursorPosition = n
       <div className="multiline">
         <div className="sequence">
           <Markers className="Admin-Markers" markers={haystackMarkers} />
-          {isNaN(cursorPosition) ? '' : <Markers className="Admin-Markers Cursor-Position" markers={[cursorPosition]} />}
+          {typeof cursorPosition === 'number' && cursorPosition < forward.length && cursorPosition !== 0 ?
+            <Markers className="Admin-Markers Cursor-Position" markers={[cursorPosition]} /> : ''
+          }
           <Left3 />
           <HaystackRestrictionSites 
             direction="reverse" 
