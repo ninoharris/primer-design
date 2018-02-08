@@ -1,6 +1,5 @@
 import _ from 'lodash'
 import * as api from '../api'
-import { store } from '../index'
 
 export const required = (value) => (value ? undefined : 'Required')
 
@@ -30,7 +29,7 @@ export const validate = values => {
 
   // vector contains at least two different restriction sites and isn't too long
   if (values.vector.length > 100) errors.vector = 'For display reasons, vector cannot be over 100 bases in length'
-  if (_.keys(api.getRestrictionSiteMatches(store.getState().restrictionSites, values.vector)).length < 2) errors.vector = 'Vector must contain at least two different restriction sites'
+  if (_.keys(api.getRestrictionSiteMatches(values.vector).length < 2)) errors.vector = 'Vector must contain at least two different restriction sites'
 
   // Positions of constructEnd and constructStart
   if (constructStart >= constructEnd) errors.constructEnd = 'Construct end must be after construct start'

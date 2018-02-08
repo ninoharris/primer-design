@@ -16,7 +16,9 @@ const HaystackPreview = ({ forward, reverse, haystackMarkers }) => (
         <div className="sequence">
           <HelperPosition length={forward.length} interval={3} />
           <Markers className="Admin-Markers" markers={haystackMarkers} />
-          <Left5 />{forward}<Right3 />
+          <Left5 />
+          {forward}
+          <Right3 />
         </div>
       </div>
     </div>
@@ -24,7 +26,9 @@ const HaystackPreview = ({ forward, reverse, haystackMarkers }) => (
       <div className="multiline">
         <div className="sequence">
           <Markers className="Admin-Markers" markers={haystackMarkers} />
-          <Left3 />{reverse}<Right5 />
+          <Left3 />
+          {reverse}
+          <Right5 />
         </div>
         <Codons seq={forward} showCodons={true} />
       </div>

@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AdminHomePage shallow renders correctly 1`] = `
+<div
+  className="container-fluid"
+>
+  <withRouter(Header)
+    title="Viewing exercises"
+  />
+  <div
+    className="row"
+  >
+    <div
+      className="col-12"
+    >
+      <Connect(ExerciseListFilters) />
+    </div>
+    <div
+      className="col-12"
+    >
+      <Connect(ExerciseList) />
+    </div>
+  </div>
+</div>
+`;

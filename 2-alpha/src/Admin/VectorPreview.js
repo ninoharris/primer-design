@@ -8,15 +8,10 @@ import HelperPosition from '../components/HelperPosition'
 import HelperMarkers from '../components/HelperMarkers'
 import HighlightedSequence from '../components/HighlightedSequence'
 import Markers from '../components/Markers';
-import { getAllRestrictionSites } from '../selectors/index';
 
-const VectorPreview = ({ forward, reverse, helpers, vectorMarkers }) => {
-  console.log('I swear', helpers, vectorMarkers)
+export const VectorPreview = ({ forward, reverse, helpers, vectorMarkers }) => {
   return (
     <div className="vector Admin-Vector pt-3 pb-3">
-      
-      
-
       <div className="forward">
         <div className="sequence">
           <HelperPosition length={forward.length} className="fullheight" />
@@ -38,22 +33,16 @@ const VectorPreview = ({ forward, reverse, helpers, vectorMarkers }) => {
 const selector = formValueSelector('exerciseEditor')
 
 const mapStateToProps = (state, ownProps) => {
-  const { vector = ' ', vectorStart = null, vectorEnd = null, fusionStart = false, fusionEnd = false, helpers: userMadeHelpers = [] } = selector(state,
+  const { vector = ' ', vectorStart = null, vectorEnd = null, fusionStart = false, fusionEnd = false, helpers = [] } = selector(state,
     'vector', 'vectorStart', 'vectorEnd', 'fusionStart', 'fusionEnd', 'helpers')
 
-  const helpers = userMadeHelpers.map(helper => ({
+  const userMadeHelpers = helpers.map(helper => ({
       ...helper,
       pos: Number(helper.pos),
       len: Number(helper.len),
   })).filter(helper => helper.pos && helper.len && helper.name && helper.color)
   
-  const REHelpersObj = api.getRestrictionSiteMatches(getAllRestrictionSites(state), vector)
-  const REHelpers = _.flatMap(
-    REHelpersObj, 
-    ({ name, seq, pos, color = '#CCCCCC' }) => ({
-      name, seq, pos, len: seq.length, color
-    })
-  )
+  const REHelpers = api.getRestrictionSiteMatches(vector)
   const vectorMarkers = []
   if (fusionStart) { vectorMarkers.push(parseInt(vectorStart, 10))}
   if (fusionEnd) { vectorMarkers.push(parseInt(vectorEnd, 10)) }
@@ -62,7 +51,7 @@ const mapStateToProps = (state, ownProps) => {
     forward: vector,
     reverse: api.complementFromString(vector),
     vectorMarkers,
-    helpers: [...helpers, ...REHelpers].sort((a,b) => a.pos - b.pos)
+    helpers: [...userMadeHelpers, ...REHelpers].sort((a,b) => a.pos - b.pos)
   }
 }
 

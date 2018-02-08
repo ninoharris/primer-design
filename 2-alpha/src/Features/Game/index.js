@@ -11,6 +11,7 @@ import Display from '../Display'
 import Options from '../Options'
 import Modals from '../modals'
 import Header from '../../components/Header'
+import RestrictionSitesPreview from '../../components/RestrictionSitesPreview'
 
 
 class App extends Component {
@@ -33,7 +34,7 @@ class App extends Component {
             <Form />
             <Options />
             <Evaluation />
-            
+            <RestrictionSitesPreview />
           </div>
           <div className="Display col-8">
             <Display />

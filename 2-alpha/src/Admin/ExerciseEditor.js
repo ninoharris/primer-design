@@ -7,7 +7,7 @@ import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form';
 import validate from './exerciseValidate'
 import VectorPreview from './VectorPreview'
 import HaystackPreview from './HaystackPreview'
-import RestrictionSitesPreview from './RestrictionSitesPreview';
+import RestrictionSitesPreview from '../components/RestrictionSitesPreview';
 import ColorPicker from './ColorPicker'
 
 class ExerciseEditor extends Component {

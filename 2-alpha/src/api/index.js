@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import { codonTable } from './codons'
+export const RESites = require('./restrictionSites').RESites
 
 export const repeatChar = function (count, ch) {
   if (!ch || ch.length === 0) ch = " " // Default repeated char is space
@@ -241,18 +242,13 @@ export const isTooLong = (seq, max = 20) => {
   return false
 }
 
-// get restriction site matches:
-/**
- * @param {Object} RESites {"AAATTT": { name: "HindII", ...}}
- * @returns {Object} {0: RESite1, 6: RESite2, ...}
- */
-export const getRestrictionSiteMatches = (RESites, sequence) => {
-  const matches = {}
-  _.keys(RESites).forEach(RE => {
-    let reg = RegExp(RE, 'g')
+export const getRestrictionSiteMatches = (sequence) => {
+  const matches = []
+  _.forEach(RESites, RE => {
+    let reg = RegExp(RE.seq, 'g')
     let result = reg.exec(sequence)
     while (result !== null) {
-      matches[result.index] = {...RESites[RE], pos: result.index}
+      matches.push({...RE, pos: result.index })
       result = reg.exec(sequence)
     }
   })

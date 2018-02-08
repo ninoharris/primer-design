@@ -70,7 +70,7 @@ export const getVectorRestrictionSites = createSelector(
   restrictionSitesSelector,
   getBothVectorStrands,
   (RESites, { forward }) => {
-    return api.getRestrictionSiteMatches(RESites, forward)
+    return api.getRestrictionSiteMatches(forward)
     // 20: { pos: 20, name: 'X', seq: 'AAAAAA' }
   }
 )
@@ -79,8 +79,7 @@ export const getHaystackForwardRestrictionSites = createSelector(
   restrictionSitesSelector,
   getBothHaystackStrands,
   (RESites, { forward }) => {
-    return api.getRestrictionSiteMatches(RESites, forward)
-    // 20: { pos: 20, name: 'X', seq: 'AAAAAA' }
+    return api.getRestrictionSiteMatches(forward)
   }
 )
 
@@ -88,25 +87,14 @@ export const getHaystackReverseRestrictionSites = createSelector(
   restrictionSitesSelector,
   getBothHaystackStrands,
   (RESites, { reverse }) => {
-    return api.getRestrictionSiteMatches(RESites, reverse)
-    // 20: { pos: 20, name: 'X', seq: 'AAAAAA' }
+    return api.getRestrictionSiteMatches(reverse)
   }
 )
 
 export const getVectorHelpers = createSelector( // merges RESites and user-added helpers
   getCurrentExercise,
   getVectorRestrictionSites,
-  ({helpers}, RESites) => {
-    // console.log(helpers, RESites)
-    const REHelpers = _.mapValues(RESites, ({ name, seq, pos, color = '#CCCCCC'}) => ({
-      name, seq, pos, len: seq.length, color
-    }))
-    return {
-      ...REHelpers,
-      ...helpers,
-    }
-  }
-  // returns object of pos: { name, pos, len, color }
+  ({ helpers }, RESites = []) => ([..._.flatMap(helpers, helper => helper), ...RESites ]).sort((a,b) => a.pos - b.pos)
 )
 
 export const getTroubleshooter = state => state.troubleshooter

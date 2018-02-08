@@ -121,11 +121,12 @@ body {
 }
 .haystack .reverse {
   position: absolute;
-  top: 1rem; /* OFFSET to prevent overlaps between reverse and forward */
+  top: 0.95rem; /* OFFSET to prevent overlaps between reverse and forward */
 }
 .haystack-with-UFG .reverse {
   top: 2rem; /* move it up by a line, gives room for URG */
 }
+
 
 
 
@@ -239,13 +240,19 @@ body {
 }
 .Haystack-Restriction-Sites .Restriction-Site {
   position: relative;
+  z-index: 100; /* To make hover work, we layer it on top */
+  /* remove me below */
 }
 .Haystack-Restriction-Sites .Restriction-Site .Name {
   position: absolute;
   left: 0;
   top: -0.7rem;
-  opacity: 0.4;
+  opacity: 0.8;
   line-height: 1;
+  display: none;
+}
+.Haystack-Restriction-Sites .Restriction-Site-Container.hovered .Name {
+  display: block;
 }
 
 .helpers {

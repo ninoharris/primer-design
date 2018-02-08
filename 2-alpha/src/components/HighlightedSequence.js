@@ -3,15 +3,13 @@ import React from 'react'
 import * as api from '../api'
 
 const HighlightedSequence = ({ helpers, sequence, direction }) => {
-  let lastIndex = 0, output = []
+  let lastIndex = 0, output = [] 
   
   // Only show valid helpers, sort by pos, and map to an array to be iterated over
-  const helpersList = _.keys(helpers, 'pos')
-    .sort((a,b) => a - b)
-    .map(pos => helpers[pos])
+  helpers
+    .sort((a, b) => a.pos - b.pos)
     .filter(helper => helper.pos && helper.len)
-
-  helpersList.map(({ pos, name, len, color }) => {
+    .forEach(({ pos, name, len, color }) => {
     if (pos > lastIndex) {
       output.push(<span key={lastIndex} className="in-between">{sequence.slice(lastIndex, pos)}</span>)
     }
@@ -23,7 +21,7 @@ const HighlightedSequence = ({ helpers, sequence, direction }) => {
   if (lastIndex < sequence.length) { // we're not done yet...
     output.push(<span key={lastIndex} className="in-between">{sequence.slice(lastIndex)}</span>)
   }
-  return output
+  return (<span className="Highlighted-Sequence sequence">{output}</span>)
 }
 
 export default HighlightedSequence

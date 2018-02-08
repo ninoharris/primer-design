@@ -1,8 +1,10 @@
 import _ from 'lodash'
 import React from 'react'
 
+// A marker is an indicator of position, such as the start of a construct or end.
+
 const HelperMarkers = ({ helpers }) => {
-  const helpersList = _.map(helpers, (helper) => {
+  const helpersList = helpers.map((helper) => {
     if(!helper.pos || !helper.len) return null
     const pad = _.pad('', helper.pos, ' ')
     const style = {
