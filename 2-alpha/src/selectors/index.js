@@ -76,17 +76,15 @@ export const getVectorRestrictionSites = createSelector(
 )
 
 export const getHaystackForwardRestrictionSites = createSelector(
-  restrictionSitesSelector,
   getBothHaystackStrands,
-  (RESites, { forward }) => {
+  ({ forward }) => {
     return api.getRestrictionSiteMatches(forward)
   }
 )
 
 export const getHaystackReverseRestrictionSites = createSelector(
-  restrictionSitesSelector,
   getBothHaystackStrands,
-  (RESites, { reverse }) => {
+  ({ reverse }) => {
     return api.getRestrictionSiteMatches(reverse)
   }
 )

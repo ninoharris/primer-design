@@ -167,7 +167,7 @@ export class ExerciseEditor extends Component {
   }
 }
 
-const ExerciseEditorWithReduxForm = reduxForm({
+const ExerciseEditorConnected = reduxForm({
   form: 'exerciseEditor',
   validate,
 })(ExerciseEditor)
@@ -217,7 +217,7 @@ const mapStateToProps = (state, ownProps) => {
       userProvidesStartCodon: values.userProvidesStartCodon || false,
       userProvidesStopCodon: values.userProvidesStopCodon || false,
     }
-    console.log('Exercise data: ', exerciseData)
+    // console.log('Exercise data: ', exerciseData)
     outerSubmit(exerciseData)
   }
 
@@ -229,4 +229,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-export default connect(mapStateToProps)(ExerciseEditorWithReduxForm)
+export default connect(mapStateToProps)(ExerciseEditorConnected)

@@ -207,14 +207,27 @@ export const getVectorEvaluations = createSelector(
 
     // If no match or too many matches, then return early as later logic requires a single match
     if (UFVReadyToCheck) {
+      if (FV.singleMatch) {
+        EvalFV.success('FV_MATCHES_ONCE')
+        if (FG_RE_Sites.find(RESite => UFV.includes(RESite.seq))) EvalFV.failure('HAYSTACK_FORWARD_CONTAINS_FV_SITE')
+        if (RG_RE_Sites.find(RESite => UFV.includes(RESite.seq))) EvalFV.failure('HAYSTACK_REVERSE_CONTAINS_FV_SITE')
+      } else {
+        // check if reversed input contains an RE site, indicate that the wrong direction was supplied
+        if (api.getRestrictionSiteMatches(api.reverse(UFV)).length > 0) EvalFV.failure('FV_MATCHES_WRONG_STRAND')
+      }
       if (FV.matches && FV.matches.length === 0) EvalFV.failure("NO_MATCH_FV")
       if (FV.matches && FV.matches.length > 0) EvalFV.failure("EXCEED_MATCH_FV")
-      if (FV.singleMatch) EvalFV.success('FV_MATCHES_ONCE')
     }
     if (URVReadyToCheck) {
+      if (RV.singleMatch) {
+        EvalRV.success('RV_MATCHES_ONCE')
+        if (FG_RE_Sites.find(RESite => URV.includes(RESite.seq))) EvalRV.failure('HAYSTACK_FORWARD_CONTAINS_RV_SITE')
+        if (RG_RE_Sites.find(RESite => URV.includes(RESite.seq))) EvalRV.failure('HAYSTACK_REVERSE_CONTAINS_RV_SITE')
+      } else {
+        if (api.getRestrictionSiteMatches(api.reverse(URV)).length > 0) EvalRV.failure('RV_MATCHES_WRONG_STRAND')
+      }
       if (RV.matches && RV.matches.length === 0) EvalRV.failure("NO_MATCH_RV")
       if (RV.matches && RV.matches.length > 0) EvalRV.failure("EXCEED_MATCH_RV")
-      if (RV.singleMatch) EvalRV.success('RV_MATCHES_ONCE')
     }
 
 
@@ -229,6 +242,7 @@ export const getVectorEvaluations = createSelector(
 
     // restriction sites cannot be the same
     if (FV.seq === api.reverse(RV.seq)) FVRV.failure("SAME_RESTRICTION_SITES")
+
 
     // // Check that restriction sites aren't in the haystack in either direction
     if (_.findKey(FG_RE_Sites, site => UFV.includes(site.seq))) EvalFV.failure('HAYSTACK_CONTAINS_FV_SITE')
