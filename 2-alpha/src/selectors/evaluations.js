@@ -243,11 +243,6 @@ export const getVectorEvaluations = createSelector(
     // restriction sites cannot be the same
     if (FV.seq === api.reverse(RV.seq)) FVRV.failure("SAME_RESTRICTION_SITES")
 
-
-    // // Check that restriction sites aren't in the haystack in either direction
-    if (_.findKey(FG_RE_Sites, site => UFV.includes(site.seq))) EvalFV.failure('HAYSTACK_CONTAINS_FV_SITE')
-    if (_.findKey(RG_RE_Sites, site => URV.includes(site.seq))) EvalFV.failure('HAYSTACK_CONTAINS_RV_SITE')
-
     // Spacing between primers
     if (FV.endPos > RV.pos) FVRV.failure("VECTOR_OVERLAP")
     const differenceBetweenVectorPrimers = RV.pos - FV.endPos

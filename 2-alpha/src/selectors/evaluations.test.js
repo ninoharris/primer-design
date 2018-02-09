@@ -74,7 +74,7 @@ describe('Evaluations', () => {
     test('Should have no matches', () => {
       state = { ...state, 
         formInputs: {
-          FV: 'ccatgga',
+          FV: 'ccaagga',
           FG: 'cacagctacga',
           RV: 'gtcgcac',
           RG: 'tcatgcatat',
@@ -284,8 +284,8 @@ describe('Evaluations', () => {
       const result = getAllEvaluations(state)
       expect(result).toMatchObject([
         { ID: "FV_MATCHES_ONCE" },
+        { ID: "HAYSTACK_FORWARD_CONTAINS_FV_SITE" },
         { ID: "RV_MATCHES_ONCE" },
-        { ID: "HAYSTACK_CONTAINS_FV_SITE" },
       ])
     })
 
