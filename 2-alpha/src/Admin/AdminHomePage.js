@@ -6,7 +6,7 @@ import ExerciseList from './ExerciseList'
 import withLoading from '../components/withLoading'
 import FilterExercises from './FilterExercises'
 
-class AdminHomePage extends Component {
+export class AdminHomePage extends Component {
   render() {
     return (
       <div className="container-fluid">
@@ -24,6 +24,6 @@ class AdminHomePage extends Component {
   }
 }
 
-AdminHomePage = withLoading(true, true)(AdminHomePage, true)
+const AdminHomePageWithLoading = withLoading(true, true)(AdminHomePage, true)
 
-export default connect()(AdminHomePage)
+export default connect()(AdminHomePageWithLoading)

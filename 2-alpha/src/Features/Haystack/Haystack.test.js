@@ -7,24 +7,25 @@ const props = {
   "reverse": "CATGTGCCACCATTGGGTATCCAGGCGAGGGGGTCGAACCACGTAGTCCAGGATTATGTCGCCGGCCGACGACATCCGGCAACATCTTTGTCATCTGTGCCCGTGAGCCTTGGACGTCTGGAGTCACTCGACTCAGCGGAAGAAAACAGGGTTTCACCGCACGCGTCGTGTACGGGGAGTCGCCCACCGATAATGACAGGTTCCCCCAGTGTGGGTGGTTACACGCTGGCGCCTCGACCTGGTGAACACGTTTCGACACGGTGGGCTGAAGCGAGCACGTCCCATGCACCCCGTGTCGCT",
   "FG": "",
   "RG": "",
-  "restrictionSites": {
-    "112": {
+  "restrictionSites": [
+    {
       "seq": "CTGCAG",
       "name": "PstI",
+      "len": 6,
       "cutsForward": 5,
       "cutsReverse": 1,
       "color": "#aa4fc3",
       "pos": 112
-    },
-    "227": {
+    }, {
       "seq": "CCGCGG",
       "name": "SacII",
+      "len": 6,
       "cutsForward": 4,
       "cutsReverse": 2,
       "color": "#67a77f",
       "pos": 227
-    }
-  }
+    },
+  ]
 }
 
 test('Haystack displays, example -L3d6TNs2PKt-fMf7_lS', () => {

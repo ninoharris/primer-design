@@ -25,25 +25,30 @@ exports[`Haystack displays, example -L3d6TNs2PKt-fMf7_lS 1`] = `
             length={300}
           />
           <HaystackRestrictionSites
+            direction="forward"
+            hoveredItem={null}
+            onHover={[Function]}
             restrictionSites={
-              Object {
-                "112": Object {
+              Array [
+                Object {
                   "color": "#aa4fc3",
                   "cutsForward": 5,
                   "cutsReverse": 1,
+                  "len": 6,
                   "name": "PstI",
                   "pos": 112,
                   "seq": "CTGCAG",
                 },
-                "227": Object {
+                Object {
                   "color": "#67a77f",
                   "cutsForward": 4,
                   "cutsReverse": 2,
+                  "len": 6,
                   "name": "SacII",
                   "pos": 227,
                   "seq": "CCGCGG",
                 },
-              }
+              ]
             }
             seq="GTACACGGTGGTAACCCATAGGTCCGCTCCCCCAGCTTGGTGCATCAGGTCCTAATACAGCGGCCGGCTGCTGTAGGCCGTTGTAGAAACAGTAGACACGGGCACTCGGAACCTGCAGACCTCAGTGAGCTGAGTCGCCTTCTTTTGTCCCAAAGTGGCGTGCGCAGCACATGCCCCTCAGCGGGTGGCTATTACTGTCCAAGGGGGTCACACCCACCAATGTGCGACCGCGGAGCTGGACCACTTGTGCAAAGCTGTGCCACCCGACTTCGCTCGTGCAGGGTACGTGGGGCACAGCGA"
           />
@@ -64,6 +69,34 @@ exports[`Haystack displays, example -L3d6TNs2PKt-fMf7_lS 1`] = `
           className="sequence"
         >
           <Connect(HaystackForward) />
+          <HaystackRestrictionSites
+            direction="reverse"
+            hoveredItem={null}
+            onHover={[Function]}
+            restrictionSites={
+              Array [
+                Object {
+                  "color": "#aa4fc3",
+                  "cutsForward": 5,
+                  "cutsReverse": 1,
+                  "len": 6,
+                  "name": "PstI",
+                  "pos": 112,
+                  "seq": "CTGCAG",
+                },
+                Object {
+                  "color": "#67a77f",
+                  "cutsForward": 4,
+                  "cutsReverse": 2,
+                  "len": 6,
+                  "name": "SacII",
+                  "pos": 227,
+                  "seq": "CCGCGG",
+                },
+              ]
+            }
+            seq="CATGTGCCACCATTGGGTATCCAGGCGAGGGGGTCGAACCACGTAGTCCAGGATTATGTCGCCGGCCGACGACATCCGGCAACATCTTTGTCATCTGTGCCCGTGAGCCTTGGACGTCTGGAGTCACTCGACTCAGCGGAAGAAAACAGGGTTTCACCGCACGCGTCGTGTACGGGGAGTCGCCCACCGATAATGACAGGTTCCCCCAGTGTGGGTGGTTACACGCTGGCGCCTCGACCTGGTGAACACGTTTCGACACGGTGGGCTGAAGCGAGCACGTCCCATGCACCCCGTGTCGCT"
+          />
           <Left3 />
           CATGTGCCACCATTGGGTATCCAGGCGAGGGGGTCGAACCACGTAGTCCAGGATTATGTCGCCGGCCGACGACATCCGGCAACATCTTTGTCATCTGTGCCCGTGAGCCTTGGACGTCTGGAGTCACTCGACTCAGCGGAAGAAAACAGGGTTTCACCGCACGCGTCGTGTACGGGGAGTCGCCCACCGATAATGACAGGTTCCCCCAGTGTGGGTGGTTACACGCTGGCGCCTCGACCTGGTGAACACGTTTCGACACGGTGGGCTGAAGCGAGCACGTCCCATGCACCCCGTGTCGCT
           <Right5 />

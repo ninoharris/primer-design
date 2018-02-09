@@ -6,7 +6,7 @@ import * as api from '../../api'
 const HaystackRestrictionSites = ({ 
   seq, 
   direction = 'forward', 
-  restrictionSites, 
+  restrictionSites = [], 
   hoveredItem = null, 
   onHover = () => {},
   alwaysShowName = false,

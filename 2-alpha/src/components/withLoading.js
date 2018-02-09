@@ -3,16 +3,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { fetchExercises } from '../actions'
 
-// const withLoading = (WrappedComponent) => (props) => { // Cant do stateless!
-//   (
-//     props.loading === false ? 
-//       <WrappedComponent {...props} /> :
-//       <div className="loading">Loading...</div>
-//   )
-// }
-
-
-const withLoading = (alwaysFetch = false, admin = false) => (WrappedComponent) => {
+const withLoading = (alwaysFetch = false) => (WrappedComponent) => {
   const displayName = WrappedComponent.displayName || WrappedComponent.name || 'Component'
 
   class WithLoading extends Component {

@@ -10,7 +10,7 @@ import HaystackPreview from './HaystackPreview'
 import RestrictionSitesPreview from '../components/RestrictionSitesPreview';
 import ColorPicker from './ColorPicker'
 
-class ExerciseEditor extends Component {
+export class ExerciseEditor extends Component {
   state = {
     cursor: {
       'haystack': null,
@@ -167,7 +167,7 @@ class ExerciseEditor extends Component {
   }
 }
 
-ExerciseEditor = reduxForm({
+const ExerciseEditorWithReduxForm = reduxForm({
   form: 'exerciseEditor',
   validate,
 })(ExerciseEditor)
@@ -229,6 +229,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-ExerciseEditor = connect(mapStateToProps)(ExerciseEditor)
-
-export default ExerciseEditor
+export default connect(mapStateToProps)(ExerciseEditorWithReduxForm)
