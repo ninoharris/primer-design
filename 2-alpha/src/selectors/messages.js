@@ -6,13 +6,13 @@ export const messageIDsToDetails = {
   "NO_MATCH_FV": () => ({
     title: "Forward primer has no matches in vector.",
     additional: "Choose a restriction site towards the left, and use its 5'-3' sequence on the leading strand.",
-    url: "/",
+    url: "/selecting-forward-primer-vector",
     actions: [actions.troubleshootFV]
   }),
   "NO_MATCH_RV": () => ({
     title: "Reverse primer has no matches in vector.",
     additional: "Choose a restriction site towards the right, and use its 5'-3' sequence.",
-    url: "/",
+    url: "/selecting-reverse-primer-vector",
   }),
   "EXCEED_MATCH_FV": () => ({
     title: "Forward primer matches more than one restriction site.",

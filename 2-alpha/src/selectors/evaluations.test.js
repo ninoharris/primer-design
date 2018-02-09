@@ -103,6 +103,39 @@ describe('Evaluations', () => {
       expect(result).toContainEqual({ "ID": "EXCEED_MATCH_FV", "inputs": ["FV"], "success": false })
     })
 
+    test('FV has exeeded matches if it contains two RE sites within it', () => {
+      state = {
+        ...state,
+        formInputs: {
+          FV: 'aagcttgtcgac',
+          RV: 'actagt',
+          FG: '',
+          RG: '',
+        }
+      }
+      const result = getAllEvaluations(state)
+      expect(result).toMatchObject([
+        { ID: "EXCEED_MATCH_FV" },
+        { ID: "RV_MATCHES_ONCE" },
+      ])
+    })
+
+    test('RV has exeeded matches if it contains two RE sites within it', () => {
+      state = {
+        ...state,
+        formInputs: {
+          FV: '',
+          RV: 'actagtaagctt',
+          FG: '',
+          RG: '',
+        }
+      }
+      const result = getAllEvaluations(state)
+      expect(result).toMatchObject([
+        { ID: "EXCEED_MATCH_RV" },
+      ])
+    })
+
     test('FV should succeed with just one match', () => {
       state = {
         ...state,
@@ -288,7 +321,6 @@ describe('Evaluations', () => {
         { ID: "RV_MATCHES_ONCE" },
       ])
     })
-
   })
 
 

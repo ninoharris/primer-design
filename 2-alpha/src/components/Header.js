@@ -29,9 +29,9 @@ const Header = ({
           <h3 className="mb-0">Primer Designer</h3>
         </div>
         <div className="text-right">
-          <button onClick={() => { }} className="btn btn-info mr-2" /* TODO: update with tutorial pages */>
-            See tutorial
-            </button>
+          <a target="_blank" href="/tutorials" className="btn btn-info mr-2" /* TODO: update with tutorial pages */>
+            See tutorials
+          </a>
           {userDisplay}
         </div>
       </div>
