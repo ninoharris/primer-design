@@ -31,7 +31,7 @@ class Evaluation extends Component {
         {/* <strong>{msg.inputs.join(' & ')}: </strong> */}
         <strong>{details.title}</strong>
         {details.additional ? <small className="additional"><hr />{details.additional}</small> : ''}
-        {details.url ? <a target="_blank" className="btn btn-outline-light btn-sm mt-2" href={`/tutorials/${details.url}`}>See related tutorial </a> : ''}
+        {details.url ? <a target="_blank" className="btn btn-outline-light btn-sm mt-2" href={`/tutorials${details.url}`}>See related tutorial </a> : ''}
       </li>
     )
   }

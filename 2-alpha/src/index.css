@@ -667,3 +667,18 @@ body {
   display: block;
   opacity: 0.6;
 }
+
+
+/* Tutorials */
+.tutorial-number {
+  font-style: italic;
+}
+.Tutorial-Link {
+
+}
+.Tutorial-Link.active {
+  
+}
+.Tutorial-Link.active a {
+  color: white;
+}
