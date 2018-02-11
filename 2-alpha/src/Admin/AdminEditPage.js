@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom'
 import { getExercise } from '../selectors' 
 import { updateExercise, startRemoveExercise } from '../actions/admin'
 
-import Header from './Header'
+import AdminHeader from './AdminHeader'
 import ExerciseEditor from './ExerciseEditor'
 
 class AdminEditPage extends Component {
@@ -26,9 +26,9 @@ class AdminEditPage extends Component {
     const { id } = this.props
     return (
       <div className="container-fluid">
-        <Header title={`Editing exercise with id: ${id}`}>
+        <AdminHeader title={`Editing exercise with id: ${id}`}>
           <button onClick={this.removeExercise} className="btn btn-danger mr-2">Delete exercise</button>
-        </Header>
+        </AdminHeader>
         <ExerciseEditor outerSubmit={this.outerSubmit} data={this.props.exercise} submitText='Update exercise' />
       </div>
     )

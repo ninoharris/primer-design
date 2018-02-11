@@ -1,0 +1,114 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Form renders correctly with no inputs when no props are given 1`] = `
+<form
+  autoComplete="prevent-autoComplete"
+  className="form-group primer-form"
+  onSubmit={[Function]}
+>
+  <div
+    className="text-center"
+  >
+    <strong>
+      Forward Primer
+    </strong>
+  </div>
+  <div
+    className="input-group"
+  >
+    <div
+      className="input-group-prepend"
+    >
+      <div
+        className="input-group-text"
+      >
+        5'
+      </div>
+    </div>
+    <input
+      autoComplete="prevent-autoComplete"
+      className="form-control FV "
+      name="FV"
+      onChange={[Function]}
+      type="text"
+    />
+    <input
+      autoComplete="prevent-autoComplete"
+      className="form-control FG"
+      name="FG"
+      onChange={[Function]}
+      type="text"
+    />
+    <div
+      className="input-group-append"
+    >
+      <div
+        className="input-group-text"
+      >
+        3'
+      </div>
+    </div>
+  </div>
+  <Connect(PrimerPreviewSmall)
+    strand="forward"
+  />
+  <div
+    className="text-center"
+  >
+    <strong>
+      Reverse Primer
+    </strong>
+  </div>
+  <div
+    className="input-group"
+  >
+    <div
+      className="input-group-prepend"
+    >
+      <div
+        className="input-group-text"
+      >
+        5'
+      </div>
+    </div>
+    <input
+      autoComplete="prevent-autoComplete"
+      className="form-control RV"
+      name="RV"
+      onChange={[Function]}
+      type="text"
+    />
+    <input
+      autoComplete="prevent-autoComplete"
+      className="form-control RG"
+      name="RG"
+      onChange={[Function]}
+      type="text"
+    />
+    <div
+      className="input-group-append"
+    >
+      <div
+        className="input-group-text"
+      >
+        3'
+      </div>
+    </div>
+  </div>
+  <Connect(PrimerPreviewSmall)
+    strand="reverse"
+  />
+  <button
+    className="btn btn-primary mr-3"
+    type="submit"
+  >
+    Submit
+  </button>
+  <button
+    className="btn btn-info btn-small"
+    type="button"
+  >
+    Preview reverse primer
+  </button>
+</form>
+`;

@@ -19,25 +19,30 @@ exports[`should render correctly 1`] = `
     <div
       className="text-right"
     >
-      <button
-        className="btn btn-info mr-2"
-        onClick={[Function]}
-      >
-        See tutorial
-      </button>
       <div
-        className="float-right logged-out"
+        className="float-left mr-3 ml-3"
       >
-        <span>
-          Not currently signed in
-        </span>
-        <button
-          className="ml-2 btn btn-success log-in"
-          onClick={[Function]}
+        <div
+          className="User-Display logged-out"
         >
-          Log Out
-        </button>
+          <span>
+            Not currently signed in
+          </span>
+          <button
+            className="ml-2 btn btn-success log-in"
+            onClick={[Function]}
+          >
+            Log Out
+          </button>
+        </div>
       </div>
+      <a
+        className="btn btn-info mr-2"
+        href="/tutorials"
+        target="_blank"
+      >
+        See tutorials
+      </a>
     </div>
   </div>
 </div>

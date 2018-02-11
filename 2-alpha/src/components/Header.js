@@ -1,7 +1,7 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 
-const Header = ({
+export const Header = ({
   loggedIn = false,
   username = '',
   completedCount = 0,

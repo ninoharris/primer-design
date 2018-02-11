@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AdminHeader renders correctly 1`] = `
+<div
+  className="row"
+>
+  <div
+    className="Nav"
+  >
+    <div
+      className="Logo"
+    >
+      <h4 />
+    </div>
+    <div>
+      <Link
+        replace={false}
+        to="/admin/create"
+      >
+        <button
+          className="btn btn-success mr-3"
+        >
+          Add new exercise
+        </button>
+      </Link>
+      <button
+        className="btn btn-info mr-3"
+        onClick={[Function]}
+      >
+        View students
+      </button>
+      <Link
+        className="btn btn-success Goto-Home"
+        replace={false}
+        to="/admin"
+      >
+        Back to home
+      </Link>
+      <button
+        className="Logout-Button btn btn-warning mr-3"
+        onClick={[Function]}
+      >
+        Log out
+      </button>
+    </div>
+  </div>
+</div>
+`;

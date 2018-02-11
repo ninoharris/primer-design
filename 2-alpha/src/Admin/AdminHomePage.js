@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import Header from './Header'
+import AdminHeader from './AdminHeader'
 import ExerciseList from './ExerciseList'
 import withLoading from '../components/withLoading'
 import FilterExercises from './FilterExercises'
@@ -10,7 +10,7 @@ export class AdminHomePage extends Component {
   render() {
     return (
       <div className="container-fluid">
-        <Header title="Viewing exercises" />
+        <AdminHeader title="Viewing exercises" />
         <div className="row">
           <div className="col-12">
             <FilterExercises />

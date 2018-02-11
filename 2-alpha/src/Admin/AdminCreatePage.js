@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import { addExercise } from '../actions/admin'
 import ExerciseEditor from './ExerciseEditor'
-import Header from './Header';
+import AdminHeader from './AdminHeader';
 
 const data = {
   authorId: 'anon',
@@ -30,7 +30,7 @@ class AdminCreatePage extends Component {
   render() {
     return (
       <div className="container-fluid">
-        <Header title="Add new exercise" />
+        <AdminHeader title="Add new exercise" />
         <ExerciseEditor outerSubmit={this.outerSubmit} data={data} />
       </div>
     )

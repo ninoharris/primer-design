@@ -1,6 +1,11 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { startLogin } from '../actions/auth'
 
-const LoginPage = () => {
+export const LoginPage = ({
+  startLogin
+}) => {
   return (
     <div className="Login-Page">
       <div className="container-fluid">
@@ -10,12 +15,22 @@ const LoginPage = () => {
         <div className="row">
           <div className="col-4">
             Log in to admin section
-            <button className="btn btn-primary">Log in</button>
+            <button onClick={startLogin} className="btn btn-primary">Log in</button>
           </div>
         </div>
       </div>
     </div>
   )
 }
+LoginPage.propTypes = {
+  startLogin: PropTypes.func.isRequired,
+}
 
-export default LoginPage
+const mapDispatchToProps = (dispatch) => {
+  return {
+    startLogin: () => dispatch(startLogin)
+  }
+}
+
+// export default connect(null, { startLogin })(LoginPage)
+export default connect(null, mapDispatchToProps)(LoginPage)

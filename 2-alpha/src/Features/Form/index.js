@@ -5,7 +5,7 @@ import { updateInput, beginAnimatePreview, endAnimatePreview, attemptCompletion 
 import { FV_TS } from '../../selectors'
 import PrimerPreviewSmall from './PrimerPreviewSmall'
 
-class Form extends Component {
+export class Form extends Component {
   handleChange = (e) => {
     // const text = e.target.value.toUpperCase()
     // const filteredText = text.replace(/[^ATGC ]/gi,'')

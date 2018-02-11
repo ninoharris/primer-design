@@ -1,8 +1,9 @@
 import React from 'react'
-import LoginPage from './LoginPage'
+import { LoginPage } from './LoginPage'
 import { shallow } from 'enzyme'
 
 test('Snapshot of LoginPage renders properly', () => {
-  const wrapper = shallow(<LoginPage />)
+  const startLogin = jest.fn()
+  const wrapper = shallow(<LoginPage startLogin={startLogin} />)
   expect(wrapper).toMatchSnapshot()
 })

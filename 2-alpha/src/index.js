@@ -4,6 +4,8 @@ import 'csshake'
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 
+// Firebase
+import { firebase } from './firebase/firebase'
 
 // Redux
 import { Provider } from 'react-redux'
@@ -25,3 +27,11 @@ store.dispatch(fetchExercises()).then(() => {
 })
   
 registerServiceWorker();
+
+firebase.auth().onAuthStateChanged((user) => {
+  if(user) {
+    console.log('log in')
+  } else {
+    console.log('log out')
+  }
+})

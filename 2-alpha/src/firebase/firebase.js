@@ -1,5 +1,6 @@
 import * as firebase from 'firebase'
 
+
 var config = {
   apiKey: "AIzaSyCbwCc9Bdc0QC7OgEx91K_y629J7Txr04c",
   authDomain: "primer-design-dd8e7.firebaseapp.com",
@@ -11,10 +12,14 @@ var config = {
 firebase.initializeApp(config)
 
 const db = firebase.database()
+const emailAuthProvider = new firebase.auth.EmailAuthProvider()
+const googleAuthProvider = new firebase.auth.GoogleAuthProvider()
 
 export {
   db as default,
-  firebase
+  googleAuthProvider,
+  emailAuthProvider,
+  firebase,
 }
 
 // db.ref('expenses')
