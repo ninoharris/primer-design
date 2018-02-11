@@ -33,9 +33,6 @@ export const validate = values => {
 
   // Positions of constructEnd and constructStart
   if (constructStart >= constructEnd) errors.constructEnd = 'Construct end must be after construct start'
-  
-  // Vector start and vector end
-  // TODO: is fusion protein at start? y -> do users need to add their own start codon?. n -> whats the start position.
 
   // helpers
   const helpersArrayErrors = []

@@ -29,7 +29,6 @@ export const complementFromString = function (str) { // Pure
   return str.split('').reduce((prev, curr) => [...prev, outcomes[curr] || ' '], []).join('')
 }
 
-// TODO: see if non ES6 method exists
 export const reverse = function (str) {
   return [...str].reverse().join('')
 }
@@ -38,7 +37,6 @@ export const hund80 = str => complementFromString(reverse(str))
 
 export const getAASeq = function ({ seq, offset = 0, separator = '' }) {
   if (typeof seq !== 'string') throw Error('seq must be a string')
-  // TODO: see if any non ATGC are included, if spacing then remove.
   seq = seq.toUpperCase()
   // if (seq.match(/[^ATGC\b]+/gi)) throw Error('seq must only contain: ATGC (and space)')
   // seq = seq.replace(/\b/, '') // remove spaces

@@ -35,7 +35,7 @@ const Header = ({
           {location.pathname.includes('/tutorials') ?
             <a onClick={() => window.close()} className="btn btn-warning">Close tutorials</a>
            : 
-            <a target="_blank" href="/tutorials" className="btn btn-info mr-2" /* TODO: update with tutorial pages */>
+            <a target="_blank" href="/tutorials" className="btn btn-info mr-2">
               See tutorials
             </a>
           }

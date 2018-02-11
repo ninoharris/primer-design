@@ -58,7 +58,6 @@ export class ExerciseEditor extends Component {
       </div>
     </div>
   )
-  // renderSequence = (props) TODO
   renderCheckbox = ({ input, label, type, meta: { pristine, touched, error, warning }, ...props }) => (
     <div className="editor-checkbox">
       <div>

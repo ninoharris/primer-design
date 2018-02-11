@@ -213,7 +213,7 @@ export const getVectorEvaluations = createSelector(
         if (RG_RE_Sites.find(RESite => UFV.includes(RESite.seq))) EvalFV.failure('HAYSTACK_REVERSE_CONTAINS_FV_SITE')
       } else {
         // check if reversed input contains an RE site, indicate that the wrong direction was supplied
-        if (api.getRestrictionSiteMatches(api.reverse(UFV)).length > 0) EvalFV.failure('FV_MATCHES_WRONG_STRAND') // BUGGY
+        if (api.getRestrictionSiteMatches(api.reverse(UFV)).length > 0) EvalFV.failure('FV_MATCHES_WRONG_STRAND') // BUGGY FIX THIS....
       }
       if (FV.matches && FV.matches.length === 0) EvalFV.failure("NO_MATCH_FV")
       if (FV.matches && FV.matches.length > 0) EvalFV.failure("EXCEED_MATCH_FV")
