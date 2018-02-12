@@ -274,3 +274,7 @@ export const pickTextColor = (bgColor, lightColor = '#FFFFFF', darkColor = '#333
   return (((r * 0.299) + (g * 0.587) + (b * 0.114)) > 186) ?
     darkColor : lightColor;
 }
+
+export const properSpacing = (str = '') => {
+  return str.replace(/\s/g, "\u2001") // this is because some browsers wont start a new line with normal spaces, so we replace all spaces with breaking spaces. (\u00A0)
+}

@@ -19,7 +19,7 @@ const HaystackRestrictionSites = ({
     return (
       <div className={"Restriction-Site-Container sequence " + className} key={site.pos}>
         <div>
-          {_.pad('', site.pos)}
+          {api.properSpacing(_.pad('', site.pos))}
           <span
             className="Restriction-Site"
             onMouseEnter={() => { onHover(i)}} onMouseLeave={() => onHover()}
