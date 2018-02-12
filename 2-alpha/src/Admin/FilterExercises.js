@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { updateExerciseFilter, updateSortBy } from '../actions/admin'
-import { filterTextSelector, sortOrderSelector, sortBySelector} from '../selectors/admin'
+import { filterTextSelector, sortOrderSelector, sortBySelector, showLoggedInExercisesOnly} from '../selectors/admin'
 
 const ExerciseListFilters = (props) => {
   const updateFilter = (e) => {
@@ -14,7 +14,7 @@ const ExerciseListFilters = (props) => {
     <div className="input-group mb-3">
       <div className="input-group-prepend">
         <div className="input-group-text">
-          <input type="checkbox" aria-label="Checkbox for following text input" id="filter-exercises" />
+          <input value={props.showLoggedInExercisesOnly} type="checkbox" aria-label="Show only my exercises" id="filter-exercises" />
           <label htmlFor="filter-exercises"> Show only my exercises</label>
         </div>
       </div>
@@ -33,7 +33,8 @@ const mapStateToProps = (state) => {
   return {
     sortBy: sortBySelector(state),
     sortOrder: sortOrderSelector(state),
-    filterText: filterTextSelector(state)
+    filterText: filterTextSelector(state),
+    showLoggedInExercisesOnly: showLoggedInExercisesOnly(state),
   }
 }
 

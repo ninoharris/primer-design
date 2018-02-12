@@ -24,7 +24,7 @@ exports[`exerciseList should render a table row that tells the user that there a
       <th
         onClick={[Function]}
       >
-        Author ID
+        Author
       </th>
       <th />
     </tr>
@@ -63,7 +63,7 @@ exports[`exerciseList should render exerciseList with list of exercises 1`] = `
       <th
         onClick={[Function]}
       >
-        Author ID
+        Author
       </th>
       <th />
     </tr>
@@ -95,9 +95,7 @@ exports[`exerciseList should render exerciseList with list of exercises 1`] = `
       >
         Thu, 1st Jan 70
       </td>
-      <td>
-        sedm1000
-      </td>
+      <td />
       <td>
         <Link
           replace={false}
@@ -137,9 +135,7 @@ exports[`exerciseList should render exerciseList with list of exercises 1`] = `
       >
         Thu, 1st Jan 70
       </td>
-      <td>
-        some2999
-      </td>
+      <td />
       <td>
         <Link
           replace={false}
@@ -179,9 +175,7 @@ exports[`exerciseList should render exerciseList with list of exercises 1`] = `
       >
         Thu, 1st Jan 70
       </td>
-      <td>
-        sedm4648
-      </td>
+      <td />
       <td>
         <Link
           replace={false}

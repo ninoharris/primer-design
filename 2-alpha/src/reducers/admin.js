@@ -10,6 +10,14 @@ export const adminLoggedIn = (state = false, action = {}) => {
   }
 }
 
+export const showLoggedInExercisesOnly = (state = false, action = {}) => {
+  switch (action.type) {
+  case TYPES.SHOW_LOGGED_IN_AUTHOR_EXERCISES_ONLY:
+    return action.payload
+  default: return state
+  }
+}
+
 export const currentAdminId = (state = '', action = {}) => {
   switch (action.type) {
     case TYPES.LOGGED_IN_ADMIN:

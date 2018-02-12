@@ -80,6 +80,11 @@ export const updateSortBy = (val) => {
   }
 }
 
+export const updateShowOwnExercises = (payload) => ({
+  type: TYPES.SHOW_LOGGED_IN_AUTHOR_EXERCISES_ONLY,
+  payload,
+})
+
 // Notifications
 const notifyDeleted = (id) => (dispatch) => {
   dispatch({

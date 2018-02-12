@@ -9,6 +9,8 @@ import { Provider } from 'react-redux'
 import { fetchExercises } from './actions'
 import configureStore from './configureStore'
 
+import { saveState } from './reducers/localStorage'
+
 import Loading from './components/Loading'
 import App, { history } from './routers/Router'
 
@@ -21,6 +23,10 @@ store.dispatch(fetchExercises()).then(() => {
     <Provider store={store}><App /></Provider>,
     document.getElementById('root')
   )
+})
+
+store.subscribe(() => {
+  saveState(store.getState())
 })
   
 registerServiceWorker();

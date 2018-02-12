@@ -36,6 +36,18 @@ exports[`AdminHeader renders correctly 1`] = `
       >
         Back to home
       </Link>
+      <span
+        className="Author-Name"
+      >
+        administrator
+      </span>
+      <Link
+        className="btn btn-info mr-3"
+        replace={false}
+        to="/admin/my-account"
+      >
+        My Account
+      </Link>
       <button
         className="Logout-Button btn btn-warning mr-3"
         onClick={[Function]}

@@ -7,6 +7,7 @@ export const exercisesByIdSelector = state => state.exercisesById
 export const sortOrderSelector = state => state.sortOrder
 export const sortBySelector = state => state.sortBy
 export const filterTextSelector = state => state.filterText
+export const showLoggedInExercisesOnly = state => state.showLoggedInExercisesOnly
 
 export const getAuthors = state => state.authors
 export const getAuthorsList = createSelector(
