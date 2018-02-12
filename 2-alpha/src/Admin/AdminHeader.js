@@ -1,13 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
-import { startLogout } from '../actions/auth'
+import { startAdminLogout } from '../actions/auth'
 
 
 export const AdminHeader = ({ 
   title, 
   children,
-  startLogout,
+  startAdminLogout,
   location, 
   match, 
   ...rest 
@@ -24,7 +24,7 @@ export const AdminHeader = ({
           <Link to="/admin/create"><button className="btn btn-success mr-3">Add new exercise</button></Link>}
           <button className="btn btn-info mr-3" onClick={() => { }}>View students</button>
           {location.pathname !== '/admin' ? <Link to="/admin" className="btn btn-success Goto-Home">Back to home</Link> : ''}
-          <button className="Logout-Button btn btn-warning mr-3" onClick={startLogout}>Log out</button>
+          <button className="Logout-Button btn btn-warning mr-3" onClick={startAdminLogout}>Log out</button>
         </div>
       </div>
     </div>
@@ -33,7 +33,7 @@ export const AdminHeader = ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    startLogout: () => dispatch(startLogout)
+    startAdminLogout: () => dispatch(startAdminLogout())
   }
 }
 

@@ -1,7 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { startLogin } from '../actions/auth'
+import { startAdminLogin } from '../actions/auth'
+import { withRouter } from 'react-router-dom'
 
 export const LoginPage = ({
   startLogin
@@ -28,9 +29,9 @@ LoginPage.propTypes = {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    startLogin: () => dispatch(startLogin)
+    startLogin: () => dispatch(startAdminLogin)
   }
 }
 
 // export default connect(null, { startLogin })(LoginPage)
-export default connect(null, mapDispatchToProps)(LoginPage)
+export default withRouter(connect(null, mapDispatchToProps)(LoginPage))

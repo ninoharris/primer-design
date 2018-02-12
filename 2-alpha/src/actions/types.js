@@ -32,3 +32,7 @@ export const NOTIFY_DELETED = 'NOTIFY_DELETED'
 // admin filters
 export const FILTER_EXERCISES_BY_TEXT = 'FILTER_EXERCISES_BY_TEXT'
 export const SORT_EXERCISES_BY = 'SORT_EXERCISES_BY'
+
+// authentication
+export const LOGGED_IN_ADMIN = 'LOGGED_IN_ADMIN'
+export const LOGGED_OUT_ADMIN = 'LOGGED_OUT_ADMIN'

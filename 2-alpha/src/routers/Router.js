@@ -1,15 +1,18 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
+import createHistory from 'history/createBrowserHistory'
+import { Router, Route, Switch, Redirect } from 'react-router-dom'
 
 import Game from '../Features/Game'
-import AdminRouter from './admin'
+import AdminRouter from './AdminRouter'
 
 import MultilineWidth from '../components/MultilineWidth' // used throughout admin and user-facing for width of 100 chars.
 import TutorialPage from '../Tutorials/TutorialPage';
 
+export const history = createHistory()
+
 const App = () => {
   return (
-    <Router>
+    <Router history={history}>
       <div className="router">
         <MultilineWidth />
         <Switch>

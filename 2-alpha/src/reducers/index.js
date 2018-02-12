@@ -2,6 +2,7 @@ import { combineReducers } from 'redux'
 import { reducer as formReducer } from 'redux-form'
 import * as game from './game'
 import * as exercises from './exercises'
+import * as admin from './admin'
 import troubleshooter from './troubleshooter'
 import * as TYPES from '../actions/types'
 
@@ -28,6 +29,7 @@ const charMultilineWidth = (state = null, action) => {
 const reducer = combineReducers({
   ...game,
   ...exercises,
+  ...admin,
   charMultilineWidth,
   animatingPreview,
   troubleshooter,
