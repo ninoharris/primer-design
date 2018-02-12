@@ -15,7 +15,7 @@ export const LoginPage = ({
         <div className="row">
           <div className="col-4">
             Log in to admin section
-            <button onClick={startLogin} className="btn btn-primary">Log in</button>
+            <button onClick={startLogin} className="Login-Button btn btn-primary">Log in</button>
           </div>
         </div>
       </div>

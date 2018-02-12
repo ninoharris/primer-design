@@ -12,9 +12,9 @@ test('AdminHeader renders correctly', () => {
 test('AdminHeader calls startLogout function when logout button is clicked', () => {
   const startLogout = jest.fn()
   const wrapper = shallow(<AdminHeader startLogout={startLogout} location={{ pathname: ''}} />)
-  expect(startLogout.mock.calls.length).toBe(0)
+  expect(startLogout).toHaveBeenCalledTimes(0)
   wrapper.find('.Logout-Button').simulate('click')
-  expect(startLogout.mock.calls.length).toBe(1)
+  expect(startLogout).toHaveBeenCalledTimes(1)
 })
 
 describe('AdminHeader home button display', () => {
