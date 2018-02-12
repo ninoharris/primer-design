@@ -1,7 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { updateExerciseFilter, updateSortBy } from '../actions/admin'
+import { updateExerciseFilter, updateSortBy, updateShowOwnExercises } from '../actions/admin'
 import { filterTextSelector, sortOrderSelector, sortBySelector, showLoggedInExercisesOnly} from '../selectors/admin'
+import Toggle from '../components/Toggle'
 
 const ExerciseListFilters = (props) => {
   const updateFilter = (e) => {
@@ -10,12 +11,23 @@ const ExerciseListFilters = (props) => {
   const updateSortBy = (e) => {
     props.updateSortBy(e.target.value)
   }
+  const updateShowLoggedInOnly = (bool) => {
+    props.updateShowOwnExercises(bool)
+  }
   return (
     <div className="input-group mb-3">
       <div className="input-group-prepend">
         <div className="input-group-text">
-          <input value={props.showLoggedInExercisesOnly} type="checkbox" aria-label="Show only my exercises" id="filter-exercises" />
-          <label htmlFor="filter-exercises"> Show only my exercises</label>
+          <Toggle
+            on={showLoggedInExercisesOnly}
+            onToggle={updateShowLoggedInOnly}
+            aria-label="Show only my exercises" id="filter-exercises"
+            className="col-4"
+          >
+            <Toggle.Button />
+            <Toggle.Off>Show only my exercises</Toggle.Off>
+            <Toggle.On>Showing only my exercises</Toggle.On>
+          </Toggle>
         </div>
       </div>
       <input type="text" className="form-control" value={props.filterText} onChange={updateFilter} />
@@ -38,4 +50,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { updateExerciseFilter, updateSortBy })(ExerciseListFilters)
+export default connect(mapStateToProps, { updateExerciseFilter, updateSortBy, updateShowOwnExercises })(ExerciseListFilters)

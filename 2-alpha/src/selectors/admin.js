@@ -28,22 +28,29 @@ export const getFilteredSortedExercises = createSelector(
   exercisesByIdSelector,
   filterTextSelector,
   sortBySelector,
+  showLoggedInExercisesOnly,
   getAuthors,
-  (IDsList, exercisesById, filterText, sortBy, authors) => {
+  getCurrentAuthorUid,
+  (IDsList, exercisesById, filterText, sortBy, loggedInExercisesOnly, authors, getCurrentAuthorUid) => {
     filterText = filterText.toLowerCase()
-
-    const filteredExercises = IDsList
+    let filteredExercises = IDsList
       .map((id) => {
         const exercise = exercisesById[id]
-        console.log(authors)
+        console.log(authors) // TODO: reduce calls to author getting.
         const authorName = authors[exercise.authorId] ? authors[exercise.authorId].name : 'anonymous'
         return {...exercise, id, authorName }
       })
-      .filter((exercise) => {
+
+    if(filterText.length > 0) {
+      filteredExercises = filteredExercises.filter((exercise) => {
         return exercise.questionPart1.toLowerCase().includes(filterText) ||
           exercise.questionPart2.toLowerCase().includes(filterText) ||
           exercise.authorName.toLowerCase().includes(filterText)
       })
+    }
+    if(loggedInExercisesOnly) {
+      filteredExercises = filteredExercises.filter((exercise) => exercise.authorId === getCurrentAuthorUid)
+    }
   
     switch (sortBy) {
       case 'authorId':

@@ -1,7 +1,7 @@
 export const loadState = () => {
   try {
     const serializedState = window.localStorage.getItem('state')
-    return JSON.parse(serializedState)
+    return JSON.parse(serializedState) 
   } catch (e) {
     return undefined
   }
