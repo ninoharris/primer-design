@@ -1,6 +1,6 @@
 import * as TYPES from './types'
 import { history } from '../routers/Router'
-import { firebase, googleAuthProvider, emailAuthProvider } from '../firebase/firebase'
+import db, { firebase, googleAuthProvider, emailAuthProvider } from '../firebase/firebase'
 
 // this is to bring up the login popup provided by firebase authentication, but doesn't yet affect redux state
 export const startAdminLogin = (dispatch) => {

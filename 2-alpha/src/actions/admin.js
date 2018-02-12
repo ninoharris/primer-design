@@ -93,3 +93,34 @@ const notifyDeleted = (id) => (dispatch) => {
     })
   })
 }
+
+
+// Author information
+export const fetchAuthors = () => (dispatch) => {
+  dispatch({
+    type: TYPES.FETCH_AUTHORS_INIT
+  })
+  db.ref('authors').on('value', (snapshot) => {
+    const payload = snapshot.val()
+    dispatch({
+      type: TYPES.FETCH_AUTHORS_SUCCESS,
+      payload,
+    })
+  })
+}
+
+export const updateAdminName = (uid, name) => (dispatch) => {
+  db.ref(`authors/${uid}`).set({
+    name,
+  }).then(() => {
+    dispatch({
+      type: TYPES.UPDATE_AUTHOR_NAME,
+      uid,
+      name,
+    })
+  }).catch((err) => {
+    dispatch({
+      type: TYPES.UPDATE_AUTHOR_NAME_FAIL
+    })
+  })
+}

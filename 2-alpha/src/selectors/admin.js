@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import { createSelector } from 'reselect'
 
 export const exercisesListSelector = state => state.exercisesList
@@ -7,22 +8,33 @@ export const sortOrderSelector = state => state.sortOrder
 export const sortBySelector = state => state.sortBy
 export const filterTextSelector = state => state.filterText
 
+export const getAuthors = state => state.authors
+export const getAuthorsList = createSelector(
+  getAuthors,
+  (authors) => _.flatMap(authors, (val, key) => key)
+)
+export const getAuthorName = (state, props) => state.authors[props.authorId].name
+
 export const getFilteredSortedExercises = createSelector(
   exercisesListSelector,
   exercisesByIdSelector,
   filterTextSelector,
   sortBySelector,
-  (IDsList, exercisesById, filterText, sortBy, helpers) => {
+  getAuthors,
+  (IDsList, exercisesById, filterText, sortBy, authors) => {
     filterText = filterText.toLowerCase()
 
     const filteredExercises = IDsList
-      .map(id => ({ ...exercisesById[id], id }))
-      .filter(({ questionPart1, questionPart2, authorId, helpers }) => {
-        return questionPart1.toLowerCase().includes(filterText) ||
-          questionPart2.toLowerCase().includes(filterText) ||
-          authorId.toLowerCase().includes(filterText)  // ||
-          // if you want to kill yourself, why not try and filter by helpers? loljknahbundat
-          // (Array.isArray(helpers) && helpers.includes(helper => helper.name.toLowerCase().includes(filterText)))
+      .map((id) => {
+        const exercise = exercisesById[id]
+        console.log(authors)
+        const authorName = authors[exercise.authorId] ? authors[exercise.authorId].name : 'anonymous'
+        return {...exercise, id, authorName }
+      })
+      .filter((exercise) => {
+        return exercise.questionPart1.toLowerCase().includes(filterText) ||
+          exercise.questionPart2.toLowerCase().includes(filterText) ||
+          exercise.authorName.toLowerCase().includes(filterText)
       })
   
     switch (sortBy) {

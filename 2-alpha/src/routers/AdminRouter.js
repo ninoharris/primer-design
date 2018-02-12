@@ -3,9 +3,10 @@ import { Route, Switch, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 // Firebase authentication determines redirects
-import { firebase } from '../firebase/firebase'
+import db, { firebase } from '../firebase/firebase'
 import { history } from './Router'
 
+import { fetchAuthors } from '../actions/admin'
 import { adminLogin, startAdminLogout } from '../actions/auth'
 
 // Components
@@ -18,6 +19,7 @@ import AdminCreatePage from '../Admin/AdminCreatePage'
 
 class AdminRouter extends Component {
   componentDidMount() {
+    // check if logged in/logged out, then send off action to notify the redux store.
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.props.adminLogin(user.uid, history.location.pathname)
@@ -25,6 +27,8 @@ class AdminRouter extends Component {
         this.props.startAdminLogout()
       }
     })
+    // Fetch author IDs, name etc.
+    this.props.fetchAuthors()
   }
   render() {
     return (
@@ -48,4 +52,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { adminLogin, startAdminLogout })(AdminRouter)
+export default connect(mapStateToProps, { adminLogin, startAdminLogout, fetchAuthors })(AdminRouter)

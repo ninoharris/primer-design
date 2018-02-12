@@ -19,3 +19,13 @@ export const currentAdminId = (state = '', action = {}) => {
     default: return state;
   }
 }
+
+export const authors = (state = {}, action = {}) => {
+  switch (action.type) {
+    case TYPES.FETCH_AUTHORS_SUCCESS:
+      return action.payload
+    case TYPES.UPDATE_AUTHOR_NAME:
+      return {...state, [action.uid]: action.name }
+    default: return state
+  }
+}

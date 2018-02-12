@@ -76,7 +76,13 @@ exports[`exerciseList should render exerciseList with list of exercises 1`] = `
         <small
           className="ID"
         >
-          one
+          <a
+            href="/play/one"
+            target="_blank"
+          >
+            one
+             - View demo
+          </a>
         </small>
       </td>
       <td
@@ -112,7 +118,13 @@ exports[`exerciseList should render exerciseList with list of exercises 1`] = `
         <small
           className="ID"
         >
-          two
+          <a
+            href="/play/two"
+            target="_blank"
+          >
+            two
+             - View demo
+          </a>
         </small>
       </td>
       <td
@@ -148,7 +160,13 @@ exports[`exerciseList should render exerciseList with list of exercises 1`] = `
         <small
           className="ID"
         >
-          three
+          <a
+            href="/play/three"
+            target="_blank"
+          >
+            three
+             - View demo
+          </a>
         </small>
       </td>
       <td
