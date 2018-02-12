@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 import { startAdminLogout } from '../actions/auth'
 
+import { getCurrentAuthor } from '../selectors/admin'
 
 export const AdminHeader = ({ 
   title, 
@@ -10,6 +11,7 @@ export const AdminHeader = ({
   startAdminLogout,
   location, 
   match, 
+  name = 'administrator',
   ...rest 
 }) => {
   return (
@@ -24,6 +26,8 @@ export const AdminHeader = ({
           <Link to="/admin/create"><button className="btn btn-success mr-3">Add new exercise</button></Link>}
           <button className="btn btn-info mr-3" onClick={() => { }}>View students</button>
           {location.pathname !== '/admin' ? <Link to="/admin" className="btn btn-success Goto-Home">Back to home</Link> : ''}
+          <span className="Author-Name">{name}</span>
+          <Link to="/admin/my-account" className="btn btn-info mr-3">My Account</Link>
           <button className="Logout-Button btn btn-warning mr-3" onClick={startAdminLogout}>Log out</button>
         </div>
       </div>
@@ -31,10 +35,17 @@ export const AdminHeader = ({
   )
 }
 
+const mapStateToProps = (state) => {
+  const author = getCurrentAuthor(state)
+  return {
+    name: author ? author.name : ''
+  } 
+}
+
 const mapDispatchToProps = (dispatch) => {
   return {
-    startAdminLogout: () => dispatch(startAdminLogout())
+    startAdminLogout: () => dispatch(startAdminLogout()),
   }
 }
 
-export default withRouter(connect(null, mapDispatchToProps)(AdminHeader))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AdminHeader))

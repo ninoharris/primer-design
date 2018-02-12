@@ -100,7 +100,16 @@ export const fetchAuthors = () => (dispatch) => {
   dispatch({
     type: TYPES.FETCH_AUTHORS_INIT
   })
+  
   db.ref('authors').on('value', (snapshot) => {
+    const payload = snapshot.val()
+    dispatch({
+      type: TYPES.FETCH_AUTHORS_SUCCESS,
+      payload,
+    })
+  })
+
+  return db.ref('authors').once('value', (snapshot) => {
     const payload = snapshot.val()
     dispatch({
       type: TYPES.FETCH_AUTHORS_SUCCESS,
@@ -110,7 +119,7 @@ export const fetchAuthors = () => (dispatch) => {
 }
 
 export const updateAdminName = (uid, name) => (dispatch) => {
-  db.ref(`authors/${uid}`).set({
+  return db.ref(`authors/${uid}`).set({
     name,
   }).then(() => {
     dispatch({

@@ -13,7 +13,14 @@ export const getAuthorsList = createSelector(
   getAuthors,
   (authors) => _.flatMap(authors, (val, key) => key)
 )
-export const getAuthorName = (state, props) => state.authors[props.authorId].name
+export const getCurrentAuthorUid = state => state.currentAdminId
+export const getCurrentAuthor = createSelector(
+  getCurrentAuthorUid,
+  getAuthors,
+  (uid, authors) => {
+    return authors[uid]
+  }
+)
 
 export const getFilteredSortedExercises = createSelector(
   exercisesListSelector,

@@ -25,7 +25,7 @@ export const authors = (state = {}, action = {}) => {
     case TYPES.FETCH_AUTHORS_SUCCESS:
       return action.payload
     case TYPES.UPDATE_AUTHOR_NAME:
-      return {...state, [action.uid]: action.name }
+      return {...state, [action.uid]: { name: action.name } }
     default: return state
   }
 }

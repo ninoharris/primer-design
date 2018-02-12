@@ -4,7 +4,11 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form';
 
+// selectors and validators
 import validate from './exerciseValidate'
+import { getCurrentAuthorUid } from '../selectors/admin'
+
+// Components
 import VectorPreview from './VectorPreview'
 import HaystackPreview from './HaystackPreview'
 import RestrictionSitesPreview from '../components/RestrictionSitesPreview';
@@ -175,6 +179,8 @@ const selector = formValueSelector('exerciseEditor')
 
 const mapStateToProps = (state, ownProps) => {
   const { data = {}, outerSubmit } = ownProps
+  const authorId = ownProps.authorId || getCurrentAuthorUid(state)
+
   // Setup initial data, such as from editing (not creating) an exercise
   const helpersArray = _.keys(data.helpers).map(pos => ({ ...data.helpers[pos] }))
   const initialValues = {
@@ -199,7 +205,7 @@ const mapStateToProps = (state, ownProps) => {
       }
     }), {})
     const exerciseData = {
-      authorId: 'sedm4648',
+      authorId,
       lastModified: moment().valueOf(),
       createdAt,
       questionPart1: values.questionPart1,
