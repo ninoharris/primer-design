@@ -11,7 +11,7 @@ export const exercisesById = (state = {}, action) => {
   }
 }
 
-export const exercisesList = (state = [], action) => {
+export const exercisesList = (state = [], action) => { // moved to selectors
   switch (action.type) {
     case TYPES.FETCH_EXERCISES_SUCCESS:
       return _.keys(action.payload)

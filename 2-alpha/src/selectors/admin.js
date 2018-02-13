@@ -9,15 +9,18 @@ export const sortBySelector = state => state.sortBy
 export const filterTextSelector = state => state.filterText
 export const showLoggedInExercisesOnly = state => state.showLoggedInExercisesOnly
 
-export const getAuthors = state => state.authors
+export const authorsById = state => state.authorsById
+export const authorsList = state => _.flatMap(state.authorsById, (val, key) => key)
+export const getCurrentAuthorUid = state => state.currentAdminId
+
 export const getAuthorsList = createSelector(
-  getAuthors,
+  authorsById,
   (authors) => _.flatMap(authors, (val, key) => key)
 )
-export const getCurrentAuthorUid = state => state.currentAdminId
+
 export const getCurrentAuthor = createSelector(
   getCurrentAuthorUid,
-  getAuthors,
+  authorsById,
   (uid, authors) => {
     return authors[uid]
   }
@@ -29,7 +32,7 @@ export const getFilteredSortedExercises = createSelector(
   filterTextSelector,
   sortBySelector,
   showLoggedInExercisesOnly,
-  getAuthors,
+  authorsById,
   getCurrentAuthorUid,
   (IDsList, exercisesById, filterText, sortBy, loggedInExercisesOnly, authors, getCurrentAuthorUid) => {
     filterText = filterText.toLowerCase()

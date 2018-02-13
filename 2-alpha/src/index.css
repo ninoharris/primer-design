@@ -631,14 +631,15 @@ body {
 .RESites-list .preview .marker {
   position: absolute;
   left: -1px;
-  border-right: 1px dashed rgba(0,0,0,0.3);
 }
 .RESites-list .preview .cut-center {
   border-top: 1px dashed rgba(0,0,0,0.3);
   position: relative;
   top: 2px; /* Move slightly down to show cut */
 }
-
+.RESites-list .preview .cut-right {
+  border-right: 1px dashed rgba(0,0,0,0.3);
+}
 .Admin-Haystack .multiline .sequence {
   line-height: 8;
 }

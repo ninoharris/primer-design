@@ -35,7 +35,7 @@ export class ExerciseEditor extends Component {
       <label htmlFor={input.name}>{label}</label>
       <div>
         <input {...input} id={input.name} placeholder={label} type={type} {...props} />
-        {!pristine &&
+        {touched &&
           ((error && <span className="editor-error">{error}</span>) ||
             (warning && <span className="editor-warning">{warning}</span>))}
       </div>
@@ -56,7 +56,7 @@ export class ExerciseEditor extends Component {
           type={type} 
           {...props} 
         />
-        {!pristine &&
+        {touched &&
           ((error && <span className="editor-error">{error}</span>) ||
             (warning && <span className="editor-warning">{warning}</span>))}
       </div>

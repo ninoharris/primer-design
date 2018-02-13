@@ -28,6 +28,9 @@ store.dispatch(fetchExercises()).then(() => {
 store.subscribe(() => {
   saveState(store.getState())
 })
+
+// TODO: REMOVE SRSLY
+window.store = store
   
 registerServiceWorker();
 

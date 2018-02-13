@@ -2,6 +2,15 @@ import _ from 'lodash'
 import { codonTable } from './codons'
 export const RESites = require('./restrictionSites').RESites
 
+export const arrToObj = (arr) => arr.reduce((obj, currentID) => ({ ...obj, [currentID]: true }), {})
+
+export const firebasePathExists = (db, firebasePath) => db.ref(firebasePath).once('value').then(snapshot => {
+  return snapshot.exists() ? Promise.resolve() : Promise.reject()
+})
+export const firebasePathAlreadyExists = (db, firebasePath) => db.ref(firebasePath).once('value').then(snapshot => {
+  return snapshot.exists() ? Promise.reject() : Promise.resolve()
+})
+
 export const repeatChar = function (count, ch) {
   if (!ch || ch.length === 0) ch = " " // Default repeated char is space
   var txt = "";
