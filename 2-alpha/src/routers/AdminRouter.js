@@ -20,6 +20,8 @@ import AdminHomePage from '../Admin/AdminHomePage'
 import AdminEditPage from '../Admin/AdminEditPage'
 import AdminCreatePage from '../Admin/AdminCreatePage'
 import MyAccountPage from '../Admin/MyAccountPage'
+import AdminCohortsPage from '../Admin/AdminCohortsPage'
+import AdminCohortPage from '../Admin/AdminCohortPage'
 
 
 class AdminRouter extends Component {
@@ -59,6 +61,8 @@ class AdminRouter extends Component {
         <Route exact path="/admin/create" component={AdminCreatePage} />
         <Route exact path="/admin/edit/:id" component={AdminEditPage} />
         <Route exact path="/admin/dashboard" component={AdminHomePage} />
+        <Route exact path="/admin/cohorts" component={AdminCohortsPage} />
+        <Route exact path="/admin/cohorts/view/:id" component={AdminCohortPage} />
         <Route path="/admin/my-account" component={MyAccountPage} />
       </Switch>
     )

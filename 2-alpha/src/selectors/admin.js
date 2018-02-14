@@ -12,6 +12,10 @@ export const showLoggedInExercisesOnly = state => state.showLoggedInExercisesOnl
 export const authorsById = state => state.authorsById
 export const authorsList = state => _.flatMap(state.authorsById, (val, key) => key)
 export const getCurrentAuthorUid = state => state.currentAdminId
+export const getAuthor = (state, props) => state.authorsById[props.authorID]
+
+export const getCohorts = state => state.cohorts
+export const getCohort = (state, props) => state.cohorts[props.cohortID]
 
 export const getAuthorsList = createSelector(
   authorsById,

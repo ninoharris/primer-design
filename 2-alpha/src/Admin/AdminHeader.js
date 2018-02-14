@@ -24,7 +24,7 @@ export const AdminHeader = ({
           {children}
           {location.pathname !== '/admin/create' && !location.pathname.includes('/admin/edit') && 
           <Link to="/admin/create"><button className="btn btn-success mr-3">Add new exercise</button></Link>}
-          <button className="btn btn-info mr-3" onClick={() => { }}>View students</button>
+          <Link to="/admin/cohorts" className="btn btn-info mr-3">View cohorts</Link>
           {location.pathname !== '/admin' ? <Link to="/admin" className="btn btn-success Goto-Home">Back to home</Link> : ''}
           <span className="Author-Name">{name}</span>
           <Link to="/admin/my-account" className="btn btn-info mr-3">My Account</Link>
@@ -38,7 +38,7 @@ export const AdminHeader = ({
 const mapStateToProps = (state) => {
   const author = getCurrentAuthor(state)
   return {
-    name: author ? author.name : ''
+    name: author ? author.fullName : ''
   } 
 }
 
