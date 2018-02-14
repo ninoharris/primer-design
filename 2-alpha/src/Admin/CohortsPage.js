@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
+import AdminHeader from './AdminHeader'
+
 class CohortsPage extends Component {
   render() {
     return (
