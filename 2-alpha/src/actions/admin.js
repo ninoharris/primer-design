@@ -142,7 +142,11 @@ export const fetchCohorts = () => (dispatch) => {
   dispatch({ type: TYPES.FETCH_COHORTS_INIT })
   
   return db.ref('cohorts').once('value', (snapshot) => {
-    const payload = snapshot.val()
+    const payload = {}
+    snapshot.forEach((childSnapshot) => {
+      const { studentIDs, exerciseIDs, ...rest } = childSnapshot.val()
+      payload[childSnapshot.key] = {...rest, studentIDs: _.flatMap(studentIDs, (v, key) => key), exerciseIDs: _.flatMap(exerciseIDs, (v, key) => key)}
+    })
     dispatch({
       type: TYPES.FETCH_COHORTS_SUCCESS,
       payload,

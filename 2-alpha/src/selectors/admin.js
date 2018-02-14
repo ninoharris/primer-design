@@ -15,8 +15,15 @@ export const getCurrentAuthorUid = state => state.currentAdminId
 export const getAuthor = (state, props) => state.authorsById[props.authorID]
 export const getAuthorName = createSelector(getAuthor, (author) => author.fullName ? author.fullName : 'anonymous')
 
-export const getCohortsArray = state => _.flatMap(state.cohorts, (val, cohortID) => ({ ...val, cohortID }))
 export const getCohort = (state, props) => state.cohorts[props.cohortID]
+export const basicCohortsArray = state => _.flatMap(state.cohorts, (val, cohortID) => ({ ...val, cohortID }))
+
+
+export const getCohorts = createSelector(
+  basicCohortsArray,
+  authorsById,
+  (cohorts, authors) => cohorts.map(cohort => ({...cohort, authorFullName: authors[cohort.authorID].fullName }))
+)
 
 export const getAuthorsList = createSelector(
   authorsById,

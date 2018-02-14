@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-import { getCohortsArray } from '../selectors/admin'
+import { getCohorts } from '../selectors/admin'
 import { fetchCohorts } from '../actions/admin'
 
 import CohortsListItem from './CohortsListItem'
@@ -15,10 +15,12 @@ class CohortsList extends Component {
     }
   }
   render() {
+    console.log('CohortsList', this.props)
     return (
       <ul className="Cohorts-List">
         { this.state.ready ?
-          this.props.cohorts.map(cohort => <CohortsListItem cohort={cohort} />) :
+          this.props.cohorts.map(cohort => <CohortsListItem key={cohort.cohortID} cohort={cohort} />) :
+          // this.props.cohorts.map(cohort => cohort.cohortID) :
           <li>Loading...</li>
         }
       </ul>
@@ -27,16 +29,11 @@ class CohortsList extends Component {
 }
 
 CohortsList.propTypes = {
-  cohorts: PropTypes.arrayOf(PropTypes.objectOf({
-    cohortID: PropTypes.string.isRequired,
-    authorID: PropTypes.string.isRequired,
-    studentIDs: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-    exerciseIDs: PropTypes.arrayOf(PropTypes.string).isRequired,
-  })).isRequired
+  cohorts: PropTypes.array.isRequired
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  cohorts: getCohortsArray
+  cohorts: getCohorts(state)
 })
 
 export default connect(mapStateToProps, { fetchCohorts })(CohortsList)
