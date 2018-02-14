@@ -194,10 +194,13 @@ export const addCohort = ({ exerciseIDs = [], students = [], cohortName = '', au
 
   // check every student's ID doesnt exist before continuing, then return studentIDs object in promise for 'cohorts' path
   const studentsPromise = Promise.all(students.map(({studentID}) => firebasePathAlreadyExists(db, `students/${studentID}`)))
-  .then(() => students.map( ({ studentId }) => studentId ))
+  .then(() => students.map( ({ studentID }) => studentID ))
+  .then((data) => console.log(data) || data)
   .then((studentIDs) => arrToObj(studentIDs)) // { sedm4648: true, some5000: true }
+  .then((data) => console.log(data) || data)
   .catch((err) => {
     dispatch({ type: TYPES.STUDENT_ALREADY_EXISTS, payload: err, })
+    return Promise.reject(err)
   })
   
   // check every exercise exists before continuing
@@ -206,6 +209,7 @@ export const addCohort = ({ exerciseIDs = [], students = [], cohortName = '', au
   .then(() => arrToObj(exerciseIDs))
   .catch((err) => {
     dispatch({ type: TYPES.EXERCISE_DOESNT_EXIST, payload: err, })
+    return Promise.reject(err)
   })
 
   // author exists
@@ -214,17 +218,24 @@ export const addCohort = ({ exerciseIDs = [], students = [], cohortName = '', au
   // all good
   Promise.all([studentsPromise, exercisesPromise, authorPromise]).then((data) => {
     const [studentIDs, exerciseIDs] = data
+    console.log('some stuff', studentIDs, exerciseIDs)
     // add cohort
     db.ref('cohorts').push({ exerciseIDs, studentIDs, cohortName, authorID }).then((snapshot) => {
       const cohortID = snapshot.key
       dispatch({
-        type: TYPES.ADD_COHORT_STUDENT_SUCCESS,
+        type: TYPES.ADD_COHORT_SUCCESS,
         cohortID,
       })
       // add students
-      db.ref('students').update({
-        ...students.reduce((obj, { studentID, ...rest }) => ({ ...obj, [studentID]: { ...rest, cohortID } }), {})
-      })
+      const studentsObj = students.reduce((obj, { studentID, ...rest }) => ({ ...obj, [studentID]: { ...rest, cohortID } }), {})
+      console.log(studentsObj)
+      db.ref('students').update(studentsObj)
+    })
+  })
+  .catch(err => {
+    dispatch({
+      type: TYPES.ADD_COHORT_FAIL,
+      err,
     })
   })
 }
@@ -248,7 +259,7 @@ export const updateCohortName = (id, name) => (dispatch) => {
   })
   db.ref(`cohorts/${id}`).update({ cohortName: name })
   .then(() => dispatch({ 
-    type: TYPES.UPDATE_COHORT_NAME_INIT,
+    type: TYPES.UPDATE_COHORT_NAME_SUCCESS,
     id, 
     name,
   }))
@@ -277,3 +288,4 @@ export const addStudent = ({studentID, ...rest}) => (dispatch) => {
 
 window.addCohort = addCohort
 window.removeCohort = removeCohort
+window.addStudent = addStudent

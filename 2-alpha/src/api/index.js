@@ -5,10 +5,10 @@ export const RESites = require('./restrictionSites').RESites
 export const arrToObj = (arr) => arr.reduce((obj, currentID) => ({ ...obj, [currentID]: true }), {})
 
 export const firebasePathExists = (db, firebasePath) => db.ref(firebasePath).once('value').then(snapshot => {
-  return snapshot.exists() ? Promise.resolve() : Promise.reject()
+  return snapshot.exists() ? Promise.resolve() : Promise.reject('`firebasePath of ${firebasePath} does not exist!`')
 })
 export const firebasePathAlreadyExists = (db, firebasePath) => db.ref(firebasePath).once('value').then(snapshot => {
-  return snapshot.exists() ? Promise.reject() : Promise.resolve()
+  return snapshot.exists() ? Promise.reject(`firebasePath of ${firebasePath} already exists!`) : Promise.resolve()
 })
 
 export const repeatChar = function (count, ch) {

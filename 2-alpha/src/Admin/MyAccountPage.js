@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
 import { getCurrentAuthorUid } from '../selectors/admin'
-import { updateAdminName } from '../actions/admin'
+import { updateAuthorName } from '../actions/admin'
 
 import AdminHeader from './AdminHeader'
 
@@ -16,7 +16,7 @@ export class MyAccountPage extends Component {
   }
   onSubmit = (e) => {
     e.preventDefault()
-    this.props.updateAdminName(this.props.uid, this.state.name)
+    this.props.updateAuthorName(this.props.uid, this.state.name)
     this.props.history.push('/admin')
   }
   onNameChange = (e) => {
@@ -50,4 +50,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default withRouter(connect(mapStateToProps, { updateAdminName })(MyAccountPage))
+export default withRouter(connect(mapStateToProps, { updateAuthorName })(MyAccountPage))
