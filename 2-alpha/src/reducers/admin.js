@@ -29,22 +29,22 @@ export const currentAdminId = (state = '', action = {}) => {
   }
 }
 
-// export const authorsById = (state = {}, action = {}) => {
-//   switch (action.type) {
-//     case TYPES.FETCH_AUTHORS_SUCCESS:
-//       return action.payload
-//     case TYPES.UPDATE_AUTHOR_NAME:
-//       return {...state, [action.uid]: { name: action.name } }
-//     default: return state
-//   }
-// }
+export const authorsById = (state = {}, action = {}) => {
+  switch (action.type) {
+    case TYPES.FETCH_AUTHORS_SUCCESS:
+      return action.payload
+    case TYPES.UPDATE_AUTHOR_NAME:
+      return {...state, [action.uid]: { fullName: action.fullName } }
+    default: return state
+  }
+}
 
 export const authorsList = (state = [], action = {}) => {
   switch (action.type) {
     case TYPES.FETCH_AUTHORS_SUCCESS:
       return flatMap(action.payload, (val, key) => key)
     case TYPES.UPDATE_AUTHOR_NAME:
-      return { ...state, [action.uid]: { name: action.name } }
+      return { ...state, [action.uid]: { fullName: action.fullName } }
     default: return state
   }
 }

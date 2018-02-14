@@ -2,7 +2,7 @@ import React, { Component} from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
-import { getCurrentAuthorUid } from '../selectors/admin'
+import { getCurrentAuthorUid, getCurrentAuthor } from '../selectors/admin'
 import { updateAuthorName } from '../actions/admin'
 
 import AdminHeader from './AdminHeader'
@@ -43,10 +43,10 @@ export class MyAccountPage extends Component {
 
 const mapStateToProps = (state) => {
   const uid = getCurrentAuthorUid(state)
-  const author = state.authors[uid]
+  const author = getCurrentAuthor(state)
   return {
     uid,
-    name: (author && author.name) ? author.name : ''
+    name: (author && author.fullName) ? author.fullName : ''
   }
 }
 

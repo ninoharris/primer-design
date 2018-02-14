@@ -123,14 +123,13 @@ export const fetchAuthors = () => (dispatch) => {
   })
 }
 
-export const updateAuthorName = (uid, name) => (dispatch) => {
-  return db.ref(`authors/${uid}`).set({
-    name,
-  }).then(() => {
+export const updateAuthorName = (uid, fullName) => (dispatch) => {
+  return db.ref(`authors/${uid}`).update({ fullName })
+  .then(() => {
     dispatch({
       type: TYPES.UPDATE_AUTHOR_NAME,
       uid,
-      name,
+      fullName,
     })
   }).catch((err) => {
     dispatch({

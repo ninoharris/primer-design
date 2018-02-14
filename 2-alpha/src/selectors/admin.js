@@ -40,7 +40,7 @@ export const getFilteredSortedExercises = createSelector(
       .map((id) => {
         const exercise = exercisesById[id]
         console.log(authors) // TODO: reduce calls to author getting.
-        const authorName = authors[exercise.authorId] ? authors[exercise.authorId].name : 'anonymous'
+        const authorName = authors[exercise.authorId] ? authors[exercise.authorId].fullName : 'anonymous'
         return {...exercise, id, authorName }
       })
 

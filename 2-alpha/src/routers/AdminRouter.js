@@ -7,11 +7,12 @@ import db, { firebase } from '../firebase/firebase'
 import { history } from './Router'
 
 // actions
+import { firebasePathExists } from '../api'
 import { fetchAuthors } from '../actions/admin'
 import { adminLogin, startAdminLogout } from '../actions/auth'
 
 // selectors 
-import { getCurrentAuthor } from '../selectors/admin'
+import { getCurrentAuthorUid } from '../selectors/admin'
 
 // Components
 import LoginPage from '../Admin/LoginPage'
@@ -25,9 +26,6 @@ class AdminRouter extends Component {
   state = {
     dbAuthorsReady: false,
   }
-  adminExistsInDatabase = () => {
-    return !!this.props.author
-  }
   componentDidMount() {
     // check if logged in/logged out, then send off action to notify the redux store.
     firebase.auth().onAuthStateChanged((user) => {
@@ -36,12 +34,11 @@ class AdminRouter extends Component {
         this.props.adminLogin(user.uid, history.location.pathname) 
 
         // Fetch author IDs, students, etc.
-        this.props.fetchAuthors().then(() => {
-          this.setState({ dbAuthorsReady: true })
+        this.props.fetchAuthors()
+          .then(() => this.setState({ dbAuthorsReady: true }))
           // redirect if user's record isnt in db yet. this is required for uploading exercises etc.
-          if (!this.adminExistsInDatabase()) history.push('/admin/my-account')
-        })
-        
+          .then(() => firebasePathExists(db, `authors/${user.uid}/fullName`)).catch(() => history.push('/admin/my-account'))
+          
       } else {
         this.props.startAdminLogout() // tell the store the user is logged out
       }
@@ -53,7 +50,7 @@ class AdminRouter extends Component {
       return <Route path="/admin" component={LoginPage} />
     }
       
-    if(!this.state.dbAuthorsReady) return null
+    if(!this.state.dbAuthorsReady) return null // show nothing until we've got data from the server. TODO: replace with loading screeeeeeen!
 
     return (
       <Switch>
@@ -71,7 +68,6 @@ class AdminRouter extends Component {
 const mapStateToProps = (state) => {
   return {
     adminLoggedIn: state.adminLoggedIn,
-    author: getCurrentAuthor(state)
   }
 }
 
