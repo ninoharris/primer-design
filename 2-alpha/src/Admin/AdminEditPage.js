@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { getExercise } from '../selectors' 
-import { updateExercise, startRemoveExercise } from '../actions/admin'
+import { updateExercise, removeExercise } from '../actions/admin'
 
 import AdminHeader from './AdminHeader'
 import ExerciseEditor from './ExerciseEditor'
@@ -17,7 +17,7 @@ class AdminEditPage extends Component {
   removeExercise = () => {
     const carryOn = window.confirm('Are you sure? This cant be undone')
     if(carryOn) {
-      this.props.startRemoveExercise(this.props.id).then(() => {
+      this.props.removeExercise(this.props.id).then(() => {
         this.props.history.push('/admin')
       })
     }
@@ -45,4 +45,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-export default withRouter(connect(mapStateToProps, { updateExercise, startRemoveExercise })(AdminEditPage))
+export default withRouter(connect(mapStateToProps, { updateExercise, removeExercise })(AdminEditPage))

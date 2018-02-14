@@ -47,9 +47,7 @@ export const updateExercise = (id, exerciseData) => (dispatch) => {
   })
 }
 
-// export const removeExercise = (id) => 
-
-export const startRemoveExercise = (id) => (dispatch) => {
+export const removeExercise = (id) => (dispatch) => {
   dispatch({
     type: TYPES.DELETE_EXERCISE_INIT,
     id
@@ -137,41 +135,6 @@ export const updateAuthorName = (uid, name) => (dispatch) => {
   }).catch((err) => {
     dispatch({
       type: TYPES.UPDATE_AUTHOR_NAME_FAIL
-    })
-  })
-}
-
-export const fetchStudent = (id) => (dispatch) => { // used for /play
-  dispatch({ type: TYPES.FETCH_STUDENT_INIT })
-
-
-}
-
-export const fetchStudents = () => (dispatch) => {
-  dispatch({
-    type: TYPES.FETCH_STUDENTS_INIT
-  })
-
-  return db.ref('students').once('value', (snapshot) => {
-    const payload = snapshot.val()
-    dispatch({
-      type: TYPES.FETCH_STUDENTS_SUCCESS,
-      payload,
-    })
-  })
-}
-
-export const updateStudent = ({ id, fullName }) => (dispatch) => {
-  dispatch({
-    type: TYPES.ADD_STUDENT_INIT
-  })
-  // check student doesnt exist
-  return db.ref(`student/${id}`).set({
-    fullName,
-  }).then(() => {
-    dispatch({
-      type: TYPES.ADD_STUDENT_SUCCESS,
-      id,
     })
   })
 }
@@ -265,6 +228,26 @@ export const updateCohortName = (id, name) => (dispatch) => {
   }))
 }
 
+export const fetchStudent = (id) => (dispatch) => { // used for /play
+  dispatch({ type: TYPES.FETCH_STUDENT_INIT })
+
+
+}
+
+export const fetchStudents = () => (dispatch) => {
+  dispatch({
+    type: TYPES.FETCH_STUDENTS_INIT
+  })
+
+  return db.ref('students').once('value', (snapshot) => {
+    const payload = snapshot.val()
+    dispatch({
+      type: TYPES.FETCH_STUDENTS_SUCCESS,
+      payload,
+    })
+  })
+}
+
 export const addStudent = ({studentID, ...rest}) => (dispatch) => {
   const { cohortID, authorID, fullName } = rest
   dispatch({
@@ -274,16 +257,68 @@ export const addStudent = ({studentID, ...rest}) => (dispatch) => {
   })
   // check if student doesn't already exist
   return firebasePathAlreadyExists(db, `students/${studentID}`)
-  .then(() => db.ref('students').update({ [studentID]: { cohortID, authorID, fullName} })) // add student to db.
+  .then(() => firebasePathExists(db, `cohorts/${cohortID}`)) // a student must be added to a cohort
+  .then(() => db.ref('students').update({ [studentID]: { cohortID, authorID, fullName} })) // add student to students records
+  .then(() => db.ref(`cohorts/${cohortID}/studentIDs`).update({ [studentID]: true })) // add student to its particular cohort record
   .then(() => dispatch({
     type: TYPES.ADD_STUDENT_SUCCESS,
     studentID,
   }))
-  .catch(err => dispatch({
-    type: TYPES.ADD_STUDENT_FAIL,
-    studentID,
-    ...rest,
+  .catch(err => {
+    dispatch({
+      type: TYPES.ADD_STUDENT_FAIL,
+      studentID,
+      err,
+    })
+    return Promise.reject(err)
+  })
+}
+
+export const updateStudent = ({ id, fullName }) => (dispatch) => {
+  dispatch({
+    type: TYPES.ADD_STUDENT_INIT
+  })
+  // check student doesnt exist
+  return firebasePathExists(`students/${id}`)
+  .then(() => 
+    db.ref(`students/${id}`).update({
+      fullName,
+    }))
+  .then(() => {
+    dispatch({
+      type: TYPES.ADD_STUDENT_SUCCESS,
+      id,
+    })
+  })
+  .catch(err => {
+    dispatch({ 
+      type: TYPES.ADD_STUDENT_FAIL,
+      id,
+      err,
+    })
+    return Promise.reject(err)
+  })
+}
+
+export const removeStudent = (id) => (dispatch) => {
+  dispatch({
+    type: TYPES.REMOVE_STUDENT_INIT,
+    id
+  })
+  return db.ref(`students/${id}`).once('value')
+  .then((snapshot) =>  snapshot.val().cohortID) // get associated cohort and delete the students ID from that cohorts record
+  .then((cohortID) => db.ref(`cohorts/${cohortID}/studentIDs/${id}`).set(null))
+  .then(() => db.ref(`students/${id}`).set(null))
+  .then(() => dispatch({
+    type: TYPES.REMOVE_STUDENT_SUCCESS,
   }))
+  .catch(err => {
+    dispatch({
+      type: TYPES.REMOVE_STUDENT_FAIL,
+      err,
+    })
+    return Promise.reject(err)
+  })
 }
 
 window.addCohort = addCohort

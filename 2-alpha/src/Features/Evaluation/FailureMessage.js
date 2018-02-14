@@ -17,15 +17,15 @@ export class FailureMessage extends Component {
   }
   render() {
     const { ID, context, inputs } = this.props
+    const { showMessage } = this.state
     const details = messageIDsToDetails[ID](context)
-    const style = this.state.showMessage ? {} : { filter: 'blur(6px)' }
     const inputsFullName = inputs.map((input) => this.inputs[input])
     return (
       <li
-        className='evaluation-item failure'
+        className={`evaluation-item failure ${showMessage ? '' : 'blur-message'}`}
         onClick={this.showMessage}
       >
-        <div style={style}>
+        <div className="actual-error">
           <strong>{details.title}</strong>
           {details.additional ? <small className="additional"><hr />{details.additional}</small> : ''}
           {details.url ? <a target="_blank" className="btn btn-outline-light btn-sm mt-2" href={`/tutorials${details.url}`}>See related tutorial </a> : ''}

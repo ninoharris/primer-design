@@ -427,7 +427,7 @@ body {
   border-bottom-right-radius: 4px; 
 }
 .evaluation-item {
-  // transition: all 0.2s ease-in-out;
+  /* transition: all 0.2s ease-in-out; */
   position: relative;
   background: lightgray;
   padding: 10px;
@@ -436,6 +436,13 @@ body {
   position: absolute;
   z-index: 5;
   top: 10px;
+}
+.evaluation-item.failure.blur-message {
+  background: lightgrey;
+}
+.evaluation-item.blur-message .actual-error {
+  filter: blur(6px);
+  color: darkslategray;
 }
 .evaluation-item:nth-of-type(2) {
   opacity: 0.8;
