@@ -4,6 +4,8 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import { getAllEvaluations } from '../../selectors/evaluations'
 import { messageIDsToDetails } from '../../selectors/messages'
 
+import FailureMessage from './FailureMessage'
+
 // const Fade = ({ children, ...props}) => (
 //   <CSSTransition timeout={1000} {...props} classNames={{
 //     enter: 'fade',
@@ -36,16 +38,15 @@ class Evaluation extends Component {
     )
   }
   render() {
-    console.log('rerender of evaluation:', this.props.messageIDsList)
     const allMessages = this.props.messageIDsList
     if(!allMessages) return null
     
-    const successMessages = allMessages.filter(msg => msg.success)
+    const successMessages = allMessages.filter(msg => msg.success).reverse().slice(0, 3)
     const failureMessage = allMessages.find(msg => !msg.success)
     return (
       <ul className="evaluation-list">
-        {failureMessage ? this.displayMessage(failureMessage, 0) : ''}
-        {successMessages.reverse().slice(0, 3).map((msg, i) => this.displayMessage(msg, i+1))}
+        {failureMessage ? <FailureMessage {...failureMessage} />: ''}
+        {successMessages.map((msg, i) => this.displayMessage(msg, i+1))}
       </ul>
     )
   }

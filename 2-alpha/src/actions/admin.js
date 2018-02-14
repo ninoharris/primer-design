@@ -140,10 +140,10 @@ export const updateAdminName = (uid, name) => (dispatch) => {
   })
 }
 
-export const fetchStudent = (id) => (dispatch) => {
+export const fetchStudent = (id) => (dispatch) => { // used for /play
   dispatch({ type: TYPES.FETCH_STUDENT_INIT })
 
-  
+
 }
 
 export const fetchStudents = () => (dispatch) => {

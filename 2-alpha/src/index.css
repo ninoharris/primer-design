@@ -432,6 +432,11 @@ body {
   background: lightgray;
   padding: 10px;
 }
+.evaluation-item .error-overlay {
+  position: absolute;
+  z-index: 5;
+  top: 10px;
+}
 .evaluation-item:nth-of-type(2) {
   opacity: 0.8;
 }
