@@ -10,12 +10,12 @@ export class GameWelcome extends Component {
   }
   submit = (e) => {
     e.preventDefault()
-    this.props.checkStudentExists(this.state.username).then(() => {
-      this.setState({ error: null})
-      this.props.updateCurrentStudentID(this.state.username)
-    }).catch((error) => {
-      this.setState({ error })
-    })
+    // this.props.checkStudentExists(this.state.username).then(({ id }) => {
+    //   this.setState({ error: null})
+    //   this.props.updateCurrentStudentID(this.state.id)
+    // }).catch((error) => {
+    //   this.setState({ error })
+    // })
   }
   render() {
     const { error, username } = this.state
@@ -26,7 +26,7 @@ export class GameWelcome extends Component {
         <form onSubmit={this.submit}>
           <input value={username} onChange={this.updateInputUsername} />
           {error ? 
-            <div class="alert alert-danger" role="alert">Sorry that username doesnt exist!</div>
+            <div class="alert alert-danger" role="alert">{error}</div>
             : ''
           }
           <button type="submit">Start!</button>

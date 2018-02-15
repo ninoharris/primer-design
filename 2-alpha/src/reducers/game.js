@@ -7,6 +7,14 @@ export const game = (state = {}, action) => {
   }
 }
 
+export const currentStudentID = (state = null, action) => {
+  switch (action.type) {
+  case TYPES.UPDATE_CURRENT_STUDENT_ID:
+    return action.id
+  default: return state
+  }
+}
+
 export const fetchingExercises = (state = true, action) => {
   switch (action.type) {
     case TYPES.FETCH_EXERCISES_INIT:

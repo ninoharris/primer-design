@@ -17,6 +17,18 @@ export const fetchStudent = (id) => (dispatch) => { // used for /play
   })
 }
 
+export const checkStudentExists = (id) => (dispatch) => {
+  dispatch({ type: TYPES.CHECK_STUDENT_EXISTS, id })
+
+  return db.ref(`students/${id}`).once('value').then((snapshot) => {
+    return snapshot.exists() ? Promise.resolve({ id, cohortID: snapshot.val().cohortID }) : Promise.reject('Student does not exist!')
+  })
+}
+
+export const updateCurrentStudentID = (id) => (dispatch) => {
+  dispatch({ type: TYPES.UPDATE_CURRENT_STUDENT_ID, id })
+}
+
 export const fetchAllExercises = (alwaysFetch = false) => (dispatch, getState) => {
   if (!alwaysFetch) {
     if (getState().exercisesList.length > 0) {
@@ -47,6 +59,22 @@ export const fetchExercises = (exerciseIDs = {}) => (dispatch) => {
       payload
     })
     return Promise.resolve()
+  })
+}
+
+export const fetchCohortExerciseIDs = (cohortID) => (dispatch) => {
+  dispatch({ type: TYPES.FETCH_COHORT_STUDENT_INTERFACE_INIT, cohortID })
+
+  return db.ref(`cohorts/${cohortID}`).once('value')
+    .then((snapshot) => {
+      const cohortName = snapshot.child('cohortName')
+      const exerciseIDs = snapshot.child('exerciseIDs')
+      const payload = { exerciseIDs, cohortName }
+      dispatch({
+        type: TYPES.FETCH_COHORT_STUDENT_INTERFACE_SUCCESS,
+        payload,
+      })
+      return exerciseIDs
   })
 }
 

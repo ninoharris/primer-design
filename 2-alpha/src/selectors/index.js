@@ -14,6 +14,8 @@ export const currentExerciseSelector = state => state.currentExercise
 export const getMultilineWidth = state => state.charMultilineWidth
 export const getExercise = (state, { id }) => state.exercisesById[id]
 
+export const getCurrentStudentID = state => state.currentStudentID
+
 const uFV = state => state.formInputs.FV
 const uFG = state => state.formInputs.FG
 const uRV = state => state.formInputs.RV
