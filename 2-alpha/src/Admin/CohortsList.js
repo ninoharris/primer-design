@@ -18,7 +18,6 @@ class CohortsList extends Component {
       <ul className="Cohorts-List list-group">
         { ( cohorts.length || this.state.ready ) ?
           cohorts.map(cohort => <CohortsListItem key={cohort.cohortID} {...cohort} />) :
-          // this.props.cohorts.map(cohort => cohort.cohortID) :
           <li>Loading...</li>
         }
       </ul>

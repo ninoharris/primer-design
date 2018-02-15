@@ -20,10 +20,18 @@ export const basicCohortsArray = state => _.flatMap(state.cohorts, (val, cohortI
 
 export const getStudent = (state, props) => state.studentsById[props.studentID]
 
-export const getExercises = (state, props) => createSelector(
-  exercisesListSelector,
-  (exercises) => props.exerciseIDs.map(exerciseID => exercises[exerciseID])
-)
+// export const getExercises = (exerciseIDs) => createSelector(
+//   exercisesListSelector,
+//   (exercises) => exerciseIDs.map(exerciseID => exercises[exerciseID])
+// )
+
+export const getExercises = (exerciseIDs) => (state) => exerciseIDs.map(id => { 
+  const exercise = state.exercisesById[id]
+  return {
+    ...exercise, authorName: state.authorsById[exercise.authorId].fullName
+  }
+})
+
 export const getStudents = (state, props) => state.studentsList
 
 

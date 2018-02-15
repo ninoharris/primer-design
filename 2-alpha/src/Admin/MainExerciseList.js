@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import { updateSortBy } from '../actions/admin'
 import { getFilteredSortedExercises } from '../selectors/admin'
-import ExerciseList from './ExerciseList'
+import ExercisesList from './ExercisesList'
 
 const mapStateToProps = (state) => ({
   exercisesList: getFilteredSortedExercises(state)
@@ -14,4 +14,4 @@ export default connect(mapStateToProps, dispatch => ({
   sortByCreatedAt: () => dispatch(updateSortBy('createdAt')),
   sortByLastModified: () => dispatch(updateSortBy('lastModified')),
   sortByAuthor: () => dispatch(updateSortBy('authorName')),
-}))(ExerciseList)
+}))(ExercisesList)

@@ -6,7 +6,7 @@ import registerServiceWorker from './registerServiceWorker';
 
 // Redux
 import { Provider } from 'react-redux'
-import { fetchExercises } from './actions'
+import { fetchAllExercises } from './actions'
 import configureStore from './configureStore'
 
 import { saveState } from './reducers/localStorage'
@@ -18,7 +18,7 @@ export const store = configureStore()
 
 ReactDOM.render(<Loading />, document.getElementById('root'))
 
-store.dispatch(fetchExercises()).then(() => {
+store.dispatch(fetchAllExercises()).then(() => {
   ReactDOM.render(
     <Provider store={store}><App /></Provider>,
     document.getElementById('root')

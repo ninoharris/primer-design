@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 // selectors and actions
 import { fetchCohort } from '../actions/admin'
 import { getCohort } from '../selectors/admin'
-import { getCohortStudents } from '../selectors/admin'
 
 // components
 import AdminHeader from './AdminHeader'
@@ -20,12 +19,13 @@ export class CohortPage extends Component {
   render() {
     if(!this.state.ready) return <div>Loading...</div>
     const { cohort } = this.props
+    console.log(cohort)
     return (
       <div className="container-fluid">
         <AdminHeader title={`Viewing cohort: ${cohort.cohortName}`} />
         <div className="row">
           <div className="col-12">
-            {/* <CohortExerciseList cohortID={cohort.cohortID} /> */}
+            <CohortExerciseList exerciseIDs={cohort.exerciseIDs} />
           </div>
         </div>
       </div>

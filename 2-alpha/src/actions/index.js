@@ -1,14 +1,15 @@
+import _ from 'lodash'
 import db from '../firebase/firebase'
 import * as TYPES from './types'
 import { getIsSuccessful } from '../selectors/evaluations'
 export * from './troubleshooter'
 
 
-export const fetchExercises = (alwaysFetch = false) => (dispatch, getState) => {
+export const fetchAllExercises = (alwaysFetch = false) => (dispatch, getState) => {
   if (!alwaysFetch) {
     if (getState().exercisesList.length > 0) {
       dispatch({ type: TYPES.FETCHED_EXERCISES_FROM_CACHED }) // this action does nothing. Just serves to notify devTools when developing.
-      return Promise.resolve() // fetchExercises must always be then-able (eg for selectExercise after exercises are loaded)
+      return Promise.resolve() // fetchAllExercises must always be then-able (eg for selectExercise after exercises are loaded)
     }
   }
   dispatch({ type: TYPES.FETCH_EXERCISES_INIT })
@@ -19,6 +20,20 @@ export const fetchExercises = (alwaysFetch = false) => (dispatch, getState) => {
       type: TYPES.FETCH_EXERCISES_SUCCESS,
       payload,
     })
+  })
+}
+
+export const fetchExercises = (exerciseIDs = []) => (dispatch) => {
+  dispatch({ type: TYPES.FETCH_EXERCISES_INIT, exerciseIDs })
+  console.log('fetchEx inside: ', exerciseIDs)
+  return Promise.all(exerciseIDs.map((id) => {
+    return db.ref(`exercises/${id}`).once('value').then(snapshot => ({ ...snapshot.val(), id }))
+  })).then((data) => {
+    dispatch({
+      type: TYPES.FETCH_EXERCISES_SUCCESS,
+      payload: _.keyBy(data, (v) => v.id)
+    })
+    return Promise.resolve()
   })
 }
 

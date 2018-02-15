@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { fetchExercises, selectExercise } from '../../actions'
+import { fetchAllExercises, selectExercise } from '../../actions'
 import { currentExerciseSelector } from '../../selectors'
 
 // Components
@@ -16,7 +16,7 @@ import RestrictionSitesPreview from '../../components/RestrictionSitesPreview'
 
 class App extends Component {
   componentWillMount() {
-    this.props.fetchExercises().then(() => {
+    this.props.fetchAllExercises().then(() => {
       this.props.selectExercise(this.props.match.params.id) // TODO: when deploying, remove id bit. let it pick it randomly
     })
   }
@@ -48,4 +48,4 @@ class App extends Component {
 
 const mapStateToProps = (state) => ({ currentExercise: currentExerciseSelector(state) })
 
-export default connect(mapStateToProps, { fetchExercises, selectExercise })(App)
+export default connect(mapStateToProps, { fetchAllExercises, selectExercise })(App)
