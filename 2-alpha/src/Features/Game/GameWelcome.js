@@ -6,14 +6,14 @@ import { checkStudentExists, updateCurrentStudentID } from '../../actions'
 export class GameWelcome extends Component {
   state = {
     error: null,
-    username: 'some5000'
+    username: ''
   }
   submit = (e) => {
     e.preventDefault()
     this.props.checkStudentExists(this.state.username).then(({ id }) => {
       this.setState({ error: null})
       this.props.updateCurrentStudentID(id)
-      // this.props.history.push('/play')
+      this.props.history.push('/play')
     }).catch((error) => {
       this.setState({ error })
     })

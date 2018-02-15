@@ -15,6 +15,9 @@ export class FailureMessage extends Component {
   showMessage = () => {
     this.setState({ showMessage: true })
   }
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.ID !== this.props.ID) this.setState({ showMessage: false })
+  }
   render() {
     const { ID, context, inputs } = this.props
     const { showMessage } = this.state

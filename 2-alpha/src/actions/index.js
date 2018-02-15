@@ -66,24 +66,25 @@ export const fetchExercises = (exerciseIDs = {}) => (dispatch) => {
 export const fetchCohortExerciseIDs = (cohortID) => (dispatch) => {
   dispatch({ type: TYPES.FETCH_COHORT_STUDENT_INTERFACE_INIT, cohortID })
 
-  return db.ref(`cohorts/${cohortID}`).once('value')
+  return db.ref(`cohorts/${cohortID}/exerciseIDs`).once('value')
     .then((snapshot) => {
-      const cohortName = snapshot.child('cohortName')
-      const exerciseIDs = snapshot.child('exerciseIDs')
-      const payload = { exerciseIDs, cohortName }
       dispatch({
         type: TYPES.FETCH_COHORT_STUDENT_INTERFACE_SUCCESS,
-        payload,
+        payload: snapshot.val(),
       })
-      return exerciseIDs
+      return snapshot
   })
 }
 
 export const selectExercise = (id = null) => (dispatch, getState) => {
-  if (!getState().exercisesList) return
+  const state = getState()
+  if (!state.exercisesList) return
   // if we have an id, get that exercise. otherwise pick a random id from the list.
   // TODO: replace exercisesList with exercisesLeftList
-  const selectedExerciseId = id || getState().exercisesList[Math.floor(Math.random() * getState().exercisesList.length)]
+  
+  const pickFrom = _.size(state.currentExerciseList) > 0 ? _.flatMap(state.currentExerciseList, (v, key) => key) : state.exercisesList
+  console.log(pickFrom)
+  const selectedExerciseId = id || pickFrom[Math.floor(Math.random() * pickFrom.length)]
   dispatch({
     type: TYPES.SELECT_EXERCISE,
     payload: selectedExerciseId

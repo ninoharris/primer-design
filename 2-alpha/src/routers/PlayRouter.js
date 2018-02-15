@@ -14,7 +14,7 @@ export class PlayRouter extends Component {
     cohortReady: false,
   }
   componentDidMount() { this.getReadyWithStudentID() }
-  componentDidUpdate() { this.getReadyWithStudentID() }
+  componentWillReceiveProps() { this.getReadyWithStudentID() }
 
   getReadyWithStudentID = () => {
     const { currentStudentID } = this.props

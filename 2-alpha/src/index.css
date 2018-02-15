@@ -431,6 +431,7 @@ body {
   position: relative;
   background: lightgray;
   padding: 10px;
+  min-height: 80px;
 }
 .evaluation-item .error-overlay {
   position: absolute;

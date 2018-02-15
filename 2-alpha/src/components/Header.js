@@ -1,17 +1,22 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
+
+import { updateCurrentStudentID } from '../actions'
+import { getCurrentStudentID, getCurrentStudentProfile } from '../selectors'
 
 export const Header = ({
   loggedIn = false,
   username = '',
   completedCount = 0,
   location = {pathname: ''},
+  updateCurrentStudentID = () => {},
 }) => {
   const userDisplay = loggedIn ? (
     <div className="User-Display logged-in">
       <span>Logged in as: <span className="username">{username}</span></span>
       <span className="exercises-completed">{completedCount} completed</span>
-      <button onClick={() => { }} className="ml-2 btn btn-warning log-out">
+      <button onClick={() => updateCurrentStudentID(null)} className="ml-2 btn btn-warning log-out">
         Log Out
       </button>
     </div>
@@ -19,7 +24,7 @@ export const Header = ({
     <div className="User-Display logged-out">
       <span>Not currently signed in</span>
       <button onClick={() => { }} className="ml-2 btn btn-success log-in">
-          Log Out
+          Log In
       </button>
     </div>
   )
@@ -45,4 +50,14 @@ export const Header = ({
   )
 }
 
-export default withRouter(Header)
+const mapStateToProps = (state) => {
+  const loggedIn = !!getCurrentStudentID(state)
+  if (!loggedIn) return { loggedIn }
+  
+  return {
+    loggedIn,
+    username: getCurrentStudentProfile(state).fullName
+  }
+}
+
+export default withRouter(connect(mapStateToProps, { updateCurrentStudentID })(Header))

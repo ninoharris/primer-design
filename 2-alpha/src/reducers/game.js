@@ -7,6 +7,22 @@ export const game = (state = {}, action) => {
   }
 }
 
+export const currentStudent = (state = {}, action) => {
+  switch (action.type) {
+    case TYPES.FETCH_STUDENT_SUCCESS:
+      return action.payload
+    default: return state
+  }
+}
+
+export const currentExerciseList = (state = {}, action) => {
+  switch (action.type) {
+    case TYPES.FETCH_COHORT_STUDENT_INTERFACE_SUCCESS:
+      return action.payload
+    default: return state
+  }
+}
+
 export const currentStudentID = (state = null, action) => {
   switch (action.type) {
   case TYPES.UPDATE_CURRENT_STUDENT_ID:
