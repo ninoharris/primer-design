@@ -23,15 +23,16 @@ export const fetchAllExercises = (alwaysFetch = false) => (dispatch, getState) =
   })
 }
 
-export const fetchExercises = (exerciseIDs = []) => (dispatch) => {
+export const fetchExercises = (exerciseIDs = {}) => (dispatch) => {
   dispatch({ type: TYPES.FETCH_EXERCISES_INIT, exerciseIDs })
   console.log('fetchEx inside: ', exerciseIDs)
-  return Promise.all(exerciseIDs.map((id) => {
+  return Promise.all(_.flatMap(exerciseIDs, (v, id) => {
     return db.ref(`exercises/${id}`).once('value').then(snapshot => ({ ...snapshot.val(), id }))
-  })).then((data) => {
+  })).then((payload) => {
+    payload = _.keyBy(payload, (v, k) => k)
     dispatch({
       type: TYPES.FETCH_EXERCISES_SUCCESS,
-      payload: _.keyBy(data, (v) => v.id)
+      payload
     })
     return Promise.resolve()
   })

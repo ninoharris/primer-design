@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
@@ -14,10 +15,11 @@ class CohortsList extends Component {
   }
   render() {
     const { cohorts } = this.props
+    console.log(cohorts)
     return (
       <ul className="Cohorts-List list-group">
-        { ( cohorts.length || this.state.ready ) ?
-          cohorts.map(cohort => <CohortsListItem key={cohort.cohortID} {...cohort} />) :
+        { this.state.ready ?
+          _.flatMap(cohorts, (cohort, cohortID) => <CohortsListItem key={cohortID} {...cohort} cohortID={cohortID} />) :
           <li>Loading...</li>
         }
       </ul>
@@ -26,7 +28,7 @@ class CohortsList extends Component {
 }
 
 CohortsList.propTypes = {
-  cohorts: PropTypes.array.isRequired
+  cohorts: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state, ownProps) => ({

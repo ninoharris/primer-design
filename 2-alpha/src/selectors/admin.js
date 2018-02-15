@@ -16,7 +16,7 @@ export const getAuthor = (state, props) => state.authorsById[props.authorID]
 export const getAuthorName = createSelector(getAuthor, (author) => author.fullName ? author.fullName : 'anonymous')
 
 export const getCohort = (state, props) => state.cohorts[props.cohortID]
-export const basicCohortsArray = state => _.flatMap(state.cohorts, (val, cohortID) => ({ ...val, cohortID }))
+export const getCohortsMinimal = (state) => state.cohorts
 
 export const getStudent = (state, props) => state.studentsById[props.studentID]
 
@@ -25,20 +25,26 @@ export const getStudent = (state, props) => state.studentsById[props.studentID]
 //   (exercises) => exerciseIDs.map(exerciseID => exercises[exerciseID])
 // )
 
-export const getExercises = (exerciseIDs) => (state) => exerciseIDs.map(id => { 
-  const exercise = state.exercisesById[id]
-  return {
-    ...exercise, authorName: state.authorsById[exercise.authorId].fullName
-  }
-})
+// exerciseIDs will be an object
+// export const getExercises = (exerciseIDs = {}) => (state) => _.mapKeys(exerciseIDs, (val, key) => 
+// exerciseIDs.map(id => { 
+//   const exercise = state.exercisesById[id]
+//   return {
+//     ...exercise, authorName: state.authorsById[exercise.authorId].fullName
+//   }
+// })
+
+export const getExercises = (exerciseIDs = {}) => (state) => {
+  return _.mapValues(exerciseIDs, (val, key) => state.exercisesById[key])
+}
 
 export const getStudents = (state, props) => state.studentsList
 
 
 export const getCohorts = createSelector(
-  basicCohortsArray,
+  getCohortsMinimal,
   authorsById,
-  (cohorts, authors) => cohorts.map(cohort => ({...cohort, authorFullName: authors[cohort.authorID].fullName }))
+  (cohorts, authors) => _.mapValues(cohorts, (cohort) => ({...cohort, authorFullName: authors[cohort.authorID].fullName }))
 )
 
 export const getAuthorsList = createSelector(

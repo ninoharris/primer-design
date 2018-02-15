@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
@@ -19,17 +20,16 @@ export class CohortExerciseList extends Component {
   }
   render() {
     if(!this.state.ready) return null
-    console.log('exercises list:', this.props.exercisesList)
     return (
-      <ExercisesList exercisesList={this.props.exercisesList} />
+      <ExercisesList exercisesList={_.flatMap(this.props.cohortExercises, (v, id) => ({...v, id })) } />
     )
   }
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const exercisesList = getExercises(ownProps.exerciseIDs)(state)
+  const cohortExercises = getExercises(ownProps.exerciseIDs)(state)
   return {
-    exercisesList
+    cohortExercises
   }
 }
 

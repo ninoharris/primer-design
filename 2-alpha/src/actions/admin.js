@@ -85,20 +85,6 @@ export const updateShowOwnExercises = (payload) => ({
   payload,
 })
 
-// Notifications
-const notifyDeleted = (id) => (dispatch) => {
-  dispatch({
-    type: TYPES.NOTIFY_DELETED,
-    id,
-  })
-  setTimeout(() => {
-    dispatch({
-      type: TYPES.NOTIFY_DELETED,
-      id,
-    })
-  })
-}
-
 
 // Author information
 export const fetchAuthors = () => (dispatch) => {
@@ -142,16 +128,16 @@ export const fetchCohorts = () => (dispatch) => {
   dispatch({ type: TYPES.FETCH_COHORTS_INIT })
 
   return db.ref('cohorts').once('value', (snapshot) => {
-    const payload = {}
-    snapshot.forEach((childSnapshot) => {
-      let { studentIDs, exerciseIDs, ...rest } = childSnapshot.val()
-      studentIDs = _.flatMap(studentIDs, (v, key) => key)
-      exerciseIDs = _.flatMap(exerciseIDs, (v, key) => key)
-      payload[childSnapshot.key] = { ...rest, studentIDs, exerciseIDs }
-    })
+    // const payload = {}
+    // snapshot.forEach((childSnapshot) => {
+    //   let { studentIDs, exerciseIDs, ...rest } = childSnapshot.val()
+    //   studentIDs = _.flatMap(studentIDs, (v, key) => key)
+    //   exerciseIDs = _.flatMap(exerciseIDs, (v, key) => key)
+    //   payload[childSnapshot.key] = { ...rest, studentIDs, exerciseIDs }
+    // })
     dispatch({
       type: TYPES.FETCH_COHORTS_SUCCESS,
-      payload,
+      payload: snapshot.val(),
     })
   })
 }
@@ -159,15 +145,12 @@ export const fetchCohorts = () => (dispatch) => {
 export const fetchCohort = (id) => (dispatch) => {
   dispatch({ type: TYPES.FETCH_COHORT_INIT })
 
-  return db.ref(`cohorts/${id}`).once('value', (snapshot) => {
-    let { studentIDs, exerciseIDs, ...rest } = snapshot.val()
-    studentIDs = _.flatMap(studentIDs, (v, key) => key)
-    exerciseIDs = _.flatMap(exerciseIDs, (v, key) => key)
-    const payload = { ...rest, studentIDs, exerciseIDs }
+  return db.ref(`cohorts/${id}`).once('value')
+  .then((snapshot) => {
     dispatch({
       type: TYPES.FETCH_COHORT_SUCCESS,
       id: snapshot.key,
-      payload,
+      payload: snapshot.val(),
     })
   })
 }
