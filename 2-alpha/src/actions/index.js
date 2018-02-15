@@ -4,6 +4,18 @@ import * as TYPES from './types'
 import { getIsSuccessful } from '../selectors/evaluations'
 export * from './troubleshooter'
 
+export const fetchStudent = (id) => (dispatch) => { // used for /play
+  dispatch({ type: TYPES.FETCH_STUDENT_INIT })
+
+  return db.ref(`students/${id}`).once('value').then(snapshot => {
+    const payload = snapshot.val()
+    dispatch({
+      type: TYPES.FETCH_STUDENT_SUCCESS,
+      id,
+      payload,
+    })
+  })
+}
 
 export const fetchAllExercises = (alwaysFetch = false) => (dispatch, getState) => {
   if (!alwaysFetch) {

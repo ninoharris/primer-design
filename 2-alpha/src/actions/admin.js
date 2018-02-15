@@ -232,19 +232,6 @@ export const updateCohortName = (id, name) => (dispatch) => {
   }))
 }
 
-export const fetchStudent = (id) => (dispatch) => { // used for /play
-  dispatch({ type: TYPES.FETCH_STUDENT_INIT })
-
-  return db.ref(`students/${id}`).once('value').then(snapshot => {
-    const payload = snapshot.val()
-    dispatch({
-      type: TYPES.FETCH_STUDENT_SUCCESS,
-      id,
-      payload,  
-    })
-  })
-}
-
 export const fetchStudents = (ids = []) => (dispatch) => {
   dispatch({
     type: TYPES.FETCH_STUDENTS_INIT
