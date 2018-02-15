@@ -11,9 +11,6 @@ import { firebasePathExists } from '../api'
 import { fetchAuthors } from '../actions/admin'
 import { adminLogin, startAdminLogout } from '../actions/auth'
 
-// selectors 
-import { getCurrentAuthorUid } from '../selectors/admin'
-
 // Components
 import LoginPage from '../Admin/LoginPage'
 import AdminHomePage from '../Admin/AdminHomePage'
