@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import AdminHeader from './AdminHeader'
-import ExerciseList from './ExerciseList'
+import MainExerciseList from './MainExerciseList'
 import withLoading from '../components/withLoading'
 import FilterExercises from './FilterExercises'
 
@@ -16,7 +16,7 @@ export class AdminHomePage extends Component {
             <FilterExercises />
           </div>
           <div className="col-12">
-            <ExerciseList />
+            <MainExerciseList />
           </div>
         </div>
       </div>

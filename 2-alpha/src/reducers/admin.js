@@ -52,7 +52,9 @@ export const authorsList = (state = [], action = {}) => {
 export const cohorts = (state = {}, action = {}) => {
   switch (action.type) {
     case TYPES.FETCH_COHORTS_SUCCESS:
-      return action.payload
+      return { ...state, ...action.payload }
+    case TYPES.FETCH_COHORT_SUCCESS:
+      return { ...state, [action.id]: action.payload}
     default: return state
   }
 }

@@ -10,16 +10,14 @@ import CohortsListItem from './CohortsListItem'
 class CohortsList extends Component {
   state = { ready: false }
   componentDidMount() {
-    if (this.props.cohorts.length === 0) {
-      this.props.fetchCohorts().then(() => this.setState({ ready: true }))
-    }
+    this.props.fetchCohorts().then(() => this.setState({ ready: true }))
   }
   render() {
-    console.log('CohortsList', this.props)
+    const { cohorts } = this.props
     return (
-      <ul className="Cohorts-List">
-        { this.state.ready ?
-          this.props.cohorts.map(cohort => <CohortsListItem key={cohort.cohortID} cohort={cohort} />) :
+      <ul className="Cohorts-List list-group">
+        { ( cohorts.length || this.state.ready ) ?
+          cohorts.map(cohort => <CohortsListItem key={cohort.cohortID} {...cohort} />) :
           // this.props.cohorts.map(cohort => cohort.cohortID) :
           <li>Loading...</li>
         }

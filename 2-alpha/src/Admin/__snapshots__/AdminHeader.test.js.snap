@@ -23,12 +23,13 @@ exports[`AdminHeader renders correctly 1`] = `
           Add new exercise
         </button>
       </Link>
-      <button
+      <Link
         className="btn btn-info mr-3"
-        onClick={[Function]}
+        replace={false}
+        to="/admin/cohorts"
       >
-        View students
-      </button>
+        View cohorts
+      </Link>
       <Link
         className="btn btn-success Goto-Home"
         replace={false}

@@ -1,31 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
-import moment from 'moment'
 
-import { updateSortBy } from '../actions/admin'
-import { getFilteredSortedExercises } from '../selectors/admin'
+import ExerciseListItem from './ExerciseListItem'
 
 export class ExerciseList extends Component {
-  renderExerciseItem = (exercise) => {
-    return (
-      <tr key={exercise.id}>
-        <td>
-          {exercise.questionPart1}
-          <small className="ID"><a target="_blank" href={'/play/' + exercise.id}>{exercise.id} - View demo</a></small>
-        </td>
-        <td className="small">{moment(exercise.createdAt).format("ddd, Do MMM YY")}</td>
-        <td className="small">{moment(exercise.lastModified).format("ddd, Do MMM YY")}</td>
-        <td>{exercise.authorName}</td>
-        <td>
-          <Link to={`/admin/edit/${exercise.id}`}>
-            <button className="btn btn-primary">Edit exercise</button>
-          </Link>
-        </td>
-      </tr>
-    )
-  }
   render() {
     const { 
       exercisesList = [],
@@ -47,7 +25,7 @@ export class ExerciseList extends Component {
         </thead>
         <tbody>
           {exercisesList.length > 0 ? 
-            exercisesList.map(exercise => this.renderExerciseItem(exercise)) :
+            exercisesList.map(exercise => <ExerciseListItem {...exercise} key={exercise.id} />) :
             <tr><td>No exercises found...</td></tr>
           }
         </tbody>
@@ -60,13 +38,4 @@ ExerciseList.propTypes = {
   exercisesList: PropTypes.arrayOf(PropTypes.object)
 }
 
-const mapStateToProps = (state) => ({
-  exercisesList: getFilteredSortedExercises(state)
-})
-
-export default connect(mapStateToProps, dispatch => ({
-  sortByName: () => dispatch(updateSortBy('id')),
-  sortByCreatedAt: () => dispatch(updateSortBy('createdAt')),
-  sortByLastModified: () => dispatch(updateSortBy('lastModified')),
-  sortByAuthor: () => dispatch(updateSortBy('authorName')),
-}))(ExerciseList)
+export default ExerciseList

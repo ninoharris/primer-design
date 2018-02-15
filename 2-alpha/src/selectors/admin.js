@@ -18,6 +18,14 @@ export const getAuthorName = createSelector(getAuthor, (author) => author.fullNa
 export const getCohort = (state, props) => state.cohorts[props.cohortID]
 export const basicCohortsArray = state => _.flatMap(state.cohorts, (val, cohortID) => ({ ...val, cohortID }))
 
+export const getStudent = (state, props) => state.studentsById[props.studentID]
+
+export const getExercises = (state, props) => createSelector(
+  exercisesListSelector,
+  (exercises) => props.exerciseIDs.map(exerciseID => exercises[exerciseID])
+)
+export const getStudents = (state, props) => state.studentsList
+
 
 export const getCohorts = createSelector(
   basicCohortsArray,

@@ -140,15 +140,33 @@ export const updateAuthorName = (uid, fullName) => (dispatch) => {
 
 export const fetchCohorts = () => (dispatch) => {
   dispatch({ type: TYPES.FETCH_COHORTS_INIT })
-  
+
   return db.ref('cohorts').once('value', (snapshot) => {
     const payload = {}
     snapshot.forEach((childSnapshot) => {
-      const { studentIDs, exerciseIDs, ...rest } = childSnapshot.val()
-      payload[childSnapshot.key] = {...rest, studentIDs: _.flatMap(studentIDs, (v, key) => key), exerciseIDs: _.flatMap(exerciseIDs, (v, key) => key)}
+      let { studentIDs, exerciseIDs, ...rest } = childSnapshot.val()
+      studentIDs = _.flatMap(studentIDs, (v, key) => key)
+      exerciseIDs = _.flatMap(exerciseIDs, (v, key) => key)
+      payload[childSnapshot.key] = { ...rest, studentIDs, exerciseIDs }
     })
     dispatch({
       type: TYPES.FETCH_COHORTS_SUCCESS,
+      payload,
+    })
+  })
+}
+
+export const fetchCohort = (id) => (dispatch) => {
+  dispatch({ type: TYPES.FETCH_COHORT_INIT })
+
+  return db.ref(`cohorts/${id}`).once('value', (snapshot) => {
+    let { studentIDs, exerciseIDs, ...rest } = snapshot.val()
+    studentIDs = _.flatMap(studentIDs, (v, key) => key)
+    exerciseIDs = _.flatMap(exerciseIDs, (v, key) => key)
+    const payload = { ...rest, studentIDs, exerciseIDs }
+    dispatch({
+      type: TYPES.FETCH_COHORT_SUCCESS,
+      id: snapshot.key,
       payload,
     })
   })
@@ -234,10 +252,17 @@ export const updateCohortName = (id, name) => (dispatch) => {
 export const fetchStudent = (id) => (dispatch) => { // used for /play
   dispatch({ type: TYPES.FETCH_STUDENT_INIT })
 
-
+  return db.ref(`students/${id}`).once('value').then(snapshot => {
+    const payload = snapshot.val()
+    dispatch({
+      type: TYPES.FETCH_STUDENT_SUCCESS,
+      id,
+      payload,  
+    })
+  })
 }
 
-export const fetchStudents = () => (dispatch) => {
+export const fetchStudents = (ids = []) => (dispatch) => {
   dispatch({
     type: TYPES.FETCH_STUDENTS_INIT
   })
