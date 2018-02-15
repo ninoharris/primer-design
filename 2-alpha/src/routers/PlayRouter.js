@@ -12,15 +12,16 @@ export class PlayRouter extends Component {
   state = {
     studentReady: false,
     cohortReady: false,
-    exercisesReady: false,
   }
   componentDidMount() { this.getReadyWithStudentID() }
   componentDidUpdate() { this.getReadyWithStudentID() }
 
   getReadyWithStudentID = () => {
     const { currentStudentID } = this.props
+    if(!currentStudentID) return
+    console.log('doing a thing')
     this.props.checkStudentExists(currentStudentID)
-    .then((id) => this.props.fetchStudent(id).then(({ cohortID }) => {
+    .then(({ id }) => this.props.fetchStudent(id).then(({ cohortID }) => {
         this.setState({ studentReady: true })
         return cohortID
       }))
@@ -28,10 +29,8 @@ export class PlayRouter extends Component {
         this.setState({ cohortReady: true })
         return exerciseIDs
       }))
-    .then((exerciseIDs) => this.props.fetchExercises(exerciseIDs).then(() => {
-        this.setState({ exercisesReady: true })
-      }))
     .catch(err => {
+      console.log(err)
       this.setState({ studentReady: false }) // student id doesnt exist, dont start game
     })
   }
@@ -40,12 +39,12 @@ export class PlayRouter extends Component {
     // if logged out
     if(!this.props.currentStudentID) return (
       <Switch>
-        <Redirect from="/play" to="/play/welcome" />
         <Route path="/play/welcome" component={GameWelcome} />
+        <Redirect from="/play" to="/play/welcome" />
       </Switch>
     )
     // if logged in and everything's loaded
-    if(this.state.studentReady && this.state.cohortReady && this.state.exercisesReady) {
+    if(this.state.studentReady && this.state.cohortReady) {
       return (
         <Switch>
           <Route path="/play/:id" component={Game} />

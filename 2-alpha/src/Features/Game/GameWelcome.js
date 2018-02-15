@@ -6,16 +6,20 @@ import { checkStudentExists, updateCurrentStudentID } from '../../actions'
 export class GameWelcome extends Component {
   state = {
     error: null,
-    username: ''
+    username: 'some5000'
   }
   submit = (e) => {
     e.preventDefault()
-    // this.props.checkStudentExists(this.state.username).then(({ id }) => {
-    //   this.setState({ error: null})
-    //   this.props.updateCurrentStudentID(this.state.id)
-    // }).catch((error) => {
-    //   this.setState({ error })
-    // })
+    this.props.checkStudentExists(this.state.username).then(({ id }) => {
+      this.setState({ error: null})
+      this.props.updateCurrentStudentID(id)
+      // this.props.history.push('/play')
+    }).catch((error) => {
+      this.setState({ error })
+    })
+  }
+  updateInputUsername = (e) => {
+    this.setState({ username: e.target.value })
   }
   render() {
     const { error, username } = this.state
@@ -26,7 +30,7 @@ export class GameWelcome extends Component {
         <form onSubmit={this.submit}>
           <input value={username} onChange={this.updateInputUsername} />
           {error ? 
-            <div class="alert alert-danger" role="alert">{error}</div>
+            <div className="alert alert-danger" role="alert">{error}</div>
             : ''
           }
           <button type="submit">Start!</button>

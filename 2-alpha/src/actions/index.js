@@ -5,7 +5,7 @@ import { getIsSuccessful } from '../selectors/evaluations'
 export * from './troubleshooter'
 
 export const fetchStudent = (id) => (dispatch) => { // used for /play
-  dispatch({ type: TYPES.FETCH_STUDENT_INIT })
+  dispatch({ type: TYPES.FETCH_STUDENT_INIT, id })
 
   return db.ref(`students/${id}`).once('value').then(snapshot => {
     const payload = snapshot.val()
@@ -14,6 +14,7 @@ export const fetchStudent = (id) => (dispatch) => { // used for /play
       id,
       payload,
     })
+    return payload
   })
 }
 
