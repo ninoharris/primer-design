@@ -11,6 +11,7 @@ export class ExerciseList extends Component {
       sortByCreatedAt = () => {},
       sortByLastModified = () => {},
       sortByAuthor = () => {},
+      children,
      } = this.props 
     return (
       <table className="table Admin-Exercises-List">
@@ -24,8 +25,9 @@ export class ExerciseList extends Component {
           </tr>
         </thead>
         <tbody>
+          {children}
           {exercisesList.length > 0 ? 
-            exercisesList.map(exercise => <ExerciseListItem {...exercise} key={exercise.id} />) :
+            exercisesList.map(exercise => <ExerciseListItem {...exercise} key={exercise.id} children={children} />) :
             <tr><td>No exercises found...</td></tr>
           }
         </tbody>

@@ -1,20 +1,23 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { updateInput, beginAnimatePreview, endAnimatePreview, attemptCompletion } from '../../actions'
+import { updateInput, beginAnimatePreview, endAnimatePreview, attemptCompletion, editingGameInput } from '../../actions'
 import { FV_TS } from '../../selectors'
 import PrimerPreviewSmall from './PrimerPreviewSmall'
 
 export class Form extends Component {
   handleChange = (e) => {
-    // const text = e.target.value.toUpperCase()
-    // const filteredText = text.replace(/[^ATGC ]/gi,'')
     this.props.updateInput(e.target.name, e.target.value)
   }
   handleSubmit = (e) => {
     e.preventDefault()
     this.props.attemptCompletion()
   }
+  handleFGFocus = () => this.props.editingGameInput('FG')(true)
+  handleRGFocus = () => this.props.editingGameInput('RG')(true)
+  handleFGBlur = () => this.props.editingGameInput('FG')(false)
+  handleRGBlur = () => this.props.editingGameInput('RG')(false)
+
   animatePreviewButton = () => {
     const { beginAnimatePreview, endAnimatePreview, animatingPreview } = this.props
     if(!animatingPreview) {
@@ -37,13 +40,13 @@ export class Form extends Component {
           <div className="input-group-prepend">
             <div className="input-group-text">5'</div>
           </div>
-          <input className={'form-control FV ' + (FV_TS ? 'glow' : '')}
-            name='FV' value={FV}
-            type="text" onChange={this.handleChange} autoComplete="prevent-autoComplete"
+          <input className={'form-control FV ' + (FV_TS ? 'glow' : '')} autoComplete="prevent-autoComplete"
+            name='FV' value={FV} type="text" 
+            onChange={this.handleChange} 
           />
-          <input className="form-control FG"
-            name='FG' value={FG}
-            type="text" onChange={this.handleChange} autoComplete="prevent-autoComplete"
+          <input className="form-control FG" autoComplete="prevent-autoComplete"
+            name='FG' value={FG} type="text" 
+            onChange={this.handleChange} onFocus={this.handleFGFocus} onBlur={this.handleFGBlur}
           />
           <div className="input-group-append">
             <div className="input-group-text">3'</div>
@@ -56,13 +59,13 @@ export class Form extends Component {
           <div className="input-group-prepend">
             <div className="input-group-text">5'</div>
           </div>
-          <input className="form-control RV"
+          <input className="form-control RV" autoComplete="prevent-autoComplete"
             name='RV' value={RV}
-            type="text" onChange={this.handleChange} autoComplete="prevent-autoComplete"
+            type="text" onChange={this.handleChange} 
           />
-          <input className="form-control RG"
+          <input className="form-control RG" autoComplete="prevent-autoComplete"
             name='RG' value={RG}
-            type="text" onChange={this.handleChange} autoComplete="prevent-autoComplete"
+            type="text" onChange={this.handleChange} onFocus={this.handleRGFocus} onBlur={this.handleRGBlur}
           />
           <div className="input-group-append">
             <div className="input-group-text">3'</div>

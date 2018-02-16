@@ -9,12 +9,12 @@ export const number = (value) =>
 export const validate = values => {
   const errors = {}
   // Required
-  if (!values.questionPart1) errors.questionPart1 = 'Required'
-  if (!values.questionPart2) errors.questionPart2 = 'Required'
-  if (!values.vector) errors.vector = 'Required'
-  if (!values.haystack) errors.haystack = 'Required'
-  if (!values.constructStart) errors.constructStart = 'Required'
-  if (!values.constructEnd) errors.constructEnd = 'Required'
+  if (values.questionPart1 === '') errors.questionPart1 = 'Required'
+  if (values.questionPart2 === '') errors.questionPart2 = 'Required'
+  if (values.vector === '') errors.vector = 'Required'
+  if (values.haystack === '') errors.haystack = 'Required'
+  if (values.constructStart === '') errors.constructStart = 'Required'
+  if (values.constructEnd === '') errors.constructEnd = 'Required'
 
   // Only contains ATGC
   const basesRegExp = /[^ATGC]/g

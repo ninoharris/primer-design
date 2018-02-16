@@ -7,7 +7,7 @@ import { updateExercise, removeExercise } from '../actions/admin'
 import AdminHeader from './AdminHeader'
 import ExerciseEditor from './ExerciseEditor'
 
-class AdminEditPage extends Component {
+class ExerciseEditPage extends Component {
   outerSubmit = (values) => {
     const id = this.props.id
     this.props.updateExercise(id, values).then(() => {
@@ -45,4 +45,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-export default withRouter(connect(mapStateToProps, { updateExercise, removeExercise })(AdminEditPage))
+export default withRouter(connect(mapStateToProps, { updateExercise, removeExercise })(ExerciseEditPage))

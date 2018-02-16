@@ -9,6 +9,7 @@ const ExerciseListItem = ({
   lastModified,
   authorName,
   questionPart1,
+  children,
 }) => (      
   <tr key={id}>
     <td>
@@ -19,9 +20,10 @@ const ExerciseListItem = ({
     <td className="small">{moment(lastModified).format("ddd, Do MMM YY")}</td>
     <td>{authorName}</td>
     <td>
-      <Link to={`/admin/edit/${id}`}>
+      {/* <Link to={`/admin/edit/${id}`}>
         <button className="btn btn-primary">Edit exercise</button>
-      </Link>
+      </Link> */}
+        {React.Children.map(children, child =>  React.cloneElement(child, { id, })) /* Add id prop to each child element */} 
     </td>
   </tr>
 )

@@ -73,6 +73,13 @@ export const restrictionSites = (state = {}, action) => {
   return state
 }
 
+export const editingInputs = (state = { FV: false, RV: false, FG: false, RG: false }, action) => {
+  switch (action.type) {
+    case TYPES.EDITING_GAME_INPUT:
+      return { ...state, [action.input]: action.isEditing}
+    default: return state
+  }
+}
 
 // export const formInputs = (state = { FV: '', FG: '', RV: '', RG: '' }, action) => {
 //   switch (action.type) {
