@@ -17,13 +17,14 @@ import RestrictionSitesPreview from '../../components/RestrictionSitesPreview'
 class App extends Component {
   componentWillMount() {
     this.props.fetchAllExercises().then(() => {
-      this.props.selectExercise(this.props.match.params.id) // TODO: when deploying, remove id bit. let it pick it randomly
+      const { id } = this.props.match.params
+      this.props.selectExercise(id) // TODO: when deploying, remove id bit. let it pick it randomly
     })
   }
   render() {
     console.log('current ex:', this.props.currentExercise)
     if (!this.props.currentExercise) return (
-      <div className="main-loading">Loading game...</div>
+      <div className="main-loading">Selecting exercise...</div>
     )
     return (
       <div className="container-fluid mb-10 mt-10 Game">

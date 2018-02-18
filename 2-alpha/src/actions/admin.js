@@ -232,6 +232,16 @@ export const updateCohortName = (id, name) => (dispatch) => {
   }))
 }
 
+export const addExerciseToCohort = (cohortID) => (exerciseID) => (dispatch) => {
+  return firebasePathExists(`exercises/${exerciseID}`).then(() => {
+
+  }).catch((err) => {
+    dispatch({
+      type: 'EXERCISE DOES NOT EXIST'
+    })
+  })
+}
+
 export const fetchStudents = (ids = []) => (dispatch) => {
   dispatch({
     type: TYPES.FETCH_STUDENTS_INIT

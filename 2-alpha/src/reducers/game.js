@@ -15,7 +15,7 @@ export const currentStudent = (state = {}, action) => {
   }
 }
 
-export const currentExerciseList = (state = {}, action) => {
+export const cohortExerciseList = (state = {}, action) => {
   switch (action.type) {
     case TYPES.FETCH_COHORT_STUDENT_INTERFACE_SUCCESS:
       return action.payload

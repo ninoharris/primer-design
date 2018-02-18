@@ -25,6 +25,7 @@ export const randomInt = function (max) {
   if (isNaN(max)) throw new Error('randomInt:', max, ' is not a number')
   return Math.floor(Math.random() * max)
 }
+export const pickRandomFromArray = (arr) => arr[Math.floor(Math.random() * arr.length)]
 
 export const complementFromString = function (str) { // Pure
   const outcomes = {

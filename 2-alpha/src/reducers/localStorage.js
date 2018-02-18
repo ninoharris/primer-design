@@ -8,10 +8,11 @@ export const loadState = () => {
 }
 
 export const saveState = (state) => {
-  const { formInputs, showCodons, showLoggedInExercisesOnly } = state
+  const { formInputs, showCodons, showLoggedInExercisesOnly, currentStudentID } = state
   const savedState = {
     formInputs,
     showCodons,
+    currentStudentID,
     showLoggedInExercisesOnly,
   }
   const serializedState = JSON.stringify(savedState, null)

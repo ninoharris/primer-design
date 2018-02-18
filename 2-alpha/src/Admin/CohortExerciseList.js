@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 
 import ExercisesList from './ExercisesList'
 
-import { fetchExercises } from '../actions'
 import { fetchAuthors } from '../actions/admin'
 import { getExercises } from '../selectors/admin';
 
@@ -14,7 +13,6 @@ export class CohortExerciseList extends Component {
   }
   componentDidMount () {
     Promise.all([
-      this.props.fetchExercises(this.props.exerciseIDs),
       this.props.fetchAuthors(),
     ]).then(() => this.setState({ ready: true }))
   }
@@ -34,4 +32,4 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 
-export default connect(mapStateToProps, { fetchExercises, fetchAuthors })(CohortExerciseList)
+export default connect(mapStateToProps, { fetchAuthors })(CohortExerciseList)

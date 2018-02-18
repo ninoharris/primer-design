@@ -4,19 +4,9 @@ import * as TYPES from '../actions/types'
 export const exercisesById = (state = {}, action) => {
   switch (action.type) {
     case TYPES.FETCH_EXERCISES_SUCCESS:
-      return action.payload
+      return action.payload // replace exercises
     case TYPES.ADD_EXERCISE_SUCCESS:
-      return {...state, [action.id]: action.payload}
-    default: return state
-  }
-}
-
-export const exercisesList = (state = [], action) => { // moved to selectors
-  switch (action.type) {
-    case TYPES.FETCH_EXERCISES_SUCCESS:
-      return _.keys(action.payload)
-    case TYPES.ADD_EXERCISE_SUCCESS:
-      return [...state, action.id] // add exercise to end of array
+      return {...state, [action.id]: action.payload} // add exercises
     default: return state
   }
 }

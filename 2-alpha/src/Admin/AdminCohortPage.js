@@ -21,7 +21,7 @@ export class CohortPage extends Component {
   render() {
     if(!this.state.ready) return <div>Loading...</div>
     const { cohort, cohortID } = this.props
-    console.log(cohort)
+    console.log('In cohort page: ', cohort.exerciseIDs)
     return (
       <div className="container-fluid">
         <AdminHeader title={`Viewing cohort: ${cohort.cohortName}`} />
@@ -32,7 +32,7 @@ export class CohortPage extends Component {
           </div>
           <div className="col-12">
             <CohortExerciseList exerciseIDs={cohort.exerciseIDs} />
-            <AddCohortExercise />
+            <AddCohortExercise cohortID={cohortID} exerciseIDs={cohort.exerciseIDs} />
           </div>
         </div>
       </div>

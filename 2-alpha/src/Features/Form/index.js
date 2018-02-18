@@ -13,10 +13,10 @@ export class Form extends Component {
     e.preventDefault()
     this.props.attemptCompletion()
   }
-  handleFGFocus = () => this.props.editingGameInput('FG')(true)
-  handleRGFocus = () => this.props.editingGameInput('RG')(true)
-  handleFGBlur = () => this.props.editingGameInput('FG')(false)
-  handleRGBlur = () => this.props.editingGameInput('RG')(false)
+  handleFGFocus = () => this.props.editingGameInput('FG', true)
+  handleRGFocus = () => this.props.editingGameInput('RG', true)
+  handleFGBlur = () => this.props.editingGameInput('FG', false)
+  handleRGBlur = () => this.props.editingGameInput('RG', false)
 
   animatePreviewButton = () => {
     const { beginAnimatePreview, endAnimatePreview, animatingPreview } = this.props
@@ -98,5 +98,6 @@ export default connect(mapStateToProps, {
   updateInput, 
   beginAnimatePreview, 
   endAnimatePreview,
-  attemptCompletion
+  attemptCompletion,
+  editingGameInput,
 })(Form)

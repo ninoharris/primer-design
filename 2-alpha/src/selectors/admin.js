@@ -1,8 +1,6 @@
 import _ from 'lodash'
 import { createSelector } from 'reselect'
-
-export const exercisesListSelector = state => state.exercisesList
-export const exercisesByIdSelector = state => state.exercisesById
+import { exercisesListSelector, exercisesByIdSelector} from './index'
 
 export const sortOrderSelector = state => state.sortOrder
 export const sortBySelector = state => state.sortBy
@@ -68,13 +66,14 @@ export const getFilteredSortedExercises = createSelector(
   showLoggedInExercisesOnly,
   authorsById,
   getCurrentAuthorUid,
-  (IDsList, exercisesById, filterText, sortBy, loggedInExercisesOnly, authors, getCurrentAuthorUid) => {
+  (IDs, exercisesById, filterText, sortBy, loggedInExercisesOnly, authors, getCurrentAuthorUid) => {
     filterText = filterText.toLowerCase()
-    let filteredExercises = IDsList
-      .map((id) => {
+    let filteredExercises = IDs
+      .map(( id ) => {
         const exercise = exercisesById[id]
         console.log(authors) // TODO: reduce calls to author getting.
         const authorName = authors[exercise.authorId] ? authors[exercise.authorId].fullName : 'anonymous'
+        console.log('filtered exercise with id of:', id)
         return {...exercise, id, authorName }
       })
 

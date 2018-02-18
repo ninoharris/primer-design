@@ -2,20 +2,40 @@ import _ from 'lodash'
 import * as api from '../api'
 import { createSelector } from 'reselect'
 
+// all collections of data are presented as objects, unless the selector is followed by 'List' in which case it is an array.
+
 export const loadingSelector = state => state.fetchingExercises
 export const showCodons = state => state.showCodons
 export const showAdminEvaluation = state => state.showAdminEvaluation
 export const getAllRestrictionSites = state => state.restrictionSites
+export const getEditingGameInputs = state => state.editingInputs
 
-export const exercisesListSelector = state => state.exercisesList
 export const exercisesByIdSelector = state => state.exercisesById
-export const currentExerciseSelector = state => state.currentExercise
+export const exercisesListSelector = createSelector( // array of exercises
+  exercisesByIdSelector,
+  (exercises) => _.keys(exercises)
+)
+export const cohortExercisesSelector = state => state.cohortExerciseList
 
 export const getMultilineWidth = state => state.charMultilineWidth
 export const getExercise = (state, { id }) => state.exercisesById[id]
 
 export const getCurrentStudentID = state => state.currentStudentID
 export const getCurrentStudentProfile = state => state.currentStudent
+export const currentExerciseSelector = state => state.currentExercise
+export const getAttemptedExercises = createSelector(
+  getCurrentStudentProfile,
+  (student) => student.exercises
+)
+export const getUnattemptedExercises = createSelector(
+  getAttemptedExercises,
+  cohortExercisesSelector,
+  (attemptedExercises, allCohortExercises) => _.omit(allCohortExercises, _.keys(attemptedExercises))
+)
+export const getUnattemptedExercisesList = createSelector( // get array
+  getUnattemptedExercises,
+  (exercises) => _.keys(exercises)
+)
 
 const uFV = state => state.formInputs.FV
 const uFG = state => state.formInputs.FG
