@@ -4,32 +4,27 @@ import { connect } from 'react-redux'
 
 import ExercisesList from './ExercisesList'
 
-import { fetchAuthors } from '../actions/admin'
+import { fetchAuthors, removeExerciseFromCohort } from '../actions/admin'
 import { getExercises } from '../selectors/admin';
 
+const RemoveCohortExerciseButton = ({ handleClick, cohortID, id }) => (
+  <button className="btn btn-warning" onClick={() => handleClick(cohortID, id)}>Remove from cohort</button>
+)
+
 export class CohortExerciseList extends Component {
-  state = {
-    ready: false
-  }
-  componentDidMount () {
-    Promise.all([
-      this.props.fetchAuthors(),
-    ]).then(() => this.setState({ ready: true }))
-  }
   render() {
-    if(!this.state.ready) return null
+    const { exerciseIDs, cohortID, removeExerciseFromCohort } = this.props
+
     return (
-      <ExercisesList exercisesList={_.flatMap(this.props.cohortExercises, (v, id) => ({...v, id })) } />
+      <ExercisesList exercisesList={_.flatMap(exerciseIDs, (v, id) => ({...v, id })) }>
+        <RemoveCohortExerciseButton cohortID={cohortID} handleClick={removeExerciseFromCohort} />
+      </ExercisesList>
     )
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  const cohortExercises = getExercises(ownProps.exerciseIDs)(state)
-  return {
-    cohortExercises
-  }
-}
+const mapStateToProps = (state, { exerciseIDs }) => ({
+  exerciseIDs: getExercises(state, { exerciseIDs })
+})
 
-
-export default connect(mapStateToProps, { fetchAuthors })(CohortExerciseList)
+export default connect(mapStateToProps, { fetchAuthors, removeExerciseFromCohort })(CohortExerciseList)

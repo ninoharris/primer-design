@@ -23,7 +23,7 @@ const ExerciseListItem = ({
       {/* <Link to={`/admin/edit/${id}`}>
         <button className="btn btn-primary">Edit exercise</button>
       </Link> */}
-        {/* {React.Children.map(children, child =>  React.cloneElement(child, { id, onClick: () =>  })) /* Add id prop to each child element */}  */}
+        {React.Children.map(children, child =>  React.cloneElement(child, { id })) /* Add id prop to each child element  */}
     </td>
   </tr>
 )

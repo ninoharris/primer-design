@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import { flatMap } from 'lodash'
 import * as TYPES from '../actions/types'
 
@@ -55,9 +56,26 @@ export const cohorts = (state = {}, action = {}) => {
       return { ...state, ...action.payload }
     case TYPES.FETCH_COHORT_SUCCESS:
       return { ...state, [action.id]: action.payload}
+    case TYPES.ADD_COHORT_EXERCISE_SUCCESS:
+    case TYPES.REMOVE_COHORT_EXERCISE_SUCCESS:
+      return _.mapValues(state, (v) => cohort(v, action))
     default: return state
   }
 }
+
+// const exerciseIDs = { ...cohort.exerciseIDs, [action.exerciseID]: true }
+
+const cohort = (state = {}, action = {}) => {
+  switch (action.type) {
+    case TYPES.ADD_COHORT_EXERCISE_SUCCESS:
+      const exerciseIDs = { ...state.exerciseIDs, [action.exerciseID]: true }
+      return { ...state, exerciseIDs }
+    case TYPES.REMOVE_COHORT_EXERCISE_SUCCESS:
+      return { ...state, exerciseIDs: _.omit(state.exerciseIDs, action.exerciseID)}
+    default: return state
+  }
+}
+
 
 // export const studentsById = () => {
 

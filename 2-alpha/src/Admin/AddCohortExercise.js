@@ -1,15 +1,15 @@
-import _ from 'lodash'
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import { addExerciseToCohort } from '../actions/admin'
-import { getFilteredSortedExercises } from '../selectors/admin'
+import { getFilteredSortedExercisesNotInCohort } from '../selectors/admin'
 
 import FilterExercises from './FilterExercises'
 import ExercisesList from './ExercisesList'
 
 const AddExerciseToCohortButton = ({ id, cohortID, handleClick }) => (
-  <button onClick={() => handleClick(cohortID, id)}>Include exercise</button>
+  <button className="btn btn-success" onClick={() => handleClick(cohortID, id)}>Include exercise</button>
 )
 
 class AddCohortExercise extends Component {
@@ -21,29 +21,30 @@ class AddCohortExercise extends Component {
 
   render() {
     if(!this.state.display) {
-      return <button onClick={this.showDisplay}>Add exercises to cohort</button>
+      return <button className="btn btn-success" onClick={this.showDisplay}>Add exercises to cohort</button>
     }
     return (
       <div>
         <FilterExercises />
         <ExercisesList exercisesList={this.props.exercisesList}>
-          <AddExerciseToCohortButton cohortID={this.props.cohortID} handleClick={addExerciseToCohort(this.props.cohortID)} />
+          <AddExerciseToCohortButton cohortID={this.props.cohortID} handleClick={this.props.addExerciseToCohort} />
         </ExercisesList>
         <button className="btn btn-success" onClick={this.hideDisplay}>Done</button>
       </div>
     )
   }
 }
+AddCohortExercise.propTypes = {
+  cohortID: PropTypes.string.isRequired,
+  exercisesList: PropTypes.array.isRequired,
+}
 
-const mapStateToProps = (state, ownProps) => {
-  const allExercises = getFilteredSortedExercises(state) //, (v) => v.id) // get all exercises which follow filters
-  console.log('allExercises', allExercises)
-  console.log('ownProps.exerciseIDs', ownProps.exerciseIDs)
-  const exercisesNotAdded = allExercises.filter(exercise => !_.has(ownProps.exerciseIDs, exercise.id))
-  console.log(exercisesNotAdded)
+const mapStateToProps = (state, { cohortID }) => {
   return {
-    exercisesList: exercisesNotAdded
+    exercisesList: getFilteredSortedExercisesNotInCohort(state, { cohortID })
   }
 }
+
+
 
 export default connect(mapStateToProps, { addExerciseToCohort })(AddCohortExercise)

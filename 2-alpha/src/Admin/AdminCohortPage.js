@@ -31,7 +31,7 @@ export class CohortPage extends Component {
             {/* <Link to={`/admin/cohorts/edit/${cohortID}`}>Edit cohort</Link> */}
           </div>
           <div className="col-12">
-            <CohortExerciseList exerciseIDs={cohort.exerciseIDs} />
+            <CohortExerciseList cohortID={cohortID} exerciseIDs={cohort.exerciseIDs} />
             <AddCohortExercise cohortID={cohortID} exerciseIDs={cohort.exerciseIDs} />
           </div>
         </div>

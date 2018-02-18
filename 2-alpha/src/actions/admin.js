@@ -232,14 +232,44 @@ export const updateCohortName = (id, name) => (dispatch) => {
   }))
 }
 
-export const addExerciseToCohort = (cohortID) => (exerciseID) => (dispatch) => {
-  return firebasePathExists(`exercises/${exerciseID}`).then(() => {
-
-  }).catch((err) => {
-    dispatch({
-      type: 'EXERCISE DOES NOT EXIST'
-    })
+export const addExerciseToCohort = (cohortID, exerciseID) => (dispatch) => {
+  dispatch({
+    type: TYPES.ADD_COHORT_EXERCISE_INIT,
+    cohortID,
+    exerciseID,
   })
+  return firebasePathExists(db, `exercises/${exerciseID}`).then(() => // check exercise exists
+    db.ref(`cohorts/${cohortID}/exerciseIDs`).update({ [exerciseID]: true })) // add exercise to cohort
+    .then(() => dispatch({
+      type: TYPES.ADD_COHORT_EXERCISE_SUCCESS,
+      cohortID, 
+      exerciseID,
+    }))
+    .catch((err) => {
+      return dispatch({
+        type: 'EXERCISE DOES NOT EXIST'
+      })
+    })
+}
+
+export const removeExerciseFromCohort = (cohortID, exerciseID) => (dispatch) => {
+  dispatch({
+    type: TYPES.REMOVE_COHORT_EXERCISE_INIT,
+    cohortID,
+    exerciseID,
+  })
+  console.log(`cohorts/${cohortID}/exerciseIDs/${exerciseID}`)
+  return db.ref(`cohorts/${cohortID}/exerciseIDs/${exerciseID}`).set(null) // add exercise to cohort
+    .then(() => dispatch({
+      type: TYPES.REMOVE_COHORT_EXERCISE_SUCCESS,
+      cohortID,
+      exerciseID,
+    }))
+    .catch((err) => {
+      return dispatch({
+        type: 'EXERCISE DOES NOT EXIST'
+      })
+    })
 }
 
 export const fetchStudents = (ids = []) => (dispatch) => {

@@ -14,27 +14,31 @@ export const getAuthor = (state, props) => state.authorsById[props.authorID]
 export const getAuthorName = createSelector(getAuthor, (author) => author.fullName ? author.fullName : 'anonymous')
 
 export const getCohort = (state, props) => state.cohorts[props.cohortID]
+export const getCohortExercises = createSelector(
+  getCohort,
+  (cohort) => cohort.exerciseIDs
+)
 export const getCohortsMinimal = (state) => state.cohorts
 
 export const getStudent = (state, props) => state.studentsById[props.studentID]
 
-// export const getExercises = (exerciseIDs) => createSelector(
-//   exercisesListSelector,
-//   (exercises) => exerciseIDs.map(exerciseID => exercises[exerciseID])
-// )
+export const getExercises = createSelector( // takes in an object with exerciseIDs { id1: true, id2: true }, returns an object containing full exercise data
+  (state, props) => props.exerciseIDs,
+  exercisesByIdSelector,
+  authorsById,
+  (wantedExercises = {}, allExercises = {}, authorsById = {}) => _.mapValues(wantedExercises, (v, key) => {
+    const exercise = allExercises[key]
+    const author = authorsById[exercise.authorId]
+    const authorName = author ? author.fullName : 'anonymous'
+    return { ...exercise, authorName }
+  })
+)
 
-// exerciseIDs will be an object
-// export const getExercises = (exerciseIDs = {}) => (state) => _.mapKeys(exerciseIDs, (val, key) => 
-// exerciseIDs.map(id => { 
-//   const exercise = state.exercisesById[id]
-//   return {
-//     ...exercise, authorName: state.authorsById[exercise.authorId].fullName
-//   }
-// })
-
-export const getExercises = (exerciseIDs = {}) => (state) => {
-  return _.mapValues(exerciseIDs, (val, key) => state.exercisesById[key])
-}
+export const getExercisesSpecificFields = createSelector(
+  (state, props) => props.fields,
+  getExercises,
+  (fields = [], exercises) => _.pick(exercises, fields)
+)
 
 export const getStudents = (state, props) => state.studentsList
 
@@ -71,9 +75,7 @@ export const getFilteredSortedExercises = createSelector(
     let filteredExercises = IDs
       .map(( id ) => {
         const exercise = exercisesById[id]
-        console.log(authors) // TODO: reduce calls to author getting.
         const authorName = authors[exercise.authorId] ? authors[exercise.authorId].fullName : 'anonymous'
-        console.log('filtered exercise with id of:', id)
         return {...exercise, id, authorName }
       })
 
@@ -101,3 +103,13 @@ export const getFilteredSortedExercises = createSelector(
     }
 
 })
+
+export const getFilteredSortedExercisesNotInCohort = createSelector(
+  getCohortExercises,
+  getFilteredSortedExercises,
+  (cohortExercises, exercises) => {
+    console.log('getFilteredSortedExercisesNotInCohort', cohortExercises, exercises)
+
+    return exercises.filter(exercise => !_.has(cohortExercises, exercise.id))
+  }
+)
