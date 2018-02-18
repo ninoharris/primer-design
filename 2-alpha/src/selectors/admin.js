@@ -20,7 +20,12 @@ export const getCohortExercises = createSelector(
 )
 export const getCohortsMinimal = (state) => state.cohorts
 
-export const getStudent = (state, props) => state.studentsById[props.studentID]
+export const getAlltudents = (state) => state.studentsById
+export const getStudent = createSelector(
+  getAlltudents,
+  (state, props) => props.studentIDs,
+  (students, studentID) => students[studentID]
+)
 
 export const getExercises = createSelector( // takes in an object with exerciseIDs { id1: true, id2: true }, returns an object containing full exercise data
   (state, props) => props.exerciseIDs,
@@ -39,8 +44,6 @@ export const getExercisesSpecificFields = createSelector(
   getExercises,
   (fields = [], exercises) => _.pick(exercises, fields)
 )
-
-export const getStudents = (state, props) => state.studentsList
 
 
 export const getCohorts = createSelector(
@@ -112,4 +115,10 @@ export const getFilteredSortedExercisesNotInCohort = createSelector(
 
     return exercises.filter(exercise => !_.has(cohortExercises, exercise.id))
   }
+)
+
+export const getCohortStudents = createSelector(
+  getCohort,
+  getAlltudents,
+  (cohort, students) => console.log(cohort, students) ||  _.pick(getAlltudents, cohort.studentIDs)
 )

@@ -8,7 +8,7 @@ import { history } from './Router'
 
 // actions
 import { firebasePathExists } from '../api'
-import { fetchAuthors } from '../actions/admin'
+import { fetchAuthors, fetchStudents } from '../actions/admin'
 import { adminLogin, startAdminLogout } from '../actions/auth'
 
 // Components
@@ -24,6 +24,7 @@ import AdminCohortPage from '../Admin/AdminCohortPage'
 class AdminRouter extends Component {
   state = {
     dbAuthorsReady: false,
+    dbStudentsReady: false,
   }
   componentDidMount() {
     // check if logged in/logged out, then send off action to notify the redux store.
@@ -37,6 +38,9 @@ class AdminRouter extends Component {
           .then(() => this.setState({ dbAuthorsReady: true }))
           // redirect if user's record isnt in db yet. this is required for uploading exercises etc.
           .then(() => firebasePathExists(db, `authors/${user.uid}/fullName`)).catch(() => history.push('/admin/my-account'))
+
+        this.props.fetchStudents()
+          .then(() => this.setState({ dbStudentsReady: true }))
           
       } else {
         this.props.startAdminLogout() // tell the store the user is logged out
@@ -49,7 +53,7 @@ class AdminRouter extends Component {
       return <Route path="/admin" component={LoginPage} />
     }
       
-    if(!this.state.dbAuthorsReady) return null // show nothing until we've got data from the server. TODO: replace with loading screeeeeeen!
+    if(!this.state.dbAuthorsReady || !this.state.dbStudentsReady) return null // show nothing until we've got data from the server. TODO: replace with loading screeeeeeen!
 
     return (
       <Switch>
@@ -72,4 +76,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { adminLogin, startAdminLogout, fetchAuthors })(AdminRouter)
+export default connect(mapStateToProps, { adminLogin, startAdminLogout, fetchAuthors, fetchStudents })(AdminRouter)

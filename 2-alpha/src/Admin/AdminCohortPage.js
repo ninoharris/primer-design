@@ -10,6 +10,8 @@ import { getCohort } from '../selectors/admin'
 import AdminHeader from './AdminHeader'
 import CohortExerciseList from './CohortExerciseList'
 import AddCohortExercise from './AddCohortExercise'
+import StudentsList from './StudentsList'
+import AddCohortStudent from './AddCohortStudent'
 
 export class CohortPage extends Component {
   state = {
@@ -31,6 +33,8 @@ export class CohortPage extends Component {
             {/* <Link to={`/admin/cohorts/edit/${cohortID}`}>Edit cohort</Link> */}
           </div>
           <div className="col-12">
+            <StudentsList cohortID={cohortID} studentIDs={cohort.studentIDs} />
+            <AddCohortStudent cohortID={cohortID} studentIDs={cohort.studentIDs} />
             <CohortExerciseList cohortID={cohortID} exerciseIDs={cohort.exerciseIDs} />
             <AddCohortExercise cohortID={cohortID} exerciseIDs={cohort.exerciseIDs} />
           </div>

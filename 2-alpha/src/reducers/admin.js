@@ -76,6 +76,14 @@ const cohort = (state = {}, action = {}) => {
   }
 }
 
+export const students = (state = {}, action = {}) => (dispatch) => {
+  switch (action.type) {
+  case TYPES.FETCH_STUDENTS_SUCCESS:
+    return action.payload
+  default: return state
+  }
+}
+
 
 // export const studentsById = () => {
 

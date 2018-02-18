@@ -272,18 +272,25 @@ export const removeExerciseFromCohort = (cohortID, exerciseID) => (dispatch) => 
     })
 }
 
-export const fetchStudents = (ids = []) => (dispatch) => {
+export const fetchStudents = (ids = {}) => (dispatch) => {
   dispatch({
     type: TYPES.FETCH_STUDENTS_INIT
   })
 
-  return db.ref('students').once('value', (snapshot) => {
-    const payload = snapshot.val()
-    dispatch({
-      type: TYPES.FETCH_STUDENTS_SUCCESS,
-      payload,
-    })
+  const studentIDs = _.keys(ids)
+  Promise.all(studentIDs.map(id => db.ref(`students/${id}`).once('value').then((snapshot) => {
+    return snapshot.val()
+  }))).then((data) => {
+    
   })
+    
+    
+  //   const payload = snapshot.val()
+  //   dispatch({
+  //     type: TYPES.FETCH_STUDENTS_SUCCESS,
+  //     payload,
+  //   })
+  // })
 }
 
 export const addStudent = ({studentID, ...rest}) => (dispatch) => {
