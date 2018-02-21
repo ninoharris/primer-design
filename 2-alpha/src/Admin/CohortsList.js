@@ -15,7 +15,6 @@ class CohortsList extends Component {
   }
   render() {
     const { cohorts } = this.props
-    console.log(cohorts)
     return (
       <ul className="Cohorts-List list-group">
         { this.state.ready ?

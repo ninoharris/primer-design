@@ -170,8 +170,14 @@ body {
 .multiline .codons .codon:nth-of-type(2) {
   top: 0.6rem;
 }
+.multiline .codons .codon:nth-of-type(2)::before {
+  content: ' '
+}
 .multiline .codons .codon:nth-of-type(3) {
   top: 1.2rem;
+}
+.multiline .codons .codon:nth-of-type(3)::before {
+  content: '  '
 }
 
 

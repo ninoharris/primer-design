@@ -2,9 +2,8 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import { updateSortBy } from '../actions/admin'
 import { getFilteredSortedExercises } from '../selectors/admin'
-import ExercisesList, { ExerciseList } from './ExercisesList'
+import ExercisesList from './ExercisesList'
 
 const mapStateToProps = (state) => ({
   exercisesList: getFilteredSortedExercises(state)
@@ -16,15 +15,10 @@ let EditButton = ({ id }) => (
 
 let ExercisesListWithButtons = (props) => {
   return (
-    <ExerciseList {...props}>
+    <ExercisesList {...props}>
       <EditButton>Hello world</EditButton>
-    </ExerciseList>
+    </ExercisesList>
   )
 }
 
-export default connect(mapStateToProps, dispatch => ({
-  sortByName: () => dispatch(updateSortBy('id')),
-  sortByCreatedAt: () => dispatch(updateSortBy('createdAt')),
-  sortByLastModified: () => dispatch(updateSortBy('lastModified')),
-  sortByAuthor: () => dispatch(updateSortBy('authorName')),
-}))(ExercisesListWithButtons)
+export default connect(mapStateToProps)(ExercisesListWithButtons)

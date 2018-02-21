@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 // selectors and actions
-import { fetchCohort } from '../actions/admin'
+import { fetchCohort, fetchStudents } from '../actions/admin'
 import { getCohort } from '../selectors/admin'
 
 // components
@@ -18,11 +18,13 @@ export class CohortPage extends Component {
     ready: false,
   }
   componentDidMount () {
-    this.props.fetchCohort(this.props.cohortID).then(() => this.setState({ ready: true }))
+    Promise.all([
+      this.props.fetchCohort(this.props.cohortID).then((data) => this.props.fetchStudents(data.studentIDs))
+    ]).then(() => this.setState({ ready: true }))
   }
   render() {
     if(!this.state.ready) return <div>Loading...</div>
-    const { cohort, cohortID } = this.props
+    const { cohort, cohortID, students } = this.props
     console.log('In cohort page: ', cohort.exerciseIDs)
     return (
       <div className="container-fluid">
@@ -33,7 +35,9 @@ export class CohortPage extends Component {
             {/* <Link to={`/admin/cohorts/edit/${cohortID}`}>Edit cohort</Link> */}
           </div>
           <div className="col-12">
-            <StudentsList cohortID={cohortID} studentIDs={cohort.studentIDs} />
+            <StudentsList cohortID={cohortID} studentIDs={cohort.studentIDs}>
+              <button onClick={() => { }}></button>{/* TODO: FINISH STUDENTS BIT */}
+            </StudentsList>
             <AddCohortStudent cohortID={cohortID} studentIDs={cohort.studentIDs} />
             <CohortExerciseList cohortID={cohortID} exerciseIDs={cohort.exerciseIDs} />
             <AddCohortExercise cohortID={cohortID} exerciseIDs={cohort.exerciseIDs} />
@@ -52,4 +56,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-export default connect(mapStateToProps, { fetchCohort })(CohortPage)
+export default connect(mapStateToProps, { fetchCohort, fetchStudents })(CohortPage)

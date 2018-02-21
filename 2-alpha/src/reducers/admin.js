@@ -76,10 +76,17 @@ const cohort = (state = {}, action = {}) => {
   }
 }
 
-export const students = (state = {}, action = {}) => (dispatch) => {
+export const students = (state = {}, action = {}) => {
   switch (action.type) {
   case TYPES.FETCH_STUDENTS_SUCCESS:
     return action.payload
+  case TYPES.ADD_STUDENT_SUCCESS:
+    return {...state, [action.studentID]: action.payload}
+  case TYPES.REMOVE_STUDENT_SUCCESS:
+    return _.omit(state, action.studentID)
+  case TYPES.UPDATE_STUDENT_FULLNAME_SUCCESS:
+    const student = state[action.studentID]
+    return {...state, [action.studentID]: {...student, fullName: action.payload }}
   default: return state
   }
 }

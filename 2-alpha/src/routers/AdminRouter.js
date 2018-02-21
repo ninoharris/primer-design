@@ -24,7 +24,7 @@ import AdminCohortPage from '../Admin/AdminCohortPage'
 class AdminRouter extends Component {
   state = {
     dbAuthorsReady: false,
-    dbStudentsReady: false,
+    // dbStudentsReady: false,
   }
   componentDidMount() {
     // check if logged in/logged out, then send off action to notify the redux store.
@@ -39,8 +39,8 @@ class AdminRouter extends Component {
           // redirect if user's record isnt in db yet. this is required for uploading exercises etc.
           .then(() => firebasePathExists(db, `authors/${user.uid}/fullName`)).catch(() => history.push('/admin/my-account'))
 
-        this.props.fetchStudents()
-          .then(() => this.setState({ dbStudentsReady: true }))
+        // this.props.fetchStudents() // never do a mass fetch of students, just go for a few at a time.
+        //   .then(() => this.setState({ dbStudentsReady: true }))
           
       } else {
         this.props.startAdminLogout() // tell the store the user is logged out
@@ -53,7 +53,7 @@ class AdminRouter extends Component {
       return <Route path="/admin" component={LoginPage} />
     }
       
-    if(!this.state.dbAuthorsReady || !this.state.dbStudentsReady) return null // show nothing until we've got data from the server. TODO: replace with loading screeeeeeen!
+    if(!this.state.dbAuthorsReady) return null // show nothing until we've got data from the server. TODO: replace with loading screeeeeeen!
 
     return (
       <Switch>

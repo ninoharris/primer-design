@@ -152,6 +152,7 @@ export const fetchCohort = (id) => (dispatch) => {
       id: snapshot.key,
       payload: snapshot.val(),
     })
+    return snapshot.val()
   })
 }
 
@@ -272,16 +273,21 @@ export const removeExerciseFromCohort = (cohortID, exerciseID) => (dispatch) => 
     })
 }
 
+// ids object usually given by cohort
 export const fetchStudents = (ids = {}) => (dispatch) => {
   dispatch({
     type: TYPES.FETCH_STUDENTS_INIT
   })
 
   const studentIDs = _.keys(ids)
-  Promise.all(studentIDs.map(id => db.ref(`students/${id}`).once('value').then((snapshot) => {
-    return snapshot.val()
+  return Promise.all(studentIDs.map(id => db.ref(`students/${id}`).once('value').then((snapshot) => {
+    console.log('student snapshot', snapshot.val())
+    return { [snapshot.key]: snapshot.val() } // return array of objects of { studentID: data }
   }))).then((data) => {
-    
+    dispatch({
+      type: TYPES.FETCH_STUDENTS_SUCCESS,
+      payload: data.reduce((obj, curr) => ({...obj, ...curr}), {})
+    })
   })
     
     

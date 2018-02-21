@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+
+import { updateSortBy } from '../actions/admin'
 
 import ExerciseListItem from './ExerciseListItem'
 
@@ -39,4 +42,11 @@ ExerciseList.propTypes = {
   exercisesList: PropTypes.arrayOf(PropTypes.object)
 }
 
-export default ExerciseList
+export default connect(null, 
+  dispatch => ({
+  sortByName: () => dispatch(updateSortBy('id')),
+  sortByCreatedAt: () => dispatch(updateSortBy('createdAt')),
+  sortByLastModified: () => dispatch(updateSortBy('lastModified')),
+  sortByAuthor: () => dispatch(updateSortBy('authorName')),
+})
+)(ExerciseList)

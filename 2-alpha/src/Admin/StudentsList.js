@@ -1,31 +1,26 @@
 import _ from 'lodash'
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-import { getCohortStudents } from '../selectors/admin'
-
-const StudentListItem = ({ studentID, fullName, handleClick }) => {
+const StudentListItem = ({ studentID, fullName, handleClick, children }) => {
   return (
     <li>
       {fullName}
+      {React.Children.map(children, (child) => 
     </li>
   )
 }
 
-const StudentList = ({ students = {}, handleClick = () => {}}) => {
+const StudentList = ({ students = {}, handleClick = () => {}, children}) => {
   return (
     <ul className="list-group">
-      {students.map((student) => <StudentListItem {...student} />)}
+      {_.flatMap(students, (student, key) => <StudentListItem key={key} {...student}>{children}</StudentListItem>)}
     </ul>
   )
 }
-
-const mapStateToProps = (state, ownProps) => {
-  const students = _.mapValues(getCohortStudents(state, ownProps), (v, k) => ({ ...v, id: k }))
-  console.log(getCohortStudents(state, ownProps))
-  return {
-    students: _.flatMap(students)
-  }
+StudentList.propTypes = {
+  students: PropTypes.object.isRequired,
 }
 
-export default connect(mapStateToProps, { })(StudentList)
+export default connect(null, { })(StudentList)

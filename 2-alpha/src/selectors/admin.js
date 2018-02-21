@@ -117,8 +117,8 @@ export const getFilteredSortedExercisesNotInCohort = createSelector(
   }
 )
 
-export const getCohortStudents = createSelector(
-  getCohort,
-  getAlltudents,
-  (cohort, students) => console.log(cohort, students) ||  _.pick(getAlltudents, cohort.studentIDs)
-)
+// export const getCohortStudents = createSelector(
+//   getCohort,
+//   getAlltudents,
+//   (cohort, students) => console.log(cohort, students) ||  _.pick(getAlltudents, cohort.studentIDs)
+// )
