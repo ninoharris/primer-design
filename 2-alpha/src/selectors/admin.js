@@ -20,11 +20,16 @@ export const getCohortExercises = createSelector(
 )
 export const getCohortsMinimal = (state) => state.cohorts
 
-export const getAlltudents = (state) => state.studentsById
+export const getAllStudents = (state) => state.studentsById
 export const getStudent = createSelector(
-  getAlltudents,
-  (state, props) => props.studentIDs,
+  getAllStudents,
+  (state, props) => props.studentID,
   (students, studentID) => students[studentID]
+)
+export const getStudents = createSelector(
+  getAllStudents,
+  (state, props) => props.studentIDs,
+  (students, studentIDs) => console.log(students) || _.pick(students, _.keys(studentIDs))
 )
 
 export const getExercises = createSelector( // takes in an object with exerciseIDs { id1: true, id2: true }, returns an object containing full exercise data

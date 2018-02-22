@@ -76,7 +76,7 @@ const cohort = (state = {}, action = {}) => {
   }
 }
 
-export const students = (state = {}, action = {}) => {
+export const studentsById = (state = {}, action = {}) => {
   switch (action.type) {
   case TYPES.FETCH_STUDENTS_SUCCESS:
     return action.payload

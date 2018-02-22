@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 
 import ExercisesList from './ExercisesList'
 
-import { fetchAuthors, removeExerciseFromCohort } from '../actions/admin'
+import { removeExerciseFromCohort } from '../actions/admin'
 import { getExercises } from '../selectors/admin';
 
 const RemoveCohortExerciseButton = ({ handleClick, cohortID, id }) => (
@@ -27,4 +27,4 @@ const mapStateToProps = (state, { exerciseIDs }) => ({
   exerciseIDs: getExercises(state, { exerciseIDs })
 })
 
-export default connect(mapStateToProps, { fetchAuthors, removeExerciseFromCohort })(CohortExerciseList)
+export default connect(mapStateToProps, { removeExerciseFromCohort })(CohortExerciseList)

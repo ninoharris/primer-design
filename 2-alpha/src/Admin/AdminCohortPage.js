@@ -1,44 +1,39 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 // selectors and actions
-import { fetchCohort, fetchStudents } from '../actions/admin'
+import { fetchCohort } from '../actions/admin'
 import { getCohort } from '../selectors/admin'
 
 // components
 import AdminHeader from './AdminHeader'
 import CohortExerciseList from './CohortExerciseList'
 import AddCohortExercise from './AddCohortExercise'
-import StudentsList from './StudentsList'
-import AddCohortStudent from './AddCohortStudent'
+import CohortStudentsView from './CohortStudentsView'
 
 export class CohortPage extends Component {
-  state = {
-    ready: false,
-  }
   componentDidMount () {
-    Promise.all([
-      this.props.fetchCohort(this.props.cohortID).then((data) => this.props.fetchStudents(data.studentIDs))
-    ]).then(() => this.setState({ ready: true }))
+    this.props.fetchCohort(this.props.cohortID)
   }
   render() {
-    if(!this.state.ready) return <div>Loading...</div>
-    const { cohort, cohortID, students } = this.props
-    console.log('In cohort page: ', cohort.exerciseIDs)
+    const { ready, cohort, cohortID } = this.props
+    if(!ready) return <div>Loading...</div>
     return (
       <div className="container-fluid">
         <AdminHeader title={`Viewing cohort: ${cohort.cohortName}`} />
         <div className="row">
           <div className="col-12">
             <h4>General cohort info</h4>
-            {/* <Link to={`/admin/cohorts/edit/${cohortID}`}>Edit cohort</Link> */}
+            {/* <Link to={`/admin/cohorts/edit/${cohortID}`}
+          
+            INSIDE THIS WILL BE SUMMARY STUFF FROM LAMBDA FUNCTION
+          
+          >Edit cohort</Link> */}
           </div>
           <div className="col-12">
-            <StudentsList cohortID={cohortID} studentIDs={cohort.studentIDs}>
-              <button onClick={() => { }}></button>{/* TODO: FINISH STUDENTS BIT */}
-            </StudentsList>
-            <AddCohortStudent cohortID={cohortID} studentIDs={cohort.studentIDs} />
+            {/* INSIDE THIS WILL BE BROUGHT IN BY ROUTER OR WITHIN THE PAGE ITSELF. AKA VIEW VS EDIT */}
+            <CohortStudentsView cohortID={cohortID} studentIDs={cohort.studentIDs} />
             <CohortExerciseList cohortID={cohortID} exerciseIDs={cohort.exerciseIDs} />
             <AddCohortExercise cohortID={cohortID} exerciseIDs={cohort.exerciseIDs} />
           </div>
@@ -50,10 +45,18 @@ export class CohortPage extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   const cohortID = ownProps.match.params.id
+  const cohort = getCohort(state, { cohortID })
+
+  if(!cohort) return { 
+    cohortID, 
+    ready: false 
+  } // not loaded yet
+
   return {
     cohortID,
-    cohort: getCohort(state, { cohortID })
+    cohort,
+    ready: true,
   }
 }
 
-export default connect(mapStateToProps, { fetchCohort, fetchStudents })(CohortPage)
+export default connect(mapStateToProps, { fetchCohort })(CohortPage)

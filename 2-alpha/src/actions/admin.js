@@ -299,12 +299,11 @@ export const fetchStudents = (ids = {}) => (dispatch) => {
   // })
 }
 
-export const addStudent = ({studentID, ...rest}) => (dispatch) => {
-  const { cohortID, authorID, fullName } = rest
+export const addStudent = (cohortID, authorID) => (studentID, fullName) => (dispatch) => {
   dispatch({
     type: TYPES.ADD_STUDENT_INIT,
     studentID,
-    ...rest
+    cohortID,
   })
   // check if student doesn't already exist
   return firebasePathAlreadyExists(db, `students/${studentID}`)
