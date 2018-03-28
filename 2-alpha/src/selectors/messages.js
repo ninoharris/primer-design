@@ -140,6 +140,12 @@ export const messageIDsToDetails = {
   "REVERSE_MISSING_STOP_CODON": () => ({
     title: 'Your construct requires a stop codon.'
   }),
+  "FORWARD_INCLUDES_UNECESSARY_START_CODON": () => ({
+    title: 'Construct contains an unecessary start codon.'
+  }),
+  "REVERSE_INCLUDES_UNECESSARY_STOP_CODON": () => ({
+    title: 'Construct contains an unecessary stop codon.'
+  }),
   "FORWARD_START_CODON_OUT_OF_FRAME": (frame) => ({
     title: `Your start codon is out of frame by ${frame} base${frame > 1 ? 's' : ''}!`
   }),

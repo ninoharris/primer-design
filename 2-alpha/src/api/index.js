@@ -251,7 +251,7 @@ export const isTooLong = (seq, max = 20) => {
 }
 
 export const getRestrictionSiteMatches = (sequence) => {
-  const matches = []
+  const matches = [] // returns array
   _.forEach(RESites, RE => {
     let reg = RegExp(RE.seq, 'g')
     let result = reg.exec(sequence)
@@ -287,4 +287,12 @@ export const pickTextColor = (bgColor, lightColor = '#FFFFFF', darkColor = '#333
 
 export const properSpacing = (str = '') => {
   return str.replace(/\s/g, "\u2001") // this is because some browsers wont start a new line with normal spaces, so we replace all spaces with breaking spaces. (\u00A0)
+}
+
+export const addCutsAsSpaces = (str, cuts = []) => {
+  if(!Array.isArray(cuts)) throw Error('Cuts should always be an array')
+  for(let i = cuts.length; i > 0; i -= 1) {
+    str = [str.substring(0, cuts[i]), ' ', str.substring(cuts[i])].join('')
+  }
+  return str
 }

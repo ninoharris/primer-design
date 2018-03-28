@@ -93,8 +93,7 @@ export const getVectorRestrictionSites = createSelector(
   restrictionSitesSelector,
   getBothVectorStrands,
   (RESites, { forward }) => {
-    return api.getRestrictionSiteMatches(forward)
-    // 20: { pos: 20, name: 'X', seq: 'AAAAAA' }
+    return api.getRestrictionSiteMatches(forward) // get array
   }
 )
 

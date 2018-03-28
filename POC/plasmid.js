@@ -72,9 +72,6 @@ for(let i = 0; i < 9; i++) {
 
 const RESitesJSON = require('./data')
 let RESitesClean = RESitesJSON["default"]["res"]
-// console.log(RESitesClean)
-
-
 
 // Select 'guaranteed' RE sites
 let RE1, RE2, RE1Index, RE2Index
@@ -85,11 +82,7 @@ RE1 = RESites.splice(RE1Index, 1)[0]
 do {
 	RE2Index = randomInt(RESites.length)
 	RE2 = RESites.splice(RE2Index, 1)[0]
-	//  RESites[RE2Index]
 } while (conflicts(RE1.seq, RE2.seq))
-// console.log("RE1", RE1)
-// console.log("RE2", RE2)
-
 
 // Appoint 2 grps to contain one of each of the 2 'guaranteeds'
 let grpContainingRE1 = randomInt(sequence.length), grpContainingRE2
@@ -105,7 +98,6 @@ sequence[grpContainingRE2]["RESite"] = RE2
 // Choose which divisions are going to contain the 'filler' RE sites
 for(let i = 0, count = 0, used = {}; i < sequence.length && count < 6; i++) {
 	// Chance of a division containing a RE site is 40%
-	// TODO: Prevent overriding, by checking if a division contains a RE
 	if(sequence[i].hasOwnProperty('RESite') || Math.random() < 0.6) continue
 	sequence[i]["RESite"] = RESites[randomInt(RESites.length)]
 	count++

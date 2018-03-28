@@ -8,12 +8,13 @@ export const loadState = () => {
 }
 
 export const saveState = (state) => {
-  const { formInputs, showCodons, showLoggedInExercisesOnly, currentStudentID } = state
+  const { formInputs, showCodons, showAdminEvaluation, showLoggedInExercisesOnly, currentStudentID } = state
   const savedState = {
     formInputs,
     showCodons,
     currentStudentID,
     showLoggedInExercisesOnly,
+    showAdminEvaluation,
   }
   const serializedState = JSON.stringify(savedState, null)
   window.localStorage.setItem('state', serializedState)

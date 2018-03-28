@@ -16,7 +16,7 @@ const StudentList = ({ students = {}, handleClick = () => {}, children}) => {
   console.log('studentList:', students)
   return (
     <ul className="list-group">
-      {_.flatMap(students, (student, key) => <StudentListItem key={key} {...student}>{children}</StudentListItem>)}
+      {_.flatMap(students, (student, studentID) => <StudentListItem key={studentID} {...student} studentID={studentID}>{children}</StudentListItem>)}
     </ul>
   )
 }

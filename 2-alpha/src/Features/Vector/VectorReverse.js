@@ -18,7 +18,7 @@ class VectorReverse extends Component {
           {_.map(matches, (match, matchPos) => (
             <span className="multiple-match" key={matchPos}>
               {_.pad('', match.pos)}
-              <span key={matchPos} className="match">{match.seq}</span>
+              <span key={matchPos} className="match">{match.REMatchingSeq}</span>
             </span>
           ))}
         </ReactCSSTransitionGroup>
@@ -34,7 +34,7 @@ class VectorReverse extends Component {
           
           <span className="RG unimportant"><Left3 />{RG}</span>
           <span className="trailing">{singleMatch.trailingSeq}</span>
-          <span className="restriction-site-match">{singleMatch.seq}</span>
+          <span className="restriction-site-match">{singleMatch.REMatchingSeq}</span>
           <span className="leading">{singleMatch.leadingSeq}</span>
           <Right5 />
         </div>

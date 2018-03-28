@@ -56,29 +56,65 @@ const createEvaluation = (...initialStates) => {
   }
 }
 
+const getMatchParameters = (RESite, input, forwardDirection = true) => {
+  // a RESite has a sequence, pos, cutsForward, name
+  // if input is for the reverse strand, then its RESite seq must be reversed
+  // const REMatchingSeq = forwardDirection ? RESite.seq : api.reverse(RESite.seq)
+  
+  // every input can be split up into a leading, "match", and trailing sequence:
+  // ABCTTTTGGXYZ -> ABC leading, TTTTGG match, XYZ leading
+  // console.log(REMatchingSeq)
+  const REMatchPos = input.indexOf(RESite.seq)
+  // if(REMatchPos === -1) throw Error('getMatchParameters called on zero matches')
+
+  // lets chunk up the input into two parts now:
+  // for forward primer: [leading, trailing]
+  // for reverse primer: [trailing, leading]
+  let seqChunks = [
+    input.slice(0, REMatchPos),
+    input.slice(REMatchPos + RESite.seq.length)
+  ]
+  if(forwardDirection === false) {
+    seqChunks = seqChunks.map(api.reverse)
+  }
+  let trailingSeq = forwardDirection ? seqChunks[1] : seqChunks[1]
+  let leadingSeq = forwardDirection ? seqChunks[0] : seqChunks[0]
+  return {
+    input,
+    REMatchPos,
+    ...RESite,
+    leadingSeq,
+    REMatchingSeq: forwardDirection ? RESite.seq : api.reverse(RESite.seq), 
+    trailingSeq,
+    cutsAt: RESite.pos + (forwardDirection ? RESite.cutsForward : RESite.cutsReverse),
+    endPos: RESite.pos + RESite.seq.length,
+    positionInVector: RESite.pos - (forwardDirection ? leadingSeq.length : trailingSeq.length),
+  }
+}
+
 export const getUserVectorMatchForward = createSelector(
   getUFV,
   getCurrentExercise,
   getVectorRestrictionSites,
   (input, { fusionStart, vectorStart, vector }, RESites) => {
-    const matchesObj = _.pickBy(RESites, (RESite) => input.includes(RESite.seq))
-    const matches = _.values(matchesObj)
-    if (matches.length !== 1) {
-      return { matches, multipleMatches: true }
+    const matches = RESites 
+      .filter(RESite => input.includes(RESite.seq))
+      .map(RESite => getMatchParameters(RESite, input, true))
+
+    if (matches.length !== 1) {  
+      return { 
+        matches,
+        multipleMatches: true
+      }
     }
-    const singleMatch = { ...matches[0] }
-    const REMatchPos = singleMatch['REMatchPos'] = input.indexOf(singleMatch.seq) // XXATAGCGYY (primer) -> 2
-    singleMatch['leadingSeq'] = input.slice(0, REMatchPos) // XXATAGCGYY (primer)-> XX
-    singleMatch['trailingSeq'] = input.slice(REMatchPos + singleMatch.seq.length) // XXATAGCGYY (primer) -> YY
-    singleMatch['positionInVector'] = singleMatch.pos - singleMatch['leadingSeq'].length  // position to put primer relative to vector.
-    singleMatch['endPos'] = singleMatch['positionInVector'] + 6
+    const singleMatch = { ...matches[0] } // only one match
 
-    if (!fusionStart) return { singleMatch } // no required frame -> return now and say we dont need frame here
-    singleMatch['betweenStartAndREStr'] = vector.substring(vectorStart, singleMatch.pos) // ZZZZZATAGCG (vector) -> ZZZZZ
-    singleMatch['betweenStartAndRE'] = singleMatch['betweenStartAndREStr'].length // ZZZZZ -> 5
-    singleMatch['toGetDesiredFrame'] = (3 - singleMatch['betweenStartAndRE'] % 3) % 3
-    singleMatch['input'] = input
-
+    if(fusionStart) {
+      singleMatch['betweenStartAndREStr'] = vector.substring(vectorStart, singleMatch.pos) // ZZZZZATAGCG (vector) -> ZZZZZ
+      singleMatch['betweenStartAndRE'] = singleMatch['betweenStartAndREStr'].length // ZZZZZ -> 5
+      singleMatch['toGetDesiredFrame'] = (3 - singleMatch['betweenStartAndRE'] % 3) % 3
+      // singleMatch['input'] = input
+    }
     // return console.log('singleMatch:', { singleMatch }) || { singleMatch }
     return { singleMatch }
   }
@@ -86,30 +122,28 @@ export const getUserVectorMatchForward = createSelector(
 
 export const getUserVectorMatchReverse = createSelector(
   getURVHund80,
-  getURVReverse,
+  getURV,
   getCurrentExercise,
   getVectorRestrictionSites,
   (inputHund80, input, { fusionEnd, vectorEnd, vector }, RESites) => {
-    const matchesObj = _.pickBy(RESites, (RESite) => inputHund80.includes(RESite.seq))
-    const matchesObjSeqReverse = _.map(matchesObj, (RESite => ({ ...RESite, seq: api.reverse(RESite.seq) })))
-    const matches = _.values(matchesObjSeqReverse)
+    const matches = RESites
+      .filter(RESite => inputHund80.includes(RESite.seq))
+      .map(RESite => getMatchParameters(RESite, input, false))
+
     if (matches.length !== 1) {
-      return { matches, multipleMatches: true }
+      return { 
+        matches,
+        multipleMatches: true
+      }
     }
-    const singleMatch = { ...matches[0] }
+    const singleMatch = { ...matches[0] } // only one match
 
-    const REMatchPos = singleMatch['REMatchPos'] = input.indexOf(singleMatch.seq) // XXATAGCGYY (primer) -> 2
-    singleMatch['leadingSeq'] = input.slice(REMatchPos + singleMatch.seq.length) // 5'-XXATAGCGYY-3' = 3'-YYGCGATAXX-5' (primer)-> XX
-    singleMatch['trailingSeq'] = input.slice(0, REMatchPos) // XXATAGCGYY (primer) -> YY
-    singleMatch['positionInVector'] = singleMatch['pos'] - singleMatch['trailingSeq'].length // position to put primer relative to vector.
-    if (!fusionEnd) return { singleMatch } // no required frame -> return now and say we dont need frame here
-
-    singleMatch['betweenEndAndREStr'] = vector.slice(singleMatch.pos + 6, vectorEnd) // ATAGCGZZZZZ (vector) -> ZZZZZ
-    singleMatch['betweenEndAndRE'] = singleMatch['betweenEndAndREStr'].length // ZZZZZ -> 5
-    singleMatch['toGetDesiredFrame'] = (3 - singleMatch['betweenEndAndRE'] % 3) % 3
-    singleMatch['input'] = input
-
-    // console.log('singleMatch:', { singleMatch })
+    if (fusionEnd) {
+      singleMatch['betweenEndAndREStr'] = vector.slice(singleMatch.pos + 6, vectorEnd) // ATAGCGZZZZZ (vector) -> ZZZZZ
+      singleMatch['betweenEndAndRE'] = singleMatch['betweenEndAndREStr'].length // ZZZZZ -> 5
+      singleMatch['toGetDesiredFrame'] = (3 - singleMatch['betweenEndAndRE'] % 3) % 3
+      // singleMatch['input'] = input
+    }
     return { singleMatch }
   }
 )
