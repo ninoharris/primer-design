@@ -22,10 +22,10 @@ import {
 const createEvaluation = (...initialStates) => {
   const state = Array.isArray(initialStates) ? initialStates.reduce((p, c) => [...p, ...c], []) : []
   let anyErrors = false
-  const createMessage = ({ inputs, success, messageID, context }) => {
+  const createMessage = ({ inputs, success, messageID, contexts }) => {
     if (!inputs) throw Error('Missing inputs in createMessage.')
     if (!messageID) throw Error('Missing messageID in createMessage.')
-    state.push({ inputs, success, ID: messageID, context })
+    state.push({ inputs, success, ID: messageID, contexts })
     if (success === false) anyErrors = true
     return // to send back true or false or null here?
   }
@@ -36,12 +36,14 @@ const createEvaluation = (...initialStates) => {
   const contains = (searchID) => state.find(msg => msg.ID === searchID)
   const doesntContain = (searchID) => !contains(searchID)
 
-  const createCategory = (...inputs) => ({ // inputs include:
-    success: (messageID, context) => {
-      createMessage({ inputs, messageID, context, success: true })
+  const createCategory = (inputs = [], contexts = {}) => ({ 
+    // inputs include which parts of the primer(s).
+    // context refers to the match objects. This provides information for advice messages and analytics.
+    success: (messageID) => {
+      createMessage({ inputs, messageID, /* contexts, is context necessary for correctness? */ success: true })
     },
-    failure: (messageID, context) => {
-      createMessage({ inputs, messageID, context, success: false })
+    failure: (messageID) => {
+      createMessage({ inputs, messageID, contexts, success: false })
       return getEvaluation()
     }
   })
@@ -113,9 +115,7 @@ export const getUserVectorMatchForward = createSelector(
       singleMatch['betweenStartAndREStr'] = vector.substring(vectorStart, singleMatch.pos) // ZZZZZATAGCG (vector) -> ZZZZZ
       singleMatch['betweenStartAndRE'] = singleMatch['betweenStartAndREStr'].length // ZZZZZ -> 5
       singleMatch['toGetDesiredFrame'] = (3 - singleMatch['betweenStartAndRE'] % 3) % 3
-      // singleMatch['input'] = input
     }
-    // return console.log('singleMatch:', { singleMatch }) || { singleMatch }
     return { singleMatch }
   }
 )
@@ -142,7 +142,6 @@ export const getUserVectorMatchReverse = createSelector(
       singleMatch['betweenEndAndREStr'] = vector.slice(singleMatch.pos + 6, vectorEnd) // ATAGCGZZZZZ (vector) -> ZZZZZ
       singleMatch['betweenEndAndRE'] = singleMatch['betweenEndAndREStr'].length // ZZZZZ -> 5
       singleMatch['toGetDesiredFrame'] = (3 - singleMatch['betweenEndAndRE'] % 3) % 3
-      // singleMatch['input'] = input
     }
     return { singleMatch }
   }
@@ -197,8 +196,8 @@ export const getHaystackEvaluations = createSelector(
   (FG, RG, editing) => {
     // set up
     const Eval = createEvaluation()
-    const EvalFG = Eval.createCategory('FG')
-    const EvalRG = Eval.createCategory('RG')
+    const EvalFG = Eval.createCategory(['FG'], [FG])
+    const EvalRG = Eval.createCategory(['RG'], [RG])
 
     // check if right completely (and frame)
     if (FG.input) {
@@ -230,11 +229,12 @@ export const getVectorEvaluations = createSelector(
   getURV,
   getHaystackForwardRestrictionSites,
   getHaystackReverseRestrictionSites,
-  (FV, RV, UFV, URV, FG_RE_Sites, RG_RE_Sites) => {
+  getCurrentExercise,
+  (FV, RV, UFV, URV, FG_RE_Sites, RG_RE_Sites, exercise) => {
     const Eval = createEvaluation()
-    const EvalFV = Eval.createCategory('FV')
-    const EvalRV = Eval.createCategory('RV')
-    const FVRV = Eval.createCategory('RV', 'FV')
+    const EvalFV = Eval.createCategory(['FV'], {FV})
+    const EvalRV = Eval.createCategory(['RV'], {RV})
+    const FVRV = Eval.createCategory(['RV', 'FV'], {RV, FV})
     const UFVReadyToCheck = UFV.length >= 6
     const URVReadyToCheck = URV.length >= 6
 
@@ -247,6 +247,7 @@ export const getVectorEvaluations = createSelector(
         EvalFV.success('FV_MATCHES_ONCE')
         if (FG_RE_Sites.find(RESite => UFV.includes(RESite.seq))) EvalFV.failure('HAYSTACK_FORWARD_CONTAINS_FV_SITE')
         if (RG_RE_Sites.find(RESite => UFV.includes(RESite.seq))) EvalFV.failure('HAYSTACK_REVERSE_CONTAINS_FV_SITE')
+        if (exercise.fusionStart && FV.singleMatch.pos < exercise.vectorStart) EvalFV.failure("FV_BEFORE_START")
       } else {
         // check if reversed input contains an RE site, indicate that the wrong direction was supplied
         if (api.getRestrictionSiteMatches(api.reverse(UFV)).length > 0) EvalFV.failure('FV_MATCHES_WRONG_STRAND') // BUGGY FIX THIS....
@@ -259,6 +260,7 @@ export const getVectorEvaluations = createSelector(
         EvalRV.success('RV_MATCHES_ONCE')
         if (FG_RE_Sites.find(RESite => URV.includes(RESite.seq))) EvalRV.failure('HAYSTACK_FORWARD_CONTAINS_RV_SITE')
         if (RG_RE_Sites.find(RESite => URV.includes(RESite.seq))) EvalRV.failure('HAYSTACK_REVERSE_CONTAINS_RV_SITE')
+        if (exercise.fusionStart && RV.singleMatch.pos > exercise.vectorEnd) EvalFV.failure("RV_AFTER_END")
       } else {
         if (api.getRestrictionSiteMatches(api.reverse(URV)).length > 0) EvalRV.failure('RV_MATCHES_WRONG_STRAND') // BUGGY
       }
@@ -300,11 +302,12 @@ export const getAllEvaluations = createSelector(
   getUserVectorMatchReverse,
   getHaystackForwardMatches,
   getHaystackReverseMatches,
-  (EvalVector, EvalHaystack, exercise, FV, RV, FG, RG) => {
+  // do further checks
+  (EvalVector, EvalHaystack, exercise, FV, RV, FG, RG, doFurtherChecks = false) => {
     const Eval = createEvaluation(EvalHaystack, EvalVector)
-    const EvalFV = Eval.createCategory('FV')
-    const EvalRV = Eval.createCategory('RV')
-    const EvalALL = Eval.createCategory('RV', 'FV', 'FG', 'RG')
+    const EvalFV = Eval.createCategory(['FV'], {FV})
+    const EvalRV = Eval.createCategory(['RV'], {RV})
+    const EvalALL = Eval.createCategory(['RV', 'FV', 'FG', 'RG'], {RV, FV, FG, RG})
     if (!FV.singleMatch || !RV.singleMatch) return Eval.getEvaluation()
     // does Forward primer need a start codon in this exercise, if not:
     if (FG.isExact && FG.normalMatch) {
@@ -359,8 +362,7 @@ export const getAllEvaluations = createSelector(
       }
     }
 
-    // check if picked restriction sites are not in haystack
-    
+    // check 5' end cap
 
     // check 3' GC end cap
 
@@ -368,7 +370,7 @@ export const getAllEvaluations = createSelector(
 
     // check melting temperature
 
-    // check 5' end cap
+
 
     // COMPLETED EXERCISE. Ready to go
     if (Eval.contains('VECTOR_PRIMERS_APART') && Eval.contains('REVERSE_BOTH_IN_FRAME') && Eval.contains('FORWARD_BOTH_IN_FRAME')) {

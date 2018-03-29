@@ -43,6 +43,7 @@ class Evaluation extends Component {
     
     const successMessages = allMessages.filter(msg => msg.success).reverse().slice(0, 3)
     const failureMessage = allMessages.find(msg => !msg.success)
+    console.dir(failureMessage)
     return (
       <ul className="evaluation-list">
         {failureMessage ? <FailureMessage {...failureMessage} />: ''}
