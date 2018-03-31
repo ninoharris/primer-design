@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-
-import { messageIDsToDetails } from '../../selectors/messages'
+import { currentExerciseID, getCurrentStudentID } from '../../selectors'
+import { sendAdviceMessage as sendAdviceMessageAction } from '../../actions'
 
 export class FailureMessage extends Component {
   state = { showMessage: false }
@@ -14,14 +14,20 @@ export class FailureMessage extends Component {
   }
   showMessage = () => {
     this.setState({ showMessage: true })
+    const {
+      title,
+      additional,
+      ID,
+    } = this.props.message
+    this.props.sendAdviceMessage({ title, additional, ID })
   }
   componentWillReceiveProps(nextProps) {
     if(nextProps.ID !== this.props.ID) this.setState({ showMessage: false })
   }
   render() {
-    const { ID, context, inputs } = this.props
+    const { ID, title, additional, url, inputs = []} = this.props.message
+    console.log('message', this.props.message)
     const { showMessage } = this.state
-    const details = messageIDsToDetails[ID](context)
     const inputsFullName = inputs.map((input) => this.inputs[input])
     return (
       <li
@@ -29,9 +35,9 @@ export class FailureMessage extends Component {
         onClick={this.showMessage}
       >
         <div className="actual-error">
-          <strong>{details.title}</strong>
-          {details.additional ? <small className="additional"><hr />{details.additional}</small> : ''}
-          {details.url ? <a target="_blank" className="btn btn-outline-light btn-sm mt-2" href={`/tutorials${details.url}`}>See related tutorial </a> : ''}
+          <strong>{title}</strong>
+          {additional ? <small className="additional"><hr />{additional}</small> : ''}
+          {url ? <a target="_blank" className="btn btn-outline-light btn-sm mt-2" href={`/tutorials${url}`}>See related tutorial </a> : ''}
         </div>
         {this.state.showMessage ? '' : 
           <div className="error-overlay">
@@ -49,4 +55,14 @@ FailureMessage.propTypes = {
   ID: PropTypes.string.isRequired,
 }
 
-export default FailureMessage
+
+const sendAdviceMessage = (message) => (dispatch, getState) => {
+  const exerciseID = currentExerciseID(getState())
+  const studentID = getCurrentStudentID(getState())
+  dispatch(sendAdviceMessageAction(studentID, exerciseID)(message))
+}
+
+
+export default connect(null, {
+  sendAdviceMessage
+})(FailureMessage)

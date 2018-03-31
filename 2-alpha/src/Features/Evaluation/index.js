@@ -4,6 +4,8 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import { getAllEvaluations } from '../../selectors/evaluations'
 import { messageIDsToDetails } from '../../selectors/messages'
 
+import { SUCCESS, ERROR, INFO } from '../../selectors/evaluator-messages'
+
 import FailureMessage from './FailureMessage'
 
 // const Fade = ({ children, ...props}) => (
@@ -21,7 +23,7 @@ class Evaluation extends Component {
   }
   displayMessage = (msg, i) => {
     const details = messageIDsToDetails[msg.ID](msg.context)
-    const className = 'evaluation-item ' + (msg.success ? 'success' : 'failure')
+    const className = 'evaluation-item ' + (msg.type ===  SUCCESS ? 'success' : 'info')
     return (
       <li
         className={className}
@@ -38,15 +40,21 @@ class Evaluation extends Component {
     )
   }
   render() {
-    const allMessages = this.props.messageIDsList
+    // const allMessages = this.props.messageIDsList.getMessages()
+    // if(!allMessages) return null
+    const { advice } = this.props
+    const allMessages = advice.getMessages()
     if(!allMessages) return null
     
-    const successMessages = allMessages.filter(msg => msg.success).reverse().slice(0, 3)
-    const failureMessage = allMessages.find(msg => !msg.success)
-    console.dir(failureMessage)
+    // how many messages are displayed for each is arbitrary and can be changed without errors
+    const successMessages = advice.getSuccessMessages().reverse().slice(0, 3)
+    const errorMessage = advice.getErrorMessages()[0] // get first one
+    const infoMessages = advice.getInfoMessages().slice(0, 2)
+    // console.dir(failureMessage)
     return (
       <ul className="evaluation-list">
-        {failureMessage ? <FailureMessage {...failureMessage} />: ''}
+        {errorMessage ? <FailureMessage message={errorMessage} />: ''}
+        {infoMessages.map((msg, i) => this.displayMessage(msg, i + 1))}
         {successMessages.map((msg, i) => this.displayMessage(msg, i+1))}
       </ul>
     )
@@ -54,7 +62,7 @@ class Evaluation extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  messageIDsList: getAllEvaluations(state)
+  advice: getAllEvaluations(state)
 })
   
 

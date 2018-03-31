@@ -152,6 +152,15 @@ export const doShowAdminEvaluation = (on) => ({
   payload: on,
 })
 
+export const sendAdviceMessage = (studentID, exerciseID) => (message) => (dispatch) => {
+  dispatch({
+    type: TYPES.SEND_ADVICE_MESSAGE_INIT,
+    studentID,
+    exerciseID,
+    message,
+  })
+}
+
 export const attemptCompletion = () => (dispatch, getState) => {
   if(getIsSuccessful(getState())) {
     dispatch({

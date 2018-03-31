@@ -22,7 +22,7 @@ export const getExercise = (state, { id }) => state.exercisesById[id]
 
 export const getCurrentStudentID = state => state.currentStudentID
 export const getCurrentStudentProfile = state => state.currentStudent
-export const currentExerciseSelector = state => state.currentExercise
+export const currentExerciseID = state => state.currentExercise
 export const getAttemptedExercises = createSelector(
   getCurrentStudentProfile,
   (student) => student.exercises
@@ -55,7 +55,7 @@ const restrictionSitesSelector = state => state.restrictionSites
 
 export const getCurrentExercise = createSelector(
   exercisesByIdSelector,
-  currentExerciseSelector,
+  currentExerciseID,
   (allExercises, currentId) => ({ ...allExercises[currentId] })
 )
 

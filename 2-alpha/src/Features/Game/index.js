@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { fetchAllExercises, selectExercise } from '../../actions'
-import { currentExerciseSelector } from '../../selectors'
+import { currentExerciseID } from '../../selectors'
 
 // Components
 import Form from '../Form'
@@ -47,6 +47,6 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({ currentExercise: currentExerciseSelector(state) })
+const mapStateToProps = (state) => ({ currentExercise: currentExerciseID(state) })
 
 export default connect(mapStateToProps, { fetchAllExercises, selectExercise })(App)

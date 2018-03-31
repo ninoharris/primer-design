@@ -296,3 +296,39 @@ export const addCutsAsSpaces = (str, cuts = []) => {
   }
   return str
 }
+
+export const getMatchParameters = (RESite, input, forwardDirection = true) => {
+  // a RESite has a sequence, pos, cutsForward, name
+  // if input is for the reverse strand, then its RESite seq must be reversed
+  // const REMatchingSeq = forwardDirection ? RESite.seq : api.reverse(RESite.seq)
+
+  // every input can be split up into a leading, "match", and trailing sequence:
+  // ABCTTTTGGXYZ -> ABC leading, TTTTGG match, XYZ leading
+  // console.log(REMatchingSeq)
+  const REMatchPos = input.indexOf(RESite.seq)
+  // if(REMatchPos === -1) throw Error('getMatchParameters called on zero matches')
+
+  // lets chunk up the input into two parts now:
+  // for forward primer: [leading, trailing]
+  // for reverse primer: [trailing, leading]
+  let seqChunks = [
+    input.slice(0, REMatchPos),
+    input.slice(REMatchPos + RESite.seq.length)
+  ]
+  if (forwardDirection === false) {
+    seqChunks = seqChunks.map(reverse)
+  }
+  let trailingSeq = forwardDirection ? seqChunks[1] : seqChunks[1]
+  let leadingSeq = forwardDirection ? seqChunks[0] : seqChunks[0]
+  return {
+    input,
+    REMatchPos,
+    ...RESite,
+    leadingSeq,
+    REMatchingSeq: forwardDirection ? RESite.seq : reverse(RESite.seq),
+    trailingSeq,
+    cutsAt: RESite.pos + (forwardDirection ? RESite.cutsForward : RESite.cutsReverse),
+    endPos: RESite.pos + RESite.seq.length,
+    positionInVector: RESite.pos - (forwardDirection ? leadingSeq.length : trailingSeq.length),
+  }
+}
