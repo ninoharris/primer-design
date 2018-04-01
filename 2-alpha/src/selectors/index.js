@@ -13,9 +13,9 @@ export const getEditingGameInputs = state => state.editingInputs
 export const exercisesByIdSelector = state => state.exercisesById
 export const exercisesListSelector = createSelector( // array of exercises
   exercisesByIdSelector,
-  (exercises) => _.keys(exercises)
+  (exercises) => Object.keys(exercises)
 )
-export const cohortExercisesSelector = state => state.cohortExerciseList
+export const getCohortExercises = state => state.cohortExerciseList
 
 export const getMultilineWidth = state => state.charMultilineWidth
 export const getExercise = (state, { id }) => state.exercisesById[id]
@@ -23,18 +23,40 @@ export const getExercise = (state, { id }) => state.exercisesById[id]
 export const getCurrentStudentID = state => state.currentStudentID
 export const getCurrentStudentProfile = state => state.currentStudent
 export const currentExerciseID = state => state.currentExercise
-export const getAttemptedExercises = createSelector(
+export const getAllAttemptedExercises = createSelector( // returns object of {exID: { completed: BOOL, attempts: {} }}
   getCurrentStudentProfile,
-  (student) => student.exercises
+  (student) => student.exercises 
 )
-export const getUnattemptedExercises = createSelector(
-  getAttemptedExercises,
-  cohortExercisesSelector,
-  (attemptedExercises, allCohortExercises) => _.omit(allCohortExercises, _.keys(attemptedExercises))
+export const getCompletedExercises = createSelector(
+  getAllAttemptedExercises,
+  (attemptedExercises = {}) => _.pickBy(attemptedExercises, (val) => val.completed)
+)
+export const getCompletedExercisesList = createSelector(
+  getCompletedExercises,
+  (completedExercises = {}) => Object.keys(completedExercises)
+)
+export const getUnattemptedExercises = createSelector( // returns object
+  getCohortExercises,
+  getAllAttemptedExercises,
+  (allCohortExercises = {}, attemptedExercises = {}) => _.omit(allCohortExercises, Object.keys(attemptedExercises))
 )
 export const getUnattemptedExercisesList = createSelector( // get array
   getUnattemptedExercises,
-  (exercises) => _.keys(exercises)
+  (exercises = {}) => Object.keys(exercises)
+)
+export const getAttemptedButNotCompletedExercises = createSelector(
+  getAllAttemptedExercises,
+  getCompletedExercises,
+  (attempted = {}, completed = {}) => _.omit(attempted, _.completed)
+)
+export const getAttemptedButNotCompletedExercisesList = createSelector(
+  getAttemptedButNotCompletedExercises,
+  (exercises = {}) => Object.keys(exercises)
+)
+export const getAvailableExercisesList = createSelector(
+  getUnattemptedExercisesList,
+  getAttemptedButNotCompletedExercisesList,
+  (unattempted, attempted) => [...unattempted, ...attempted]
 )
 
 const uFV = state => state.formInputs.FV

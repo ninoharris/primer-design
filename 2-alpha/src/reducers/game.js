@@ -66,16 +66,13 @@ export const userPhase1Complete = (state = false, action) => {
   }
 }
 
-export const success = (state = false, action) => {
+export const displayCompletedExercise = (state = false, action) => {
   switch (action.type) {
-    case TYPES.EXERCISE_COMPLETION_SUCCESS:
-      return true
-    case TYPES.ADD_EXERCISE:
-    case TYPES.EXERCISE_FAIL:
-      return false
+    case TYPES.VIEW_TRANSFORMED_EXERCISE:
+      return action.val
     default: return state
   }
-}
+} 
 
 export const restrictionSites = (state = {}, action) => {
   return state

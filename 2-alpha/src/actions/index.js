@@ -94,9 +94,10 @@ export const selectExercise = (id = null) => (dispatch, getState) => {
       dispatch({ types: TYPES.EXERCISE_DOESNT_EXIST })
     }
   } else {
-    const unattemptedExercisesList = selectors.getUnattemptedExercisesList(state)
-    const selectedExerciseId = unattemptedExercisesList.length > 0 ?
-      pickRandomFromArray(unattemptedExercisesList) :
+    const availableExercisesList = selectors.getAvailableExercisesList(state)
+    console.log('availableExercisesList', availableExercisesList)
+    const selectedExerciseId = availableExercisesList.length > 0 ?
+      pickRandomFromArray(availableExercisesList) :
       pickRandomFromArray(exercisesList) // all possible exercises completed
 
     dispatch({
@@ -106,13 +107,6 @@ export const selectExercise = (id = null) => (dispatch, getState) => {
   }
 }
 
-export const newExercise = () => (dispatch, getState) => {
-  // Todo: check which exercises the user hasn't done yet, and pick a random one from that list.
-  dispatch({
-    type: TYPES.NEW_EXERCISE
-  })
-}
-
 
 export const updateInput = (segment, userInput) => dispatch => {
   dispatch({
@@ -120,6 +114,10 @@ export const updateInput = (segment, userInput) => dispatch => {
     userInput,
   })
   removeFailMessageAfterInputChange(dispatch)
+}
+
+export const updateInputs = (inputs = {}) => dispatch => {
+  _.each(inputs, (val, key) => dispatch(updateInput(key, val)))
 }
 
 export const removeFailMessageAfterInputChange = (dispatch) => _.debounce(
@@ -175,7 +173,7 @@ export const sendAdviceMessage = (studentID, exerciseID) => (message) => (dispat
     
       return db.ref().update({
         // [`students/${studentID}/attempts/${newKey}`]: true,
-        [`students/${studentID}/exercises/attempts/${newKey}`]: true,
+        [`students/${studentID}/exercises/${exerciseID}/attempts/${newKey}`]: true,
         [`attemptsByID/${newKey}`]: { ...message, exerciseID, studentID }
       })
     })
@@ -232,15 +230,53 @@ export const completeExercise = () => (dispatch, getState) => {
   const state = getState()
   const exerciseID = selectors.currentExerciseID(state)
   const studentID = selectors.getCurrentStudentID(state)
-  retractPhase1Completion(dispatch)
+  dispatch(retractPhase1Completion())
   dispatch({
     type: TYPES.EXERCISE_COMPLETION_INIT,
     exerciseID,
     studentID,
   })
+  db.ref(`students/${studentID}/exercises/${exerciseID}`).update({
+    completed: true,
+  }).then(() => {
+    dispatch({
+      type: TYPES.EXERCISE_COMPLETION_SUCCESS,
+      exerciseID,
+      studentID,
+    })
+    dispatch(viewTransformedExercise())
+  })
   reset(dispatch)
 }
 
-export const reset = (dispatch) => {
-  
+export const nextExercise = () => (dispatch, getState) => {
+  dispatch(selectExercise())
+  dispatch(reset())
+  dispatch(closeTransformedExercise())
+}
+
+export const viewTransformedExercise = () => (dispatch) => {
+  dispatch({
+    type: TYPES.VIEW_TRANSFORMED_EXERCISE,
+    val: true,
+  })
+}
+
+export const closeTransformedExercise = () => (dispatch) => {
+  dispatch({
+    type: TYPES.VIEW_TRANSFORMED_EXERCISE,
+    val: false,
+  })
+}
+
+window.completeExercise = completeExercise
+
+export const reset = () => (dispatch) => {
+  dispatch(updateInputs({
+    FV: '',
+    FG: '',
+    RV: '',
+    RG: ''
+  }))
+  dispatch(retractPhase1Completion())
 }

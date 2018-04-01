@@ -273,7 +273,7 @@ export default {
   REVERSE_BOTH_OUT_OF_FRAME: (frame) => ({
     ID: "REVERSE_BOTH_OUT_OF_FRAME",
     type: ERROR,
-    inputs: [FV],
+    inputs: [RV],
     title: `Reverse primer is out of frame by ${Math.abs(frame)}`,
     additional: `At the reverse primer sequence, try adding ${frame} base${frame > 1 ? 's' : ''} at the end of the vector part (bottom right).`,
     url: "/reverse-primer-frame",
