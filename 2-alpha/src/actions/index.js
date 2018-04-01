@@ -184,7 +184,6 @@ export const sendAdviceMessage = (studentID, exerciseID) => (message) => (dispat
       })
       return Promise.reject(err)
     })
-
 }
 
 export const attemptCompletion = () => (dispatch, getState) => {

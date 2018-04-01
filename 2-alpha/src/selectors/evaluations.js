@@ -346,6 +346,12 @@ export const getAllEvaluationsPhase1 = createSelector(
     // console.log('Evaluations result: ', result)
   })
 
+// Used in student's input form to decide between "Attempt" "Check final considerations" and "submit answer"
+export const getPhase1Complete = createSelector(
+  getAllEvaluationsPhase1,
+  (advice) => advice.contains("MATCHES_VECTOR_AND_HAYSTACK")
+)
+
 // after user has decided to go with their answers, a final check of GC content/melting temp/ etc are made before an exercise is considered completed.
 export const getAllEvaluations = createSelector(
   getAllEvaluationsPhase1,

@@ -26,7 +26,6 @@ export class FailureMessage extends Component {
   }
   render() {
     const { ID, title, additional, url, inputs = []} = this.props.message
-    console.log('message', this.props.message)
     const { showMessage } = this.state
     const inputsFullName = inputs.map((input) => this.inputs[input])
     return (

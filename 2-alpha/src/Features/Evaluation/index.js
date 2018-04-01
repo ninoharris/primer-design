@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import { getAllEvaluations } from '../../selectors/evaluations'
-import { messageIDsToDetails } from '../../selectors/messages'
 
 import { SUCCESS, ERROR, INFO } from '../../selectors/evaluator-messages'
 
@@ -22,20 +20,20 @@ class Evaluation extends Component {
     actions.forEach(action => this.props.dispatch(action))
   }
   displayMessage = (msg, i) => {
-    const details = messageIDsToDetails[msg.ID](msg.context)
+    const { ID, title, additional, url } = msg
     const className = 'evaluation-item ' + (msg.type ===  SUCCESS ? 'success' : 'info')
     return (
       <li
         className={className}
-        key={msg.ID}
-        onMouseEnter={() => this.doActions(details.actions)}
+        key={ID}
+        // onMouseEnter={() => this.doActions(details.actions)}
         // onMouseLeave={() => this.doActions(details.actions)}
         // style={{ transitionDelay: `${100 * (5-i)}ms`}}
         >
         {/* <strong>{msg.inputs.join(' & ')}: </strong> */}
-        <strong>{details.title}</strong>
-        {details.additional ? <small className="additional"><hr />{details.additional}</small> : ''}
-        {details.url ? <a target="_blank" className="btn btn-outline-light btn-sm mt-2" href={`/tutorials${details.url}`}>See related tutorial </a> : ''}
+        <strong>{title}</strong><br/>
+        {additional ? <small className="additional"><hr />{additional}</small> : ''}
+        {url ? <a target="_blank" className="btn btn-outline-light btn-sm mt-2" href={`/tutorials${url}`}>See related tutorial </a> : ''}
       </li>
     )
   }
