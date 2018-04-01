@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getCurrentExercise, showAdminEvaluation } from '../../selectors'
+import { currentExerciseID, getCurrentExercise, showAdminEvaluation } from '../../selectors'
  import {
   getHaystackForwardMatches,
   getHaystackReverseMatches,
@@ -37,7 +37,7 @@ class Evaluation extends Component {
         </div>
         <div className="evaluations row">
           <div className="col-12">
-            <pre>{JSON.stringify(this.props.exerciseData, null, 2)}</pre>
+            <pre>{JSON.stringify({ [this.props.exerciseID]: this.props.exerciseData }, null, 2)}</pre>
           </div>
         </div>
       </div>
@@ -49,7 +49,7 @@ const mapStateToProps = (state) => {
   return {
     showAdminEvaluation: showAdminEvaluation(state),
     exerciseData: getCurrentExercise(state),
-
+    exerciseID: currentExerciseID(state),
     FGMatches: getHaystackForwardMatches(state), 
     RGMatches: getHaystackReverseMatches(state),
     FVMatches: getUserVectorMatchForward(state),

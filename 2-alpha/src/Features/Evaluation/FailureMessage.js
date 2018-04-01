@@ -7,10 +7,10 @@ import { sendAdviceMessage as sendAdviceMessageAction } from '../../actions'
 export class FailureMessage extends Component {
   state = { showMessage: false }
   inputs = {
-    'FV': 'forward primer (vector part)',
-    'FG': 'forward primer (haystack part)',
-    'RV': 'reverse vector (vector part)',
-    'RG': 'reverse gene (haystack part)',
+    'FV': 'forward primer (vector/additional): top left input',
+    'FG': 'forward primer (SOI annealing): top right input',
+    'RV': 'reverse vector (vector/additional): bottom left input',
+    'RG': 'reverse gene (SOI annealing): bottom right input',
   }
   showMessage = () => {
     this.setState({ showMessage: true })
@@ -50,9 +50,11 @@ export class FailureMessage extends Component {
   }
 }
 FailureMessage.propTypes = {
-  context: PropTypes.any,
-  inputs: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-  ID: PropTypes.string.isRequired,
+  message: PropTypes.objectOf({
+    context: PropTypes.any,
+    inputs: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+    ID: PropTypes.string.isRequired,
+  })
 }
 
 
