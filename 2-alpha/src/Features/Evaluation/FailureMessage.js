@@ -18,8 +18,9 @@ export class FailureMessage extends Component {
       title = '',
       additional = '',
       ID = '',
+      inputs = []
     } = this.props.message
-    this.props.sendAdviceMessage({ title, additional, ID })
+    this.props.sendAdviceMessage({ title, additional, ID, inputs })
   }
   componentWillReceiveProps(nextProps) {
     if(nextProps.ID !== this.props.ID) this.setState({ showMessage: false })

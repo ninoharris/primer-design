@@ -8,14 +8,14 @@ import Form from '../Form'
 import EvaluationTemp from '../Evaluation/Evaluation-temp'
 import Evaluation from '../Evaluation'
 import Display from '../Display'
-import Options from '../Options'
 import Modals from '../modals'
 import Header from '../../components/Header'
+import Footer from '../../components/Footer'
 import RestrictionSitesPreview from '../../components/RestrictionSitesPreview'
 
 
 class App extends Component {
-  componentWillMount() {
+  componentDidMount() {
     this.props.fetchAllExercises().then(() => {
       const { id } = this.props.match.params
       this.props.selectExercise(id) // TODO: when deploying, remove id bit. let it pick it randomly
@@ -27,13 +27,12 @@ class App extends Component {
       <div className="main-loading">Selecting exercise...</div>
     )
     return (
-      <div className="container-fluid mb-10 mt-10 Game">
+      <div className="container-fluid Game">
         <Modals />
         <Header />
         <div className="row">
           <div className=" Sidebar col-3">
             <Form />
-            <Options />
             <Evaluation />
             <RestrictionSitesPreview />
           </div>
@@ -42,10 +41,13 @@ class App extends Component {
             <EvaluationTemp />
           </div>
         </div>
+        <Footer />
       </div>
     )
   }
 }
+
+// TODO: ADD IN FOOTER
 
 const mapStateToProps = (state) => ({ currentExercise: currentExerciseID(state) })
 

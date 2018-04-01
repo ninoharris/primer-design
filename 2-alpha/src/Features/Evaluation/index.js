@@ -42,6 +42,7 @@ class Evaluation extends Component {
     // if(!allMessages) return null
     const { advice } = this.props
     const allMessages = advice.getMessages()
+    const inputs = advice.getInputs()
     if(!allMessages) return null
     
     // how many messages are displayed for each is arbitrary and can be changed without errors
@@ -51,7 +52,7 @@ class Evaluation extends Component {
     // console.dir(failureMessage)
     return (
       <ul className="evaluation-list">
-        {errorMessage ? <FailureMessage message={errorMessage} />: ''}
+        {errorMessage ? <FailureMessage inputs={inputs} message={errorMessage} />: ''}
         {infoMessages.map((msg, i) => this.displayMessage(msg, i + 1))}
         {successMessages.map((msg, i) => this.displayMessage(msg, i+1))}
       </ul>
