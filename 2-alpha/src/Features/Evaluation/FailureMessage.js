@@ -50,7 +50,7 @@ export class FailureMessage extends Component {
   }
 }
 FailureMessage.propTypes = {
-  message: PropTypes.objectOf({
+  message: PropTypes.shape({
     context: PropTypes.any,
     inputs: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     ID: PropTypes.string.isRequired,
