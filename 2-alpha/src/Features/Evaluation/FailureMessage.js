@@ -15,9 +15,9 @@ export class FailureMessage extends Component {
   showMessage = () => {
     this.setState({ showMessage: true })
     const {
-      title,
-      additional,
-      ID,
+      title = '',
+      additional = '',
+      ID = '',
     } = this.props.message
     this.props.sendAdviceMessage({ title, additional, ID })
   }

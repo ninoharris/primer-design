@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { updateInput, beginAnimatePreview, endAnimatePreview, attemptCompletion, editingGameInput } from '../../actions'
+import { updateInput, beginAnimatePreview, endAnimatePreview, attemptExercise, editingGameInput } from '../../actions'
 import { FV_TS } from '../../selectors'
+import { getPhase1Ready, getExerciseComplete } from '../../selectors/evaluations'
 import PrimerPreviewSmall from './PrimerPreviewSmall'
 
 export class Form extends Component {
@@ -11,7 +12,7 @@ export class Form extends Component {
   }
   handleSubmit = (e) => {
     e.preventDefault()
-    this.props.attemptCompletion()
+    this.props.attemptExercise()
   }
   handleFGFocus = () => this.props.editingGameInput('FG', true)
   handleRGFocus = () => this.props.editingGameInput('RG', true)
@@ -29,7 +30,28 @@ export class Form extends Component {
         type="button" onClick={endAnimatePreview}
         className="btn btn-info">End reverse primer preview</button>
     }
-    
+  }
+  submitButton = () => {
+    if (this.props.phase1Ready) {
+      if (this.props.exerciseComplete) {
+        return (
+          <button type="submit" className="btn btn-primary mr-3">
+            Submit answer!
+        </button>
+        )
+      } else {
+        return (
+          <button type="submit" className="btn btn-primary mr-3">
+            Check final considerations
+        </button>
+        )
+      }
+    }
+    return (
+      <button type="submit" disabled className="btn btn-primary mr-3">
+        Not there yet, keep trying!
+      </button>
+    )
   }
   render() {
     const { FV, FG, RV, RG, FV_TS } = this.props
@@ -73,9 +95,7 @@ export class Form extends Component {
         </div>
         <PrimerPreviewSmall strand="reverse" />
 
-        <button type="submit" className="btn btn-primary mr-3">
-          Submit
-        </button>
+        {this.submitButton()}
         {this.animatePreviewButton()}
       </form>
     )
@@ -85,6 +105,8 @@ export class Form extends Component {
 const mapStateToProps = (state) => {
   const { formInputs, animatingPreview } = state
   return {
+    phase1Ready: getPhase1Ready(state),
+    exerciseComplete: getExerciseComplete(state),
     FV: formInputs.FV,
     FG: formInputs.FG,
     RV: formInputs.RV,
@@ -98,6 +120,6 @@ export default connect(mapStateToProps, {
   updateInput, 
   beginAnimatePreview, 
   endAnimatePreview,
-  attemptCompletion,
+  attemptExercise,
   editingGameInput,
 })(Form)

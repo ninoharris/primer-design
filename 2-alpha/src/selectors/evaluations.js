@@ -262,6 +262,7 @@ export const getVectorEvaluations = createSelector(
     return advice
   })
 
+
 // evaluations which depend on both haystack and vector
 export const getAllEvaluationsPhase1 = createSelector(
   getVectorEvaluations,
@@ -328,43 +329,63 @@ export const getAllEvaluationsPhase1 = createSelector(
       }
     }
 
-    // check 5' end cap
-
-    // check 3' GC end cap
-
-    // check GC content
-
-    // check melting temperature
-
-
-
-    // COMPLETED EXERCISE. Ready to go
-    if (advice.contains('VECTOR_PRIMERS_APART') && advice.contains('REVERSE_BOTH_IN_FRAME') && advice.contains('FORWARD_BOTH_IN_FRAME')) {
-      advice.add(msgs.READY())
+    // Check if all inputs entered and no errors
+    if (
+      advice.contains('VECTOR_PRIMERS_APART') && // FV and RV are correct
+      FG.isExact && FG.normalMatch && // FG is correct
+      RG.isExact && RG.normalMatch && // RG is correct
+      !advice.hasError() // (FV + FG + RV + RG) combined is correct, including frame, stop/start codons if necessary
+    ) {
+      advice.add(msgs.MATCHES_VECTOR_AND_HAYSTACK()) // phase 1 of exercise completed (matching haystack and vector) 
     }
     return advice
     // console.log('Evaluations result: ', result)
   })
 
-// Used in student's input form to decide between "Attempt" "Check final considerations" and "submit answer"
-export const getPhase1Complete = createSelector(
+// 'phase 1' is separated into 'ready' and 'complete'
+// Order of completion: phase 1 ready -> (user agrees to proceed) -> phase 1 complete -> exercise complete
+
+// Used in student's input form to decide between "Attempt" and "Check final considerations"
+export const getPhase1Ready = createSelector(
   getAllEvaluationsPhase1,
   (advice) => advice.contains("MATCHES_VECTOR_AND_HAYSTACK")
+)
+
+export const getUserPhase1Ready = state => state.userPhase1Complete
+
+export const getPhase1Complete = createSelector(
+  getPhase1Ready,
+  getUserPhase1Ready,
+  (process, user) => user && process // both are ready to proceed to next stage
 )
 
 // after user has decided to go with their answers, a final check of GC content/melting temp/ etc are made before an exercise is considered completed.
 export const getAllEvaluations = createSelector(
   getAllEvaluationsPhase1,
-  (evaluations) => {
+  getPhase1Complete,
+  (evaluations, phase1Complete) => {
     const advice = evaluator(evaluations)
+    if (!phase1Complete) return advice
+    // check 5' end cap
+
+    // check 3' GC end cap
+
+    // check GC content
+    
+    // check melting temperature
+
+    // if no errors, exercise is complete
+    if (!advice.hasError()) advice.add(msgs.COMPLETE())
+
+    console.log('Evaluations currently:', advice.getMessages())
     return advice
   }
 )
 
 // This means the user has entered successful inputs, but has not 'submitted' just yet.
-export const getIsSuccessful = createSelector(getAllEvaluations,
-  (evaluations) => evaluations.find(msg => msg.ID === 'READY' && msg.success))
-
+export const getExerciseComplete = createSelector(getAllEvaluations,
+  (advice) => advice.contains('COMPLETE')
+)
 
 export const getFinalClone = createSelector(
   getCurrentExercise,

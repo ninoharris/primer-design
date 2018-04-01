@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import db from '../firebase/firebase'
 import * as TYPES from './types'
-import { getIsSuccessful } from '../selectors/evaluations'
+import { getExerciseComplete, getPhase1Ready } from '../selectors/evaluations'
 import * as selectors from '../selectors'
 import { pickRandomFromArray, firebasePathExists } from '../api'
 export * from './troubleshooter'
@@ -113,12 +113,21 @@ export const newExercise = () => (dispatch, getState) => {
   })
 }
 
-export const updateInput = (segment, userInput) => {
-  return {
+
+export const updateInput = (segment, userInput) => dispatch => {
+  dispatch({
     type: `UPDATE_${segment}`,
     userInput,
-  }
+  })
+  removeFailMessageAfterInputChange(dispatch)
 }
+
+export const removeFailMessageAfterInputChange = (dispatch) => _.debounce(
+  () => dispatch({
+    type: TYPES.EXERCISE_FAIL,
+    val: true,
+  }), 3000 // hide message after three seconds upon typing
+)
 
 export const beginAnimatePreview = () => ({
   type: TYPES.ANIMATE_PREVIEW_START,
@@ -186,15 +195,52 @@ export const sendAdviceMessage = (studentID, exerciseID) => (message) => (dispat
     })
 }
 
-export const attemptCompletion = () => (dispatch, getState) => {
-  if(getIsSuccessful(getState())) {
-    dispatch({
-      type: TYPES.EXERCISE_SUCCESS,
-      id: getState().currentExercise
-    })
+export const attemptExercise = () => (dispatch, getState) => {
+  const state = getState()
+  console.log('state works:', state)
+  // first see if entire exercise complete, if not then see if phase 1 is complete
+  if ( getExerciseComplete(state) ) {
+    dispatch(completeExercise())
+  } else if ( getPhase1Ready(state) ) {
+    dispatch(completePhase1())
   } else {
+    console.log('getPhase1Ready(state)', getPhase1Ready(state))
+    console.log('getExerciseComplete(state)', getExerciseComplete(state))
+    retractPhase1Completion(dispatch)
     dispatch({
-      type: TYPES.EXERCISE_FAIL
+      type: TYPES.EXERCISE_FAIL,
+      val: true,
     })
   }
+}
+
+export const completePhase1 = () => (dispatch) => {
+  dispatch({
+    type: TYPES.PHASE_1_COMPLETE,
+    val: true,
+  })
+}
+
+export const retractPhase1Completion = () => (dispatch) => {
+  dispatch({
+    type: TYPES.PHASE_1_COMPLETE,
+    val: false,
+  })
+}
+
+export const completeExercise = () => (dispatch, getState) => {
+  const state = getState()
+  const exerciseID = selectors.currentExerciseID(state)
+  const studentID = selectors.getCurrentStudentID(state)
+  retractPhase1Completion(dispatch)
+  dispatch({
+    type: TYPES.EXERCISE_COMPLETION_INIT,
+    exerciseID,
+    studentID,
+  })
+  reset(dispatch)
+}
+
+export const reset = (dispatch) => {
+  
 }

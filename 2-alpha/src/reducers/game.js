@@ -58,9 +58,17 @@ export const showAdminEvaluation = (state = false, action) => {
   }
 }
 
+export const userPhase1Complete = (state = false, action) => {
+  switch (action.type) {
+    case TYPES.PHASE_1_COMPLETE:
+      return action.val
+    default: return state
+  }
+}
+
 export const success = (state = false, action) => {
   switch (action.type) {
-    case TYPES.EXERCISE_SUCCESS:
+    case TYPES.EXERCISE_COMPLETION_SUCCESS:
       return true
     case TYPES.ADD_EXERCISE:
     case TYPES.EXERCISE_FAIL:

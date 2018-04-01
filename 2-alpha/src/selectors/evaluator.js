@@ -29,7 +29,7 @@ export const evaluator = (...evaluators) => {
   const getInfoMessages = () => messages.filter(m => m.type === INFO)
   const getSuccessMessages = () => messages.filter(m => m.type === SUCCESS)
 
-  const contains = (searchID) => messages.find(msg => msg.name === searchID)
+  const contains = (searchID) => messages.find(msg => msg.ID === searchID)
   const doesntContain = searchID => !contains(searchID)
   
   const add = (message) => {
