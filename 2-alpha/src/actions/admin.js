@@ -355,9 +355,17 @@ export const removeStudent = (id) => (dispatch) => {
     type: TYPES.REMOVE_STUDENT_INIT,
     id
   })
+  let cohortID, attemptIDs
   return db.ref(`students/${id}`).once('value')
-  .then((snapshot) =>  snapshot.val().cohortID) // get associated cohort and delete the students ID from that cohorts record
-  .then((cohortID) => db.ref(`cohorts/${cohortID}/studentIDs/${id}`).set(null))
+  .then((snapshot) => {
+    const student = snapshot.val()
+    cohortID = student.cohortID // get associated cohort and delete the students ID from that cohorts record
+    // combine all attempt IDs into one big object and have each attemptID set to null
+    attemptIDs = _.reduce(student.exercises, (result, attemptIDs, key) => ({...result, ...attemptIDs }), {})
+    attemptIDs = _.map(attemptIDs, (val, key) => null)
+  })
+  .then(() => db.ref(`cohorts/${cohortID}/studentIDs/${id}`).set(null))
+  .then(() => db.ref(`attempts`).update(attemptIDs))
   .then(() => db.ref(`students/${id}`).set(null))
   .then(() => dispatch({
     type: TYPES.REMOVE_STUDENT_SUCCESS,
@@ -375,3 +383,4 @@ export const removeStudent = (id) => (dispatch) => {
 window.addCohort = addCohort
 window.removeCohort = removeCohort
 window.addStudent = addStudent
+window.removeStudent = removeStudent
