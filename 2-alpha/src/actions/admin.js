@@ -371,6 +371,7 @@ export const removeStudent = (id) => (dispatch) => {
   })
 }
 
+
 window.addCohort = addCohort
 window.removeCohort = removeCohort
 window.addStudent = addStudent

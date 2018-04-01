@@ -3,7 +3,7 @@ import db from '../firebase/firebase'
 import * as TYPES from './types'
 import { getIsSuccessful } from '../selectors/evaluations'
 import * as selectors from '../selectors'
-import { pickRandomFromArray } from '../api'
+import { pickRandomFromArray, firebasePathExists } from '../api'
 export * from './troubleshooter'
 
 
@@ -159,6 +159,32 @@ export const sendAdviceMessage = (studentID, exerciseID) => (message) => (dispat
     exerciseID,
     message,
   })
+  // check if student doesn't already exist
+  return firebasePathExists(db, `students/${studentID}/`)
+    .then(() => {
+      const newKey = db.ref(`attempts`).push().key // get the key of the new attempt
+    
+      return db.ref().update({
+        // [`students/${studentID}/attempts/${newKey}`]: true,
+        [`students/${studentID}/exercises/attempts/${newKey}`]: true,
+        [`attemptsByID/${newKey}`]: { ...message, exerciseID, studentID }
+      })
+    })
+    .then(() => dispatch({
+      type: TYPES.SEND_ADVICE_MESSAGE_SUCCESS,
+      studentID,
+      exerciseID,
+      message,
+    }))
+    .catch(err => {
+      dispatch({
+        type: TYPES.SEND_ADVICE_MESSAGE_FAIL,
+        message,
+        err,
+      })
+      return Promise.reject(err)
+    })
+
 }
 
 export const attemptCompletion = () => (dispatch, getState) => {
