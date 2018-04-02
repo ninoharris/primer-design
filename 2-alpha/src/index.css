@@ -8,6 +8,19 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+  background-color: #EDEDED;  
+}
+body::after {
+  content: '';
+  z-index: -1;
+  position: fixed;
+  top: 0;
+  height: 100vh;
+  width: 100vw;
+  opacity: 0.06;
+  background-image: url('./images/background_petri.png');
+  background-size: 90px;
+  background-repeat: repeat;
 }
 .fullheight {
   height: 100%;
@@ -47,18 +60,19 @@ body {
   text-transform: uppercase;
   letter-spacing: 1px;
 }
-.RV {
-  color: pink;
-}
-.RG {
-  color: purple;
-}
 .FV {
-  color: turquoise;
+  color: #3CD8C5;
 }
 .FG {
-  color: blue;
+  color: #1A8A6E;
 }
+.RV {
+  color: #B276C7;
+}
+.RG {
+  color: #732ECF;
+}
+
 .primer-preview-reverse.active {
   animation: preview-swivel 5s ease;
   animation-fill-mode: forwards;
@@ -438,6 +452,11 @@ body {
   background: lightgray;
   padding: 10px;
   min-height: 80px;
+  font-size: 0.8rem;
+}
+.evaluation-item h6 {
+  font-weight: bold;
+  font-size: 1rem;
 }
 .evaluation-item .error-overlay {
   position: absolute;
@@ -445,7 +464,8 @@ body {
   top: 10px;
 }
 .evaluation-item.failure.blur-message {
-  background: lightgrey;
+  background: #848080;
+  color: #E3E3E3;
 }
 .evaluation-item.blur-message .actual-error {
   filter: blur(6px);
@@ -464,6 +484,9 @@ body {
   background: #e29c9c;
 }
 .evaluation-item.success {
+  background: #b4e8c9;
+}
+.evaluation-item.info {
   background: #b4e8c9;
 }
 .evaluation-item-enter {
