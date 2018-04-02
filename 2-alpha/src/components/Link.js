@@ -13,21 +13,25 @@ export const Link = styled(RouterLink)`
   font-weight: bold;
   padding: 8px 9px;
   letter-spacing: 0;
-  &:hover:not(:disabled) {
+  &:hover {
     background: ${props => darken(0.1, props.theme.lightGrey)};
     box-shadow: rgba(0,0,0, 0.4) 0 1px 1px 0;
     cursor: pointer;
+    text-decoration: none;
   }
 `
 
 export const HighlightLink = Link.extend`
   background: purple;
   color: white;
-  &:hover:not(:disabled) {
+  &:hover {
     background: ${props => darken(0.1, props.theme.purple)};
   }
 `
 
 export const SecondaryLink = Link.extend`
   background: ${p => lighten(0.1, p.theme.lightGrey)};
+  &:hover {
+    background: ${props => props.theme.lightGrey};
+  }
 `

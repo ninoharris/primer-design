@@ -6,6 +6,10 @@ export const Input = styled.input`
   background: #FFFFFF;
   padding: 6px 10px;
   border: 0;
+  color: ${p => p.theme.darkerGrey};
+  &::placeholder {
+    color: ${p => lighten(0.2, p.theme.darkerGrey)}
+  }
 `
 
 export const ConcavedInput = Input.extend`

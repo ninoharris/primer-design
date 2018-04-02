@@ -3,8 +3,8 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 
 import { Button, HighlightButton } from '../../components/Button'
-import { Link, SecondaryLink } from '../../components/Link';
-import { Input } from '../../components/Input'
+import { SecondaryLink } from '../../components/Link';
+import { ConcavedInput } from '../../components/Input'
 
 import { checkStudentExists, updateCurrentStudentID } from '../../actions'
 
@@ -58,13 +58,13 @@ export class GameWelcome extends Component {
 
             <form onSubmit={this.submit}>
               <P>
-              <Input value={username} onChange={this.updateInputUsername} placeholder={`Enter your username here…`} /><br />
+                <ConcavedInput style={{marginBottom: 10, width: 240, fontWeight: 'bold'}} value={username} onChange={this.updateInputUsername} placeholder={`Enter your username here…`} /><br />
                 {error ? <div className="alert alert-danger" role="alert">{error}</div> : '' }
                 <HighlightButton type="submit" disabled={username.length === 0}>Students: Log me in</HighlightButton>
               </P>
             </form>
 
-            <Link to="/tutorials">Not sure what to do? Read the tutorials here</Link>
+          <SecondaryLink to="/tutorials">Not sure what to do? Read the tutorials here</SecondaryLink>
           </div>
       </Container>
     )
