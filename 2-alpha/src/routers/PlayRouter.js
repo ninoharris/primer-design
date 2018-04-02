@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { fetchStudent, fetchCohortExerciseIDs, checkStudentExists } from '../actions'
 import { getCurrentStudentID } from '../selectors'
 
-import GameWelcome from '../Features/Game/GameWelcome'
+import GameWelcomeContainer from '../Features/Game/GameWelcomeContainer'
 import Game from '../Features/Game'
 
 export class PlayRouter extends Component {
@@ -39,7 +39,7 @@ export class PlayRouter extends Component {
     // if logged out
     if(!this.props.currentStudentID) return (
       <Switch>
-        <Route path="/play/welcome" component={GameWelcome} />
+        <Route path="/play/welcome" component={GameWelcomeContainer} />
         <Redirect from="/play" to="/play/welcome" />
       </Switch>
     )

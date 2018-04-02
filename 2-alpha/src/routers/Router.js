@@ -13,7 +13,7 @@ export const history = createHistory()
 const App = () => {
   return (
     <Router history={history}>
-      <div className="router">
+      <div id="router">
         <MultilineWidth />
         <Switch>
           <Route path="/play" component={PlayRouter} />

@@ -1,13 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'csshake'
-import './index.css';
+import './styles/index.css';
 import registerServiceWorker from './registerServiceWorker';
 
 // Redux
 import { Provider } from 'react-redux'
 import { fetchAllExercises } from './actions'
 import configureStore from './configureStore'
+
+// Styling theme
+import { ThemeProvider } from 'styled-components'
+import theme from './styles/theme'
 
 import { saveState } from './reducers/localStorage'
 
@@ -20,7 +24,11 @@ ReactDOM.render(<Loading />, document.getElementById('root'))
 
 store.dispatch(fetchAllExercises()).then(() => {
   ReactDOM.render(
-    <Provider store={store}><App /></Provider>,
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
+    </Provider>,
     document.getElementById('root')
   )
 })

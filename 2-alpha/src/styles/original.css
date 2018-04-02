@@ -463,10 +463,10 @@ body::after {
   z-index: 5;
   top: 10px;
 }
-.evaluation-item.failure.blur-message {
+/* .evaluation-item.failure.blur-message {
   background: #848080;
   color: #E3E3E3;
-}
+} */
 .evaluation-item.blur-message .actual-error {
   filter: blur(6px);
   color: darkslategray;

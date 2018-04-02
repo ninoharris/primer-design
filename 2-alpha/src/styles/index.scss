@@ -1,0 +1,32 @@
+@import "partials/variables";
+@import "partials/bootstrap-reboot";
+@import "partials/bootstrap-grid";
+@import "partials/mixins";
+@import "partials/buttons";
+
+body {
+  color: $black;
+  font-size: 14px;
+  background: #EDEDED;
+}
+body, #root, #router {
+  min-height: 100vh;
+}
+
+body::after {
+  content: '';
+  z-index: -1;
+  position: fixed;
+  top: 0;
+  height: 100vh;
+  width: 100vw;
+  opacity: 0.06;
+  background-image: url('./images/background_petri.png');
+  background-size: 90px;
+  background-repeat: repeat;
+}
+
+.Nav {
+  width: 100%;
+  background-color: rgba(102,52,11,0.07);
+}
