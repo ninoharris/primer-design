@@ -2,44 +2,15 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { getAllEvaluations } from '../../selectors/evaluations'
 
-import { SUCCESS, ERROR, INFO } from '../../selectors/evaluator-messages'
-
 import FailureMessage from './FailureMessage'
-
-// const Fade = ({ children, ...props}) => (
-//   <CSSTransition timeout={1000} {...props} classNames={{
-//     enter: 'fade',
-//     entering: 'fade-enter'
-//   }}>
-//     {children}
-//   </CSSTransition>
-// )
+import AdviceMessage from './AdviceMessage'
 
 class Evaluation extends Component {
   doActions = (actions = []) => {
     actions.forEach(action => this.props.dispatch(action))
   }
-  displayMessage = (msg, i) => {
-    const { ID, title, additional, url } = msg
-    const className = 'evaluation-item ' + (msg.type ===  SUCCESS ? 'success' : 'info')
-    return (
-      <li
-        className={className}
-        key={ID}
-        // onMouseEnter={() => this.doActions(details.actions)}
-        // onMouseLeave={() => this.doActions(details.actions)}
-        // style={{ transitionDelay: `${100 * (5-i)}ms`}}
-        >
-        {/* <strong>{msg.inputs.join(' & ')}: </strong> */}
-        <strong>{title}</strong><br/>
-        {additional ? <small className="additional"><hr />{additional}</small> : ''}
-        {url ? <a target="_blank" className="btn btn-outline-light btn-sm mt-2" href={`/tutorials${url}`}>See related tutorial </a> : ''}
-      </li>
-    )
-  }
+
   render() {
-    // const allMessages = this.props.messageIDsList.getMessages()
-    // if(!allMessages) return null
     const { advice } = this.props
     const allMessages = advice.getMessages()
     const inputs = advice.getInputs()
@@ -53,8 +24,8 @@ class Evaluation extends Component {
     return (
       <ul className="evaluation-list">
         {errorMessage ? <FailureMessage inputs={inputs} message={errorMessage} />: ''}
-        {infoMessages.map((msg, i) => this.displayMessage(msg, i + 1))}
-        {successMessages.map((msg, i) => this.displayMessage(msg, i+1))}
+        {infoMessages.map((msg, i) => AdviceMessage(msg, i + 1))}
+        {successMessages.map((msg, i) => AdviceMessage(msg, i+1))}
       </ul>
     )
   }

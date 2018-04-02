@@ -35,14 +35,14 @@ export class FailureMessage extends Component {
         onClick={this.showMessage}
       >
         <div className="actual-error">
-          <strong>{title}</strong>
-          {additional ? <small className="additional"><hr />{additional}</small> : ''}
+          <h6>{title}</h6>
           {url ? <a target="_blank" className="btn btn-outline-light btn-sm mt-2" href={`/tutorials${url}`}>See related tutorial </a> : ''}
+          {additional ? <p className="additional">{additional}</p> : ''}
         </div>
         {this.state.showMessage ? '' : 
           <div className="error-overlay">
-            <strong>Error in {inputsFullName.join(' & ')}.</strong>
-            <div>Click this message to view the error.</div>
+            <h6>Underneath is some advice for inputs {inputsFullName.join(' & ')}</h6>
+            <div>Clicking this box will display a correction. Don’t use this too often though as every peek advice is saved!</div>
           </div>
         }
       </li>
