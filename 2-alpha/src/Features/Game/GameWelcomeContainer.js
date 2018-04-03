@@ -2,11 +2,14 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
+import Nav from '../../components/Nav'
 import { Button, HighlightButton } from '../../components/Button'
-import { SecondaryLink } from '../../components/Link';
+import { SecondaryLink, HighlightLink } from '../../components/Link';
 import { ConcavedInput } from '../../components/Input'
+import { P, PLight } from '../../components/Text'
 
 import { checkStudentExists, updateCurrentStudentID } from '../../actions'
+import { startAdminLogin } from '../../actions/auth'
 
 const Container = styled.div`
   display: flex;
@@ -18,11 +21,6 @@ const Title = styled.h2`
   font: 40px/48px ${p => p.theme.fontStack};
   font-weight: 600;
   margin-bottom: 35px;
-`
-const P = styled.p`
-  line-height: ${p => p.theme.pLineHeight};
-  margin-bottom: ${p => p.theme.pMarginBottom};
-  font-weight: bold;
 `
 
 export class GameWelcome extends Component {
@@ -46,7 +44,17 @@ export class GameWelcome extends Component {
   render() {
     const { error, username } = this.state
     return (
-      <Container>
+      <div>
+        <Nav>
+          <Nav.Left>
+            <HighlightLink to="/tutorials">View Tutorials</HighlightLink>
+          </Nav.Left>
+          <Nav.Right>
+            <PLight>Not yet logged in</PLight>
+            <Button onClick={() => this.props.startAdminLogin}>Lecturer/Admin Login</Button>
+          </Nav.Right>
+        </Nav>
+        <Container>
           <div className="col-7 offset-md-2">
           <Title>Learn primer design using teaching techniques.</Title>
             <P>
@@ -66,9 +74,10 @@ export class GameWelcome extends Component {
 
           <SecondaryLink to="/tutorials">Not sure what to do? Read the tutorials here</SecondaryLink>
           </div>
-      </Container>
+        </Container>
+      </div>
     )
   }
 }
 
-export default connect(null, { checkStudentExists, updateCurrentStudentID })(GameWelcome)
+export default connect(null, { checkStudentExists, updateCurrentStudentID, startAdminLogin })(GameWelcome)

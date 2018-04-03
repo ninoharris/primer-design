@@ -7,7 +7,7 @@ export const Link = styled(RouterLink)`
   display: inline-block;
   background: ${props => props.theme.lightGrey};
   color: #340C4B;
-  border-radius: 2px;
+  border-radius: 4px;
   border: 0;
   box-shadow: rgba(0,0,0, 0.2) 0 1px 1px 0;
   font-weight: bold;
