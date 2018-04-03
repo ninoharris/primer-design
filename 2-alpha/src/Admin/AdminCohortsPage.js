@@ -14,6 +14,6 @@ const CohortsPage = () => (
       </div>
     </div>
   </div>
-)
+) 
 
 export default CohortsPage

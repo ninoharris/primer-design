@@ -14,6 +14,7 @@ import { adminLogin, startAdminLogout } from '../actions/auth'
 // Components
 import LoginPage from '../Admin/LoginPage'
 import AdminHomePage from '../Admin/AdminHomePage'
+import AdminExercisesPage from '../Admin/AdminExercisesPage'
 import ExerciseEditPage from '../Admin/ExerciseEditPage'
 import ExerciseCreatePage from '../Admin/ExerciseCreatePage'
 import MyAccountPage from '../Admin/MyAccountPage'
@@ -61,9 +62,10 @@ class AdminRouter extends Component {
         <Route exact path="/admin" component={LoginPage} />
         <Route exact path="/admin/exercises/create" component={ExerciseCreatePage} />
         <Route exact path="/admin/exercises/edit/:id" component={ExerciseEditPage} />
+        <Route exact path="/admin/exercises" component={AdminExercisesPage} />
         <Route exact path="/admin/cohorts" component={AdminCohortsPage} />
         <Route exact path="/admin/cohorts/view/:id" component={AdminCohortPage} />
-        <Route exact path="/admin/dashboard" component={AdminHomePage} />
+        <Route exact path="/admin/dashboard" component={AdminCohortsPage} />
         <Route path="/admin/my-account" component={MyAccountPage} />
       </Switch>
     )

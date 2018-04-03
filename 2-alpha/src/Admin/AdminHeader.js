@@ -9,6 +9,16 @@ import { Title } from '../components/Text'
 import AdminNav from './AdminNav'
 
 const Container = styled.div`
+
+`
+
+const Header = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 24px 0;
+  & > * {
+  }
 `
 
 export const AdminHeader = ({ 
@@ -23,9 +33,12 @@ export const AdminHeader = ({
   return (
     <Container>
       <AdminNav />
-      <div>
+      <Header>
         <Title>{title}</Title>
-      </div>
+        <div>
+          {children}
+        </div>
+      </Header>
     </Container>
   )
 }
