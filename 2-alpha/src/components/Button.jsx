@@ -30,3 +30,10 @@ export const HighlightButton = Button.extend`
     background: ${p => darken(0.1, p.theme.purple)};
   }
 `
+
+export const SecondaryButton = Button.extend`
+  background: ${p => lighten(0.1, p.theme.lightGrey)};
+  &:hover {
+    background: ${props => props.theme.lightGrey};
+  }
+`

@@ -3,10 +3,10 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 
 import Nav from '../../components/Nav'
-import { Button, HighlightButton } from '../../components/Button'
+import { Button, HighlightButton, SecondaryButton} from '../../components/Button'
 import { SecondaryLink, HighlightLink } from '../../components/Link';
 import { ConcavedInput } from '../../components/Input'
-import { P, PLight } from '../../components/Text'
+import { P, PLight, BigTitle } from '../../components/Text'
 
 import { checkStudentExists, updateCurrentStudentID } from '../../actions'
 import { startAdminLogin } from '../../actions/auth'
@@ -17,11 +17,7 @@ const Container = styled.div`
   flex-direction: row;
   height: 100vh;
 `
-const Title = styled.h2`
-  font: 40px/48px ${p => p.theme.fontStack};
-  font-weight: 600;
-  margin-bottom: 35px;
-`
+
 
 export class GameWelcome extends Component {
   state = {
@@ -51,12 +47,12 @@ export class GameWelcome extends Component {
           </Nav.Left>
           <Nav.Right>
             <PLight>Not yet logged in</PLight>
-            <Button onClick={() => this.props.startAdminLogin}>Lecturer/Admin Login</Button>
+            <SecondaryLink to="/admin">Lecturer/Admin Login</SecondaryLink>
           </Nav.Right>
         </Nav>
         <Container>
           <div className="col-7 offset-md-2">
-          <Title>Learn primer design using teaching techniques.</Title>
+          <BigTitle>Learn primer design using teaching techniques.</BigTitle>
             <P>
               Primer Designer is an online application used to teach undergraduate primer design in biochemistry. This program contains a database of exercises to attempt. Inspired by sites such as Lynda and Khan Academy, this application uses pedagological techniques and instant answer feedback algorithms.
             </P>
