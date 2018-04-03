@@ -1,9 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
-import { startAdminLogout } from '../actions/auth'
+import styled from 'styled-components'
 
 import { getCurrentAuthor } from '../selectors/admin'
+
+import { Title } from '../components/Text'
+import AdminNav from './AdminNav'
+
+const Container = styled.div`
+`
 
 export const AdminHeader = ({ 
   title, 
@@ -15,37 +21,15 @@ export const AdminHeader = ({
   ...rest 
 }) => {
   return (
-    <div className="row">
-      <div className="Nav">
-        <div className="Logo">
-          <h4>{title}</h4>
-        </div>
-        <div>
-          {children}
-          {location.pathname !== '/admin/create' && !location.pathname.includes('/admin/edit') && 
-          <Link to="/admin/create"><button className="btn btn-success mr-3">Add new exercise</button></Link>}
-          <Link to="/admin/cohorts" className="btn btn-info mr-3">View cohorts</Link>
-          {location.pathname !== '/admin' ? <Link to="/admin" className="btn btn-success Goto-Home">Back to home</Link> : ''}
-          <span className="Author-Name">{name}</span>
-          <Link to="/admin/my-account" className="btn btn-info mr-3">My Account</Link>
-          <button className="Logout-Button btn btn-warning mr-3" onClick={startAdminLogout}>Log out</button>
-        </div>
+    <Container>
+      <AdminNav />
+      <div>
+        <Title>{title}</Title>
       </div>
-    </div>
+    </Container>
   )
 }
 
-const mapStateToProps = (state) => {
-  const author = getCurrentAuthor(state)
-  return {
-    name: author ? author.fullName : ''
-  } 
-}
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    startAdminLogout: () => dispatch(startAdminLogout()),
-  }
-}
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AdminHeader))
+export default AdminHeader
