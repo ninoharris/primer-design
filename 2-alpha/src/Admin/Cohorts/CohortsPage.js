@@ -1,19 +1,19 @@
 import React from 'react'
+import styled from 'styled-components'
 
-import AdminHeader from './AdminHeader'
+import AdminHeader from '../AdminHeader'
 import CohortsList from './CohortsList'
 
+const Container = styled.div`
+`
+
 const CohortsPage = () => (
-  <div className="container-fluid">
+  <Container>
     <AdminHeader title="Viewing cohorts" />
-    <div className="row">
       {/* TODO: general cohorts dashboard overview (number of cohorts), possibly the most recent viewed one, with a dashboard of that? */}
       {/* TODO: add cohort search bar here */}
-      <div className="col-12">
-        <CohortsList />
-      </div>
-    </div>
-  </div>
+      <CohortsList />
+  </Container>
 ) 
 
 export default CohortsPage

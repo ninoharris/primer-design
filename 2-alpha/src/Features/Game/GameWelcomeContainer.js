@@ -6,17 +6,10 @@ import Nav from '../../components/Nav'
 import { Button, HighlightButton, SecondaryButton} from '../../components/Button'
 import { SecondaryLink, HighlightLink } from '../../components/Link';
 import { ConcavedInput } from '../../components/Input'
-import { P, PLight, BigTitle } from '../../components/Text'
+import { Container, P, PLight, BigTitle } from '../../components/Text'
 
 import { checkStudentExists, updateCurrentStudentID } from '../../actions'
 import { startAdminLogin } from '../../actions/auth'
-
-const Container = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  height: 100vh;
-`
 
 
 export class GameWelcome extends Component {

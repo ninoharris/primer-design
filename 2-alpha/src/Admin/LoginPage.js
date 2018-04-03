@@ -7,14 +7,7 @@ import styled from 'styled-components'
 import Nav from '../components/Nav';
 import { HighlightButton } from '../components/Button'
 import { HighlightLink } from '../components/Link'
-import { P, PLight, BigTitle } from '../components/Text'
-
-const Container = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  height: 100vh;
-`
+import { Container, P, PLight, BigTitle } from '../components/Text'
 
 export const LoginPage = ({
   startLogin

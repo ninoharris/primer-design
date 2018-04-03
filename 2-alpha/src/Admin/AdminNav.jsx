@@ -21,7 +21,7 @@ const LatestCohort = ({
 
 const ViewCohortsOrBackHome = ({ pathname = '' }) => {
   console.log('pathname', pathname)
-  if(pathname.includes('/cohort') || pathname === '/admin/dashboard') {
+  if(pathname.includes('/cohorts') || pathname === '/admin/dashboard') {
     return <Link to="/admin">Back to home</Link>
   }
   return <HighlightLink to="/admin">All reports</HighlightLink>

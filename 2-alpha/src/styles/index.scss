@@ -26,6 +26,12 @@ body::after {
   background-repeat: repeat;
 }
 
+ul, li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
 .Nav {
   width: 100%;
   background-color: rgba(102,52,11,0.07);

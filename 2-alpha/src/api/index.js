@@ -2,14 +2,28 @@ import _ from 'lodash'
 import { codonTable } from './codons'
 export const RESites = require('./restrictionSites').RESites
 
+// General
 export const arrToObj = (arr) => arr.reduce((obj, currentID) => ({ ...obj, [currentID]: true }), {})
 
+
+
+
+
+
+
+// Database
 export const firebasePathExists = (db, firebasePath) => db.ref(firebasePath).once('value').then(snapshot => {
   return snapshot.exists() ? Promise.resolve() : Promise.reject('`firebasePath of ${firebasePath} does not exist!`')
 })
 export const firebasePathAlreadyExists = (db, firebasePath) => db.ref(firebasePath).once('value').then(snapshot => {
   return snapshot.exists() ? Promise.reject(`firebasePath of ${firebasePath} already exists!`) : Promise.resolve()
 })
+
+
+
+
+
+// Domain specific to DNA
 
 export const repeatChar = function (count, ch) {
   if (!ch || ch.length === 0) ch = " " // Default repeated char is space

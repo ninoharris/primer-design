@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
+import * as paths from '../api/paths'
 
 // Firebase authentication determines redirects
 import db, { firebase } from '../firebase/firebase'
@@ -18,8 +19,7 @@ import AdminExercisesPage from '../Admin/AdminExercisesPage'
 import ExerciseEditPage from '../Admin/ExerciseEditPage'
 import ExerciseCreatePage from '../Admin/ExerciseCreatePage'
 import MyAccountPage from '../Admin/MyAccountPage'
-import AdminCohortsPage from '../Admin/AdminCohortsPage'
-import AdminCohortPage from '../Admin/AdminCohortPage'
+import CohortsRouter from './CohortsRouter'
 
 
 class AdminRouter extends Component {
@@ -58,14 +58,12 @@ class AdminRouter extends Component {
 
     return (
       <Switch>
-        <Redirect exact path="/admin" to="/admin/dashboard" /* Skip login page */ /> 
+        <Redirect exact path="/admin" to={"/admin/cohorts"} /* Skip login page */ /> 
         <Route exact path="/admin" component={LoginPage} />
         <Route exact path="/admin/exercises/create" component={ExerciseCreatePage} />
         <Route exact path="/admin/exercises/edit/:id" component={ExerciseEditPage} />
         <Route exact path="/admin/exercises" component={AdminExercisesPage} />
-        <Route exact path="/admin/cohorts" component={AdminCohortsPage} />
-        <Route exact path="/admin/cohorts/view/:id" component={AdminCohortPage} />
-        <Route exact path="/admin/dashboard" component={AdminCohortsPage} />
+        <Route exact path="/admin/cohorts" component={CohortsRouter} />
         <Route path="/admin/my-account" component={MyAccountPage} />
       </Switch>
     )

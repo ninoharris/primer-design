@@ -2,11 +2,18 @@ import _ from 'lodash'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import styled from 'styled-components'
 
-import { getCohorts } from '../selectors/admin'
-import { fetchCohorts } from '../actions/admin'
+import { getCohorts } from '../../selectors/admin'
+import { fetchCohorts } from '../../actions/admin'
 
 import CohortsListItem from './CohortsListItem'
+
+const List = styled.ul`
+  & li {
+    margin-bottom: 20px;
+  }
+`
 
 class CohortsList extends Component {
   state = { ready: false }
@@ -16,12 +23,12 @@ class CohortsList extends Component {
   render() {
     const { cohorts } = this.props
     return (
-      <ul className="Cohorts-List list-group">
+      <List>
         { this.state.ready ?
           _.flatMap(cohorts, (cohort, cohortID) => <CohortsListItem key={cohortID} {...cohort} cohortID={cohortID} />) :
-          <li>Loading...</li>
+          <li>Loading cohorts...</li>
         }
-      </ul>
+      </List>
     )
   }
 }
