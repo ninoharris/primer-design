@@ -10,9 +10,13 @@ export const PLight = P.extend`
   color: ${p => lighten(0.2, p.theme.textDefault)};
 `
 
-export const Title = styled.div`
+export const TitleNoMargins = styled.div`
  font: 24px/29px ${p => p.theme.fontStack};
  font-weight: 600;
+`
+
+export const Title = TitleNoMargins.extend`
+  margin-bottom: 0.6rem;
 `
 
 export const BigTitle = Title.extend`

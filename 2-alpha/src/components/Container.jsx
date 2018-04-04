@@ -28,11 +28,11 @@ export const FlexVerticallyCenter = styled.div`
   &&& > * { /* direct children must be flex for centered vertical */
     display: flex;
     align-items: center;
-    &:first-child {
-      margin-left: -6px;
+    &:first-child, &:first-child > *:first-child { /* first child and first grandchild, remove margins */
+      margin-left: 0;
     }
-    &:last-child {
-      margin-right: -6px;
+    &:last-child, &:last-child > *:last-child {
+      margin-right: 0;
     }
   }
 `

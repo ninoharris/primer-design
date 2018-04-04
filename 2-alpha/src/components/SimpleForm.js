@@ -7,7 +7,7 @@ import { HighlightButton } from './Button';
 import { FlexVerticallyCenter } from './Container'
 
 const Form = FlexVerticallyCenter.withComponent('form').extend`
-  padding: 0.8rem 1.2rem;
+  padding: 0.8rem 1rem;
   input {
     flex: 1;
   }

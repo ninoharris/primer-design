@@ -20,7 +20,6 @@ const LatestCohort = ({
 }
 
 const ViewCohortsOrBackHome = ({ pathname = '' }) => {
-  console.log('pathname', pathname)
   if(pathname.includes('/cohorts') || pathname === '/admin/dashboard') {
     return <Link to="/admin">Back to home</Link>
   }
@@ -40,7 +39,6 @@ export const AdminNav = ({
   latestCohort = null,
   ...rest
 }) => {
-  console.log('location:', location)
   return (
     <Container>
       <Nav>

@@ -25,7 +25,6 @@ class CohortsRouter extends Component {
     // upon each url change to a specific cohort, check cohort exists.
 
     const { id } = this.props.match.params
-    console.log(id)
     if (!id || id === '') { // going to general cohorts page
       this.setState({ checkingCohort: false })
       return

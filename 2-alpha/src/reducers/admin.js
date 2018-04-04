@@ -59,6 +59,10 @@ export const cohorts = (state = {}, action = {}) => {
     case TYPES.ADD_COHORT_EXERCISE_SUCCESS:
     case TYPES.REMOVE_COHORT_EXERCISE_SUCCESS:
       return _.mapValues(state, (v) => cohort(v, action))
+    case TYPES.ADD_STUDENT_SUCCESS:
+      return { ...state, [action.cohortID]: cohort(state[action.cohortID], action)}
+    case TYPES.REMOVE_STUDENT_SUCCESS:
+      return _.omit(state, `studentIDs.${action.studentID}`)
     default: return state
   }
 }
@@ -72,6 +76,8 @@ const cohort = (state = {}, action = {}) => {
       return { ...state, exerciseIDs }
     case TYPES.REMOVE_COHORT_EXERCISE_SUCCESS:
       return { ...state, exerciseIDs: _.omit(state.exerciseIDs, action.exerciseID)}
+    case TYPES.ADD_STUDENT_SUCCESS:
+      return _.setWith(_.clone(state), `studentIDs.${action.studentID}`, true)
     default: return state
   }
 }
@@ -81,12 +87,15 @@ export const studentsById = (state = {}, action = {}) => {
   case TYPES.FETCH_STUDENTS_SUCCESS:
     return action.payload
   case TYPES.ADD_STUDENT_SUCCESS:
-    return {...state, [action.studentID]: action.payload}
+    return {
+      ...state, 
+      [action.studentID]: { cohortID: action.cohortID, authorID: action.authorID, fullName: action.fullName, createdAt: action.createdAt }
+    }
   case TYPES.REMOVE_STUDENT_SUCCESS:
     return _.omit(state, action.studentID)
   case TYPES.UPDATE_STUDENT_FULLNAME_SUCCESS:
     const student = state[action.studentID]
-    return {...state, [action.studentID]: {...student, fullName: action.payload }}
+    return {...state, [action.studentID]: {...student, fullName: action.fullName }}
   default: return state
   }
 }

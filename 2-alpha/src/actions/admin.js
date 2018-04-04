@@ -289,9 +289,7 @@ export const fetchStudents = (ids = {}) => (dispatch) => {
   })
 
   const studentIDs = _.keys(ids)
-  console.log('studentIDS: areeee', studentIDs)
   return Promise.all(studentIDs.map(id => db.ref(`students/${id}`).once('value').then((snapshot) => {
-    console.log('student snapshot', snapshot.val())
     return { [snapshot.key]: snapshot.val() } // return array of objects of { studentID: data }
   }))).then((data) => {
     dispatch({
@@ -309,64 +307,79 @@ export const fetchStudents = (ids = {}) => (dispatch) => {
   // })
 }
 
-export const addStudent = (cohortID, authorID) => (studentID, fullName) => (dispatch) => {
+export const addStudent = (cohortID, authorID, studentID, fullName) => (dispatch) => {
   dispatch({
     type: TYPES.ADD_STUDENT_INIT,
     studentID,
+    fullName,
     cohortID,
+    authorID,
   })
   // check if student doesn't already exist
+  const createdAt = Date.now()
   return firebasePathAlreadyExists(db, `students/${studentID}`)
   .then(() => firebasePathExists(db, `cohorts/${cohortID}`)) // a student must be added to a cohort
-  .then(() => db.ref('students').update({ [studentID]: { cohortID, authorID, fullName} })) // add student to students records
+  .then(() => db.ref('students').update({ [studentID]: { cohortID, authorID, fullName, createdAt} }) ) // add student to students records
   .then(() => db.ref(`cohorts/${cohortID}/studentIDs`).update({ [studentID]: true })) // add student to its particular cohort record
   .then(() => dispatch({
     type: TYPES.ADD_STUDENT_SUCCESS,
     studentID,
+    fullName,
+    cohortID,
+    authorID,
+    createdAt,
   }))
   .catch(err => {
     dispatch({
       type: TYPES.ADD_STUDENT_FAIL,
       studentID,
+      fullName,
+      cohortID,
+      authorID,
+      createdAt,
       err,
     })
     return Promise.reject(err)
   })
 }
 
-export const updateStudent = ({ id, fullName }) => (dispatch) => {
+export const updateStudent = ( studentID, fullName ) => (dispatch) => {
   dispatch({
-    type: TYPES.ADD_STUDENT_INIT
+    type: TYPES.UPDATE_STUDENT_FULLNAME_INIT,
+    studentID,
+    fullName,
   })
   // check student doesnt exist
-  return firebasePathExists(db, `students/${id}`)
+  return firebasePathExists(db, `students/${studentID}`)
   .then(() => 
-    db.ref(`students/${id}`).update({
+    db.ref(`students/${studentID}`).update({
       fullName,
     }))
   .then(() => {
     dispatch({
-      type: TYPES.ADD_STUDENT_SUCCESS,
-      id,
+      type: TYPES.UPDATE_STUDENT_FULLNAME_SUCCESS,
+      studentID,
+      fullName,
     })
   })
   .catch(err => {
     dispatch({ 
-      type: TYPES.ADD_STUDENT_FAIL,
-      id,
+      type: TYPES.UPDATE_STUDENT_FULLNAME_FAIL,
+      studentID,
+      fullName,
       err,
     })
     return Promise.reject(err)
   })
 }
 
-export const removeStudent = (id) => (dispatch) => {
+export const removeStudent = (studentID) => (dispatch) => {
   dispatch({
     type: TYPES.REMOVE_STUDENT_INIT,
-    id
+    studentID,
   })
   let cohortID, attemptIDs
-  return db.ref(`students/${id}`).once('value')
+  return db.ref(`students/${studentID}`).once('value')
   .then((snapshot) => {
     const student = snapshot.val()
     cohortID = student.cohortID // get associated cohort and delete the students ID from that cohorts record
@@ -374,15 +387,17 @@ export const removeStudent = (id) => (dispatch) => {
     attemptIDs = _.reduce(student.exercises, (result, attemptIDs, key) => ({...result, ...attemptIDs }), {})
     attemptIDs = _.map(attemptIDs, (val, key) => null)
   })
-  .then(() => db.ref(`cohorts/${cohortID}/studentIDs/${id}`).set(null))
+  .then(() => db.ref(`cohorts/${cohortID}/studentIDs/${studentID}`).set(null))
   .then(() => db.ref(`attempts`).update(attemptIDs))
-  .then(() => db.ref(`students/${id}`).set(null))
+  .then(() => db.ref(`students/${studentID}`).set(null))
   .then(() => dispatch({
     type: TYPES.REMOVE_STUDENT_SUCCESS,
+    studentID,
   }))
   .catch(err => {
     dispatch({
       type: TYPES.REMOVE_STUDENT_FAIL,
+      studentID,
       err,
     })
     return Promise.reject(err)

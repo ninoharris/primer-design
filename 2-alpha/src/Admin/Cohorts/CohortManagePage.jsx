@@ -11,6 +11,7 @@ import { P, PLight, BigTitle, Title } from '../../components/Text'
 import { CTAButton } from '../../components/Button'
 import SimpleForm from '../../components/SimpleForm'
 import { RaisedBox } from '../../components/Container'
+import AddCohortStudent from './AddCohortStudent';
 
 
 const Container = styled.div`
@@ -52,10 +53,13 @@ export class CohortManagePage extends Component {
               <RaisedBox>
                 <SimpleForm onSubmit={this.updateName} text={`${cohortName}`} submitText={'Update cohort name'} />
               </RaisedBox>
-              </BlockMargin>
-              <BlockMargin>
-                <CohortEditStudents studentIDs={studentIDs} cohortName={cohortName} cohortID={this.props.match.params.id} />
-              </BlockMargin>
+            </BlockMargin>
+            <BlockMargin>
+              <CohortEditStudents studentIDs={studentIDs} cohortName={cohortName} cohortID={this.props.match.params.id} />
+            </BlockMargin>
+            <BlockMargin>
+              <AddCohortStudent cohortID={this.props.match.params.id} />
+            </BlockMargin>  
           </div>
         </div>
       </div>

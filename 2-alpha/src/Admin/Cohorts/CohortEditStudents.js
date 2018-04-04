@@ -7,7 +7,7 @@ import _ from 'lodash'
 import CohortEditStudent from './CohortEditStudent'
 import { Title } from '../../components/Text'
 import Loading from '../../components/Loading'
-import { fetchStudents, updateStudent } from '../../actions/admin'
+import { fetchStudents, updateStudent, removeStudent } from '../../actions/admin'
 import { getStudentsOverviewList, getAuthorName } from '../../selectors/admin'
 
 const Container = styled.div`
@@ -31,9 +31,10 @@ export class CohortEditStudents extends Component {
 
     return (
       <Container>
-        <Title>{studentCount} students in total, add more below.</Title>
-        {this.props.students.map(student =>
+        <Title>Showing {studentCount} enrolled students</Title>
+        {this.props.students.sort((a,b) => a.studentID.localeCompare(b.studentID)).map(student =>
           <CohortEditStudent
+            key={student.studentID}
             cohortID={cohortID}
             studentID={student.studentID} 
             handleSubmit={this.props.updateStudent}
@@ -65,7 +66,8 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchStudents: (studentIDs) => dispatch(fetchStudents(studentIDs)), 
-    updateStudent: (id, fullName) => dispatch(updateStudent({ id, fullName })),
+    updateStudent: (studentID, fullName) => dispatch(updateStudent(studentID, fullName )),
+    deleteStudent: (studentID) => dispatch(removeStudent(studentID))
   }
 }
 

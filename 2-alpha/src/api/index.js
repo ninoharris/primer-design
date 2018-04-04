@@ -1,10 +1,12 @@
 import _ from 'lodash'
 import { codonTable } from './codons'
+import moment from 'moment'
 export const RESites = require('./restrictionSites').RESites
 
 // General
 export const arrToObj = (arr) => arr.reduce((obj, currentID) => ({ ...obj, [currentID]: true }), {})
 
+export const formatDate = (timestamp = 0) => moment(timestamp).format('ddd, Do MMM YY')
 
 
 
