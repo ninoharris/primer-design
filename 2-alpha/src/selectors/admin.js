@@ -32,6 +32,11 @@ export const getStudents = createSelector(
   (students, studentIDs) => console.log(students) || _.pick(students, _.keys(studentIDs))
 )
 
+export const getStudentsOverview = createSelector(
+  getStudents,
+  (students) => _.map(students, ({ createdAt, completedCount, authorID, name }) => ({ createdAt, completedCount, authorID, name }))
+)
+
 export const getExercises = createSelector( // takes in an object with exerciseIDs { id1: true, id2: true }, returns an object containing full exercise data
   (state, props) => props.exerciseIDs,
   exercisesByIdSelector,
@@ -122,8 +127,8 @@ export const getFilteredSortedExercisesNotInCohort = createSelector(
   }
 )
 
-// export const getCohortStudents = createSelector(
-//   getCohort,
-//   getAlltudents,
-//   (cohort, students) => console.log(cohort, students) ||  _.pick(getAlltudents, cohort.studentIDs)
-// )
+export const getCohortStudents = createSelector(
+  getCohort,
+  getStudents,
+  (cohort, students) => _.pick(students, cohort.studentIDs)
+)

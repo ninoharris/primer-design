@@ -7,7 +7,7 @@ const NavDiv = styled.nav`
   display: flex;
   justify-content: space-between;
   background: ${p => rgba(p.theme.cream, 0.07)};
-  padding: 8px 0;
+  padding: 8px 10px;
   width: 100%;
 `
 const Title = styled.h1`

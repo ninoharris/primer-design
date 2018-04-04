@@ -7,7 +7,12 @@ import styled from 'styled-components'
 import Nav from '../components/Nav';
 import { HighlightButton } from '../components/Button'
 import { HighlightLink } from '../components/Link'
-import { Container, P, PLight, BigTitle } from '../components/Text'
+import { P, PLight, BigTitle } from '../components/Text'
+import { Container } from '../components/Container'
+
+const Title = BigTitle.extend`
+  margin-top: 5rem;
+`
 
 export const LoginPage = ({
   startLogin
@@ -22,7 +27,7 @@ export const LoginPage = ({
       </Nav>
       <Container>
         <div className="col-7 offset-md-2">
-          <BigTitle>Educator login</BigTitle>
+          <Title>Educator login</Title>
           <P>Log in to admin section with your gmail account. If you dont already have a primer designer account then your gmail account will be assigned one.</P>
           <HighlightButton onClick={startLogin} className="Login-Button btn btn-primary">Log in</HighlightButton>
         </div>

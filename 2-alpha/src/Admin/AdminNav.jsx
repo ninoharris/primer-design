@@ -28,8 +28,7 @@ const ViewCohortsOrBackHome = ({ pathname = '' }) => {
 }
 
 const Container = styled.div`
-  margin-left: -15px;
-  margin-right: -15px;
+
 `
 
 export const AdminNav = ({

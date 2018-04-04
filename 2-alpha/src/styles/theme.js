@@ -8,6 +8,7 @@ export default {
   white: '#FAF9F9',
   darkerGrey: '#85898A',
   cream: '#65340B',
+  red: '#E27070',
   pLineHeight: '1.5rem',
   pMarginBottom: '2rem',
   fontStack: 'Helvetica, sans-serif'

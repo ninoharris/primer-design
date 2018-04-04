@@ -26,6 +26,11 @@ body::after {
   background-repeat: repeat;
 }
 
+.row-vertical-center {
+  display: flex;
+  
+}
+
 ul, li {
   margin: 0;
   padding: 0;

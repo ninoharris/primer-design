@@ -7,18 +7,14 @@ import { getCurrentAuthor } from '../selectors/admin'
 
 import { Title } from '../components/Text'
 import AdminNav from './AdminNav'
+import { FlexVerticallyCenter } from '../components/Container'
 
 const Container = styled.div`
 
 `
 
-const Header = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+const Header = FlexVerticallyCenter.extend`
   margin: 24px 0;
-  & > * {
-  }
 `
 
 export const AdminHeader = ({ 
@@ -33,12 +29,20 @@ export const AdminHeader = ({
   return (
     <Container>
       <AdminNav />
-      <Header>
-        <Title>{title}</Title>
-        <div>
-          {children}
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-12">
+            <Header>
+              <div>
+                  <Title>{title}</Title>
+              </div>
+              <div>
+                {children}
+              </div>
+            </Header>
+          </div>
         </div>
-      </Header>
+      </div>
     </Container>
   )
 }

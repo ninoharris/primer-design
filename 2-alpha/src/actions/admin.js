@@ -226,12 +226,20 @@ export const updateCohortName = (id, name) => (dispatch) => {
     name,
   })
   db.ref(`cohorts/${id}`).update({ cohortName: name })
-  .then(() => dispatch({ 
-    type: TYPES.UPDATE_COHORT_NAME_SUCCESS,
-    id, 
-    name,
-  }))
+  .then(() => {
+    dispatch({ 
+      type: TYPES.UPDATE_COHORT_NAME_SUCCESS,
+      id, 
+      name,
+    })
+    dispatch({
+      type: TYPES.FETCH_COHORT_SUCCESS,
+      id,
+      payload: {cohortName: name},
+    })
+  })
 }
+
 
 export const addExerciseToCohort = (cohortID, exerciseID) => (dispatch) => {
   dispatch({

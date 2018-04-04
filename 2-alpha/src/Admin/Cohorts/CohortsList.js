@@ -10,8 +10,9 @@ import { fetchCohorts } from '../../actions/admin'
 import CohortsListItem from './CohortsListItem'
 
 const List = styled.ul`
+  width: 100%;
   & li {
-    margin-bottom: 20px;
+    margin-bottom: 3rem;
   }
 `
 

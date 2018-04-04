@@ -6,11 +6,15 @@ import Nav from '../../components/Nav'
 import { Button, HighlightButton, SecondaryButton} from '../../components/Button'
 import { SecondaryLink, HighlightLink } from '../../components/Link';
 import { ConcavedInput } from '../../components/Input'
-import { Container, P, PLight, BigTitle } from '../../components/Text'
+import { P, PLight, BigTitle } from '../../components/Text'
+import { Container } from '../../components/Container'
 
 import { checkStudentExists, updateCurrentStudentID } from '../../actions'
 import { startAdminLogin } from '../../actions/auth'
 
+const Title = BigTitle.extend`
+  margin-top: 5rem;
+`
 
 export class GameWelcome extends Component {
   state = {
@@ -45,7 +49,7 @@ export class GameWelcome extends Component {
         </Nav>
         <Container>
           <div className="col-7 offset-md-2">
-          <BigTitle>Learn primer design using teaching techniques.</BigTitle>
+          <Title>Learn primer design using teaching techniques.</Title>
             <P>
               Primer Designer is an online application used to teach undergraduate primer design in biochemistry. This program contains a database of exercises to attempt. Inspired by sites such as Lynda and Khan Academy, this application uses pedagological techniques and instant answer feedback algorithms.
             </P>

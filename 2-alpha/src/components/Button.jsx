@@ -37,3 +37,11 @@ export const SecondaryButton = Button.extend`
     background: ${props => props.theme.lightGrey};
   }
 `
+
+export const CTAButton = Button.extend`
+  background: ${p => p.theme.red};
+  color: ${p => p.theme.white};
+  &:hover {
+    background: ${p => darken(0.1, p.theme.red)};
+  }
+`
