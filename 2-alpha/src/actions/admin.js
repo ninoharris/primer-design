@@ -284,10 +284,12 @@ export const removeExerciseFromCohort = (cohortID, exerciseID) => (dispatch) => 
 // ids object usually given by cohort
 export const fetchStudents = (ids = {}) => (dispatch) => {
   dispatch({
-    type: TYPES.FETCH_STUDENTS_INIT
+    type: TYPES.FETCH_STUDENTS_INIT,
+    ids,
   })
 
   const studentIDs = _.keys(ids)
+  console.log('studentIDS: areeee', studentIDs)
   return Promise.all(studentIDs.map(id => db.ref(`students/${id}`).once('value').then((snapshot) => {
     console.log('student snapshot', snapshot.val())
     return { [snapshot.key]: snapshot.val() } // return array of objects of { studentID: data }
@@ -337,7 +339,7 @@ export const updateStudent = ({ id, fullName }) => (dispatch) => {
     type: TYPES.ADD_STUDENT_INIT
   })
   // check student doesnt exist
-  return firebasePathExists(`students/${id}`)
+  return firebasePathExists(db, `students/${id}`)
   .then(() => 
     db.ref(`students/${id}`).update({
       fullName,

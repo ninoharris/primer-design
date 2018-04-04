@@ -32,9 +32,9 @@ export const getStudents = createSelector(
   (students, studentIDs) => console.log(students) || _.pick(students, _.keys(studentIDs))
 )
 
-export const getStudentsOverview = createSelector(
+export const getStudentsOverviewList = createSelector(
   getStudents,
-  (students) => _.map(students, ({ createdAt, completedCount, authorID, name }) => ({ createdAt, completedCount, authorID, name }))
+  (students) => _.map(students, ({ fullName, createdAt, completedCount, authorID }, studentID ) => ({ createdAt, completedCount, authorID, fullName, studentID }))
 )
 
 export const getExercises = createSelector( // takes in an object with exerciseIDs { id1: true, id2: true }, returns an object containing full exercise data

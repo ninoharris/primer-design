@@ -8,7 +8,7 @@ import CohortEditStudent from './CohortEditStudent'
 import { Title } from '../../components/Text'
 import Loading from '../../components/Loading'
 import { fetchStudents, updateStudent } from '../../actions/admin'
-import { getStudentsOverview } from '../../selectors/admin'
+import { getStudentsOverviewList, getAuthorName } from '../../selectors/admin'
 
 const Container = styled.div`
   
@@ -19,27 +19,29 @@ export class CohortEditStudents extends Component {
     ready: false
   }
   componentDidMount() {
+    console.log(this.props.studentIDs)
     this.props.fetchStudents(this.props.studentIDs).then(() => {
       this.setState({ ready: true })
     })
   }
   render() {
-    const { studentIDs, cohortName } = this.props
+    const { studentIDs, cohortName, cohortID } = this.props
     const studentCount = _.size(studentIDs)
     if (!this.state.ready) return <Loading text={`Loading ${studentCount} students for cohort '${cohortName}'`} />
 
     return (
       <Container>
         <Title>{studentCount} students in total, add more below.</Title>
-        {_.map(this.props.students, (student, studentID) => 
+        {this.props.students.map(student =>
           <CohortEditStudent
-            studentID={studentID} 
-            handleSubmit={this.props.updateName}
+            cohortID={cohortID}
+            studentID={student.studentID} 
+            handleSubmit={this.props.updateStudent}
             handleDelete={this.props.deleteStudent}
             fullName={student.fullName}
             completedCount={student.completedCount}
             createdAt={student.createdAt}
-            /* authorID={student.authorID} */
+            authorName={student.authorName}
           />)
         }
       </Container>
@@ -52,13 +54,17 @@ CohortEditStudents.propTypes = {
 }
 
 const mapStateToProps = (state, ownProps) => {
+  const students = getStudentsOverviewList(state, { studentIDs: ownProps.studentIDs }).map(student => ({
+    ...student, authorName: getAuthorName(state, { authorID: student.authorID })
+    // not sure i should be doing this in here but i'd rather not ask for redux state in each student's record.
+  }))
   return {
-    students: getStudentsOverview(state, { studentIDs: ownProps.studentIDs }),
+    students,
   }
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchStudents: () => dispatch(fetchStudents()), 
+    fetchStudents: (studentIDs) => dispatch(fetchStudents(studentIDs)), 
     updateStudent: (id, fullName) => dispatch(updateStudent({ id, fullName })),
   }
 }

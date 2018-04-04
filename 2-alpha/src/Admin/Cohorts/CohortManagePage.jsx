@@ -16,6 +16,10 @@ import { RaisedBox } from '../../components/Container'
 const Container = styled.div`
 `
 
+const BlockMargin = styled.div`
+  margin-bottom: 3rem;
+`
+
 export class CohortManagePage extends Component {
   state = {
     ready: false,
@@ -33,7 +37,7 @@ export class CohortManagePage extends Component {
   }
  render() {
    if(!this.state.ready) return <div>Fetching cohort data...</div>
-   const { cohort = {} } = this.props
+   const { cohort = {}, } = this.props
    const { cohortName = '', studentIDs = {}} = cohort
    return (
      <Container>
@@ -44,10 +48,14 @@ export class CohortManagePage extends Component {
         <div className="row">
           <div className="col-12">
             <Title>Change cohort admin details</Title>
-            <RaisedBox>
-              <SimpleForm onSubmit={this.updateName} text={`${cohortName}`} submitText={'Update cohort name'} />
-            </RaisedBox>
-            <CohortEditStudents studentIDs={studentIDs} cohortName={cohortName} />
+            <BlockMargin>
+              <RaisedBox>
+                <SimpleForm onSubmit={this.updateName} text={`${cohortName}`} submitText={'Update cohort name'} />
+              </RaisedBox>
+              </BlockMargin>
+              <BlockMargin>
+                <CohortEditStudents studentIDs={studentIDs} cohortName={cohortName} cohortID={this.props.match.params.id} />
+              </BlockMargin>
           </div>
         </div>
       </div>
