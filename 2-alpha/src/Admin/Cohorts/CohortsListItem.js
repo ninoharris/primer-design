@@ -16,19 +16,29 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  & > * > * {
+    display: inline-block;
+    margin: 0 6px;
+  }
+  & > *:first-child {
+    margin-left: -6px;
+  }
+  & > *:last-child {
+    margin-right: -6px;
+  }
 `
 
 const Main = styled.div`
   background: ${p => p.theme.white};
   border-radius: 4px;
   box-shadow: rgba(0,0,0,0.12) 0 1px 1px 0;
-  margin-top: 6px;
+  margin-top: 10px;
 `
 
 const CohortsListItem = ({ cohortID, cohortName, authorFullName, exerciseIDs = {}, studentIDs = {}, createdDate = Date.now() }) => (
   <ListItem className="list-group-item">
     <Header>
-      <UnstyledLink to={paths.getCohortURL(cohortID)}><Title>{cohortName}</Title></UnstyledLink>
+      <Title>{cohortName}</Title>
       <div>
         <HighlightLink to={paths.getCohortURL(cohortID)}>View all students</HighlightLink>
         <Link to={`/admin/cohorts/${cohortID}/manage`}>Manage cohort and students</Link>
