@@ -12,7 +12,6 @@ import { Button, HighlightButton, SecondaryButton } from '../components/Button'
 import { Link, SecondaryLink, HighlightLink } from '../components/Link'
 
 const LatestCohort = ({
-
 }) => {
   return (
     null
@@ -64,8 +63,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  startAdminLogout: () => dispatch(startAdminLogout()),
-})
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AdminNav))
+export default withRouter(connect(mapStateToProps, { startAdminLogout })(AdminNav))

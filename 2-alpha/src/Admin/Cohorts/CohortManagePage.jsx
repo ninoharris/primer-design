@@ -26,7 +26,7 @@ export class CohortManagePage extends Component {
     ready: false,
   }
   componentDidMount() {
-    this.props.fetchCohort(this.props.match.params.id).then(() => {
+    this.props.fetchCohort(this.props.cohortID).then(() => {
       this.setState({ ready: true })
     })
   }
@@ -34,7 +34,7 @@ export class CohortManagePage extends Component {
     this.props.history.push('/admin')
   }
   updateName = (name) => {
-    this.props.updateCohortName(this.props.match.params.id, name)
+    this.props.updateCohortName(this.props.cohortID, name)
   }
  render() {
    if(!this.state.ready) return <div>Fetching cohort data...</div>
@@ -55,10 +55,10 @@ export class CohortManagePage extends Component {
               </RaisedBox>
             </BlockMargin>
             <BlockMargin>
-              <CohortEditStudents studentIDs={studentIDs} cohortName={cohortName} cohortID={this.props.match.params.id} />
+              <CohortEditStudents studentIDs={studentIDs} cohortName={cohortName} cohortID={this.props.cohortID} />
             </BlockMargin>
             <BlockMargin>
-              <AddCohortStudent cohortID={this.props.match.params.id} />
+              <AddCohortStudent cohortID={this.props.cohortID} />
             </BlockMargin>  
           </div>
         </div>
@@ -71,13 +71,12 @@ export class CohortManagePage extends Component {
 const mapStateToProps = (state, ownProps) => {
   const cohortID = ownProps.match.params.id
   return {
+    cohortID,
     cohort: getCohort(state, { cohortID }),
   }
-
 }
-const mapDispatchToProps = (dispatch) => ({
-  fetchCohort: (id) => dispatch(fetchCohort(id)),
-  updateCohortName: (id, name) => dispatch(updateCohortName(id, name)),
-})
 
-export default connect(mapStateToProps, mapDispatchToProps)(CohortManagePage)
+export default connect(mapStateToProps, {
+  fetchCohort,
+  updateCohortName,
+})(CohortManagePage)

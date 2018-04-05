@@ -38,7 +38,7 @@ export class CohortEditStudents extends Component {
             cohortID={cohortID}
             studentID={student.studentID} 
             handleSubmit={this.props.updateStudent}
-            handleDelete={this.props.deleteStudent}
+            handleDelete={this.props.removeStudent}
             fullName={student.fullName}
             completedCount={student.completedCount}
             createdAt={student.createdAt}
@@ -63,12 +63,9 @@ const mapStateToProps = (state, ownProps) => {
     students,
   }
 }
-const mapDispatchToProps = (dispatch) => {
-  return {
-    fetchStudents: (studentIDs) => dispatch(fetchStudents(studentIDs)), 
-    updateStudent: (studentID, fullName) => dispatch(updateStudent(studentID, fullName )),
-    deleteStudent: (studentID) => dispatch(removeStudent(studentID))
-  }
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(CohortEditStudents)
+export default connect(mapStateToProps, {
+  fetchStudents,
+  updateStudent,
+  removeStudent,
+})(CohortEditStudents)

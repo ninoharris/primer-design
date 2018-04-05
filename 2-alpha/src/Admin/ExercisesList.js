@@ -10,20 +10,16 @@ export class ExerciseList extends Component {
   render() {
     const { 
       exercisesList = [],
-      sortByName = () => { },
-      sortByCreatedAt = () => {},
-      sortByLastModified = () => {},
-      sortByAuthor = () => {},
       children,
      } = this.props 
     return (
       <table className="table Admin-Exercises-List">
         <thead>
           <tr>
-            <th onClick={sortByName}>Exercise name</th>
-            <th onClick={sortByCreatedAt}>Date added</th>
-            <th onClick={sortByLastModified}>Last modified</th>
-            <th onClick={sortByAuthor}>Author</th>
+            <th onClick={() => updateSortBy('id')}>Exercise name</th>
+            <th onClick={() => updateSortBy('createdAt')}>Date added</th>
+            <th onClick={() => updateSortBy('lastModified')}>Last modified</th>
+            <th onClick={() => updateSortBy('authorName')}>Author</th>
             <th></th>
           </tr>
         </thead>
@@ -42,11 +38,6 @@ ExerciseList.propTypes = {
   exercisesList: PropTypes.arrayOf(PropTypes.object)
 }
 
-export default connect(null, 
-  dispatch => ({
-  sortByName: () => dispatch(updateSortBy('id')),
-  sortByCreatedAt: () => dispatch(updateSortBy('createdAt')),
-  sortByLastModified: () => dispatch(updateSortBy('lastModified')),
-  sortByAuthor: () => dispatch(updateSortBy('authorName')),
-})
-)(ExerciseList)
+export default connect(null, {
+  updateSortBy
+})(ExerciseList)

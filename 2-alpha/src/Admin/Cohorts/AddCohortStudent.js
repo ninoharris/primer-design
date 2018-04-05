@@ -47,7 +47,7 @@ export class AddCohortStudent extends Component {
     e.preventDefault()
     if(this.state.username.trim() === '' || this.state.fullName.trim() === '') return
     this.setState({ addingStudent: true })
-    this.props.addStudent(this.props.authorID, this.state.username, this.state.fullName).then(() => {
+    this.props.addStudent(this.props.cohortID, this.props.authorID, this.state.username, this.state.fullName).then(() => {
       this.setState({ username: '', fullName: '', addingStudent: false })
     })
   }
@@ -92,10 +92,6 @@ const mapStateToProps = (state) => ({
   authorID: getCurrentAuthorUid(state)
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    addStudent: (authorID, username, fullName) => dispatch(addStudent(ownProps.cohortID, authorID, username, fullName))
-  } 
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(AddCohortStudent)
+export default connect(mapStateToProps, {
+  addStudent,
+})(AddCohortStudent)

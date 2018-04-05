@@ -50,4 +50,8 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { updateExerciseFilter, updateSortBy, updateShowOwnExercises })(ExerciseListFilters)
+export default connect(mapStateToProps, { 
+  updateExerciseFilter, 
+  updateSortBy, 
+  updateShowOwnExercises 
+})(ExerciseListFilters)

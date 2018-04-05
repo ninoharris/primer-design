@@ -39,11 +39,7 @@ LoginPage.propTypes = {
   startLogin: PropTypes.func.isRequired,
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    startLogin: () => dispatch(startAdminLogin)
-  }
-}
-
 // export default connect(null, { startLogin })(LoginPage)
-export default withRouter(connect(null, mapDispatchToProps)(LoginPage))
+export default withRouter(connect(null, {
+  startAdminLogin
+})(LoginPage))
