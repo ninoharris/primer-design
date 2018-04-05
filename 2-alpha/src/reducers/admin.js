@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { flatMap } from 'lodash'
+import { setIn } from '../api'
 import * as TYPES from '../actions/types'
 
 export const adminLoggedIn = (state = false, action = {}) => {
@@ -43,7 +43,7 @@ export const authorsById = (state = {}, action = {}) => {
 export const authorsList = (state = [], action = {}) => {
   switch (action.type) {
     case TYPES.FETCH_AUTHORS_SUCCESS:
-      return flatMap(action.payload, (val, key) => key)
+      return _.flatMap(action.payload, (val, key) => key)
     case TYPES.UPDATE_AUTHOR_NAME:
       return { ...state, [action.uid]: { fullName: action.fullName } }
     default: return state
@@ -77,7 +77,7 @@ const cohort = (state = {}, action = {}) => {
     case TYPES.REMOVE_COHORT_EXERCISE_SUCCESS:
       return { ...state, exerciseIDs: _.omit(state.exerciseIDs, action.exerciseID)}
     case TYPES.ADD_STUDENT_SUCCESS:
-      return _.setWith(_.clone(state), `studentIDs.${action.studentID}`, true)
+      return setIn(state, `studentIDs.${action.studentID}`, true)
     default: return state
   }
 }

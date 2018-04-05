@@ -8,14 +8,12 @@ export const arrToObj = (arr) => arr.reduce((obj, currentID) => ({ ...obj, [curr
 
 export const formatDate = (timestamp = 0) => moment(timestamp).format('ddd, Do MMM YY')
 
-
-
-
+export const setIn = (path, value, obj) => _.setWith(_.clone(obj), path, value);
 
 
 // Database
 export const firebasePathExists = (db, firebasePath) => db.ref(firebasePath).once('value').then(snapshot => {
-  return snapshot.exists() ? Promise.resolve() : Promise.reject('`firebasePath of ${firebasePath} does not exist!`')
+  return snapshot.exists() ? Promise.resolve() : Promise.reject(`firebasePath of ${firebasePath} does not exist!`)
 })
 export const firebasePathAlreadyExists = (db, firebasePath) => db.ref(firebasePath).once('value').then(snapshot => {
   return snapshot.exists() ? Promise.reject(`firebasePath of ${firebasePath} already exists!`) : Promise.resolve()
