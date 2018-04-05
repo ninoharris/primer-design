@@ -9,6 +9,7 @@ import * as paths from '../../api/paths'
 import { Title, PLight } from '../../components/Text'
 import { HighlightLink, Link } from '../../components/Link'
 import { RaisedBox, FlexVerticallyCenter } from '../../components/Container'
+import { SummaryWithLink, CommonMistake } from '../../components/SummaryTags'
 
 const ListItem = styled.li`
   
@@ -18,11 +19,25 @@ const Header = FlexVerticallyCenter.extend`
 
 const Main = RaisedBox.extend`
   margin-top: 10px;
-  padding: 14px;
+  padding: 1.2rem 1rem 0.7rem;
+  > *:not(:last-child) {
+    margin-bottom: 1rem;
+  }
 `
 
 const LeftFillWidth = styled.div`
   flex: 1;
+`
+
+const SummaryContainer = styled.div`
+  display: flex;
+`
+
+const CommonMistakesContainer = styled.div`
+`
+const P = styled.p`
+  color: ${p => p.theme.black};
+  margin-bottom: 0.2rem;
 `
 
 const CohortsListItem = ({ cohortID, cohortName, authorFullName, exerciseIDs = {}, studentIDs = {}, createdDate = Date.now() }) => (
@@ -38,6 +53,18 @@ const CohortsListItem = ({ cohortID, cohortName, authorFullName, exerciseIDs = {
       </div>
     </Header>
     <Main>
+      <SummaryContainer>
+        <SummaryWithLink text="Completed students" val={7} url={`/admin/cohorts/${cohortID}/reports&completed_only=true`} />
+        <SummaryWithLink text="Started but unfinished" val={16} url={`/admin/cohorts/${cohortID}/reports&unfinished=true`} />
+        <SummaryWithLink text="Not yet started" val={4} url={`/admin/cohorts/${cohortID}/reports&not_started=true`} />
+      </SummaryContainer>
+      <CommonMistakesContainer>
+        <P>Common mistakes shared by the cohort</P>
+        <CommonMistake val={6} text={"Forgot start codon"} />
+        <CommonMistake val={4} text={"Frame shift in reverse primer"} />
+        <CommonMistake val={3} text={"Incorrect strand in reverse primer"} />
+        <CommonMistake val={2} text={"Blunt ends picked"} />
+      </CommonMistakesContainer>
       <FlexVerticallyCenter>
         <LeftFillWidth>
           <PLight>{cohortID}, '{cohortName}', was created by <strong>{authorFullName}</strong> on {createdDate}.</PLight>
