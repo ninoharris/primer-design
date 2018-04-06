@@ -250,6 +250,7 @@ export const completeExercise = () => (dispatch, getState) => {
   })
   reset(dispatch)
 }
+window.completeExercise = completeExercise
 
 export const nextExercise = () => (dispatch, getState) => {
   dispatch(selectExercise())

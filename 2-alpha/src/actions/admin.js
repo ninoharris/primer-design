@@ -138,8 +138,8 @@ const createSummary = (summary = {}, totalPopulation = 0, createAttemptsToo = tr
   
   // from attemptsCount object (as defined by database), create array of [attempt_id, count] inside summary
   if (createAttemptsToo) {
-    const attemptsCount = summary.attemptsCount || {}
-    newSummary.attemptsCount = [...Object.entries(attemptsCount).sort((a, b) => a - b)]
+    const attemptsCountObj = summary.attemptsCount || {}
+    newSummary.attemptsCount = [...Object.entries(attemptsCountObj).sort((a, b) => a - b)]
   }
   
   return newSummary
@@ -236,14 +236,19 @@ export const addCohort = ({ exerciseIDs = [], students = [], cohortName = '', au
 }
 
 export const removeCohort = (id) => (dispatch) => {
+  const removeStudents = () => db.ref(`cohorts/${id}`).once('value')
+    .then(snapshot => {
+      const cohort = snapshot.val()
+      return _.mapValues(cohort.studentIDs, () => null) // return object of { id1: null, id2: null, ... }
+    })
+    .then((studentIDs) => db.ref('students').update({ ...studentIDs })) // remove students
+
   dispatch({ type: TYPES.REMOVE_COHORT_INIT})
   // get all students associated with cohort and delete them first.
-  db.ref(`cohorts/${id}`).once('value').then(snapshot => {
-    return _.mapValues(snapshot.val().studentIDs, x => null) // return object of { id1: null, id2: null, ... }
-  })
-  .then((studentIDs) => db.ref('students').update({...studentIDs})) // remove students
-  .then(() => db.ref(`cohorts/${id}`).set(null)) // remove cohort
-  .then(() => dispatch({ type: TYPES.REMOVE_COHORT_SUCCESS }))
+
+  removeStudents()
+    .then(() => db.ref(`cohorts/${id}`).set(null)) // remove cohort
+    .then(() => dispatch({ type: TYPES.REMOVE_COHORT_SUCCESS }))
 }
 
 export const updateCohortName = (id, name) => (dispatch) => {
@@ -283,7 +288,9 @@ export const addExerciseToCohort = (cohortID, exerciseID) => (dispatch) => {
     }))
     .catch((err) => {
       return dispatch({
-        type: 'EXERCISE DOES NOT EXIST'
+        type: 'EXERCISE DOES NOT EXIST',
+        exerciseID,
+        err
       })
     })
 }
@@ -303,7 +310,10 @@ export const removeExerciseFromCohort = (cohortID, exerciseID) => (dispatch) => 
     }))
     .catch((err) => {
       return dispatch({
-        type: 'EXERCISE DOES NOT EXIST'
+        type: 'EXERCISE DOES NOT EXIST',
+        exerciseID,
+        cohortID,
+        err
       })
     })
 }
@@ -316,10 +326,12 @@ export const fetchStudents = (ids = {}) => (dispatch) => {
   })
 
   const studentIDs = _.keys(ids)
-  return Promise.all(studentIDs.map(id => db.ref(`students/${id}`).once('value').then((snapshot) => {
-    return { [snapshot.key]: snapshot.val() } // return array of objects of { studentID: data }
-  }))).then((data) => {
-    // data.map(student => ({...student, summary: createStudentSummary(student)}))
+  return Promise.all(studentIDs.map(id => 
+    db.ref(`students/${id}`).once('value').then((snapshot) => {
+      return { [snapshot.key]: snapshot.val() } // return array of objects of { studentID: data }
+    })
+  )).then((data) => {
+      data = data.map(student => ({...student, summary: createStudentSummary(student)}))
     dispatch({
       type: TYPES.FETCH_STUDENTS_SUCCESS,
       payload: data.reduce((obj, curr) => ({...obj, ...curr}), {})
