@@ -55,7 +55,7 @@ export const cohorts = (state = {}, action = {}) => {
     case TYPES.FETCH_COHORTS_SUCCESS:
       return { ...state, ...action.payload }
     case TYPES.FETCH_COHORT_SUCCESS:
-      return { ...state, [action.id]: action.payload}
+      return { ...state, [action.id]: cohort(state[action.id], action )}
     case TYPES.ADD_COHORT_EXERCISE_SUCCESS:
     case TYPES.REMOVE_COHORT_EXERCISE_SUCCESS:
       return _.mapValues(state, (v) => cohort(v, action))
@@ -78,6 +78,8 @@ const cohort = (state = {}, action = {}) => {
       return { ...state, exerciseIDs: _.omit(state.exerciseIDs, action.exerciseID)}
     case TYPES.ADD_STUDENT_SUCCESS:
       return setIn(state, `studentIDs.${action.studentID}`, true)
+    case TYPES.FETCH_COHORT_SUCCESS:
+      return { ...state, ...action.payload }
     default: return state
   }
 }
