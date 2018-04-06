@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { currentExerciseID, getCurrentStudentID } from '../../selectors'
+import { currentExerciseID, getCurrentStudentID, getCurrentGameCohortID } from '../../selectors'
 import { sendAdviceMessage as sendAdviceMessageAction } from '../../actions'
 
 export class FailureMessage extends Component {
@@ -59,9 +59,11 @@ FailureMessage.propTypes = {
 
 
 const sendAdviceMessage = (message) => (dispatch, getState) => {
-  const exerciseID = currentExerciseID(getState())
-  const studentID = getCurrentStudentID(getState())
-  dispatch(sendAdviceMessageAction(studentID, exerciseID)(message))
+  const state = getState()
+  const exerciseID = currentExerciseID(state)
+  const studentID = getCurrentStudentID(state)
+  const cohortID = getCurrentGameCohortID(state)
+  dispatch(sendAdviceMessageAction(studentID, exerciseID, cohortID)(message))
 }
 
 

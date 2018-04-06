@@ -2,6 +2,7 @@ export const INFO = "INFO", ERROR = "ERROR", SUCCESS = "SUCCESS"
 export const FV = "FV", RV = "RV", FG = "FG", RG = "RG"
 
 export default {
+  // TODO: add in decorator for throwing errors if incorrect arguments given.
   GETTING_STARTED: () => ({
     ID: "GETTING_STARTED",
     type: INFO,

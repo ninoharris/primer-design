@@ -4,7 +4,7 @@ import db, { firebase, googleAuthProvider, emailAuthProvider } from '../firebase
 
 // this is to bring up the login popup provided by firebase authentication, but doesn't yet affect redux state
 export const startAdminLogin = (dispatch) => {
-  return firebase.auth().signInWithPopup(googleAuthProvider)
+  firebase.auth().signInWithPopup(googleAuthProvider)
 }
 
 // this is attached to a logged-in listener for firebase's authentication. found in AdminRouter

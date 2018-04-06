@@ -29,7 +29,7 @@ class AdminRouter extends Component {
   }
   componentDidMount() {
     // check if logged in/logged out, then send off action to notify the redux store.
-    firebase.auth().onAuthStateChanged((user) => {
+    this.unsubscribe = firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         // tell the store user is logged in, then redirect to wanted page.
         this.props.adminLogin(user.uid, history.location.pathname) 
@@ -48,7 +48,9 @@ class AdminRouter extends Component {
       }
     })
   }
-
+  componentWillUnmount() {
+    this.unsubscribe()
+  }
   render() {
     if(!this.props.adminLoggedIn) {
       return <Route path="/admin" component={LoginPage} />

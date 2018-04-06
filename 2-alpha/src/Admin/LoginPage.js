@@ -1,9 +1,6 @@
 import React from 'react'
+import { firebase, googleAuthProvider } from '../firebase/firebase'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import { startAdminLogin } from '../actions/auth'
-import { withRouter } from 'react-router-dom'
-import styled from 'styled-components'
 import Nav from '../components/Nav';
 import { HighlightButton } from '../components/Button'
 import { HighlightLink } from '../components/Link'
@@ -14,9 +11,9 @@ const Title = BigTitle.extend`
   margin-top: 5rem;
 `
 
-export const LoginPage = ({
-  startLogin
-}) => {
+const startAdminLogin = () => firebase.auth().signInWithPopup(googleAuthProvider)
+
+export const LoginPage = () => {
   return (
     <div>
       <Nav>
@@ -29,17 +26,12 @@ export const LoginPage = ({
         <div className="col-7 offset-md-2">
           <Title>Educator login</Title>
           <P>Log in to admin section with your gmail account. If you dont already have a primer designer account then your gmail account will be assigned one.</P>
-          <HighlightButton onClick={startLogin} className="Login-Button btn btn-primary">Log in</HighlightButton>
+          <HighlightButton onClick={startAdminLogin} className="Login-Button btn btn-primary">Log in</HighlightButton>
         </div>
       </Container>
     </div>
   )
 }
-LoginPage.propTypes = {
-  startLogin: PropTypes.func.isRequired,
-}
 
 // export default connect(null, { startLogin })(LoginPage)
-export default withRouter(connect(null, {
-  startAdminLogin
-})(LoginPage))
+export default LoginPage

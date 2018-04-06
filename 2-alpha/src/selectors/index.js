@@ -15,13 +15,18 @@ export const exercisesListSelector = createSelector( // array of exercises
   exercisesByIdSelector,
   (exercises) => Object.keys(exercises)
 )
-export const getCohortExercises = state => state.cohortExerciseList
 
 export const getMultilineWidth = state => state.charMultilineWidth
 export const getExercise = (state, { id }) => state.exercisesById[id]
 
 export const getCurrentStudentID = state => state.currentStudentID
 export const getCurrentStudentProfile = state => state.currentStudent
+export const getCurrentGameCohortID = createSelector(
+  getCurrentStudentProfile,
+  (studentProfile) => studentProfile.cohortID
+)
+export const getCohortExercises = state => state.cohortExerciseList
+
 export const currentExerciseID = state => state.currentExercise
 export const getAllAttemptedExercises = createSelector( // returns object of {exID: { completed: BOOL, attempts: {} }}
   getCurrentStudentProfile,

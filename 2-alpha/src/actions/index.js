@@ -159,11 +159,12 @@ export const doShowAdminEvaluation = (on) => ({
   payload: on,
 })
 
-export const sendAdviceMessage = (studentID, exerciseID) => (message) => (dispatch) => {
+export const sendAdviceMessage = (studentID, exerciseID, cohortID) => (message) => (dispatch) => {
   dispatch({
     type: TYPES.SEND_ADVICE_MESSAGE_INIT,
     studentID,
     exerciseID,
+    cohortID,
     message,
   })
   // check if student doesn't already exist
@@ -174,13 +175,14 @@ export const sendAdviceMessage = (studentID, exerciseID) => (message) => (dispat
       return db.ref().update({
         // [`students/${studentID}/attempts/${newKey}`]: true,
         [`students/${studentID}/exercises/${exerciseID}/attempts/${newKey}`]: true,
-        [`attemptsByID/${newKey}`]: { ...message, exerciseID, studentID }
+        [`attemptsByID/${newKey}`]: { ...message, exerciseID, studentID, cohortID }
       })
     })
     .then(() => dispatch({
       type: TYPES.SEND_ADVICE_MESSAGE_SUCCESS,
       studentID,
       exerciseID,
+      cohortID,
       message,
     }))
     .catch(err => {

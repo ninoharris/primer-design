@@ -123,21 +123,46 @@ export const updateAuthorName = (uid, fullName) => (dispatch) => {
     })
   })
 }
+/*
+  * @param {object} summary - The current summary object of a cohort, exercise, or student.
+  * @param {object} totalPopulation - The total number of: students (for cohorts or exercises) or exercises (for students)
+  * @param {object} createAttmptsToo - If summary contains attempts, count them and order them
+  * @return {object} summary - New summary containing
+*/
+const createSummary = (summary = {}, totalPopulation = 0, createAttemptsToo = true) => {
+  // Get completed, unfinished, and notStarted counts
+  const completedCount = summary.completedCount || 0
+  const unfinishedCount = summary.unfinishedCount || 0
+  const notStartedCount = totalPopulation - (completedCount + unfinishedCount)
+  const newSummary = { completedCount, unfinishedCount, notStartedCount }
+  
+  // from attemptsCount object (as defined by database), create array of [attempt_id, count] inside summary
+  if (createAttemptsToo) {
+    const attemptsCount = summary.attemptsCount || {}
+    newSummary.attemptsCount = [...Object.entries(attemptsCount).sort((a, b) => a - b)]
+  }
+  
+  return newSummary
+}
+const createCohortSummary = (cohort, createAttemptsToo) => {
+  return createSummary(cohort.summary, _.size(cohort.studentIDs), createAttemptsToo)
+}
+const createStudentSummary = (student, createAttemptsToo) => {
+  return createSummary(student.summary, 10, createAttemptsToo)
+}
+// TODO: do the same with exercises
 
 export const fetchCohorts = () => (dispatch) => {
   dispatch({ type: TYPES.FETCH_COHORTS_INIT })
 
   return db.ref('cohorts').once('value', (snapshot) => {
-    // const payload = {}
-    // snapshot.forEach((childSnapshot) => {
-    //   let { studentIDs, exerciseIDs, ...rest } = childSnapshot.val()
-    //   studentIDs = _.flatMap(studentIDs, (v, key) => key)
-    //   exerciseIDs = _.flatMap(exerciseIDs, (v, key) => key)
-    //   payload[childSnapshot.key] = { ...rest, studentIDs, exerciseIDs }
-    // })
+    const cohorts = 
+      _.mapValues(snapshot.val(), cohort => ({...cohort, summary: createCohortSummary(cohort) }))
+    
+    // convert attempts to array of [ATTEMPT_ID, COUNT] and order them by attempts
     dispatch({
       type: TYPES.FETCH_COHORTS_SUCCESS,
-      payload: snapshot.val(),
+      payload: cohorts,
     })
   })
 }
@@ -147,10 +172,12 @@ export const fetchCohort = (id) => (dispatch) => {
 
   return db.ref(`cohorts/${id}`).once('value')
   .then((snapshot) => {
+    const cohort = snapshot.val()
+    cohort.summary = createCohortSummary(cohort)
     dispatch({
       type: TYPES.FETCH_COHORT_SUCCESS,
       id: snapshot.key,
-      payload: snapshot.val(),
+      payload: cohort,
     })
     return snapshot.val()
   })
@@ -292,6 +319,7 @@ export const fetchStudents = (ids = {}) => (dispatch) => {
   return Promise.all(studentIDs.map(id => db.ref(`students/${id}`).once('value').then((snapshot) => {
     return { [snapshot.key]: snapshot.val() } // return array of objects of { studentID: data }
   }))).then((data) => {
+    // data.map(student => ({...student, summary: createStudentSummary(student)}))
     dispatch({
       type: TYPES.FETCH_STUDENTS_SUCCESS,
       payload: data.reduce((obj, curr) => ({...obj, ...curr}), {})

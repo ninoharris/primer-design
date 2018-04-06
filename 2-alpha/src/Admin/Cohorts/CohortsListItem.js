@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import { } from '../../api'
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Link as UnstyledLink} from 'react-router-dom'
@@ -10,6 +11,8 @@ import { Title, PLight } from '../../components/Text'
 import { HighlightLink, Link } from '../../components/Link'
 import { RaisedBox, FlexVerticallyCenter } from '../../components/Container'
 import { SummaryWithLink, CommonMistake } from '../../components/SummaryTags'
+
+import msgs from '../../selectors/evaluator-messages'
 
 const ListItem = styled.li`
   
@@ -40,7 +43,7 @@ const P = styled.p`
   margin-bottom: 0.2rem;
 `
 
-const CohortsListItem = ({ cohortID, cohortName, authorFullName, exerciseIDs = {}, studentIDs = {}, createdDate = Date.now() }) => (
+const CohortsListItem = ({ cohortID, cohortName, authorFullName, exerciseIDs = {}, studentIDs = {}, createdDate = Date.now(), summary = {} }) => (
   <ListItem>
     <Header>
       <LeftFillWidth>
@@ -54,16 +57,17 @@ const CohortsListItem = ({ cohortID, cohortName, authorFullName, exerciseIDs = {
     </Header>
     <Main>
       <SummaryContainer>
-        <SummaryWithLink text="Completed students" val={7} url={`/admin/cohorts/${cohortID}/reports&completed_only=true`} />
-        <SummaryWithLink text="Started but unfinished" val={16} url={`/admin/cohorts/${cohortID}/reports&unfinished=true`} />
-        <SummaryWithLink text="Not yet started" val={4} url={`/admin/cohorts/${cohortID}/reports&not_started=true`} />
+        <SummaryWithLink text="Completed students" val={summary.completedCount} url={`/admin/cohorts/${cohortID}/reports&completed_only=true`} />
+        <SummaryWithLink text="Started but unfinished" val={summary.unfinishedCount} url={`/admin/cohorts/${cohortID}/reports&unfinished=true`} />
+        <SummaryWithLink text="Not yet started" val={summary.notStartedCount} url={`/admin/cohorts/${cohortID}/reports&not_started=true`} />
       </SummaryContainer>
       <CommonMistakesContainer>
         <P>Common mistakes shared by the cohort</P>
-        <CommonMistake val={6} text={"Forgot start codon"} />
-        <CommonMistake val={4} text={"Frame shift in reverse primer"} />
-        <CommonMistake val={3} text={"Incorrect strand in reverse primer"} />
-        <CommonMistake val={2} text={"Blunt ends picked"} />
+        {summary.attemptsCount.map((i) => {
+          const attemptID = i[0], count = i[1]
+          const text = msgs[attemptID]().adminTitle || msgs[attemptID]().title || 'unknown mistake...'
+          return <CommonMistake val={count} text={text} />
+        })}
       </CommonMistakesContainer>
       <FlexVerticallyCenter>
         <LeftFillWidth>
