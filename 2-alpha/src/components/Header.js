@@ -2,51 +2,56 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
-import { updateCurrentStudentID } from '../actions'
-import { getCurrentStudentID, getCurrentStudentProfile } from '../selectors'
+import { updateCurrentStudentID, nextExercise } from '../actions'
+import { getCurrentStudentID, getCurrentStudentProfile, getAvailableExercisesList } from '../selectors'
+
+import { P } from './Text'
+import { HighlightButton, Button, SecondaryButton } from './Button'
+import { HighlightLink, Link } from './Link'
+import Nav from './Nav'
 
 export const Header = ({
   loggedIn = false,
   username = '',
+  fullName = '',
   completedCount = 0,
   location = {pathname: ''},
+  nextExercise,
   updateCurrentStudentID = () => {},
+  exercisesLeft,
 }) => {
   const userDisplay = loggedIn ? (
-    <div className="User-Display logged-in">
-      <span>Logged in as: <span className="username">{username}</span></span>
-      <span className="exercises-completed">{completedCount} completed</span>
-      <button onClick={() => updateCurrentStudentID(null)} className="ml-2 btn btn-warning log-out">
-        Log Out
-      </button>
-    </div>
+    <Nav.Right>
+
+      {exercisesLeft > 1 ? <SecondaryButton onClick={nextExercise}>Skip lesson ({exercisesLeft} left)</SecondaryButton> : ''}
+
+      <SecondaryButton onClick={() => updateCurrentStudentID(null)} className="ml-2 btn btn-warning log-out">
+        {fullName} ({username})
+      </SecondaryButton>
+      
+    </Nav.Right>
     ) : (
-    <div className="User-Display logged-out">
-      <span>Not currently signed in</span>
-      <button onClick={() => { }} className="ml-2 btn btn-success log-in">
+    <Nav.Right className="User-Display logged-out">
+      <P>Not currently signed in</P>
+      <HighlightButton onClick={() => { }} className="ml-2 btn btn-success log-in">
           Log In
-      </button>
-    </div>
+      </HighlightButton>
+    </Nav.Right>
   )
 
+  const tutorialsLink =
+    location.pathname.includes('/tutorials') ?
+      <HighlightButton onClick={() => window.close()} className="btn btn-warning">Close tutorials</HighlightButton>
+      :
+      <HighlightLink target="_blank" to="/tutorials" className="btn btn-info mr-2">See tutorials</HighlightLink>
+
   return (
-    <div className="row">
-      <div className="Nav">
-        <div className="Logo">
-          <h3 className="mb-0">Primer Designer</h3>
-        </div>
-        <div className="text-right">
-          <div className="float-left mr-3 ml-3">{userDisplay}</div>
-          {location.pathname.includes('/tutorials') ?
-            <a onClick={() => window.close()} className="btn btn-warning">Close tutorials</a>
-           : 
-            <a target="_blank" href="/tutorials" className="btn btn-info mr-2">
-              See tutorials
-            </a>
-          }
-        </div>
-      </div>
-    </div>
+    <Nav>
+      <Nav.Left>
+        {tutorialsLink}
+      </Nav.Left>
+      {userDisplay}
+    </Nav>
   )
 }
 
@@ -56,8 +61,10 @@ const mapStateToProps = (state) => {
   
   return {
     loggedIn,
-    username: getCurrentStudentProfile(state).fullName
+    username: getCurrentStudentID(state),
+    fullName: getCurrentStudentProfile(state).fullName,
+    exercisesLeft: getAvailableExercisesList(state).length,
   }
 }
 
-export default withRouter(connect(mapStateToProps, { updateCurrentStudentID })(Header))
+export default withRouter(connect(mapStateToProps, { updateCurrentStudentID, nextExercise, getAvailableExercisesList })(Header))

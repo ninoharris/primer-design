@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import styled from 'styled-components'
 
 const ToggleOn = ({ on, children }) => {
   return <div className="toggle-on">{ on ? children : null }</div>
@@ -43,9 +44,9 @@ Toggle.propTypes = {
   toggle: PropTypes.func
 }
 
+
 const Switch = ({ on, onClick, ...props }) => (
   <div className="toggle">
-    <input type="checkbox" className="toggle-input" />
     <button className={`toggle-btn ${on ? "toggle-btn-on" : "toggle-btn-off"} `}
       onClick={onClick} 
       aria-expanded={on}

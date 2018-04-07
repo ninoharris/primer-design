@@ -6,6 +6,7 @@ export const P = styled.p`
   line-height: ${p => p.theme.pLineHeight};
   margin-bottom: ${p => p.theme.pMarginBottom};
 `
+
 export const PLight = P.extend`
   color: ${p => lighten(0.2, p.theme.textDefault)};
 `

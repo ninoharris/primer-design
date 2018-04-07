@@ -8,6 +8,7 @@ body {
   color: $black;
   font-size: 14px;
   background: #EDEDED;
+  overflow-x: hidden;
 }
 body, #root, #router {
   min-height: 100vh;
@@ -40,4 +41,310 @@ ul, li {
 .Nav {
   width: 100%;
   background-color: rgba(102,52,11,0.07);
+}
+
+/* PRIMER PREVIEW */
+.FV {
+  color: #3CD8C5;
+}
+.FG {
+  color: #1A8A6E;
+}
+.RV {
+  color: #B276C7;
+}
+.RG {
+  color: #732ECF;
+}
+
+.primer-preview-reverse.active {
+  animation: preview-swivel 5s ease;
+  animation-fill-mode: forwards;
+  font-smoothing: antialiased !important;
+}
+.primer-preview-reverse.active span.l {
+  animation: preview-swivel-inner 5s ease;
+  animation-fill-mode: forwards;
+  display: inline-block;
+}
+@keyframes preview-swivel {
+  50% { transform: rotateY(180deg); }
+  100% { transform: rotateY(180deg); }
+}
+@keyframes preview-swivel-inner {
+  50% { transform: none; }
+  80%, 100% { transform: rotateY(180deg); };
+}
+
+
+.sequence {
+  font-family: monospace;
+  white-space: pre-wrap;
+  line-height: 1;
+}
+.sequence span {
+  display: inline;
+}
+.haystack {
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+
+}
+.haystack .forward, .haystack .reverse {
+  transition: top 0.7s ease-out;
+}
+.haystack .forward {
+  position: relative;
+  top: 0;
+}
+.haystack-with-URG .forward {
+  top: -1rem; /* move it up by a line, gives room for URG */ 
+}
+.haystack .reverse {
+  position: absolute;
+  top: 0.95rem; /* OFFSET to prevent overlaps between reverse and forward */
+}
+.haystack-with-UFG .reverse {
+  top: 2rem; /* move it up by a line, gives room for URG */
+}
+
+
+
+
+
+.multiline {
+  position: relative;
+}
+.multiline .sequence {
+  word-break: break-all;
+  line-height: 10;
+}
+.multiline .sequence .user-sequence {
+  position: absolute;
+}
+.forward .multiline .user-sequence {
+  top: 0.7rem; /* Place just underneath the reference sequence */
+}
+.reverse .multiline .user-sequence {
+  top: -0.7rem;
+}
+.multiline .sequence [class^="offset"] {
+  word-break: keep-all;
+}
+.multiline .codons {
+  z-index: -1;
+  position: absolute;
+  top: 0.7rem;
+  animation: fade-in 1s;
+  opacity: 0.4;
+}
+@keyframes fade-in {
+  from { opacity: 0 }
+  to { opacity: 0.4 }
+}
+.multiline .codons .codon {
+  position: absolute;
+}
+.multiline .codons .codon:nth-of-type(2) {
+  top: 0.6rem;
+}
+.multiline .codons .codon:nth-of-type(2)::before {
+  content: ' '
+}
+.multiline .codons .codon:nth-of-type(3) {
+  top: 1.2rem;
+}
+.multiline .codons .codon:nth-of-type(3)::before {
+  content: '  '
+}
+
+
+
+.leading, .trailing, .unimportant {
+  opacity: 0.45;
+}
+
+.end {
+  color: #000000;
+}
+
+.position-helper {
+  cursor: default;
+  position: absolute;
+  top: 0;
+  z-index: -5;
+  overflow: visible;
+}
+.position-helper > span {
+  margin-left: -1px;
+  border-left: 1px solid rgba(0,0,0,0.03);
+  position: relative;
+  display: inline-block;
+}
+.position-helper span span {
+  font-size: 0.6rem;
+  letter-spacing: -2px;
+  color: lightblue;
+  position: absolute;
+}
+.position-helper.fullheight > span {
+  height: 100%;
+}
+/*
+.position-helper span:hover {
+  border-left-width: 3px;
+  margin-left: -3px;
+  background: rgba(0,0,0,0.02);
+}
+.position-helper span:hover span {
+  font-size: 1rem;
+  margin-top: -0.7rem;
+}
+*/
+.Haystack-Restriction-Sites {
+  position: realtive;
+}
+.Haystack-Restriction-Sites .Restriction-Site-Container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 3px;
+}
+.Haystack-Restriction-Sites .Restriction-Site {
+  position: relative;
+  z-index: 5; /* To make hover work, we layer it on top */
+  /* remove me below */
+}
+.Haystack-Restriction-Sites .Restriction-Site .Name {
+  position: absolute;
+  left: 0;
+  top: -0.7rem;
+  opacity: 0.8;
+  line-height: 1;
+  display: none;
+}
+.Haystack-Restriction-Sites .Restriction-Site-Container.hovered .Name {
+  display: block;
+}
+
+.helpers {
+  position: relative;
+}
+.helpers .helper {
+  cursor: default;
+}
+.helpers .helper:not(:first-of-type) {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+
+.vector, .haystack {
+  position: relative;
+}
+
+
+
+
+.hl {
+  background: #DDDDDD;
+}
+
+
+.multiple-matches {
+  position: relative;
+}
+.multiple-matches .multiple-match:not(:first-of-type) {
+  position: absolute;
+  left: 0;
+}
+.multiple-match .match {
+  background: red;
+  color: white;
+  border-radius: 2px;
+}
+
+.mismatch { 
+  color: red;  
+}
+
+.evaluations {
+  font-size: 0.6rem;
+}
+
+.matches-enter {
+  opacity: 0.1;
+  top: -10px;
+}
+.matches-enter-active {
+  transition: all 500ms ease-in;
+  top: 0;
+  opacity: 1;
+}
+.matches-leave {
+  opacity: 1;
+}
+.matches-leave-active {
+  transition: all 300ms ease-in;
+  top: 0;
+  opacity: 0.1;
+  top: -10px;
+}
+
+
+
+.toggle-wrapper {
+  display: flex;
+  justify-content: flex-start;
+}
+.toggle-btn {
+  margin-right: 0.4rem;
+  position: relative;
+  box-sizing: content-box;
+  height: 15px;
+  width: 30px;
+  padding: 2px;
+  background: #fbfbfb;
+  border: 1px solid #d4d4d4;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background 0.13s ease-in-out;
+  outline: none;
+}
+.toggle-btn::before {
+  content: '';
+  display: block;
+  position: relative;
+  width: 50%;
+  height: 100%;
+  background: #fbfbfb;
+  border-radius: 100%;
+  left: 0;
+  box-shadow: 0 3px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.2);
+  transition: all 0.1s 0.1s ease-in-out;
+}
+.toggle-btn:focus::before {
+  box-shadow: 0 3px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.4);
+}
+.toggle-btn-on {
+  background: lightgreen;
+  transition: background 0.13s 0.05s ease-in-out;
+}
+.toggle-btn, .toggle-btn:focus {
+  outline: none;
+}
+.toggle-btn-on::before {
+  left: 50%;
+  transition: all 0.1s ease-in;  
+}
+.toggle-btn-off {
+
+}
+.toggle-is-on {
+
+}
+.toggle-is-on .toggle-off, .toggle-is-off .toggle-on {
+  display: none;
 }

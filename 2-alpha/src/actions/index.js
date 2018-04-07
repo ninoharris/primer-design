@@ -95,7 +95,14 @@ export const selectExercise = (id = null) => (dispatch, getState) => {
     }
   } else {
     const availableExercisesList = selectors.getAvailableExercisesList(state)
-    console.log('availableExercisesList', availableExercisesList)
+
+    if(availableExercisesList.length === 0) {
+      dispatch({
+        types: TYPES.GAME_COMPLETED,
+        val: true,
+      })
+    }
+
     const selectedExerciseId = availableExercisesList.length > 0 ?
       pickRandomFromArray(availableExercisesList) :
       pickRandomFromArray(exercisesList) // all possible exercises completed
@@ -115,6 +122,11 @@ export const updateInput = (segment, userInput) => dispatch => {
   })
   removeFailMessageAfterInputChange(dispatch)
 }
+
+export const hoverInput = (segment, val = false) => ({
+  type: `HOVER_${segment}`,
+  val,
+})
 
 export const updateInputs = (inputs = {}) => dispatch => {
   _.each(inputs, (val, key) => dispatch(updateInput(key, val)))

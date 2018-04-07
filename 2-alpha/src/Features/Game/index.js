@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import styled, { ThemeProvider } from 'styled-components'
+import { transparentize } from 'polished'
 import { fetchAllExercises, selectExercise } from '../../actions'
 import { currentExerciseID } from '../../selectors'
 
@@ -13,6 +15,30 @@ import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 import RestrictionSitesPreview from '../../components/RestrictionSitesPreview'
 
+const Container = styled.div`
+  display: flex;
+  align-items: stretch;
+`
+const VerticalContainer = Container.extend`
+  flex-direction: column;
+  min-height: 100vh;
+`
+
+const Sidebar = styled.div`
+  background-color: ${p => transparentize(0.7, p.theme.white)};
+  width: ${p => p.theme.sidebarWidth};
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+`
+
+const Main = styled.div`
+  flex: 1;
+`
+
+const theme = {
+  pMarginBottom: 0,
+}
 
 class App extends Component {
   componentDidMount() {
@@ -27,22 +53,24 @@ class App extends Component {
       <div className="main-loading">Selecting exercise...</div>
     )
     return (
-      <div className="container-fluid Game">
+      <VerticalContainer>
         <Modals />
         <Header />
-        <div className="row">
-          <div className=" Sidebar col-3">
-            <Form />
-            <Evaluation />
-            <RestrictionSitesPreview />
-          </div>
-          <div className="Display col-8">
+        <Container>
+          <ThemeProvider theme={theme}>
+            <Sidebar>
+              <Form />
+              <Evaluation />
+              {/* <RestrictionSitesPreview /> */}
+            </Sidebar>
+          </ThemeProvider>
+          <Main>
             <Display />
             <EvaluationTemp />
-          </div>
-        </div>
+          </Main>
+        </Container>
         <Footer />
-      </div>
+      </VerticalContainer>
     )
   }
 }

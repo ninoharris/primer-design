@@ -6,7 +6,7 @@ import { desaturate, lighten } from 'polished'
 import { P as PBasic} from './Text'
 import { RaisedBox } from './Container'
 
-const Circle = styled.div`
+export const Circle = styled.div`
   font-weight: bold;
   text-align: center;
   height: 45px;

@@ -49,19 +49,19 @@ export const getUnattemptedExercisesList = createSelector( // get array
   getUnattemptedExercises,
   (exercises = {}) => Object.keys(exercises)
 )
-export const getAttemptedButNotCompletedExercises = createSelector(
-  getAllAttemptedExercises,
-  getCompletedExercises,
-  (attempted = {}, completed = {}) => _.omit(attempted, _.completed)
-)
-export const getAttemptedButNotCompletedExercisesList = createSelector(
-  getAttemptedButNotCompletedExercises,
-  (exercises = {}) => Object.keys(exercises)
-)
+// export const getAttemptedButNotCompletedExercises = createSelector(
+//   getAllAttemptedExercises,
+//   getCompletedExercises,
+//   (attempted = {}, completed = {}) => _.omit(attempted, _.completed)
+// )
+// export const getAttemptedButNotCompletedExercisesList = createSelector(
+//   getAttemptedButNotCompletedExercises,
+//   (exercises = {}) => Object.keys(exercises)
+// )
 export const getAvailableExercisesList = createSelector(
-  getUnattemptedExercisesList,
-  getAttemptedButNotCompletedExercisesList,
-  (unattempted, attempted) => [...unattempted, ...attempted]
+  getCohortExercises,
+  getCompletedExercises,
+  (all, completed) => Object.keys(_.omit(all, ...Object.keys(completed)))
 )
 
 const uFV = state => state.formInputs.FV

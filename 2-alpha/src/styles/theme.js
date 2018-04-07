@@ -11,5 +11,7 @@ export default {
   red: '#E27070',
   pLineHeight: '1.5rem',
   pMarginBottom: '2rem',
-  fontStack: 'Helvetica, sans-serif'
+  fontStack: 'Helvetica, sans-serif',
+  sidebarWidth: '370px',
+  sidebarPadding: '0.6rem',
 }

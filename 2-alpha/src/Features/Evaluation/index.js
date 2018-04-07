@@ -1,9 +1,18 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import styled from 'styled-components'
+import { transparentize } from 'polished'
 import { getAllEvaluations } from '../../selectors/evaluations'
 
+import { P } from '../../components/Text'
 import FailureMessage from './FailureMessage'
 import AdviceMessage from './AdviceMessage'
+
+const Container = styled.div`
+  background: ${p => transparentize(0.87, p.theme.darkerGrey)};
+  flex: 1; /* take up full height of container */
+  padding: 1rem;
+`
 
 class Evaluation extends Component {
   doActions = (actions = []) => {
@@ -22,11 +31,12 @@ class Evaluation extends Component {
     const infoMessages = advice.getInfoMessages().slice(0, 2)
     // console.dir(failureMessage)
     return (
-      <ul className="evaluation-list">
+      <Container>
+
         {errorMessage ? <FailureMessage inputs={inputs} message={errorMessage} />: ''}
         {infoMessages.map((msg, i) => AdviceMessage(msg, i + 1))}
         {successMessages.map((msg, i) => AdviceMessage(msg, i+1))}
-      </ul>
+      </Container>
     )
   }
 }

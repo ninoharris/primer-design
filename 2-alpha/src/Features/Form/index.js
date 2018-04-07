@@ -1,10 +1,57 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import styled from 'styled-components'
 
 import { updateInput, beginAnimatePreview, endAnimatePreview, attemptExercise, editingGameInput } from '../../actions'
 import { FV_TS } from '../../selectors'
 import { getPhase1Ready, getExerciseComplete } from '../../selectors/evaluations'
 import PrimerPreviewSmall from './PrimerPreviewSmall'
+import { ConcavedInput } from '../../components/Input'
+import { Left5, Right3 } from '../../components/HelperEnds'
+import { P } from '../../components/Text'
+import { SecondaryButton } from '../../components/Button'
+
+const Input = ConcavedInput.extend`
+  box-sizing: border-box;
+  font-family: monospace;
+`
+
+const RoundLeftInput = Input.extend`
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  width: 120px;
+  margin-right: 3px;
+`
+const RoundRightInput = Input.extend`
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  flex: 1;
+`
+
+const FormContainer = styled.form`
+  padding: ${p => p.theme.sidebarPadding};
+  > * {
+    margin-bottom: ${p => p.theme.sidebarPadding};
+  }
+`
+
+const Row = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  > span { /* helper ends */
+    text-align: center;
+    z-index: 20;
+    top: -0.7rem;
+  }
+  > span:first-child {
+    left: 5px;
+  }
+  > span:last-child {
+    right: 5px;
+  }
+
+`
 
 export class Form extends Component {
   handleChange = (e) => {
@@ -56,48 +103,46 @@ export class Form extends Component {
   render() {
     const { FV, FG, RV, RG, FV_TS } = this.props
     return (
-      <form className="form-group primer-form" onSubmit={this.handleSubmit} autoComplete="prevent-autoComplete">
-        <div className="text-center"><strong>Forward Primer</strong></div>
-        <div className="input-group">
-          <div className="input-group-prepend">
-            <div className="input-group-text">5'</div>
-          </div>
-          <input className={'form-control FV ' + (FV_TS ? 'glow' : '')} autoComplete="prevent-autoComplete"
+      <FormContainer className="form-group primer-form" onSubmit={this.handleSubmit} autoComplete="prevent-autoComplete">
+        <Row>
+          <P><strong>Forward primer</strong></P>
+          <SecondaryButton onClick={() => {}}>Preview</SecondaryButton>
+        </Row>
+        <PrimerPreviewSmall strand="forward" />
+        <Row>
+          <Left5 />
+          <RoundLeftInput autoComplete="prevent-autoComplete"
             name='FV' value={FV} type="text" 
             onChange={this.handleChange} 
           />
-          <input className="form-control FG" autoComplete="prevent-autoComplete"
+          <RoundRightInput autoComplete="prevent-autoComplete"
             name='FG' value={FG} type="text" 
             onChange={this.handleChange} onFocus={this.handleFGFocus} onBlur={this.handleFGBlur}
           />
-          <div className="input-group-append">
-            <div className="input-group-text">3'</div>
-          </div>
-        </div>
-        <PrimerPreviewSmall strand="forward" />
+          <Right3 />
+        </Row>
 
-        <div className="text-center"><strong>Reverse Primer</strong></div>
-        <div className="input-group">
-          <div className="input-group-prepend">
-            <div className="input-group-text">5'</div>
-          </div>
-          <input className="form-control RV" autoComplete="prevent-autoComplete"
-            name='RV' value={RV}
-            type="text" onChange={this.handleChange} 
-          />
-          <input className="form-control RG" autoComplete="prevent-autoComplete"
-            name='RG' value={RG}
-            type="text" onChange={this.handleChange} onFocus={this.handleRGFocus} onBlur={this.handleRGBlur}
-          />
-          <div className="input-group-append">
-            <div className="input-group-text">3'</div>
-          </div>
-        </div>
+
+        <Row>
+          <P><strong>Reverse primer</strong></P>
+          <SecondaryButton onClick={() => { }}>Preview</SecondaryButton>
+        </Row>
         <PrimerPreviewSmall strand="reverse" />
-
+        <Row>
+          <Left5 />
+          <RoundLeftInput autoComplete="prevent-autoComplete"
+              name='RV' value={RV}
+              type="text" onChange={this.handleChange} 
+            />
+            <RoundRightInput autoComplete="prevent-autoComplete"
+              name='RG' value={RG}
+              type="text" onChange={this.handleChange} onFocus={this.handleRGFocus} onBlur={this.handleRGBlur}
+            />
+          <Right3 />
+        </Row>
         {this.submitButton()}
         {this.animatePreviewButton()}
-      </form>
+      </FormContainer>
     )
   }
 }
@@ -122,4 +167,5 @@ export default connect(mapStateToProps, {
   endAnimatePreview,
   attemptExercise,
   editingGameInput,
+
 })(Form)

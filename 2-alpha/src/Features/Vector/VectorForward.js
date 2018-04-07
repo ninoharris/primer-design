@@ -15,14 +15,12 @@ class VectorForward extends Component {
     console.log('More than one match', matches)
     return (
       <div className="sequence multiple-matches">
-        <ReactCSSTransitionGroup transitionName="matches" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
           {_.map(matches, (match, matchPos) => (
             <span className="multiple-match" key={matchPos}>
               {_.pad('', match.pos)}
               <span key={matchPos} className="match">{match.seq}</span>
             </span>
           ))}
-        </ReactCSSTransitionGroup>
       </div>
     )
   }
