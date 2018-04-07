@@ -106,36 +106,43 @@ const UpdateStudentExerciseAndCohortCount = (studentID, exerciseID, cohortID) =>
 
 //   // export.completeExercise = functions.database.ref
 
-exports.exerciseProgressCreated = functions.database.ref('/students/{studentID}/exercises/{exerciseID}')
-  .onCreate((snapshot, context) => {
-    const { studentID, exerciseID } = context.params
-    return snapshot.ref.parent.parent.child('cohortID').once('value').then((cohortSnapshot) => {
-      const cohortID = cohortSnapshot.val()
+// exports.exerciseProgressCreated = functions.database.ref('/students/{studentID}/exercises/{exerciseID}')
+//   .onCreate((snapshot, context) => {
+//     const { studentID, exerciseID } = context.params
+//     return snapshot.ref.parent.parent.child('cohortID').once('value').then((cohortSnapshot) => {
+//       const cohortID = cohortSnapshot.val()
 
-      const countToIncrease = snapshot.val().completed ? 'completedCount' : 'unfinishedCount'
+//       const countToIncrease = snapshot.val().completed ? 'completedCount' : 'unfinishedCount'
 
-      return UpdateStudentExerciseAndCohortCount(studentID, exerciseID, cohortID)(increaseOrCreate)(countToIncrease)
-    })
-  })
+//       return UpdateStudentExerciseAndCohortCount(studentID, exerciseID, cohortID)(increaseOrCreate)(countToIncrease)
+//     })
+//   })
 
-exports.exerciseProgressUpdated = functions.database.ref('/students/{studentID}/exercises/{exerciseID}')
-  .onUpdate((event, context) => {
-    const { studentID, exerciseID } = context.params
-    let cohortID
-    const isNowComplete = event.data.val().completed
 
-    return event.data.ref.parent.parent.once('value').then((cohortSnapshot) => {
-      cohortID = cohortSnapshot.val().cohortID
-      return Promise.resolve()
-    }).then(() => {
-      if (isNowComplete) {
-        return UpdateStudentExerciseAndCohortCount(studentID, exerciseID, cohortID)(increaseOrCreate)('completedCount')
-          .then(() =>
-            UpdateStudentExerciseAndCohortCount(studentID, exerciseID, cohortID)(decreaseOrRemove)('unfinishedCount')
-          )
-      } else {
-        return null
-      }
-    })
+// exports.exerciseProgressUpdated = functions.database
+//   .ref('/students/{studentID}/exercises/{exerciseID}')
+//   .onUpdate((event, context) => {
+//     const { studentID, exerciseID } = context.params
+//     let cohortID, isNowComplete
+//     console.log('here is the event:', event.after)
+//     // const isNowComplete = event.after.data.val().complete
 
-})
+//     return admin.database().ref(`/students/${studentID}/exercises/${exerciseID}/completed`).once('value')
+//       .then((exerciseSnapshot) => 
+//         isNowComplete = exerciseSnapshot.val()
+//       ).then(() =>
+//         admin.database().ref(`/students/${studentID}/cohortID`).once('value')
+//       ).then((cohortSnapshot) =>
+//         cohortID = cohortSnapshot.val()
+//       ).then(() => {
+//       if (isNowComplete) {
+//         return UpdateStudentExerciseAndCohortCount(studentID, exerciseID, cohortID)(increaseOrCreate)('completedCount')
+//           .then(() =>
+//             UpdateStudentExerciseAndCohortCount(studentID, exerciseID, cohortID)(decreaseOrRemove)('unfinishedCount')
+//           )
+//       } else {
+//         return null
+//       }
+//     })
+
+// })

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import { fetchStudent, fetchCohortExerciseIDs, checkStudentExists } from '../actions'
+import { fetchStudent, fetchCohortExerciseIDs, checkStudentExists, updateCurrentStudentID } from '../actions'
 import { getCurrentStudentID } from '../selectors'
 
 import GameWelcomeContainer from '../Features/Game/GameWelcomeContainer'
@@ -31,7 +31,9 @@ export class PlayRouter extends Component {
       }))
     .catch(err => {
       console.log(err)
+      window.alert('Sorry this username does not exist anymore, logging out...')
       this.setState({ studentReady: false }) // student id doesnt exist, dont start game
+      this.props.updateCurrentStudentID('')
     })
   }
 
@@ -61,6 +63,6 @@ const mapStateToProps = (state) => ({
   currentStudentID: getCurrentStudentID(state)
 })
 
-export default connect(mapStateToProps, { fetchStudent, fetchCohortExerciseIDs, checkStudentExists })(PlayRouter)
+export default connect(mapStateToProps, { fetchStudent, fetchCohortExerciseIDs, checkStudentExists, updateCurrentStudentID })(PlayRouter)
 // check if logged in, then show play route
 // if not logged in, show welcome box

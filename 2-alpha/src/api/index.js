@@ -8,7 +8,7 @@ export const arrToObj = (arr) => arr.reduce((obj, currentID) => ({ ...obj, [curr
 
 export const formatDate = (timestamp = 0) => moment(timestamp).format('ddd, Do MMM YY')
 
-export const setIn = (path, value, obj) => _.setWith(_.clone(obj), path, value);
+export const setIn = (obj, path, value) => _.setWith(_.clone(obj), path, value);
 
 
 // Database

@@ -433,11 +433,13 @@ export const removeStudent = (studentID) => (dispatch) => {
   .then(() => dispatch({
     type: TYPES.REMOVE_STUDENT_SUCCESS,
     studentID,
+    cohortID,
   }))
   .catch(err => {
     dispatch({
       type: TYPES.REMOVE_STUDENT_FAIL,
       studentID,
+      cohortID,
       err,
     })
     return Promise.reject(err)
