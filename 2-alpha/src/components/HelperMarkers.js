@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import React from 'react'
+import { darken } from 'polished'
 
 // A marker is an indicator of position, such as the start of a construct or end.
 
@@ -8,7 +9,7 @@ const HelperMarkers = ({ helpers }) => {
     if(!helper.pos || !helper.len) return null
     const pad = _.pad('', helper.pos, ' ')
     const style = {
-      color: helper.color || '#666666'
+      color: darken(0.2, helper.color) || '#666666'
     }
     const text = _.padEnd(helper.name, helper.len)
     return (

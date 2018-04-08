@@ -43,6 +43,7 @@ const RoundLeftInput = Input.extend`
   border-bottom-right-radius: 0;
   width: 120px;
   margin-right: 3px;
+  font-weight: bold; /* FV and RV (both left) are always displayed bold to differentiate with RG and FG */
 `
 const RoundRightInput = Input.extend`
   border-top-left-radius: 0;

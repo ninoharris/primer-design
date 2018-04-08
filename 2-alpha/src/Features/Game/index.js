@@ -18,10 +18,11 @@ import RestrictionSitesPreview from '../../components/RestrictionSitesPreview'
 const Container = styled.div`
   display: flex;
   align-items: stretch;
+  flex: 1;
 `
 const VerticalContainer = Container.extend`
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
 `
 
 const Sidebar = styled.div`
@@ -30,6 +31,7 @@ const Sidebar = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  z-index: 5;
 `
 
 const Main = styled.div`

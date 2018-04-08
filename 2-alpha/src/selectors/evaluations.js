@@ -4,6 +4,7 @@ import * as api from '../api'
 import evaluator from './evaluator'
 import msgs from './evaluator-messages'
 import { 
+  getCurrentStudentProfile,
   getCurrentExercise, 
   getVectorRestrictionSites,
   getBothHaystackStrands,
@@ -450,5 +451,21 @@ export const getFinalClone = createSelector(
       helpers
     }
 
+  }
+)
+export const getCurrentUserSummary = createSelector(
+  getCurrentStudentProfile,
+  (student) => student.summary || {}
+)
+
+export const getUserCommonMistakes = createSelector(
+  getCurrentUserSummary,
+  (summary) => {
+    const attemptsCount = summary.attemptsCount || {}
+    const commonMistakes = Object.keys(attemptsCount)
+      .map(attemptID => ([msgs[attemptID]().adminTitle, attemptsCount[attemptID], attemptID])) // create array of [ [ATTEMPT_ID, COUNT] ... ]
+    console.log('getting mistakes')
+    const commonMistakesSorted = commonMistakes.sort((a, b) => b[1] - a[1])
+    return commonMistakesSorted
   }
 )

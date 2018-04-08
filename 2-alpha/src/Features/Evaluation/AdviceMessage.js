@@ -17,6 +17,7 @@ const Row = styled.div`
   justify-content: space-between;
   align-items: flex-start;
   p {
+    line-height: 1.5rem;
     flex: 1; /* shift around other elements in the row */
     padding-right: 1.2rem;
   }
@@ -39,7 +40,7 @@ const Message = ({ message, type }) => {
 Message.propTypes = {
   message: PropTypes.shape({
     context: PropTypes.any,
-    inputs: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+    inputs: PropTypes.arrayOf(PropTypes.string),
     additional: PropTypes.string,
     url: PropTypes.string.isRequired,
     ID: PropTypes.string.isRequired,

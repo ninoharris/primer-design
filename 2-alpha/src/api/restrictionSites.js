@@ -4,7 +4,7 @@ export const RESites = [
     "name": "HndIII", 
     "cutsForward": 1, 
     "cutsReverse": 5, 
-    "color": "#eff75c",
+    "color": "#a8ddb5",
     "len": 6,
   },
   { 
@@ -12,7 +12,7 @@ export const RESites = [
     "name": "SpeI", 
     "cutsForward": 1, 
     "cutsReverse": 5, 
-    "color": "#6050c5",
+    "color": "#fdbb84",
     "len": 6, 
   },
   { 
@@ -28,7 +28,7 @@ export const RESites = [
     "name": "SacII", 
     "cutsForward": 4, 
     "cutsReverse": 2, 
-    "color": "#67a77f",
+    "color": "#43a2ca",
     "len": 6, 
   },
   { 
@@ -36,7 +36,7 @@ export const RESites = [
     "name": "PstI", 
     "cutsForward": 5, 
     "cutsReverse": 1, 
-    "color": "#aa4fc3",
+    "color": "#fa9fb5",
     "len": 6, 
   },
   { 
@@ -44,7 +44,7 @@ export const RESites = [
     "name": "EcoRI", 
     "cutsForward": 1, 
     "cutsReverse": 5, 
-    "color": "#ac8a7a",
+    "color": "#c51b8a",
     "len": 6, 
   },
   { 
@@ -52,7 +52,7 @@ export const RESites = [
     "name": "NheI", 
     "cutsForward": 1, 
     "cutsReverse": 5, 
-    "color": "#ef2cef",
+    "color": "#c5238a",
     "len": 6, 
   },
   { 
@@ -60,7 +60,7 @@ export const RESites = [
     "name": "KpnI", 
     "cutsForward": 5, 
     "cutsReverse": 1, 
-    "color": "#30e3ed",
+    "color": "#791577",
     "len": 6, 
   },
   { 
@@ -76,7 +76,7 @@ export const RESites = [
     "name": "Xba1", 
     "cutsForward": 1, 
     "cutsReverse": 5, 
-    "color": "#bd5e7e",
+    "color": "#993404",
     "len": 6, 
   },
   { 
@@ -84,7 +84,7 @@ export const RESites = [
     "name": "Xho1", 
     "cutsForward": 1, 
     "cutsReverse": 5, 
-    "color": "#eb3d4e",
+    "color": "#746bb1",
     "len": 6, 
   },
   { 
@@ -92,7 +92,7 @@ export const RESites = [
     "name": "Sac1", 
     "cutsForward": 5, 
     "cutsReverse": 1, 
-    "color": "#a13c7c",
+    "color": "#cbcae2",
     "len": 6, 
   },
   { 

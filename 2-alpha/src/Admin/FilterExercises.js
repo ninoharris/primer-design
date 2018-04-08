@@ -1,8 +1,21 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import styled from 'styled-components'
+
 import { updateExerciseFilter, updateSortBy, updateShowOwnExercises } from '../actions/admin'
 import { filterTextSelector, sortOrderSelector, sortBySelector, showLoggedInExercisesOnly} from '../selectors/admin'
+
 import Toggle from '../components/Toggle'
+import { RaisedBox, Row } from '../components/Container'
+import { SearchContainer, SearchOption, LabelText } from '../components/Input'
+
+const Container = styled.div`
+
+`
+
+// const CheckboxContainer = styled
+
+
 
 const ExerciseListFilters = (props) => {
   const updateFilter = (e) => {
@@ -11,33 +24,29 @@ const ExerciseListFilters = (props) => {
   const updateSortBy = (e) => {
     props.updateSortBy(e.target.value)
   }
-  const updateShowLoggedInOnly = (bool) => {
-    props.updateShowOwnExercises(bool)
+  const updateShowLoggedInOnly = (e) => {
+    props.updateShowOwnExercises(e.target.checked)
   }
   return (
-    <div className="input-group mb-3">
-      <div className="input-group-prepend">
-        <div className="input-group-text">
-          <Toggle
-            on={showLoggedInExercisesOnly}
-            onToggle={updateShowLoggedInOnly}
-            aria-label="Show only my exercises" id="filter-exercises"
-            className="col-4"
-          >
-            <Toggle.Button />
-            <Toggle.Off>Show only my exercises</Toggle.Off>
-            <Toggle.On>Showing only my exercises</Toggle.On>
-          </Toggle>
-        </div>
-      </div>
-      <input type="text" className="form-control" value={props.filterText} onChange={updateFilter} />
-      <select className="custom-select" value={props.sortBy} onChange={updateSortBy}>
-        <option value="createdAt">Date added</option>
-        <option value="lastModified">Last modified</option>
-        <option value="authorId">Author</option>
-        <option value="id">ID</option>
-      </select>
-    </div>
+    <Container>
+      <Row>
+        <SearchContainer>
+          <SearchOption>
+            <input type="checkbox" checked={showLoggedInExercisesOnly} onChange={updateShowLoggedInOnly} id="show-logged-in-only" />
+            <LabelText htmlFor="show-logged-in-only">Show only my exercises</LabelText>
+          </SearchOption>
+          <input type="text" value={props.filterText} onChange={updateFilter} placeholder={"Search exercises by question or author name"} />
+        </SearchContainer>
+      </Row>
+      <Row>
+        <select className="custom-select" value={props.sortBy} onChange={updateSortBy}>
+          <option value="createdAt">Date added</option>
+          <option value="lastModified">Last modified</option>
+          <option value="authorId">Author</option>
+          <option value="id">ID</option>
+        </select>
+      </Row>
+    </Container>
   )
 }
 

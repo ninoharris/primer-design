@@ -41,7 +41,9 @@ export const SecondaryButton = Button.extend`
 export const CTAButton = Button.extend`
   background: ${p => p.theme.red};
   color: ${p => p.theme.white};
-  &:hover {
-    background: ${p => darken(0.1, p.theme.red)};
+  &:hover:not(:disabled) {
+    background: ${p => darken(0.05, p.theme.red)};
+    box-shadow: rgba(0,0,0, 0.3) 0 1px 1px 0;
+
   }
 `

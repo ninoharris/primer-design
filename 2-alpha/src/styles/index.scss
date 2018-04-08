@@ -47,15 +47,19 @@ ul, li {
 /* PRIMER PREVIEW */
 .FV {
   color: #3CD8C5;
+  font-weight: bold;
 }
 .FG {
   color: #1A8A6E;
+  font-weight: normal;
 }
 .RV {
   color: #B276C7;
+  font-weight: bold;
 }
 .RG {
   color: #732ECF;
+  font-weight: normal;
 }
 
 .primer-preview-reverse.active {
@@ -88,7 +92,6 @@ ul, li {
 .haystack {
   user-select: none;
   position: relative;
-  overflow: hidden;
 }
 .forward .sequence span {
   border-top-left-radius: 3px;
@@ -98,6 +101,8 @@ ul, li {
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
 }
+
+
 .haystack .forward, .haystack .reverse {
   transition: top 0.7s ease-out;
 }
@@ -113,7 +118,7 @@ ul, li {
   top: 0.95rem; /* OFFSET to prevent overlaps between reverse and forward */
 }
 .haystack-with-UFG .reverse {
-  top: 2rem; /* move it up by a line, gives room for URG */
+  top: 2rem; /* move it down by a line, gives room for UFG */
 }
 
 
@@ -169,8 +174,38 @@ ul, li {
 
 
 .leading, .trailing, .unimportant {
-  opacity: 0.45;
+  opacity: 0.8;
+  position: relative;
 }
+.vector .FV {
+  line-height: 1.2rem;
+  & .restriction-site-match {
+    top: 0.2rem;
+    position: relative;
+  }
+}
+.vector .RV {
+  line-height: 1.2rem;
+  & .restriction-site-match {
+    top: -0.2rem;
+    position: relative;
+  }
+}
+.vector .position-helper {
+  height: 100%;
+  top: -0.7rem;
+  padding-bottom: 1.4rem;
+}
+// .haystack .unimportant.FV, .vector .unimportant.FG {
+//   top: -3px;
+// }
+// .haystack .unimportant.FV > span {
+//   position: absolute;
+//   right: 0;
+// }
+// .haystack .unimportant.RV, .vector .unimportant.RG {
+//   top: 3px;
+// }
 
 .end {
   color: #000000;
@@ -274,7 +309,9 @@ ul, li {
 }
 
 .mismatch { 
-  color: red;  
+  color: #AD564B;
+  position: relative;
+  top: -3px;
 }
 
 .evaluations {

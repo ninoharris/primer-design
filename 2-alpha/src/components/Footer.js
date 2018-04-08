@@ -2,6 +2,7 @@ import React from 'react'
 import styled, { ThemeProvider } from 'styled-components'
 import { transparentize } from 'polished'
 
+import CommonMistakes from '../Features/Evaluation/CommonMistakes'
 import Options from './Options'
 import { P } from './Text'
 
@@ -10,7 +11,7 @@ const theme = {
 }
 
 const Container = styled.div`
-  flex: 1; /* take up the rest of the bottom, if possible (container of footer is flex) */
+  /* flex: 1; take up the rest of the bottom, if possible (container of footer is flex) */
   background-color: ${p => transparentize(0.6, p.theme.darkerGrey)};
   display: flex;
   > * {
@@ -34,8 +35,7 @@ const Footer = () => {
           <Options />
         </Sidebar>
         <Main>
-          {/* <ExerciseMistakes /> */}
-          <P><strong>Your most common mistakes</strong></P>
+          <CommonMistakes />
         </Main>
       </Container>
     </ThemeProvider>

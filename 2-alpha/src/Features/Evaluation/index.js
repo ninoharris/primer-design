@@ -22,6 +22,13 @@ const Ul = styled.ul`
   position: relative;
   left: -1rem;
   margin-top: 1rem;
+  > li {
+    margin-bottom: 1rem;
+  }
+`
+
+const SubmitExerciseContainer = styled.div`
+  padding-right: 1rem;
 `
 
 class Evaluation extends Component {
@@ -36,15 +43,15 @@ class Evaluation extends Component {
     if(!allMessages) return null
     
     // how many messages are displayed for each is arbitrary and can be changed without errors
-    const successMessages = advice.getSuccessMessages().reverse().slice(0, 3)
+    const successMessages = advice.getSuccessMessages().reverse()
     const errorMessage = advice.getErrorMessages()[0] // get first one
-    const infoMessages = advice.getInfoMessages().slice(0, 2)
+    const infoMessages = advice.getInfoMessages()
     // console.dir(failureMessage)
     return (
       <Container>
         <Row>
-          <P><strong>Advice messages</strong></P>
-          <SubmitExercise />
+          <P><strong>Progress</strong></P>
+          <SubmitExerciseContainer><SubmitExercise /></SubmitExerciseContainer>
         </Row>
         <Ul>
           {errorMessage ? <FailureMessage inputs={inputs} message={errorMessage} />: ''}

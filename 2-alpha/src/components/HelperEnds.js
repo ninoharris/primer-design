@@ -8,17 +8,18 @@ const HangingEnd = styled.span`
   color: ${p => p.theme.textDefault};
   letter-spacing: -3px;
   opacity: 0.7;
-
   > span {
     position: absolute;
+    min-width: 25px;
   }
 `
 
 const HangingOffLeft = HangingEnd.extend`
-  right: 0;
+  right: 2px; /* for "   5'-   ", the dash is a bit long, so adding some space*/
+  text-align: right;
 `
 const HangingOffRight = HangingEnd.extend`
-  left: 0;
+  left: -1px;
 `
 
 export function Left5 () {

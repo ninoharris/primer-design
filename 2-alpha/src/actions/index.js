@@ -179,10 +179,11 @@ export const sendAdviceMessage = (studentID, exerciseID, cohortID) => (message) 
     cohortID,
     message,
   })
+  let newKey
   // check if student doesn't already exist
   return firebasePathExists(db, `students/${studentID}/`)
     .then(() => {
-      const newKey = db.ref(`attempts`).push().key // get the key of the new attempt
+      newKey = db.ref(`attempts`).push().key // get the key of the new attempt
     
       return db.ref().update({
         // [`students/${studentID}/attempts/${newKey}`]: true,
@@ -196,6 +197,7 @@ export const sendAdviceMessage = (studentID, exerciseID, cohortID) => (message) 
       exerciseID,
       cohortID,
       message,
+      newKey,
     }))
     .catch(err => {
       dispatch({

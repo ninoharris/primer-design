@@ -1,3 +1,5 @@
+import _ from 'lodash'
+import { setIn } from '../api'
 import { combineReducers } from 'redux'
 import * as TYPES from '../actions/types'
 
@@ -11,6 +13,10 @@ export const currentStudent = (state = {}, action) => {
   switch (action.type) {
     case TYPES.FETCH_STUDENT_SUCCESS:
       return action.payload
+    case TYPES.SEND_ADVICE_MESSAGE_SUCCESS:
+      let adviceID = action.message.ID
+      let newMessageCount = _.get(state, `summary.attemptsCount.${adviceID}`, 0) + 1
+      return _.cloneDeep(setIn(state, `summary.attemptsCount.${adviceID}`, newMessageCount)) /* TODO: THIS IS HACKY AS HECK */
     default: return state
   }
 }

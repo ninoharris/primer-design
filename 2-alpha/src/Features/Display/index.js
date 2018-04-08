@@ -18,6 +18,7 @@ const Question = styled.div`
   display: flex;
   justify-content: flex-start;
   padding: 1rem 0;
+  max-width: 800px;
   ${Circle} {
     height: 35px;
     width: 35px;
@@ -28,6 +29,14 @@ const Question = styled.div`
     padding-top: 0.5rem;
     font-weight: bold;
     flex: 1; /* Resize to circle to the left */
+  }
+`
+
+const HaystackContainer = styled.div`
+  flex: 1;
+  overflow-y: hidden;
+  > div {
+    margin-top: -0.5rem;
   }
 `
 
@@ -45,7 +54,9 @@ class Display extends Component {
           <Circle>2</Circle>
           <P>{this.props.questionPart2}</P>
         </Question>
-        <Haystack />
+        <HaystackContainer>
+          <Haystack />
+        </HaystackContainer>
       </Container>
     )
   }

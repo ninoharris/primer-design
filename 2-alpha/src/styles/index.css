@@ -1919,16 +1919,20 @@ ul, li {
 
 /* PRIMER PREVIEW */
 .FV {
-  color: #3CD8C5; }
+  color: #3CD8C5;
+  font-weight: bold; }
 
 .FG {
-  color: #1A8A6E; }
+  color: #1A8A6E;
+  font-weight: normal; }
 
 .RV {
-  color: #B276C7; }
+  color: #B276C7;
+  font-weight: bold; }
 
 .RG {
-  color: #732ECF; }
+  color: #732ECF;
+  font-weight: normal; }
 
 .primer-preview-reverse.active {
   animation: preview-swivel 5s ease;
@@ -1962,8 +1966,7 @@ ul, li {
 
 .haystack {
   user-select: none;
-  position: relative;
-  overflow: hidden; }
+  position: relative; }
 
 .forward .sequence span {
   border-top-left-radius: 3px;
@@ -1991,7 +1994,7 @@ ul, li {
 
 .haystack-with-UFG .reverse {
   top: 2rem;
-  /* move it up by a line, gives room for URG */ }
+  /* move it down by a line, gives room for UFG */ }
 
 .multiline {
   position: relative; }
@@ -2042,7 +2045,25 @@ ul, li {
   content: '  '; }
 
 .leading, .trailing, .unimportant {
-  opacity: 0.45; }
+  opacity: 0.8;
+  position: relative; }
+
+.vector .FV {
+  line-height: 1.2rem; }
+  .vector .FV .restriction-site-match {
+    top: 0.2rem;
+    position: relative; }
+
+.vector .RV {
+  line-height: 1.2rem; }
+  .vector .RV .restriction-site-match {
+    top: -0.2rem;
+    position: relative; }
+
+.vector .position-helper {
+  height: 100%;
+  top: -0.7rem;
+  padding-bottom: 1.4rem; }
 
 .end {
   color: #000000; }
@@ -2136,7 +2157,9 @@ ul, li {
   border-radius: 2px; }
 
 .mismatch {
-  color: red; }
+  color: #AD564B;
+  position: relative;
+  top: -3px; }
 
 .evaluations {
   font-size: 0.6rem; }

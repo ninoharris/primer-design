@@ -10,7 +10,7 @@ export class AdminExercisesPage extends Component {
   render() {
     return (
       <div className="container-fluid">
-        <AdminHeader title="Viewing exercises" />
+        <AdminHeader title="Exercises database" />
         <div className="row">
           <div className="col-12">
             <FilterExercises />

@@ -24,7 +24,7 @@ export const HidingErrorMessage = styled.li`
     margin-bottom: 1rem;
   }
   p {
-    line-height: 1rem;
+    line-height: 1.5rem;
   }
 `
 
@@ -60,7 +60,9 @@ export class FailureMessage extends Component {
         <HidingErrorMessage onClick={this.showMessage}>
           <p><strong>Underneath is some advice for {inputsFullName.join(' & ')}</strong></p>
           <hr />
-          <p>Clicking this box will display a correction. Don’t use this too often though as every peek advice is saved!</p>
+          <p>Clicking this box will display a correction. Don’t use this too often though as every request is saved! </p>
+          <p>Instead, try looking at your {inputsFullName.join(' & ')}.</p>
+          <p>Or see if your common mistakes contain a hint</p>
         </HidingErrorMessage>
       )
     }
