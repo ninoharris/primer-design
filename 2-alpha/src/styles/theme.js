@@ -14,4 +14,7 @@ export default {
   fontStack: 'Helvetica, sans-serif',
   sidebarWidth: '370px',
   sidebarPadding: '0.6rem',
+  success: '#799A4D',
+  error: '#AD564B',
+  info: '#CAAA69',
 }

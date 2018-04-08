@@ -1,24 +1,50 @@
 import React from 'react'
-import { SUCCESS, ERROR, INFO } from '../../selectors/evaluator-messages'
+import styled from 'styled-components'
+import PropTypes from 'prop-types'
 
-const Message = (msg, i) => {
-  const { ID, title, additional, url } = msg
-  const className = 'evaluation-item ' + (msg.type === SUCCESS ? 'success' : 'info')
+import { SUCCESS, ERROR, INFO } from '../../selectors/evaluator-messages'
+import { Link } from '../../components/Link'
+
+export const Li = styled.li`
+  padding: ${p => p.theme.sidebarPadding};
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+  background: ${p => p.type === SUCCESS ? p.theme.success : (p.type === ERROR ? p.theme.error : p.theme.info )};
+  color: ${p => p.type === INFO ? p.theme.black : p.theme.white};
+`
+const Row = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  p {
+    flex: 1; /* shift around other elements in the row */
+    padding-right: 1.2rem;
+  }
+`
+
+
+const Message = ({ message, type }) => {
+  const { title, additional, url } = message
+  console.log(type)
   return (
-    <li
-      className={className}
-      key={ID}
-    // onMouseEnter={() => this.doActions(details.actions)}
-    // onMouseLeave={() => this.doActions(details.actions)}
-    // style={{ transitionDelay: `${100 * (5-i)}ms`}}
-    >
-      <div className="d-flex">
-        <h6>{title}</h6><br />
-        {url ? <a target="_blank" className="btn btn-outline-light btn-sm mt-2" href={`/tutorials${url}`}>See related tutorial </a> : ''}
-      </div>
+    <Li type={type}>
+      <Row>
+        <p>{title}</p>
+        {url ? <Link target="_blank" to={`/tutorials${url}`}>See tutorial </Link> : ''}
+      </Row>
       {additional ? <p className="additional">{additional}</p> : ''}
-    </li>
+    </Li>
   )
+}
+Message.propTypes = {
+  message: PropTypes.shape({
+    context: PropTypes.any,
+    inputs: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+    additional: PropTypes.string,
+    url: PropTypes.string.isRequired,
+    ID: PropTypes.string.isRequired,
+  }).isRequired,
+  type: PropTypes.oneOf([SUCCESS, ERROR, INFO]).isRequired,
 }
 
 export default Message

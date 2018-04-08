@@ -1,16 +1,40 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import styled from 'styled-components'
+
+import { SUCCESS, ERROR, INFO } from '../../selectors/evaluator-messages'
 import { currentExerciseID, getCurrentStudentID, getCurrentGameCohortID } from '../../selectors'
 import { sendAdviceMessage as sendAdviceMessageAction } from '../../actions'
+import AdviceMessage from './AdviceMessage'
+import { PLight } from '../../components/Text'
+
+export const HidingErrorMessage = styled.li`
+  padding: 1.1rem 1.7rem 0.7rem;
+  background: #848080;
+  color: #DCD9E3;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+  hr {
+    /* height: ; */
+    border-top: 1px solid #A7A7A7;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    border-right: 0;
+    border-left: 0;
+    margin-bottom: 1rem;
+  }
+  p {
+    line-height: 1rem;
+  }
+`
 
 export class FailureMessage extends Component {
   state = { showMessage: false }
   inputs = {
-    'FV': 'forward primer (vector/additional): top left input',
-    'FG': 'forward primer (SOI annealing): top right input',
-    'RV': 'reverse vector (vector/additional): bottom left input',
-    'RG': 'reverse gene (SOI annealing): bottom right input',
+    'FV': 'forward primer (vector/additional, top left input)',
+    'FG': 'forward primer (SOI annealing), top right input)',
+    'RV': 'reverse vector (vector/additional) bottom left input)',
+    'RG': 'reverse gene (SOI annealing), bottom right input)',
   }
   showMessage = () => {
     this.setState({ showMessage: true })
@@ -23,30 +47,23 @@ export class FailureMessage extends Component {
     this.props.sendAdviceMessage({ title, additional, ID, inputs })
   }
   componentWillReceiveProps(nextProps) {
+    /* if the same error appears twice, keep message shown. if different messages, then hide again */
     if(nextProps.ID !== this.props.ID) this.setState({ showMessage: false })
   }
   render() {
-    const { ID, title, additional, url, inputs = []} = this.props.message
-    const { showMessage } = this.state
-    const inputsFullName = inputs.map((input) => this.inputs[input])
-    return (
-      <li
-        className={`evaluation-item failure ${showMessage ? '' : 'blur-message'}`}
-        onClick={this.showMessage}
-      >
-        <div className="actual-error">
-          <h6>{title}</h6>
-          {url ? <a target="_blank" className="btn btn-outline-light btn-sm mt-2" href={`/tutorials${url}`}>See related tutorial </a> : ''}
-          {additional ? <p className="additional">{additional}</p> : ''}
-        </div>
-        {this.state.showMessage ? '' : 
-          <div className="error-overlay">
-            <h6>Underneath is some advice for inputs {inputsFullName.join(' & ')}</h6>
-            <div>Clicking this box will display a correction. Don’t use this too often though as every peek advice is saved!</div>
-          </div>
-        }
-      </li>
-    )
+    const inputsFullName = this.props.message.inputs.map((input) => this.inputs[input])
+
+    if(this.state.showMessage) {
+      return <AdviceMessage message={this.props.message} type={ERROR} />
+    } else {
+        return (
+        <HidingErrorMessage onClick={this.showMessage}>
+          <p><strong>Underneath is some advice for {inputsFullName.join(' & ')}</strong></p>
+          <hr />
+          <p>Clicking this box will display a correction. Don’t use this too often though as every peek advice is saved!</p>
+        </HidingErrorMessage>
+      )
+    }
   }
 }
 FailureMessage.propTypes = {

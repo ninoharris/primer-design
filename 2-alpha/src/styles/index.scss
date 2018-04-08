@@ -9,6 +9,7 @@ body {
   font-size: 14px;
   background: #EDEDED;
   overflow-x: hidden;
+  font-family: Helvetica, Arial, sans-serif;
 }
 body, #root, #router {
   min-height: 100vh;
@@ -76,7 +77,6 @@ ul, li {
   80%, 100% { transform: rotateY(180deg); };
 }
 
-
 .sequence {
   font-family: monospace;
   white-space: pre-wrap;
@@ -89,7 +89,14 @@ ul, li {
   user-select: none;
   position: relative;
   overflow: hidden;
-
+}
+.forward .sequence span {
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+.reverse .sequence span {
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
 }
 .haystack .forward, .haystack .reverse {
   transition: top 0.7s ease-out;

@@ -7,11 +7,21 @@ import { getAllEvaluations } from '../../selectors/evaluations'
 import { P } from '../../components/Text'
 import FailureMessage from './FailureMessage'
 import AdviceMessage from './AdviceMessage'
+import SubmitExercise from './SubmitExercise'
+import { Row } from '../../components/Container'
+import { INFO, SUCCESS } from '../../selectors/evaluator-messages';
 
 const Container = styled.div`
   background: ${p => transparentize(0.87, p.theme.darkerGrey)};
   flex: 1; /* take up full height of container */
-  padding: 1rem;
+  padding: 1rem 0 1rem 1rem;
+  overflow-y: scroll;
+`
+
+const Ul = styled.ul`
+  position: relative;
+  left: -1rem;
+  margin-top: 1rem;
 `
 
 class Evaluation extends Component {
@@ -32,10 +42,15 @@ class Evaluation extends Component {
     // console.dir(failureMessage)
     return (
       <Container>
-
-        {errorMessage ? <FailureMessage inputs={inputs} message={errorMessage} />: ''}
-        {infoMessages.map((msg, i) => AdviceMessage(msg, i + 1))}
-        {successMessages.map((msg, i) => AdviceMessage(msg, i+1))}
+        <Row>
+          <P><strong>Advice messages</strong></P>
+          <SubmitExercise />
+        </Row>
+        <Ul>
+          {errorMessage ? <FailureMessage inputs={inputs} message={errorMessage} />: ''}
+          {infoMessages.map((msg, i) => <AdviceMessage message={msg} key={i + 1} type={INFO} />)}
+          {successMessages.map((msg, i) => <AdviceMessage message={msg} key={i+2} type={SUCCESS} />)}
+        </Ul>
       </Container>
     )
   }

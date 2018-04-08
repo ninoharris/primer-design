@@ -8,6 +8,12 @@ export const Container = styled.div`
   height: 100%;
 `
 
+export const Row = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+
 export const RaisedBox = styled.div`
   background: ${p => p.theme.white};
   border-radius: 4px;
