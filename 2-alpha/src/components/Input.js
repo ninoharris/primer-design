@@ -46,6 +46,6 @@ export const SearchOption = styled.div`
   }
 `
 
-export const LabelText = PLight.extend`
+export const LabelText = PLight.withComponent('label').extend`
   margin-bottom: 0;
 `

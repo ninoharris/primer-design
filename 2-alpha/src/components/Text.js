@@ -4,12 +4,12 @@ import { darken, lighten } from 'polished'
 export const PNoMargins = styled.p`
   color: ${p => p.theme.textDefault}
   line-height: ${p => p.theme.pLineHeight};
+  margin: 0;
 `
 
 export const P = PNoMargins.extend`
   margin-bottom: ${p => p.theme.pMarginBottom};
 `
-
 
 export const PLight = P.extend`
   color: ${p => lighten(0.2, p.theme.textDefault)};
