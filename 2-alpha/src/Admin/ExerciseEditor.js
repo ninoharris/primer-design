@@ -18,7 +18,7 @@ import RestrictionSitesPreview from '../components/RestrictionSitesPreview';
 import ColorPicker from './ColorPicker'
 import { P, PNoMargins } from '../components/Text'
 import { HighlightButton, SecondaryButton } from '../components/Button'
-import { RaisedBox } from '../components/Container';
+import { RaisedBox, Row } from '../components/Container';
 import { Checkbox } from '../components/Checkbox'
 
 const Input = RaisedBox.withComponent('input').extend`
@@ -29,7 +29,8 @@ const Input = RaisedBox.withComponent('input').extend`
 
 const ErrorContainer = RaisedBox.extend`
   background-color: ${p => p.theme.error};
-  color: ${p => p.theme.black};
+  color: ${p => p.theme.white};
+  padding: 0.2rem;
 `
 
 let Label = PNoMargins.withComponent('label')
@@ -80,6 +81,7 @@ const FieldContainer = RaisedBox.extend`
   background: ${p => p.color || p.theme.purple};
   &&& input {
     width: 30%;
+    color: ${p => p.color};
     font-family: ${p => p.theme.sequenceFont};
     padding: 0.4rem 0.7rem;
     border: 0;
@@ -88,7 +90,7 @@ const FieldContainer = RaisedBox.extend`
     background: ${p => p.theme.white};
   }
   & label {
-    padding: 0.5rem 0.7rem;
+    padding: 0.4rem 0.7rem;
     color: ${p => p.theme.white};
   }
 `
@@ -98,7 +100,7 @@ const CheckboxContainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
   > * {
-    padding: 0.5rem 0.7rem;
+    padding: 0.4rem 0.7rem;
     font-weight: bold;
     display: flex;
     justify-content: flex-start;
@@ -114,6 +116,39 @@ const CheckboxContainer = styled.div`
 
 const Nested = styled.div`
   margin-left: 2rem;
+`
+
+const HelpersContainer = styled.ul`
+  > * {
+    margin-bottom: 1rem;
+  }
+`
+const Helper = styled.li`
+  position: relative;
+  border-radius: 4px;
+  padding: 0.7rem;
+  background: ${p => transparentize(0.2, p.theme.grey)};
+  box-shadow: rgba(0,0,0,0.12) 0 0 2px 2px;
+  input {
+    width: 90%;
+  }
+`
+
+const RemoveHelper = styled.button`
+  position: absolute;
+  right: -0.2rem;
+  top: -0.2rem;
+  height: 1.2rem;
+  width: 1.2rem;
+  line-height: 1.2rem;
+  font-size: 0.6rem;
+  text-align: center;
+  background-color: ${p => lighten(0.1, p.theme.error)};
+  color: ${p => p.theme.white};
+  border: 0;
+  border-radius: 3px;
+  cursor: pointer;
+  z-index: 10;
 `
 
 export class ExerciseEditor extends Component {
@@ -180,27 +215,23 @@ export class ExerciseEditor extends Component {
   )
   renderHelpers = ({ fields, meta: { error, submitted }}) => {
     return (
-      <ul className="list-group editor-helpers">
+      <HelpersContainer>
         {fields.map((helper, i) => (
-          <li key={i} className="list-group-item">
-            <button type="button" style={{position: 'absolute', right: -10, backgroundColor: 'red', color: 'white', border: 'none', cursor: 'pointer', zIndex: 10}} onClick={() => fields.remove(i)}>X</button>
-            <div className="row">
-              <div className="col-6"><Field name={`${helper}.name`} type="text" component={this.renderField} label="Helper text" /></div>
-              <div className="col-6"><Field name={`${helper}.pos`} type="number" component={this.renderField} label="Start position" /></div>
-            </div>
-            <div className="row">
-              <div className="col-6"><Field name={`${helper}.len`} type="number" component={this.renderField} label="NT length" /></div>
-              <div className="col-6">
-                <Field name={`${helper}.color`} component={ColorPicker} type="text" label="Color (#FF0000)" defaultValue="#FF0000" />
-              </div>
-            </div>
-          </li>
+          <Helper key={i}>
+            <RemoveHelper onClick={() => fields.remove(i)}>X</RemoveHelper>
+            <Row>
+              <Field name={`${helper}.name`} type="text" component={this.renderField} label="Helper text" />
+              <Field name={`${helper}.color`} component={ColorPicker} type="text" label="Colour" defaultValue="#FF0000" />
+            </Row>
+            <Row>
+              <Field name={`${helper}.pos`} type="number" component={this.renderField} label="Vector position" />
+              <Field name={`${helper}.len`} type="number" component={this.renderField} label="NT length" />
+            </Row>
+          </Helper>
         ))}
-        {error && <li className="editor-error">{error}</li>}
-        <li className="text-center mt-3">
-          <button type="button" onClick={() => fields.push({})} className="btn btn-success">Add helper</button>
-        </li>
-      </ul>
+        {error && <li><ErrorContainer>{error}</ErrorContainer></li>}
+        <li><SecondaryButton onClick={() => fields.push({})}>Add helper</SecondaryButton></li>
+      </HelpersContainer>
     )
   }
   render() {

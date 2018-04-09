@@ -2,6 +2,12 @@ import React from 'react'
 import reactCSS from 'reactcss'
 import { SketchPicker } from 'react-color'
 
+import { PNoMargins } from '../components/Text'
+
+const Label = PNoMargins.withComponent('label').extend`
+  font-weight: bold;
+`
+
 class ColorPicker extends React.Component {
   constructor(props) {
     super(props)
@@ -31,18 +37,16 @@ class ColorPicker extends React.Component {
     const styles = reactCSS({
       'default': {
         color: {
-          width: '36px',
-          height: '14px',
-          borderRadius: '2px',
-          // background: `${this.state.color}`,
+          width: '56px',
+          height: '22px',
+          borderRadius: '4px',
           background: this.state.color.hex,
         },
         swatch: {
           padding: '5px',
           background: '#fff',
-          borderRadius: '1px',
-          boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
-          display: 'inline-block',
+          borderRadius: '4px',
+          boxShadow: '0 1px 1px 0 rgba(0,0,0,.1)',
           cursor: 'pointer',
         },
         popover: {
@@ -64,7 +68,7 @@ class ColorPicker extends React.Component {
     return (
       <div {...className}>
         <div>
-          <label onClick={this.handleClick}>{label}</label>
+          <Label onClick={this.handleClick}>{label}</Label>
         </div>
         <div style={styles.swatch} onClick={this.handleClick}>
           <div style={styles.color} />
