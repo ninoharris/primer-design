@@ -1,11 +1,17 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
+import styled from 'styled-components';
+
 import { getExercise } from '../selectors' 
 import { updateExercise, removeExercise } from '../actions/admin'
 
 import AdminHeader from './AdminHeader'
 import ExerciseEditor from './ExerciseEditor'
+import { CTAButton } from '../components/Button'
+
+const Container = styled.div`
+`
 
 class ExerciseEditPage extends Component {
   outerSubmit = (values) => {
@@ -25,12 +31,12 @@ class ExerciseEditPage extends Component {
   render() {
     const { id } = this.props
     return (
-      <div className="container-fluid">
+      <Container>
         <AdminHeader title={`Editing exercise with id: ${id}`}>
-          <button onClick={this.removeExercise} className="btn btn-danger mr-2">Delete exercise</button>
+          <CTAButton onClick={this.removeExercise}>Delete exercise</CTAButton>
         </AdminHeader>
         <ExerciseEditor outerSubmit={this.outerSubmit} data={this.props.exercise} submitText='Update exercise' />
-      </div>
+      </Container>
     )
   }
 }

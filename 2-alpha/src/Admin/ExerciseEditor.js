@@ -2,6 +2,8 @@ import _ from 'lodash'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import moment from 'moment'
+import styled from 'styled-components'
+import { transparentize, lighten, readableColor } from 'polished'
 import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form';
 
 // selectors and validators
@@ -9,10 +11,110 @@ import validate from './exerciseValidate'
 import { getCurrentAuthorUid } from '../selectors/admin'
 
 // Components
+import theme from '../styles/theme'
 import VectorPreview from './VectorPreview'
 import HaystackPreview from './HaystackPreview'
 import RestrictionSitesPreview from '../components/RestrictionSitesPreview';
 import ColorPicker from './ColorPicker'
+import { P, PNoMargins } from '../components/Text'
+import { HighlightButton, SecondaryButton } from '../components/Button'
+import { RaisedBox } from '../components/Container';
+import { Checkbox } from '../components/Checkbox'
+
+const Input = RaisedBox.withComponent('input').extend`
+  border: 0;
+  padding: 0.3rem;
+  font-family: ${p => p.theme.sequenceFont};
+`
+
+const ErrorContainer = RaisedBox.extend`
+  background-color: ${p => p.theme.error};
+  color: ${p => p.theme.black};
+`
+
+let Label = PNoMargins.withComponent('label')
+Label = Label.extend`
+  font-weight: bold;
+`
+
+const Form = styled.form`
+  display: flex;
+`
+const FormGroup = styled.div`
+  margin-bottom: 2rem;
+  > * {
+    margin-bottom: 0.26rem;
+  }
+`
+
+const Main = styled.div`
+  flex: 1;
+  padding: 1rem 2rem;
+`
+
+const Sidebar = styled.div`
+  background-color: ${p => transparentize(0.9, p.theme.darkerGrey)};
+  width: 300px;
+  padding: 1rem;
+`
+
+const TextArea = styled.textarea`
+  width: 100%;
+  padding: 6px 10px;
+  margin-bottom: 2rem;
+  border: 0;
+  font-family: ${p => p.theme.sequenceFont};
+  color: ${p => p.theme.darkerGrey};
+  background: ${p => transparentize(0.4, p.theme.white)};
+  &:focus, &:hover {
+    background: ${p => p.theme.white};
+  }
+  &::placeholder {
+    color: ${p => lighten(0.2, p.theme.darkerGrey)}
+  }
+`
+const FieldContainer = RaisedBox.extend`
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  background: ${p => p.color || p.theme.purple};
+  &&& input {
+    width: 30%;
+    font-family: ${p => p.theme.sequenceFont};
+    padding: 0.4rem 0.7rem;
+    border: 0;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    background: ${p => p.theme.white};
+  }
+  & label {
+    padding: 0.5rem 0.7rem;
+    color: ${p => p.theme.white};
+  }
+`
+
+const CheckboxContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  > * {
+    padding: 0.5rem 0.7rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: flex-start;
+    line-height: 1.5rem;
+  }
+  input {
+    margin-right: 0.5rem;
+  }
+  label {
+    color: ${p => p.theme.textDefault};
+  }
+`
+
+const Nested = styled.div`
+  margin-left: 2rem;
+`
 
 export class ExerciseEditor extends Component {
   state = {
@@ -29,23 +131,30 @@ export class ExerciseEditor extends Component {
       cursor: { [name]: cursorPosition }
     })
   }
-
   renderField = ({ name, input, label, type, meta: { pristine, touched, error, warning }, ...props }) => (
     <div>
-      <label htmlFor={input.name}>{label}</label>
-      <div>
-        <input {...input} id={input.name} placeholder={label} type={type} {...props} />
-        {touched &&
-          ((error && <span className="editor-error">{error}</span>) ||
-            (warning && <span className="editor-warning">{warning}</span>))}
-      </div>
+      <Label htmlFor={input.name}>{label}</Label>
+      <Input {...input} id={input.name} placeholder={label} type={type} {...props} />
+      {touched &&
+        ((error && <ErrorContainer>{error}</ErrorContainer>) ||
+          (warning && <span className="editor-warning">{warning}</span>))}
+    </div>
+  )
+  renderColoredField = ({ color, name, input, label, type, meta: { pristine, touched, error, warning }, ...props }) => (
+    <div>
+      <FieldContainer color={color}>
+        <Label htmlFor={input.name}>{label}</Label>
+          <input {...input} id={input.name} placeholder={label} type={type} {...props} />
+      </FieldContainer>
+      {touched &&
+        ((error && <ErrorContainer>{error}</ErrorContainer>) ||
+          (warning && <span className="editor-warning">{warning}</span>))}
     </div>
   )
   renderTextarea = ({ name, input, label, type, meta: { pristine, touched, error, warning }, ...props }) => (
-    <div className="">
-      <label htmlFor={input.name}>{label}</label>
-      <div>
-        <textarea 
+    <div>
+      <Label htmlFor={input.name}>{label}</Label>
+        <TextArea
           {...input}
           id={input.name} 
           ref={(el => this.textareaInput[input.name] = el)}
@@ -57,23 +166,17 @@ export class ExerciseEditor extends Component {
           {...props} 
         />
         {touched &&
-          ((error && <span className="editor-error">{error}</span>) ||
+          ((error && <ErrorContainer>{error}</ErrorContainer>) ||
             (warning && <span className="editor-warning">{warning}</span>))}
-      </div>
     </div>
   )
   renderCheckbox = ({ input, label, type, meta: { pristine, touched, error, warning }, ...props }) => (
-    <div className="editor-checkbox">
-      <div>
-        <input {...input} id={input.name} placeholder={label} type={type} {...props} />
-        <label htmlFor={input.name}>{label}</label>
-      </div>
-      <div>
-        {!pristine &&
-          ((error && <span className="editor-error">{error}</span>) ||
-            (warning && <span className="editor-warning">{warning}</span>))}
-      </div>
-    </div>
+    <CheckboxContainer>
+      <Checkbox name={input.name} id={input.name} label={label} type="checkbox" {...input} {...props} />
+      {!pristine &&
+        ((error && <ErrorContainer>{error}</ErrorContainer>) ||
+          (warning && <span className="editor-warning">{warning}</span>))}
+    </CheckboxContainer>
   )
   renderHelpers = ({ fields, meta: { error, submitted }}) => {
     return (
@@ -104,71 +207,60 @@ export class ExerciseEditor extends Component {
     const { pristine, submitting, submitText = 'Create exercise', fusionStart, fusionEnd } = this.props
     const { haystack: haystackCursorPosition, vector: vectorCursorPosition } = this.state.cursor
     return (
-      <form onSubmit={this.props.handleSubmit} className="Admin-Exercise-Form" method="POST">
-        <div className="row">
-          <div className="col-4">
-            <div className="row mb-3">
-              <div className="col-12"><strong>Haystack</strong></div>
-              <div className="col-6">
-                <Field component={this.renderField} className="form-control" type="number" name="constructStart" label="Start Position" />
-              </div>
-              <div className="col-6">
-                <Field component={this.renderField} className="form-control" type="number" name="constructEnd" label="End Position" />
-              </div>
-            </div>
-            <div className="row mb-3">
-              <div className="col-12"><strong>Vector</strong></div>
-              <div className="col-6">
-                <Field component={this.renderCheckbox} type="checkbox" name="fusionStart" label="Fusion protein at start" />
-                {!fusionStart && 
+      <Form onSubmit={this.props.handleSubmit} method="POST">
+        
+        <Sidebar>
+          <FormGroup>
+            <PNoMargins><strong>Vector conditions</strong></PNoMargins>
+              <Field component={this.renderCheckbox} type="checkbox" name="fusionStart" label="Fusion protein at start" />
+              <Nested>
+                {fusionStart ?
+                  <Field color={theme.FV} component={this.renderColoredField} type="number" name="vectorStart" label="Start Position" /> :
                   <Field component={this.renderCheckbox} type="checkbox" name="userProvidesStartCodon" label="User provides start" />
                 }
-                {fusionStart && 
-                  <Field component={this.renderField} className="form-control" type="number" name="vectorStart" label="Start Position" />
-                }
-              </div>
-              <div className="col-6">
-                <Field component={this.renderCheckbox} type="checkbox" name="fusionEnd" label="Fusion protein at end" />
-                {!fusionEnd &&
+              </Nested>
+              <Field component={this.renderCheckbox} type="checkbox" name="fusionEnd" label="Fusion protein at end" />
+              <Nested>
+                {fusionEnd ?
+                  <Field color={theme.FG} component={this.renderColoredField} type="number" name="vectorEnd" label="End Position" /> :
                   <Field component={this.renderCheckbox} type="checkbox" name="userProvidesStopCodon" label="User provides stop" />
                 }
-                {fusionEnd && 
-                  <Field component={this.renderField} className="form-control" type="number" name="vectorEnd" label="End Position" />
-                }
-              </div>
-              {(!fusionEnd || !fusionStart) &&
-                <div className="col-12 mt-2"><div className="editor-warning ">'User provides stop/start': application checks if start/stop codon(s) have been added.</div></div>
-              }
-            </div>
+              </Nested>
+          </FormGroup>
+          <FormGroup>
+            <PNoMargins><strong>Additional helpers in MCS/Vector</strong></PNoMargins>
             <FieldArray name="helpers" component={this.renderHelpers} />
+          </FormGroup>
+          <FormGroup>
+            <PNoMargins><strong>Sequence of interest details</strong></PNoMargins>
+            <Field color={theme.RV} component={this.renderColoredField} type="number" name="constructStart" label="SOI start Position" />
+            <Field color={theme.RG} component={this.renderColoredField} type="number" name="constructEnd" label="SOI end Position" />
+          </FormGroup>
+          {/* <FormGroup>
             <RestrictionSitesPreview />
-          </div>
-          <div className="col-8">
-            <div className="form-group">
-              <Field className="form-control" name="questionPart1" component={this.renderTextarea} type="text" label="Question part 1: This introduces the general question and information about the vector." />
-            </div>
-            <div className="form-group">
-              <Field className="form-control vectorInput" name="vector" component={this.renderTextarea} type="text" label="Vector forward sequence (reverse is calculated)" />
-            </div>
-            <VectorPreview cursorPosition={vectorCursorPosition} />
-            <div className="form-group">
-              <Field className="form-control" name="questionPart2" component={this.renderTextarea} type="text" label="Question part 2: This contains information specific to the construct below." />
-            </div>
-            <div className="form-group">
-              <label className="d-block" htmlFor="haystack"></label>
-              <Field className="form-control haystackInput" 
-                name="haystack"
-                component={this.renderTextarea} type="text" rows="6" 
-                label="Haystack forward sequence (reverse is calculated)" />
-            </div>
-            <HaystackPreview cursorPosition={haystackCursorPosition}/>
-            <button type="submit" disabled={pristine || submitting}>{submitText}</button>
-          </div>
-        </div>
-      </form>
+          </FormGroup> */}
+          <HighlightButton type="submit" disabled={pristine || submitting}>{submitText}</HighlightButton>
+        </Sidebar>
+
+        <Main>
+          <Field name="questionPart1" component={this.renderTextarea} type="text" label="Question part 1: This introduces the general question and information about the vector." />
+          <Field name="vector" component={this.renderTextarea} type="text" label="Vector forward sequence (reverse is calculated)" />
+          <VectorPreview cursorPosition={vectorCursorPosition} />
+          <Field name="questionPart2" component={this.renderTextarea} type="text" label="Question part 2: This contains information specific to the construct below." />
+          <Field name="haystack" component={this.renderTextarea} type="text" rows="6" label="Haystack forward sequence (reverse is calculated)" />
+          <HaystackPreview cursorPosition={haystackCursorPosition}/>
+        </Main>
+                
+
+              
+      </Form>
     )
   }
 }
+
+/* {(!fusionEnd || !fusionStart) &&
+                <div className="col-12 mt-2"><div className="editor-warning ">'User provides stop/start': application checks if start/stop codon(s) have been added.</div></div>
+              } */
 
 const ExerciseEditorConnected = reduxForm({
   form: 'exerciseEditor',

@@ -5,7 +5,7 @@ import { darken, lighten } from 'polished';
 
 import { RaisedBox } from './Container';
 
-const CheckboxContainer = RaisedBox.extend`
+export const CheckboxContainer = RaisedBox.extend`
   display: flex;
   padding: 0.3rem 0.7rem;
   align-items: center;
@@ -29,9 +29,9 @@ let Label = styled.label`
 export const Checkbox = ({ value, name, label, onChange, ...rest}) => {
   let checked
   return (
-    <CheckboxContainer onClick={() => onChange(!checked)}>
-      <input ref={(checked) => checked = this.checked} type="checkbox" onChange={(e) => onChange(e.target.checked)} checked={value} {...rest} id={name} />
-      <Label htmlFor={name}>{label}</Label>
+    <CheckboxContainer onClick={() => onChange(!value)}>
+      <input type="checkbox" onChange={(e) => onChange(!value)} checked={value} {...rest} id={name} />
+      <Label onClick={() => onChange(!value)}>{label}</Label>
     </CheckboxContainer>
   )
 }

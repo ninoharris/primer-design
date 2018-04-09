@@ -65,9 +65,9 @@ const ExerciseListFilters = ({
       <Row>
         <PNoMargins>{summaryText()}</PNoMargins>
         <FilterOptionsContainer>
-          <Checkbox onChange={() => updateSortBy('createdAt')} label="Sort by recently created" value={sortBy === 'createdAt'} />
-          <Checkbox onChange={() => updateSortBy('lastModified')} label="Sort by recently updated" value={sortBy === 'lastModified'} />
-          <Checkbox onChange={() => updateSortBy('authorId')} label="Sort by author" value={sortBy === 'authorId'} />
+          <Checkbox onChange={() => updateSortBy('createdAt')} name="createdAt" label="Sort by recently created" value={sortBy === 'createdAt'} />
+          <Checkbox onChange={() => updateSortBy('lastModified')} name="lastModified" label="Sort by recently updated" value={sortBy === 'lastModified'} />
+          <Checkbox onChange={() => updateSortBy('authorId')} name="authorId" label="Sort by author" value={sortBy === 'authorId'} />
         </FilterOptionsContainer>
       </Row>
       : ''}
