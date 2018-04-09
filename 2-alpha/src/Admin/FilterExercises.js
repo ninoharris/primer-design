@@ -3,48 +3,70 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 
 import { updateExerciseFilter, updateSortBy, updateShowOwnExercises } from '../actions/admin'
-import { filterTextSelector, sortOrderSelector, sortBySelector, showLoggedInExercisesOnly} from '../selectors/admin'
+import { filterTextSelector, sortOrderSelector, sortBySelector, showLoggedInExercisesOnly, getFilteredSortedExercisesCount} from '../selectors/admin'
+import { exercisesListSelector } from '../selectors'
 
-import Toggle from '../components/Toggle'
-import { RaisedBox, Row } from '../components/Container'
+import { Row as RowBasic } from '../components/Container'
 import { SearchContainer, SearchOption, LabelText } from '../components/Input'
+import { Checkbox } from '../components/Checkbox';
+import { PNoMargins } from '../components/Text'
 
-const Container = styled.div`
-
+const Row = RowBasic.extend`
+  margin-bottom: 1rem;
 `
 
-// const CheckboxContainer = styled
-
-
-
-const ExerciseListFilters = (props) => {
-  const updateFilter = (e) => {
-    props.updateExerciseFilter(e.target.value)
+const Container = styled.div`
+  &&& p {
+    margin: 0;
   }
-  const updateSortBy = (e) => {
-    props.updateSortBy(e.target.value)
+`
+const FilterOptionsContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  > * {
+    margin-left: 0.7rem;
+  }
+`
+
+const ExerciseListFilters = ({ 
+  updateExerciseFilter,
+  updateSortBy,
+  updateShowOwnExercises,
+  sortBy,
+  filterText,
+  filteredExercisesCount,
+  allExercisesCount,
+  showLoggedInExercisesOnly
+}) => {
+  const updateFilter = (e) => {
+    updateExerciseFilter(e.target.value)
   }
   const updateShowLoggedInOnly = (e) => {
-    props.updateShowOwnExercises(e.target.checked)
+    updateShowOwnExercises(e.target.checked)
+  }
+  const summaryText = () => {
+    if (filterText) return `Found ${filteredExercisesCount} exercises out of ${allExercisesCount} containing '${filterText}'.`
+    if (showLoggedInExercisesOnly) return `Displaying ${filteredExercisesCount} exercises created by you.`
+    return `Displaying all ${allExercisesCount} exercises in database by all users.`
   }
   return (
     <Container>
       <Row>
         <SearchContainer>
           <SearchOption>
-            <input type="checkbox" checked={showLoggedInExercisesOnly} onChange={updateShowLoggedInOnly} id="show-logged-in-only" />
+            <input type="checkbox" defaultChecked={showLoggedInExercisesOnly} onChange={updateShowLoggedInOnly} id="show-logged-in-only" />
             <LabelText htmlFor="show-logged-in-only">Show only my exercises</LabelText>
           </SearchOption>
-          <input type="text" value={props.filterText} onChange={updateFilter} placeholder={"Search exercises by question or author name"} />
+          <input type="text" value={filterText} onChange={updateFilter} placeholder={"Search exercises by question or author name"} />
         </SearchContainer>
       </Row>
       <Row>
-        <select className="custom-select" value={props.sortBy} onChange={updateSortBy}>
-          <option value="createdAt">Date added</option>
-          <option value="lastModified">Last modified</option>
-          <option value="authorId">Author</option>
-          <option value="id">ID</option>
-        </select>
+        <PNoMargins>{summaryText()}</PNoMargins>
+        <FilterOptionsContainer>
+          <Checkbox onChange={() => updateSortBy('createdAt')} label="Sort by recently created" value={sortBy === 'createdAt'} />
+          <Checkbox onChange={() => updateSortBy('lastModified')} label="Sort by recently updated" value={sortBy === 'lastModified'} />
+          <Checkbox onChange={() => updateSortBy('authorId')} label="Sort by author" value={sortBy === 'authorId'} />
+        </FilterOptionsContainer>
       </Row>
     </Container>
   )
@@ -56,6 +78,8 @@ const mapStateToProps = (state) => {
     sortOrder: sortOrderSelector(state),
     filterText: filterTextSelector(state),
     showLoggedInExercisesOnly: showLoggedInExercisesOnly(state),
+    filteredExercisesCount: getFilteredSortedExercisesCount(state),
+    allExercisesCount: exercisesListSelector(state).length,
   }
 }
 

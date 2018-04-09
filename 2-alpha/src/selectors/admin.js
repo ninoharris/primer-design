@@ -117,6 +117,11 @@ export const getFilteredSortedExercises = createSelector(
 
 })
 
+export const getFilteredSortedExercisesCount = createSelector(
+  getFilteredSortedExercises,
+  (exercises) => exercises.length
+)
+
 export const getFilteredSortedExercisesNotInCohort = createSelector(
   getCohortExercises,
   getFilteredSortedExercises,

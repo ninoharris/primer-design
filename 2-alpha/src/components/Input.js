@@ -41,6 +41,9 @@ export const SearchContainer = RaisedBox.extend`
 export const SearchOption = styled.div`
   display: flex;
   align-items: center;
+  input {
+    margin-right: 0.3rem;
+  }
 `
 
 export const LabelText = PLight.extend`
