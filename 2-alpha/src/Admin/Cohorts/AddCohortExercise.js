@@ -1,42 +1,37 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import styled from 'styled-components'
 
-import { addExerciseToCohort } from '../actions/admin'
-import { getFilteredSortedExercisesNotInCohort } from '../selectors/admin'
+import { addExerciseToCohort } from '../../actions/admin'
+import { getFilteredSortedExercisesNotInCohort } from '../../selectors/admin'
 
-import FilterExercises from './FilterExercises'
-import ExercisesList from './ExercisesList'
+import ExercisesList from '../ExercisesList'
+import { TitleNoMargins } from '../../components/Text'
+import { HighlightLink } from '../../components/Link'
+import { SecondaryButton } from '../../components/Button'
+
 
 const AddExerciseToCohortButton = ({ id, cohortID, handleClick }) => (
-  <button className="btn btn-success" onClick={() => handleClick(cohortID, id)}>Include exercise</button>
+  <SecondaryButton className="btn btn-success" onClick={() => handleClick(cohortID, id)}>Assign exercise</SecondaryButton>
 )
 
-class AddCohortExercise extends Component {
-  state = {
-    display: true
-  }
-  showDisplay = () => this.setState({ display: true })
-  hideDisplay = () => this.setState({ display: false })
+const Container = styled.div`
+`
 
-  render() {
-    if(!this.state.display) {
-      return <button className="btn btn-success" onClick={this.showDisplay}>Add exercises to cohort</button>
-    }
-    return (
-      <div>
-        <FilterExercises />
-        <ExercisesList exercisesList={this.props.exercisesList}>
-          <AddExerciseToCohortButton cohortID={this.props.cohortID} handleClick={this.props.addExerciseToCohort} />
-        </ExercisesList>
-        <button className="btn btn-success" onClick={this.hideDisplay}>Done</button>
-      </div>
-    )
-  }
+const AddCohortExercise = ({ exercisesList, cohortID, addExerciseToCohort }) => {
+  return (
+    <Container>
+      <ExercisesList exercisesList={exercisesList}>
+        <AddExerciseToCohortButton cohortID={cohortID} handleClick={addExerciseToCohort} />
+      </ExercisesList>
+    </Container>
+  )
 }
 AddCohortExercise.propTypes = {
   cohortID: PropTypes.string.isRequired,
   exercisesList: PropTypes.array.isRequired,
+  addExerciseToCohort: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state, { cohortID }) => {

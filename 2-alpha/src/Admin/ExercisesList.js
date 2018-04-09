@@ -10,7 +10,7 @@ import { P } from '../components/Text'
 
 const Container = styled.ul`
   > li {
-    margin-bottom: 1rem;
+    margin-bottom: 0.2rem;
   }
 `
 

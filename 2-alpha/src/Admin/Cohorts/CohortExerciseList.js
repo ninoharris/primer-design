@@ -2,11 +2,11 @@ import _ from 'lodash'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import ExercisesList from '../ExercisesList'
-import { Button } from '../../components/Button'
-
 import { removeExerciseFromCohort } from '../../actions/admin'
 import { getExercises } from '../../selectors/admin';
+
+import ExercisesList from '../ExercisesList'
+import { Button } from '../../components/Button'
 
 const RemoveCohortExerciseButton = ({ handleClick, cohortID, id }) => (
   <Button onClick={() => handleClick(cohortID, id)}>Unassign exercise</Button>

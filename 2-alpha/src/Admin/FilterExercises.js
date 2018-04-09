@@ -29,6 +29,7 @@ const FilterOptionsContainer = styled.div`
 `
 
 const ExerciseListFilters = ({ 
+  showOptions = true,
   updateExerciseFilter,
   updateSortBy,
   updateShowOwnExercises,
@@ -60,6 +61,7 @@ const ExerciseListFilters = ({
           <input type="text" value={filterText} onChange={updateFilter} placeholder={"Search exercises by question or author name"} />
         </SearchContainer>
       </Row>
+      {showOptions ?
       <Row>
         <PNoMargins>{summaryText()}</PNoMargins>
         <FilterOptionsContainer>
@@ -68,6 +70,7 @@ const ExerciseListFilters = ({
           <Checkbox onChange={() => updateSortBy('authorId')} label="Sort by author" value={sortBy === 'authorId'} />
         </FilterOptionsContainer>
       </Row>
+      : ''}
     </Container>
   )
 }

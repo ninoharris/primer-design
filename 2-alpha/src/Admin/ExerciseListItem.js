@@ -23,7 +23,7 @@ const Actions = styled.div`
 `
 
 const Question = PNoMargins.extend`
-  color: ${p => p.theme.black};
+  /* color: ${p => p.theme.black}; */
 `
 
 const ExerciseListItem = ({
