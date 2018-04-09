@@ -4,6 +4,7 @@ import { firebasePathExists } from '../api'
 
 import CohortsPage from '../Admin/Cohorts/CohortsPage'
 import CohortManagePage from '../Admin/Cohorts/CohortManagePage'
+import CohortManageExercisesPage from '../Admin/Cohorts/CohortManageExercisesPage'
 import { BigTitle } from '../components/Text'
 import { Container } from '../components/Container'
 
@@ -44,7 +45,7 @@ class CohortsRouter extends Component {
     }
     return (
       <Switch>
-        {/* <Route path="/admin/cohorts/:id/exercises/manage" component={AdminCohortsList} /> */}
+        <Route path="/admin/cohorts/:id/exercises/manage" component={CohortManageExercisesPage} />
         {/* <Route path="/admin/cohorts/:id/exercises" component={AdminCohortsList} /> */}
         <Route path="/admin/cohorts/:id/manage" component={CohortManagePage} />
         {/* <Route path="/admin/cohorts/:id/students" component={AdminCohortsList} /> */}

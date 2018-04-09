@@ -66,7 +66,7 @@ const CohortsListItem = ({ cohortID, cohortName, authorFullName, exerciseIDs = {
         {summary.attemptsCount.sort((a,b) => b[1] - a[1]).map((i) => {
           const attemptID = i[0], count = i[1]
           const text = msgs[attemptID]().adminTitle || msgs[attemptID]().title || 'unknown mistake...'
-          return <CommonMistake val={count} text={text} />
+          return <CommonMistake key={text} val={count} text={text} />
         })}
       </CommonMistakesContainer>
       <FlexVerticallyCenter>

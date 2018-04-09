@@ -2,21 +2,22 @@ import _ from 'lodash'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import ExercisesList from './ExercisesList'
+import ExercisesList from '../ExercisesList'
+import { Button } from '../../components/Button'
 
-import { removeExerciseFromCohort } from '../actions/admin'
-import { getExercises } from '../selectors/admin';
+import { removeExerciseFromCohort } from '../../actions/admin'
+import { getExercises } from '../../selectors/admin';
 
 const RemoveCohortExerciseButton = ({ handleClick, cohortID, id }) => (
-  <button className="btn btn-warning" onClick={() => handleClick(cohortID, id)}>Remove from cohort</button>
+  <Button onClick={() => handleClick(cohortID, id)}>Unassign exercise</Button>
 )
 
 export class CohortExerciseList extends Component {
   render() {
-    const { exerciseIDs, cohortID, removeExerciseFromCohort } = this.props
+    const { exercises, cohortID, removeExerciseFromCohort } = this.props
 
     return (
-      <ExercisesList exercisesList={_.flatMap(exerciseIDs, (v, id) => ({...v, id })) }>
+      <ExercisesList exercisesList={_.flatMap(exercises, (v, id) => ({...v, id })) }>
         <RemoveCohortExerciseButton cohortID={cohortID} handleClick={removeExerciseFromCohort} />
       </ExercisesList>
     )
@@ -24,7 +25,9 @@ export class CohortExerciseList extends Component {
 }
 
 const mapStateToProps = (state, { exerciseIDs }) => ({
-  exerciseIDs: getExercises(state, { exerciseIDs })
+  exercises: getExercises(state, { exerciseIDs })
 })
 
-export default connect(mapStateToProps, { removeExerciseFromCohort })(CohortExerciseList)
+export default connect(mapStateToProps, { 
+  removeExerciseFromCohort
+})(CohortExerciseList)
