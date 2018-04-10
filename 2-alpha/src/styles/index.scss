@@ -141,6 +141,22 @@ ul, li {
 .reverse .multiline .user-sequence {
   top: -0.7rem;
 }
+.user-sequence {
+  position: relative;
+}
+.haystack .offset-left > span {
+  position: absolute;
+  right: 0;
+  width: 100px;
+  text-align: right;
+  word-break: keep-all;
+}
+.haystack .offset-right > span {
+  position: absolute;
+  left: 0;
+  width: 100px;
+  word-break: keep-all;
+}
 .multiline .sequence [class^="offset"] {
   word-break: keep-all;
 }
@@ -223,6 +239,9 @@ ul, li {
   border-left: 1px solid rgba(0,0,0,0.03);
   position: relative;
   display: inline-block;
+}
+.haystack .position-helper > span:first-child {
+  border-left: 0;
 }
 .position-helper span span {
   font-size: 0.6rem;

@@ -84,7 +84,7 @@ export const getMeltingTemperature = (seq) => {
   const chars = seq.toUpperCase().split('')
   const ATCount = chars.filter(char => char === 'A' || char === 'T').length
   const GCCount = chars.filter(char => char === 'G' || char === 'C').length
-  return 4 * GCCount + 2 * ATCount
+  return Math.floor(4 * GCCount + 2 * ATCount)
 }
 
 
@@ -345,4 +345,13 @@ export const getMatchParameters = (RESite, input, forwardDirection = true) => {
     endPos: RESite.pos + RESite.seq.length,
     positionInVector: RESite.pos - (forwardDirection ? leadingSeq.length : trailingSeq.length),
   }
+}
+
+export const hasGCClamp = (seq = '') => {
+  const seqEnd = seq.slice(seq.length - 2) // get last 2 bases
+  return getGCContent(seqEnd) >= 0.5 // at least 1 of the end bases is GC
+}
+
+export const has5Cap = (REMatchPos) => {
+  return REMatchPos >= 3
 }

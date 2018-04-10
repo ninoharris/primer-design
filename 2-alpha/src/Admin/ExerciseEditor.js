@@ -278,7 +278,7 @@ export class ExerciseEditor extends Component {
           <Field name="vector" component={this.renderTextarea} type="text" label="Vector forward sequence (reverse is calculated)" />
           <VectorPreview cursorPosition={vectorCursorPosition} />
           <Field name="questionPart2" component={this.renderTextarea} type="text" label="Question part 2: This contains information specific to the construct below." />
-          <Field name="haystack" component={this.renderTextarea} type="text" rows="6" label="Haystack forward sequence (reverse is calculated)" />
+          <Field name="haystack" component={this.renderTextarea} type="text" rows="3" label="Haystack forward sequence (reverse is calculated)" />
           <HaystackPreview cursorPosition={haystackCursorPosition}/>
         </Main>
                 

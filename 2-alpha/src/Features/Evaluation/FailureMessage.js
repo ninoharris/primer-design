@@ -32,12 +32,14 @@ export class FailureMessage extends Component {
   state = { showMessage: false }
   inputs = {
     'FV': 'forward primer (vector/additional, top left input)',
-    'FG': 'forward primer (SOI annealing), top right input)',
-    'RV': 'reverse vector (vector/additional) bottom left input)',
-    'RG': 'reverse gene (SOI annealing), bottom right input)',
+    'FG': 'forward primer (SOI annealing, top right input)',
+    'RV': 'reverse vector (vector/additional bottom left input)',
+    'RG': 'reverse gene (SOI annealing, bottom right input)',
+    'FORWARD': 'forward primer (top two inputs)',
+    'REVERSE': 'reverse primer (bottom two inputs)',
   }
   showMessage = () => {
-    this.setState({ showMessage: true })
+    this.setState({ showingMessage: true })
     const {
       title = '',
       additional = '',
@@ -48,12 +50,12 @@ export class FailureMessage extends Component {
   }
   componentWillReceiveProps(nextProps) {
     /* if the same error appears twice, keep message shown. if different messages, then hide again */
-    if(nextProps.ID !== this.props.ID) this.setState({ showMessage: false })
+    if(nextProps.message.ID !== this.props.message.ID) this.setState({ showingMessage: false })
   }
   render() {
     const inputsFullName = this.props.message.inputs.map((input) => this.inputs[input])
 
-    if(this.state.showMessage) {
+    if (this.state.showingMessage) {
       return <AdviceMessage message={this.props.message} type={ERROR} />
     } else {
         return (

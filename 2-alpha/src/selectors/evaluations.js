@@ -11,6 +11,7 @@ import {
   getURV, 
   getUFV, 
   getUFG, 
+  getURG,
   getURVHund80, 
   getURGReverse,
   getHaystackForwardRestrictionSites,
@@ -364,16 +365,84 @@ export const getPhase1Complete = createSelector(
 export const getAllEvaluations = createSelector(
   getAllEvaluationsPhase1,
   getPhase1Complete,
-  (evaluations, phase1Complete) => {
+  getUFV,
+  getURV,
+  getUFG,
+  getURG,
+  getUserVectorMatchForward,
+  getUserVectorMatchReverse,
+  (evaluations, phase1Complete, FV, RV, FG, RG, {singleMatch: FVMatch}, { singleMatch: RVMatch }) => {
     const advice = evaluator(evaluations)
     if (!phase1Complete) return advice
-    // check 5' end cap
+    
+    
+    const forwardPrimer = '' + FV + FG
+    const reversePrimer = '' + RV + RG
+    // check length
+    if(forwardPrimer.length > 30 || forwardPrimer.length < 18) {
+      advice.add(msgs.TOTAL_LENGTH_INCORRECT(forwardPrimer.length, 'FV', 'FG'))
+    }
+    if (reversePrimer.length > 30 || reversePrimer.length < 18) {
+      advice.add(msgs.TOTAL_LENGTH_INCORRECT(reversePrimer.length, 'RV', 'RG'))
+    }
 
-    // check 3' GC end cap
+    // check 3' GC end clamp
+    if(api.hasGCClamp(FG) && api.hasGCClamp(RG)) {
+      advice.add(msgs.ADDED_GC_CLAMP())
+    } else {
+      if(!api.hasGCClamp(FG)) {
+        advice.add(msgs.FORGOT_GC_CLAMP('FG'))
+      }
+      if(!api.hasGCClamp(RG)) {
+        advice.add(msgs.FORGOT_GC_CLAMP('RG'))
+      }
+    }
+
+    // Check 5' cap
+    if (api.has5Cap(FVMatch.REMatchPos) && api.has5Cap(RVMatch.REMatchPos)) {
+      advice.add(msgs.ADDED_5_PRIME_CAP('FV', 'RV'))
+    } else {
+      if(!api.has5Cap(FVMatch.REMatchPos)) {
+        advice.add(msgs.FORGOT_5_PRIME_CAP('FV'))
+      }
+      if (!api.has5Cap(RVMatch.REMatchPos)) {
+        advice.add(msgs.FORGOT_5_PRIME_CAP('RV'))
+      }
+    }
 
     // check GC content
+    const forwardGCContent = api.getGCContent(forwardPrimer)
+    const reverseGCContent = api.getGCContent(reversePrimer)
+    // for all limits, 4% error is allowed
     
+    if (forwardGCContent > 0.64 || forwardGCContent < 0.36) {
+      advice.add(msgs.GC_CONTENT_INCORRECT(forwardGCContent, 'FV', 'FG'))
+    } else {
+      advice.add(msgs.GC_CONTENT_CORRECT(forwardGCContent, 'FV', 'FG'))
+    }
+    if (reverseGCContent > 0.64 || reverseGCContent < 0.36) {
+      advice.add(msgs.GC_CONTENT_INCORRECT(reverseGCContent, 'FV', 'FG'))
+    } else {
+      advice.add(msgs.GC_CONTENT_CORRECT(reverseGCContent, 'RV', 'RG'))
+    }
+
     // check melting temperature
+    const forwardMeltingTemperature = api.getMeltingTemperature(forwardPrimer)
+    const reverseMeltingTemperature = api.getMeltingTemperature(reversePrimer)
+    if (forwardMeltingTemperature > 72) {
+      advice.add(msgs.MELTING_TEMPERATURE_INCORRECT(forwardMeltingTemperature, true, 'FORWARD'))
+    } else if (forwardMeltingTemperature < 46) {
+      advice.add(msgs.MELTING_TEMPERATURE_INCORRECT(forwardMeltingTemperature, false, 'FORWARD'))
+    }
+    if (reverseMeltingTemperature > 72) {
+      advice.add(msgs.MELTING_TEMPERATURE_INCORRECT(reverseMeltingTemperature, true, 'REVERSE'))
+    } else if (reverseMeltingTemperature < 46) {
+      advice.add(msgs.MELTING_TEMPERATURE_INCORRECT(reverseMeltingTemperature, false, 'REVERSE'))
+    }
+    
+    if (advice.doesntContain('MELTING_TEMPERATURE_INCORRECT')) {
+      advice.add(msgs.MELTING_TEMPERATURE_CORRECT({forward: forwardMeltingTemperature, reverse: reverseMeltingTemperature}, 'FORWARD', 'REVERSE'))
+    }
 
     // if no errors, exercise is complete
     if (!advice.hasError()) advice.add(msgs.COMPLETE())

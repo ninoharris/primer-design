@@ -34,7 +34,7 @@ const Question = styled.div`
 
 const HaystackContainer = styled.div`
   flex: 1;
-  overflow-y: hidden;
+  /* overflow-y: hidden; */
   > div {
     margin-top: -0.5rem;
   }

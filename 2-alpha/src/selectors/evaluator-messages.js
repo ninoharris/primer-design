@@ -364,37 +364,6 @@ export default {
     adminTitle: "",
     url: "/stop-codons-when-and-how",
   }),
-  FORGOT_5_PRIME_CAP: (inputs) => ({
-    ID: "FORGOT_5_PRIME_CAP",
-    type: ERROR,
-    inputs: [...inputs],
-    title: 'You need to now add a 5` cap to both primers',
-    adminTitle: "Forgot 5' cap",
-    additional: "A 5` cap is 3/4 bases upstream of the RE site and promotes efficient cutting.",
-    url: "/5-prime-cap",
-  }),
-  ADDED_5_PRIME_CAP: () => ({
-    ID: "ADDED_5_PRIME_CAP",
-    type: SUCCESS,
-    title: '5` cap added to both primers',
-    additional: "A 5` cap promotes efficient cutting.",
-    url: "/5-prime-cap",
-  }),
-  TOTAL_LENGTH_INCORRECT: (totalLength, inputs) => ({
-    ID: "TOTAL_LENGTH_INCORRECT",
-    type: ERROR,
-    inputs: [...inputs],
-    title: ``,
-    adminTitle: "Incorrect primer length",
-  }),
-  MELTING_TEMPERATURE_INCORRECT: (temp, inputs) => ({
-    ID: "MELTING_TEMPERATURE_INCORRECT",
-    type: ERROR,
-    inputs: [...inputs],
-    title: `Your melting temperature is too `,
-    adminTitle: "Poor melting temperature",
-  }),
-  //WINNER
   MATCHES_VECTOR_AND_HAYSTACK: () => ({
     ID: "MATCHES_VECTOR_AND_HAYSTACK",
     type: SUCCESS,
@@ -402,6 +371,83 @@ export default {
     additional: 'Now press `check answer` to see if it meets other requirements: melting temperature, GC content...',
     url: '/other-considerations',
   }),
+  // FINAL CONSIDERATIONS
+  FORGOT_5_PRIME_CAP: (...inputs) => ({
+    ID: "FORGOT_5_PRIME_CAP",
+    type: ERROR,
+    inputs: [...inputs],
+    title: 'You need to now add a 5` cap to both primers',
+    adminTitle: "Forgot 5' cap",
+    additional: "A 5` cap is an additional 3/4 bases upstream of the RE site. This promotes efficient cutting.",
+    url: "/5-prime-cap",
+  }),
+  ADDED_5_PRIME_CAP: () => ({
+    ID: "ADDED_5_PRIME_CAP",
+    type: SUCCESS,
+    title: `You added a 5' cap to both primers`,
+    additional: "A 5` cap is an additional 3/4 bases upstream of the RE site. This promotes efficient cutting.",
+    url: "/5-prime-cap",
+  }),
+  FORGOT_GC_CLAMP: (...inputs) => ({
+    ID: "FORGOT_GC_CLAMP",
+    type: ERROR,
+    inputs: [...inputs],
+    title: 'You need to now add a GC clamp to both primers',
+    adminTitle: "Forgot GC clamp",
+    additional: "A GC clamp allows for better annealing. End both your primers with a G or C at the 3' end.",
+    url: "/GC-clamp",
+  }),
+  ADDED_GC_CLAMP: () => ({
+    ID: "ADDED_GC_CLAMP",
+    type: SUCCESS,
+    title: `GC clamp added to both primers at the 3' end`,
+    additional: "A base of G/C at the 3' at the allows for better hybridisation.",
+    url: "/GC-clamp",
+  }),
+  TOTAL_LENGTH_INCORRECT: (totalLength, ...inputs) => ({
+    ID: "TOTAL_LENGTH_INCORRECT",
+    type: ERROR,
+    inputs: [...inputs],
+    title: `Your ${inputs.includes('FV') ? 'forward' : 'reverse'} primer has an incorrect primer length of ${totalLength}. This should be between 18-30 bases.`,
+    adminTitle: `Total primer length incorrect`,
+    url: "/primer-length",
+  }),
+  GC_CONTENT_INCORRECT: (gcContent = 0, ...inputs) => ({
+    ID: "GC_CONTENT_INCORRECT",
+    type: ERROR,
+    inputs: [...inputs],
+    title: 'GC content should be between 40%-60%',
+    adminTitle: 'Incorrect GC content',
+    additional: `Your GC content in your ${inputs.includes('FV') ? 'forward' : 'reverse'} primer is ${(100*gcContent).toFixed()}.`,
+    url: "/GC-content"
+  }),
+  GC_CONTENT_CORRECT: (gcContent = 0, ...inputs) => ({
+    ID: "GC_CONTENT_CORRECT",
+    type: SUCCESS,
+    inputs: [...inputs],
+    title: 'GC content is around 40%-60%',
+    additional: `The GC content in your ${inputs.includes('FV') ? 'forward' : 'reverse'} primer is ${(100 * gcContent).toFixed()}.`,
+    url: "/GC-content"
+  }),
+  MELTING_TEMPERATURE_INCORRECT: (temp, tooHigh, ...inputs) => ({
+    ID: "MELTING_TEMPERATURE_INCORRECT",
+    type: ERROR,
+    inputs: [...inputs],
+    title: `The melting temperature of your ${inputs.includes('FORWARD') ? 'forward' : 'reverse'} primer is too ${tooHigh ? 'high' : 'low'}.`,
+    adminTitle: "Poor melting temperature",
+    additional: `Its melting temperature is ${temp} degrees, calculated by Tm = 4(G + C) + 2(A + T) °C. This should be between 50-60°C. Try ${tooHigh ? 'removing' : 'adding'} a few bases.`,
+    url: "/GC-content"
+  }),
+  MELTING_TEMPERATURE_CORRECT: (temps = {}, inputs) => ({
+    ID: "MELTING_TEMPERATURE_CORRECT",
+    type: SUCCESS,
+    inputs: [...inputs],
+    title: `Melting temperatures between 50-60°C`,
+    additional: `Your melting temperatures of ${temps.forward}°C (forward primer) and ${temps.reverse}°C are correct!`,
+    url: "/GC-content"
+  }),
+  //WINNER
+
   COMPLETE: () => ({
     ID: "COMPLETE",
     type: SUCCESS,

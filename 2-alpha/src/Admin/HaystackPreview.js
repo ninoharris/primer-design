@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { formValueSelector } from 'redux-form';
+import styled from 'styled-components'
 
 import { Left3, Left5, Right3, Right5 } from '../components/HelperEnds'
 import Codons from '../components/Codons'
@@ -9,13 +10,17 @@ import Markers from '../components/Markers'
 import HaystackRestrictionSites from '../Features/Haystack/HaystackRestrictionSites'
 import * as api from '../api'
 
+const HaystackContainer = styled.div`
+  margin-top: -4rem;
+`
+
 const HaystackPreview = ({ forward, reverse, haystackMarkers, cursorPosition = null }) => (
+  <HaystackContainer>
   <div className="haystack Admin-Haystack">
-    <div className="forward">
-      <div className="multiline">
+    <div className="forward multiline">
         <div className="sequence">
           <HelperPosition length={forward.length} interval={3} />
-          <Markers className="Admin-Markers" markers={haystackMarkers} />
+          <Markers className="Admin-Markers position-helper" markers={haystackMarkers} />
           {typeof cursorPosition === 'number' && cursorPosition < forward.length && cursorPosition !== 0 ?
             <Markers className="Admin-Markers Cursor-Position" markers={[cursorPosition]} /> : ''
           }
@@ -28,28 +33,26 @@ const HaystackPreview = ({ forward, reverse, haystackMarkers, cursorPosition = n
             {forward}
           <Right3 />
         </div>
-      </div>
     </div>
-    <div className="reverse">
-      <div className="multiline">
-        <div className="sequence">
-          <Markers className="Admin-Markers" markers={haystackMarkers} />
-          {typeof cursorPosition === 'number' && cursorPosition < forward.length && cursorPosition !== 0 ?
-            <Markers className="Admin-Markers Cursor-Position" markers={[cursorPosition]} /> : ''
-          }
-          <Left3 />
-          <HaystackRestrictionSites 
-            direction="reverse" 
-            restrictionSites={api.getRestrictionSiteMatches(reverse)} 
-            alwaysShowName={true} 
-            seq={reverse} />
-            {reverse}
-          <Right5 />
-        </div>
-        <Codons seq={forward} showCodons={true} />
+    <div className="reverse multiline">
+      <div className="sequence">
+        <Markers className="Admin-Markers position-helper" markers={haystackMarkers} />
+        {typeof cursorPosition === 'number' && cursorPosition < forward.length && cursorPosition !== 0 ?
+          <Markers className="Admin-Markers Cursor-Position" markers={[cursorPosition]} /> : ''
+        }
+        <Left3 />
+        <HaystackRestrictionSites 
+          direction="reverse" 
+          restrictionSites={api.getRestrictionSiteMatches(reverse)} 
+          alwaysShowName={true} 
+          seq={reverse} />
+          {reverse}
+        <Right5 />
       </div>
+      <Codons seq={forward} showCodons={true} />
     </div>
   </div>
+  </HaystackContainer>
 )
 
 const selector = formValueSelector('exerciseEditor')
