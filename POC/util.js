@@ -10,9 +10,13 @@ const repeatChar = function(count, ch) {
 }
 
 
-const randomInt = function(max) {
-	if(isNaN(max)) throw new Error('randomInt:', max, ' is not a number')
-	return Math.floor(Math.random() * max)
+const randomInt = function(max, ...not) {
+  if(isNaN(max)) throw new Error('randomInt:', max, ' is not a number')
+  let val
+  do {
+    val = Math.floor(Math.random() * max)
+  } while(not.includes(val))
+	return val
 }
 
 
