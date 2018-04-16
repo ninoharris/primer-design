@@ -19,6 +19,7 @@ const Question = styled.div`
   justify-content: flex-start;
   padding: 1rem 0;
   max-width: 800px;
+  margin-top: 1rem;
   ${Circle} {
     height: 35px;
     width: 35px;
@@ -47,12 +48,12 @@ class Display extends Component {
         <div /* Invisible div to see width of 100 chars */ className="dummy-sizing"></div>
         <Question>
           <Circle>1</Circle>
-          <P>{this.props.questionPart1}</P>
+          <P>Question part 1: {this.props.questionPart1}</P>
         </Question>
         <Vector />
         <Question>
           <Circle>2</Circle>
-          <P>{this.props.questionPart2}</P>
+          <P>Question part 2: {this.props.questionPart2}</P>
         </Question>
         <HaystackContainer>
           <Haystack />

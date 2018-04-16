@@ -355,3 +355,6 @@ export const hasGCClamp = (seq = '') => {
 export const has5Cap = (REMatchPos) => {
   return REMatchPos >= 3
 }
+
+window.reverse = reverse
+window.complementFromString = complementFromString
