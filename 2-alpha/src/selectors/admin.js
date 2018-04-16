@@ -18,7 +18,8 @@ export const getCohortExercises = createSelector(
   getCohort,
   (cohort) => cohort.exerciseIDs
 )
-export const getCohortsMinimal = (state) => state.cohorts
+
+
 
 export const getAllStudents = (state) => state.studentsById
 export const getStudent = createSelector(
@@ -55,11 +56,20 @@ export const getExercisesSpecificFields = createSelector(
   (fields = [], exercises) => _.pick(exercises, fields)
 )
 
-
+export const getCohortsMinimal = state => state.cohorts
 export const getCohorts = createSelector(
   getCohortsMinimal,
   authorsById,
   (cohorts, authors) => _.mapValues(cohorts, (cohort) => ({...cohort, authorFullName: authors[cohort.authorID].fullName }))
+)
+export const getRecentCohortID = state => state.recentCohort
+
+export const getRecentCohort = createSelector(
+  getRecentCohortID,
+  getCohortsMinimal,
+  (cohortID, cohorts) => {
+    return cohorts[cohortID]
+  }
 )
 
 export const getAuthorsList = createSelector(
@@ -136,4 +146,15 @@ export const getCohortStudents = createSelector(
   getCohort,
   getStudents,
   (cohort, students) => _.pick(students, cohort.studentIDs)
+)
+
+export const getCohortCompletionStatuses = createSelector(
+  getCohortStudents,
+  (cohortStudents) => {
+    const completionStatuses = {
+      completedCount: 0,
+      unfinishedCount: 0,
+      notStartedCount: 0,
+    }
+  }
 )

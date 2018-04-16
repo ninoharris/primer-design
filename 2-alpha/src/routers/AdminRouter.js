@@ -65,7 +65,7 @@ class AdminRouter extends Component {
         <Route exact path="/admin/exercises/create" component={ExerciseCreatePage} />
         <Route exact path="/admin/exercises/edit/:id" component={ExerciseEditPage} />
         <Route exact path="/admin/exercises" component={AdminExercisesPage} />
-        <Route path="/admin/cohorts" component={CohortsRouter} />
+        <Route path="/admin/cohorts/:id?" component={CohortsRouter} />
         <Route path="/admin/my-account" component={MyAccountPage} />
       </Switch>
     )

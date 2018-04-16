@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 
 // selectors and actions
-import { fetchCohort } from '../../actions/admin'
+import { fetchCohort, updateRecentCohort } from '../../actions/admin'
 import { getCohort } from '../../selectors/admin'
 import msgs from '../../selectors/evaluator-messages'
 
@@ -34,6 +34,7 @@ const P = styled.p`
 export class CohortPage extends Component {
   componentDidMount () {
     this.props.fetchCohort(this.props.cohortID)
+    this.props.updateRecentCohort(this.props.cohortID)
   }
   render() {
     const { ready, cohort = {}, cohortID } = this.props
@@ -88,4 +89,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-export default connect(mapStateToProps, { fetchCohort })(CohortPage)
+export default connect(mapStateToProps, { fetchCohort, updateRecentCohort })(CohortPage)

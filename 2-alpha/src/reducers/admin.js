@@ -106,3 +106,11 @@ export const studentsById = (state = {}, action = {}) => {
 // export const studentsById = () => {
 
 // }
+
+export const recentCohort = (state = null, action = {}) => {
+  switch (action.type) {
+    case TYPES.UPDATE_RECENT_COHORT:
+      return action.cohortID
+    default: return state
+  }
+}

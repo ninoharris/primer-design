@@ -446,6 +446,11 @@ export const removeStudent = (studentID) => (dispatch) => {
   })
 }
 
+export const updateRecentCohort = (cohortID = null) => ({
+  type: TYPES.UPDATE_RECENT_COHORT,
+  cohortID,
+})
+
 
 window.addCohort = addCohort
 window.removeCohort = removeCohort

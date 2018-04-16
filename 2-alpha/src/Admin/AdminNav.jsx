@@ -4,19 +4,12 @@ import styled from 'styled-components'
 import { withRouter } from 'react-router-dom'
 
 import { startAdminLogout } from '../actions/auth'
-import { getCurrentAuthor, getLatestCohort } from '../selectors/admin'
+import { getCurrentAuthor } from '../selectors/admin'
 
+import RecentCohort from './RecentCohort'
 import Nav from '../components/Nav'
-import { Title, PLight } from '../components/Text'
-import { Button, HighlightButton, SecondaryButton } from '../components/Button'
-import { Link, SecondaryLink, HighlightLink } from '../components/Link'
-
-const LatestCohort = ({
-}) => {
-  return (
-    null
-  )
-}
+import { Button } from '../components/Button'
+import { Link, HighlightLink } from '../components/Link'
 
 const ViewCohortsOrBackHome = ({ pathname = '' }) => {
   if(pathname.includes('/cohorts') || pathname === '/admin/dashboard') {
@@ -43,7 +36,7 @@ export const AdminNav = ({
       <Nav>
         <Nav.Left />
         <Nav.Center>
-          {latestCohort && <LatestCohort />}
+          <RecentCohort />
         </Nav.Center>
         <Nav.Right>
           <ViewCohortsOrBackHome location={location.pathname} />
