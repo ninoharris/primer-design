@@ -6,6 +6,8 @@ import { desaturate, lighten } from 'polished'
 import { P as PBasic} from './Text'
 import { RaisedBox } from './Container'
 
+import msgs from '../selectors/evaluator-messages'
+
 export const Circle = styled.div`
   font-weight: bold;
   text-align: center;
@@ -87,3 +89,19 @@ export const CommonMistake = ({ val, text }) => (
     <span>{val}</span>{text}
   </CommonMistakeContainer>
 )
+
+export const CommonMistakes = (attemptsCount = [], limit = null) => {
+  let attemptsSortedAndLimited = attemptsCount.sort((a, b) => b[1] - a[1])
+  if(limit) { 
+    attemptsSortedAndLimited = attemptsSortedAndLimited.slice(0, limit)
+  }
+  return (
+    <div>
+      {attemptsSortedAndLimited.map((i) => {
+      const attemptID = i[0], count = i[1]
+      const text = msgs[attemptID]().adminTitle || msgs[attemptID]().title || 'unknown mistake...'
+      return <CommonMistake key={text} val={count} text={text} />
+      })}
+    </div>
+  )
+}

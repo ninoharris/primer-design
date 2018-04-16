@@ -1,44 +1,73 @@
 import React, { Component } from 'react'
-// import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import styled from 'styled-components'
 
 // selectors and actions
-import { fetchCohort } from '../actions/admin'
-import { getCohort } from '../selectors/admin'
+import { fetchCohort } from '../../actions/admin'
+import { getCohort } from '../../selectors/admin'
+import msgs from '../../selectors/evaluator-messages'
 
 // components
-import AdminHeader from './AdminHeader'
-import CohortExerciseList from './CohortExerciseList'
-import AddCohortExercise from './AddCohortExercise'
-import CohortStudentsView from './CohortStudentsView'
+import AdminHeader from '../AdminHeader'
+import CohortStudentsList from './CohortStudentsList'
+import { RaisedBox, FlexVerticallyCenter } from '../../components/Container'
+import { SecondaryLink, HighlightLink } from '../../components/Link'
+import { TitleNoMargins } from '../../components/Text'
+import { SummaryWithLink, CommonMistake } from '../../components/SummaryTags'
+
+const Container = styled.div`
+`
+
+const Main = RaisedBox.extend`
+  margin-top: 10px;
+  padding: 1.2rem 1rem 0.7rem;
+`
+const SummaryContainer = styled.div`
+  display: flex;
+`
+
+const P = styled.p`
+  color: ${p => p.theme.black};
+  margin-bottom: 0.2rem;
+`
 
 export class CohortPage extends Component {
   componentDidMount () {
     this.props.fetchCohort(this.props.cohortID)
   }
   render() {
-    const { ready, cohort, cohortID } = this.props
+    const { ready, cohort = {}, cohortID } = this.props
+    const { summary } = cohort
     if(!ready) return <div>Loading...</div>
     return (
-      <div className="container-fluid">
-        <AdminHeader title={`Viewing cohort: ${cohort.cohortName}`} />
-        <div className="row">
-          <div className="col-12">
-            <h4>General cohort info</h4>
-            {/* <Link to={`/admin/cohorts/edit/${cohortID}`}
-          
-            INSIDE THIS WILL BE SUMMARY STUFF FROM LAMBDA FUNCTION
-          
-          >Edit cohort</Link> */}
-          </div>
-          <div className="col-12">
-            {/* INSIDE THIS WILL BE BROUGHT IN BY ROUTER OR WITHIN THE PAGE ITSELF. AKA VIEW VS EDIT */}
-            <CohortStudentsView cohortID={cohortID} studentIDs={cohort.studentIDs} />
-            <CohortExerciseList cohortID={cohortID} exerciseIDs={cohort.exerciseIDs} />
-            <AddCohortExercise cohortID={cohortID} exerciseIDs={cohort.exerciseIDs} />
+      <Container>
+        <AdminHeader title={`${cohort.cohortName}: Students reports`}>
+          <HighlightLink to={`/admin/cohorts/${cohortID}/manage`}>Manage students and cohort</HighlightLink>
+          <SecondaryLink to={`/admin/cohorts/${cohortID}/exercises/manage`}>Manage assigned exercises</SecondaryLink>
+        </AdminHeader>
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-12">
+              <Main>
+                <SummaryContainer>
+                  <SummaryWithLink text="Completed students" val={summary.completedCount} url={`/admin/cohorts/${cohortID}/reports&completed_only=true`} />
+                  <SummaryWithLink text="Started but unfinished" val={summary.unfinishedCount} url={`/admin/cohorts/${cohortID}/reports&unfinished=true`} />
+                  <SummaryWithLink text="Not yet started" val={summary.notStartedCount} url={`/admin/cohorts/${cohortID}/reports&not_started=true`} />
+                </SummaryContainer>
+                <P>Common mistakes shared by the cohort</P>
+                {summary.attemptsCount.sort((a, b) => b[1] - a[1]).map((i) => {
+                  const attemptID = i[0], count = i[1]
+                  const text = msgs[attemptID]().adminTitle || msgs[attemptID]().title || 'unknown mistake...'
+                  return <CommonMistake key={text} val={count} text={text} />
+                })}
+              </Main>
+            </div>
+            <div className="col-12">
+              <CohortStudentsList cohortID={cohortID} studentIDs={cohort.studentIDs} />
+            </div>
           </div>
         </div>
-      </div>
+      </Container>
     )
   }
 }

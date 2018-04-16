@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
@@ -32,7 +33,7 @@ export class CohortManageExercisesPage extends Component {
   }
  render() {
    if(!this.state.ready) return <div>Fetching cohort data...</div>
-   const { cohort = {}, cohortID } = this.props
+   const { cohort = { exerciseIDs: {}}, cohortID } = this.props
    const { cohortName = '', studentIDs = {}} = cohort
    return (
      <Container>
@@ -43,8 +44,12 @@ export class CohortManageExercisesPage extends Component {
         <div className="row">
           <div className="col-12">
             <Segment>
-              <P><strong>Showing all {Object.keys(cohort.exerciseIDs).length} assigned exercises to “{cohortName}”...</strong></P>
-              <CohortExerciseList  exerciseIDs={cohort.exerciseIDs} cohortID={cohortID} />
+              {_.size(cohort.exerciseIDs) > 0 ? (
+                <div>
+                   <P><strong>Showing all {Object.keys(cohort.exerciseIDs || {}).length} assigned exercises to “{cohortName}”...</strong></P>
+                   <CohortExerciseList exerciseIDs={cohort.exerciseIDs} cohortID={cohortID} />
+                </div>
+              ) : ''}
             </Segment>
 
              <Segment>

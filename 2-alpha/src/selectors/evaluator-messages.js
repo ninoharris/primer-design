@@ -140,36 +140,20 @@ export default {
     url: "/preventing-vector-conflicts",
   }),
   //VECTOR RE Sites INSIDE HAYSTACK
-  HAYSTACK_FORWARD_CONTAINS_FV_SITE: (REsiteName) => ({
+  HAYSTACK_CONTAINS_FV_SITE: (REsiteName) => ({
     ID: "HAYSTACK_CONTAINS_FV_SITE",
     type: ERROR,
     inputs: [FV],
-    title: `Haystack forward strand contains the forward primer's restriction site ${REsiteName}`,
-    adminTitle: "Target sequence contained forward RE site",
+    title: `SOI contains the forward primer's restriction site ${REsiteName}`,
+    adminTitle: "SOI/GOI contains forward RE site",
     url: "/preventing-sequence-of-interest-conflicts",
   }),
-  HAYSTACK_REVERSE_CONTAINS_FV_SITE: (REsiteName) => ({
-    ID: "HAYSTACK_CONTAINS_FV_SITE",
-    type: ERROR,
-    inputs: [FV],
-    title: `Haystack reverse strand contains the forward primer's restriction site ${REsiteName}`,
-    adminTitle: "Target sequence contained forward RE site",
-    url: "/preventing-sequence-of-interest-conflicts",
-  }),
-  HAYSTACK_FORWARD_CONTAINS_RV_SITE: (REsiteName) => ({
+  HAYSTACK_CONTAINS_RV_SITE: (REsiteName) => ({
     ID: "HAYSTACK_CONTAINS_RV_SITE",
     type: ERROR,
     inputs: [RV],
-    title: `Haystack forward strand contains the reverse primer's restriction site ${REsiteName}`,
-    adminTitle: "Target sequence contained reverse RE site",
-    url: "/preventing-sequence-of-interest-conflicts",
-  }),
-  HAYSTACK_REVERSE_CONTAINS_RV_SITE: (REsiteName) => ({
-    ID: "HAYSTACK_CONTAINS_RV_SITE",
-    type: ERROR,
-    inputs: [RV],
-    title: `Haystack reverse strand contains the reverse primer's restriction site ${REsiteName}`,
-    adminTitle: "Target sequence contained reverse RE site",
+    title: `SOI contains the reverse primer's restriction site ${REsiteName}`,
+    adminTitle: "SOI/GOI contains reverse RE site",
     url: "/preventing-sequence-of-interest-conflicts",
   }),
   //INDIVIDUAL HAYSTACK STRANDS
@@ -372,10 +356,10 @@ export default {
     url: '/other-considerations',
   }),
   // FINAL CONSIDERATIONS
-  FORGOT_5_PRIME_CAP: (...inputs) => ({
+  FORGOT_5_PRIME_CAP: (inputs = []) => ({
     ID: "FORGOT_5_PRIME_CAP",
     type: ERROR,
-    inputs: [...inputs],
+    inputs: inputs,
     title: 'You need to now add a 5` cap to both primers',
     adminTitle: "Forgot 5' cap",
     additional: "A 5` cap is an additional 3/4 bases upstream of the RE site. This promotes efficient cutting.",
@@ -388,10 +372,10 @@ export default {
     additional: "A 5` cap is an additional 3/4 bases upstream of the RE site. This promotes efficient cutting.",
     url: "/5-prime-cap",
   }),
-  FORGOT_GC_CLAMP: (...inputs) => ({
+  FORGOT_GC_CLAMP: (inputs = []) => ({
     ID: "FORGOT_GC_CLAMP",
     type: ERROR,
-    inputs: [...inputs],
+    inputs: inputs,
     title: 'You need to now add a GC clamp to both primers',
     adminTitle: "Forgot GC clamp",
     additional: "A GC clamp allows for better annealing. End both your primers with a G or C at the 3' end.",

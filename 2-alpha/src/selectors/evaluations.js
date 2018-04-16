@@ -213,10 +213,18 @@ export const getVectorEvaluations = createSelector(
     if (UFVReadyToCheck) {
       // if only one match
       if (FV.singleMatch) {
-        advice.add(msgs.FV_MATCHES_ONCE())
+        for (let RESite of FG_RE_Sites) {
+          if (UFV.includes(RESite.seq)) advice.add(msgs.HAYSTACK_CONTAINS_FV_SITE(RESite.name))
+        }
+        for (let RESite of RG_RE_Sites) {
+          if (UFV.includes(RESite.seq)) advice.add(msgs.HAYSTACK_CONTAINS_FV_SITE(RESite.name))
+        }
+        if(!advice.hasError()) {
+          advice.add(msgs.FV_MATCHES_ONCE())
+        }
+        
         // check clashes with haystack
-        if (FG_RE_Sites.find(RESite => UFV.includes(RESite.seq))) advice.add(msgs.HAYSTACK_FORWARD_CONTAINS_FV_SITE())
-        if (RG_RE_Sites.find(RESite => UFV.includes(RESite.seq))) advice.add(msgs.HAYSTACK_REVERSE_CONTAINS_FV_SITE())
+
         // if fusion protein, check that chosen RE site is after the fusion addition
         if (exercise.fusionStart && FV.singleMatch.pos < exercise.vectorStart) advice.add(msgs.FV_BEFORE_START())
       } else {
@@ -228,9 +236,15 @@ export const getVectorEvaluations = createSelector(
     }
     if (URVReadyToCheck) {
       if (RV.singleMatch) {
-        advice.add(msgs.RV_MATCHES_ONCE())
-        if (FG_RE_Sites.find(RESite => URV.includes(RESite.seq))) advice.add(msgs.HAYSTACK_FORWARD_CONTAINS_RV_SITE())
-        if (RG_RE_Sites.find(RESite => URV.includes(RESite.seq))) advice.add(msgs.HAYSTACK_REVERSE_CONTAINS_RV_SITE())
+        for (let RESite of FG_RE_Sites) {
+          if (URV.includes(RESite.seq)) advice.add(msgs.HAYSTACK_CONTAINS_RV_SITE(RESite.name))
+        }
+        for (let RESite of FG_RE_Sites) {
+          if (URV.includes(RESite.seq)) advice.add(msgs.HAYSTACK_CONTAINS_RV_SITE(RESite.name))
+        }
+        if (!advice.hasError()) {
+          advice.add(msgs.RV_MATCHES_ONCE())
+        }
         if (exercise.fusionStart && RV.singleMatch.pos > exercise.vectorEnd) advice.add(msgs.RV_AFTER_END())
       } else {
         if (api.getRestrictionSiteMatches(api.reverse(URV)).length > 0) advice.add(msgs.RV_MATCHES_WRONG_STRAND()) // BUGGY

@@ -6,13 +6,13 @@ import { Link as UnstyledLink} from 'react-router-dom'
 import styled from 'styled-components'
 
 import * as paths from '../../api/paths'
+import msgs from '../../selectors/evaluator-messages'
 
 import { Title, PLight } from '../../components/Text'
 import { HighlightLink, Link } from '../../components/Link'
 import { RaisedBox, FlexVerticallyCenter } from '../../components/Container'
 import { SummaryWithLink, CommonMistake } from '../../components/SummaryTags'
 
-import msgs from '../../selectors/evaluator-messages'
 
 const ListItem = styled.li`
   
@@ -59,7 +59,7 @@ const CohortsListItem = ({ cohortID, cohortName, authorFullName, exerciseIDs = {
       <SummaryContainer>
         <SummaryWithLink text="Completed students" val={summary.completedCount} url={`/admin/cohorts/${cohortID}/reports&completed_only=true`} />
         <SummaryWithLink text="Started but unfinished" val={summary.unfinishedCount} url={`/admin/cohorts/${cohortID}/reports&unfinished=true`} />
-        <SummaryWithLink text="Not yet started" val={summary.notStartedCount} url={`/admin/cohorts/${cohortID}/reports&not_started=true`} />
+        {/* TODO: fix <SummaryWithLink text="Not yet started" val={_.size(studentIDs) - summary.completedCount} url={`/admin/cohorts/${cohortID}/reports&not_started=true`} /> */}
       </SummaryContainer>
       <CommonMistakesContainer>
         <P>Common mistakes shared by the cohort</P>
@@ -89,6 +89,9 @@ CohortsListItem.propTypes = {
     authorFullName: PropTypes.string.isRequired,
     studentIDs: PropTypes.arrayOf(PropTypes.string).isRequired,
     exerciseIDs: PropTypes.arrayOf(PropTypes.string).isRequired,
+    summary: PropTypes.shape({
+      attemptsCount: PropTypes.array,
+    })
   })
 }
 

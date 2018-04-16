@@ -10,7 +10,7 @@ export const formatDate = (timestamp = 0) => moment(timestamp).format('ddd, Do M
 
 export const setIn = (obj, path, value) => _.setWith(_.clone(obj), path, value);
 
-
+export const getPercent = (a, b) => Math.floor(a / b * 100)
 // Database
 export const firebasePathExists = (db, firebasePath) => db.ref(firebasePath).once('value').then(snapshot => {
   return snapshot.exists() ? Promise.resolve() : Promise.reject(`firebasePath of ${firebasePath} does not exist!`)

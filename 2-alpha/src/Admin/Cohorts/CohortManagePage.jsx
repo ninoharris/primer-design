@@ -12,6 +12,7 @@ import { CTAButton } from '../../components/Button'
 import SimpleForm from '../../components/SimpleForm'
 import { RaisedBox } from '../../components/Container'
 import AddCohortStudent from './AddCohortStudent';
+import { HighlightLink } from '../../components/Link';
 
 
 const Container = styled.div`
@@ -38,11 +39,12 @@ export class CohortManagePage extends Component {
   }
  render() {
    if(!this.state.ready) return <div>Fetching cohort data...</div>
-   const { cohort = {}, } = this.props
+   const { cohort = {}, cohortID } = this.props
    const { cohortName = '', studentIDs = {}} = cohort
    return (
      <Container>
       <AdminHeader title={`${cohortName}: manage students and cohort`}>
+        <HighlightLink to={`/admin/cohorts/${cohortID}/exercises/manage`}>Manage exercises</HighlightLink>
         <CTAButton onClick={this.deleteCohort}>Delete cohort and its students</CTAButton>
       </AdminHeader>
       <div className="container-fluid">

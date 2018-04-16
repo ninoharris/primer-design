@@ -243,18 +243,18 @@ export class ExerciseEditor extends Component {
         <Sidebar>
           <FormGroup>
             <PNoMargins><strong>Vector conditions</strong></PNoMargins>
-              <Field component={this.renderCheckbox} type="checkbox" name="fusionStart" label="Fusion protein at start" />
+              <Field component={this.renderCheckbox} type="checkbox" name="fusionStart" label="N-terminal fusion protein" />
               <Nested>
                 {fusionStart ?
-                  <Field color={theme.FV} component={this.renderColoredField} type="number" name="vectorStart" label="Start Position" /> :
-                  <Field component={this.renderCheckbox} type="checkbox" name="userProvidesStartCodon" label="User provides start" />
+                  <Field color={theme.FV} component={this.renderColoredField} type="number" name="vectorStart" label="N-terminal position" /> :
+                  <Field component={this.renderCheckbox} type="checkbox" name="userProvidesStartCodon" label="User provides start codon" />
                 }
               </Nested>
-              <Field component={this.renderCheckbox} type="checkbox" name="fusionEnd" label="Fusion protein at end" />
+              <Field component={this.renderCheckbox} type="checkbox" name="fusionEnd" label="C-terminal fusion protein" />
               <Nested>
                 {fusionEnd ?
-                  <Field color={theme.FG} component={this.renderColoredField} type="number" name="vectorEnd" label="End Position" /> :
-                  <Field component={this.renderCheckbox} type="checkbox" name="userProvidesStopCodon" label="User provides stop" />
+                  <Field color={theme.FG} component={this.renderColoredField} type="number" name="vectorEnd" label="C-terminal position" /> :
+                  <Field component={this.renderCheckbox} type="checkbox" name="userProvidesStopCodon" label="User provides stop codon" />
                 }
               </Nested>
           </FormGroup>

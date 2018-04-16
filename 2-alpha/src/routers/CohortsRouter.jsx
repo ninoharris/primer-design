@@ -3,6 +3,7 @@ import { Route, Switch, Redirect } from 'react-router-dom'
 import { firebasePathExists } from '../api'
 
 import CohortsPage from '../Admin/Cohorts/CohortsPage'
+import CohortPage from '../Admin/Cohorts/CohortPage'
 import CohortManagePage from '../Admin/Cohorts/CohortManagePage'
 import CohortManageExercisesPage from '../Admin/Cohorts/CohortManageExercisesPage'
 import { BigTitle } from '../components/Text'
@@ -49,7 +50,7 @@ class CohortsRouter extends Component {
         {/* <Route path="/admin/cohorts/:id/exercises" component={AdminCohortsList} /> */}
         <Route path="/admin/cohorts/:id/manage" component={CohortManagePage} />
         {/* <Route path="/admin/cohorts/:id/students" component={AdminCohortsList} /> */}
-        {/* <Route exact path="/admin/cohorts/:id" component={AdminCohortPage} /> */}
+        <Route exact path="/admin/cohorts/:id" component={CohortPage} />
         <Route path="/admin/cohorts" component={CohortsPage} />
         <Route path="/admin/cohorts/not-found/:id" component={NotFound} />
       </Switch>

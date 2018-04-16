@@ -1,0 +1,77 @@
+import _ from 'lodash'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import styled from 'styled-components'
+
+import { getCohortExercises } from '../../selectors/admin'
+import { getStudents } from '../../selectors/admin'
+import { fetchStudents } from '../../actions/admin'
+
+import CohortStudentsListItem from './CohortStudentsListItem';
+import { TitleNoMargins, PNoMargins } from '../../components/Text'
+
+const Container = styled.div`
+`
+
+const P = PNoMargins.extend`
+
+`
+
+export class CohortStudentsView extends Component {
+  state = {
+    ready: false,
+  }
+  componentDidMount() {
+    this.props.fetchStudents(this.props.studentIDs)
+    .then(() => this.setState({ ready: true }))
+  }
+  render() {
+    const { cohortID, studentIDs, students, totalExercisesCount } = this.props
+    const studentCount = _.keys(studentIDs).length
+    if(studentCount === 0) return <TitleNoMargins>No students found.</TitleNoMargins>
+    if(!this.state.ready) return <div>Loading {studentCount} students...</div>
+    console.log('students', students)
+    return (
+      <Container>
+        Summary: {studentCount} students.
+        <div className="row">
+          <div className="col-2">
+          </div>
+          <div className="col-2">
+            <P>Completed</P>
+          </div>
+          <div className="col-2">
+            <P>Unfinished</P>
+          </div>
+          <div className="col-2">
+            <P>Unattempted</P>
+          </div>
+          <div className="col-2">
+            <P>Completion Date</P>
+          </div>
+          <div className="col-2">
+          </div>
+        </div>
+        {_.map(students, (student, studentID) => {
+          const { completedCount = 0, unfinishedCount = 0 } = student.summary || {}
+          const unattemptedCount = totalExercisesCount - (completedCount + unfinishedCount)
+          return <CohortStudentsListItem key={studentID} {...student} 
+            totalExercisesCount={totalExercisesCount} 
+            completedCount={completedCount}
+            unfinishedCount={unfinishedCount}
+            unattemptedCount={unattemptedCount}
+            />
+        })}
+      </Container>
+    )
+  }
+}
+
+const mapStateToProps = (state, {studentIDs, cohortID}) => {
+  return {
+    students: getStudents(state, { studentIDs }),
+    totalExercisesCount: _.size(getCohortExercises(state, { cohortID})),
+  }
+}
+
+export default connect(mapStateToProps, { fetchStudents })(CohortStudentsView)
