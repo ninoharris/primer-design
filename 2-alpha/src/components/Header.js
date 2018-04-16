@@ -9,6 +9,7 @@ import { P } from './Text'
 import { HighlightButton, Button, SecondaryButton } from './Button'
 import { HighlightLink, Link } from './Link'
 import Nav from './Nav'
+import InputHint from '../Features/Game/InputHint'
 
 export const Header = ({
   loggedIn = false,
@@ -50,6 +51,7 @@ export const Header = ({
       <Nav.Left>
         {tutorialsLink}
       </Nav.Left>
+      <Nav.Center><InputHint /></Nav.Center>
       {userDisplay}
     </Nav>
   )

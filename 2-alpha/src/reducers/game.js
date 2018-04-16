@@ -84,10 +84,10 @@ export const restrictionSites = (state = {}, action) => {
   return state
 }
 
-export const editingInputs = (state = { FV: false, RV: false, FG: false, RG: false }, action) => {
+export const editingInputs = (state = null, action) => {
   switch (action.type) {
     case TYPES.EDITING_GAME_INPUT:
-      return { ...state, [action.input]: action.isEditing}
+      return action.isEditing || null
     default: return state
   }
 }

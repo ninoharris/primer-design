@@ -146,4 +146,3 @@ export const getVectorHelpers = createSelector( // merges RESites and user-added
 
 export const getTroubleshooter = state => state.troubleshooter
 export const FV_TS = createSelector(getTroubleshooter, (TS) => TS.FV)
-

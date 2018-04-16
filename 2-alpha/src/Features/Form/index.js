@@ -59,11 +59,14 @@ export class Form extends Component {
   handleSubmit = (e) => {
     e.preventDefault()
   }
-  handleFGFocus = () => this.props.editingGameInput('FG', true)
-  handleRGFocus = () => this.props.editingGameInput('RG', true)
-  handleFGBlur = () => this.props.editingGameInput('FG', false)
-  handleRGBlur = () => this.props.editingGameInput('RG', false)
-
+  handleFVFocus = () => console.log('FVFocus') || this.props.editingGameInput('FV', true)
+  handleFVBlur = () => console.log('FVBlur') || this.props.editingGameInput('FV', false)
+  handleFGFocus = () => console.log('FGFocus') || this.props.editingGameInput('FG', true)
+  handleFGBlur = () => console.log('FGBlur') || this.props.editingGameInput('FG', false)
+  handleRVFocus = () => console.log('RVFocus') || this.props.editingGameInput('RV', true)
+  handleRVBlur = () => console.log('RVBlur') || this.props.editingGameInput('RV', false)
+  handleRGFocus = () => console.log('RGFocus') || this.props.editingGameInput('RG', true)
+  handleRGBlur = () => console.log('RGBlur') || this.props.editingGameInput('RG', false)
 
   render() {
     const { FV, FG, RV, RG } = this.props
@@ -77,7 +80,7 @@ export class Form extends Component {
           <Left5 />
           <RoundLeftInput autoComplete="prevent-autoComplete"
             name='FV' value={FV} type="text" 
-            onChange={this.handleChange} 
+            onChange={this.handleChange} onFocus={this.handleFVFocus} onBlur={this.handleFVBlur}
           />
           <RoundRightInput autoComplete="prevent-autoComplete"
             name='FG' value={FG} type="text" 
@@ -93,12 +96,12 @@ export class Form extends Component {
         <Row>
           <Left5 />
           <RoundLeftInput autoComplete="prevent-autoComplete"
-              name='RV' value={RV}
-              type="text" onChange={this.handleChange} 
+              name='RV' value={RV} type="text" 
+              onChange={this.handleChange} onFocus={this.handleRVFocus} onBlur={this.handleRVBlur}
             />
             <RoundRightInput autoComplete="prevent-autoComplete"
-              name='RG' value={RG}
-              type="text" onChange={this.handleChange} onFocus={this.handleRGFocus} onBlur={this.handleRGBlur}
+              name='RG' value={RG} type="text" 
+              onChange={this.handleChange} onFocus={this.handleRGFocus} onBlur={this.handleRGBlur}
             />
           <Right3 />
         </Row>

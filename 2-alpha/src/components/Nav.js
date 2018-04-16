@@ -9,6 +9,12 @@ const NavDiv = styled.nav`
   background: ${p => rgba(p.theme.cream, 0.07)};
   padding: 8px 10px;
   width: 100%;
+  & > *:first-child, & > *:last-child {
+    flex-shrink: 0;
+  }
+  /* & > *:last-child {
+    text-align: right;
+  } */
 `
 const Title = styled.h1`
   font-size: 14px

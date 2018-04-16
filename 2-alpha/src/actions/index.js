@@ -150,8 +150,7 @@ export const endAnimatePreview = () => ({
 
 export const editingGameInput = (input, isEditing) => ({
   type: TYPES.EDITING_GAME_INPUT,
-  input,
-  isEditing,
+  isEditing: isEditing ? input : null,
 })
 
 
