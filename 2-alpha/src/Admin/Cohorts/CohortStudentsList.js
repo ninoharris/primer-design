@@ -11,6 +11,7 @@ import CohortStudentsListItem from './CohortStudentsListItem';
 import { TitleNoMargins, PNoMargins } from '../../components/Text'
 
 const Container = styled.div`
+  margin: 1.5rem 0;
 `
 
 const P = PNoMargins.extend`
@@ -33,7 +34,7 @@ export class CohortStudentsView extends Component {
     console.log('students', students)
     return (
       <Container>
-        Summary: {studentCount} students.
+        <TitleNoMargins>Showing {studentCount} students.</TitleNoMargins>
         <div className="row">
           <div className="col-2">
           </div>
@@ -47,19 +48,17 @@ export class CohortStudentsView extends Component {
             <P>Unattempted</P>
           </div>
           <div className="col-2">
-            <P>Completion Date</P>
-          </div>
-          <div className="col-2">
           </div>
         </div>
         {_.map(students, (student, studentID) => {
-          const { completedCount = 0, unfinishedCount = 0 } = student.summary || {}
+          const { completedCount = 0, unfinishedCount = 0, attemptsCount = {} } = student.summary || {}
           const unattemptedCount = totalExercisesCount - (completedCount + unfinishedCount)
-          return <CohortStudentsListItem key={studentID} {...student} 
+          return <CohortStudentsListItem key={studentID} studentID={studentID} {...student} 
             totalExercisesCount={totalExercisesCount} 
             completedCount={completedCount}
             unfinishedCount={unfinishedCount}
             unattemptedCount={unattemptedCount}
+            attemptsCount={attemptsCount}
             />
         })}
       </Container>

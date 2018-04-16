@@ -1,4 +1,5 @@
 import React from 'react'
+import { PropTypes } from 'prop-types';
 import styled from 'styled-components'
 import { Link as RouterLink } from 'react-router-dom'
 import { desaturate, lighten } from 'polished'
@@ -90,8 +91,8 @@ export const CommonMistake = ({ val, text }) => (
   </CommonMistakeContainer>
 )
 
-export const CommonMistakes = (attemptsCount = [], limit = null) => {
-  let attemptsSortedAndLimited = attemptsCount.sort((a, b) => b[1] - a[1])
+export const CommonMistakes = ({ attemptsCount = [], limit = null }) => {
+  let attemptsSortedAndLimited = attemptsCount.sort((a, b) => (b[1] - a[1]))
   if(limit) { 
     attemptsSortedAndLimited = attemptsSortedAndLimited.slice(0, limit)
   }
@@ -104,4 +105,7 @@ export const CommonMistakes = (attemptsCount = [], limit = null) => {
       })}
     </div>
   )
+}
+CommonMistakes.propTypes = {
+  attemptsCount: PropTypes.arrayOf(PropTypes.array.isRequired).isRequired,
 }

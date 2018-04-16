@@ -1,10 +1,11 @@
+import _ from 'lodash'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
 // selectors and actions
 import { fetchCohort, updateRecentCohort } from '../../actions/admin'
-import { getCohort } from '../../selectors/admin'
+import { getCohort, getStudents } from '../../selectors/admin'
 import msgs from '../../selectors/evaluator-messages'
 
 // components
@@ -37,8 +38,7 @@ export class CohortPage extends Component {
     this.props.updateRecentCohort(this.props.cohortID)
   }
   render() {
-    const { ready, cohort = {}, cohortID } = this.props
-    const { summary } = cohort
+    const { ready, cohort = {}, cohortID, summary } = this.props
     if(!ready) return <div>Loading...</div>
     return (
       <Container>
@@ -81,10 +81,33 @@ const mapStateToProps = (state, ownProps) => {
     cohortID, 
     ready: false 
   } // not loaded yet
+  const students = getStudents(state, { studentIDs: cohort.studentIDs })
+  let completedCount = 0
+  let unfinishedCount = 0
+  let notStartedCount = 0
+  const totalExercisesCount = _.size(cohort.exerciseIDs)
+  for(const studentID in students) {
+    const student = students[studentID]
+    if(student.summary && student.summary.unfinishedCount) {
+      unfinishedCount++
+    } else if (student.summary && student.summary.completedCount === totalExercisesCount) {
+      completedCount++
+    } else {
+      notStartedCount++
+    }
+  }
+
+  const summary = {
+    ...cohort.summary,
+    unfinishedCount,
+    completedCount,
+    notStartedCount,
+  }
 
   return {
     cohortID,
     cohort,
+    summary,
     ready: true,
   }
 }

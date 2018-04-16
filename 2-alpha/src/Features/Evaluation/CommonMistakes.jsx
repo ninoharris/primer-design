@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
 import { getUserCommonMistakes } from '../../selectors/evaluations'
@@ -19,6 +20,9 @@ const CommonMistakes = ({ commonMistakes, limit = 5}) => (
     })}
   </Container>
 )
+CommonMistakes.propTypes = {
+  commonMistakes: PropTypes.array.isRequired
+}
 
 const mapStateToProps = (state) => ({
   commonMistakes: getUserCommonMistakes(state)

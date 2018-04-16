@@ -7,7 +7,7 @@ import { getPercent } from '../../api'
 
 import { RaisedBox } from '../../components/Container'
 import { Summary, CommonMistakes } from '../../components/SummaryTags'
-import { PNoMargins, PLight } from '../../components/Text'
+import { PNoMargins } from '../../components/Text'
 import { SecondaryLink } from '../../components/Link'
 import { HighlightButton } from '../../components/Button';
 
@@ -16,24 +16,22 @@ const LinkShownIfHovered = SecondaryLink.extend`
 `
 
 const Container = RaisedBox.extend`
-  padding: 0.2rem 1rem;
+  padding: 0.4rem 1rem;
   margin-bottom: 0.3rem;
   &:hover {
     ${LinkShownIfHovered} {
       visibility: 1;
     }
   }
-`
-const Row = styled.div`
-  
-`
-const Col = styled.div`
-  flex: 1;
-  &:last-child {
-    text-align: right;
-    flex: 3;
+  .row {
+    display: flex;
+    align-items: center;
   }
 `
+const ActionsContainer = styled.div`
+  text-align: right;
+`
+
 
 
 
@@ -41,18 +39,25 @@ class CohortStudentsListItem extends Component {
   state = {
     showDetails: false,
   }
+  toggleShowDetails = () => {
+    this.setState(({ showDetails }) => ({ showDetails: !showDetails }))
+  }
   render() {
     const { 
       fullName, studentID, cohortID, 
       completedCount, unfinishedCount, unattemptedCount, totalExercisesCount,
       attemptsCount = {}
     } = this.props
+    const attemptsList = []
+    for(const attempt in attemptsCount) {
+      attemptsList.push([attempt, attemptsCount[attempt]])
+    }
     return (
       <Container>
         <div className="row">
           <div className="col-2">
-            <PNoMargins>{fullName}</PNoMargins>
-            <PLight>{studentID}</PLight>
+            <PNoMargins><strong>{fullName}</strong></PNoMargins>
+            <PNoMargins>{studentID}</PNoMargins>
           </div>
           <div className="col-2">
             <Summary val={completedCount} text={`${getPercent(completedCount, totalExercisesCount)}%`} />
@@ -65,15 +70,15 @@ class CohortStudentsListItem extends Component {
           </div>
           <div className="col-1">
           </div>
-          <div className="col-3">
+          <ActionsContainer className="col-3">
             <LinkShownIfHovered to={`/admin/cohorts/${cohortID}/manage`}>Edit student</LinkShownIfHovered>{' '}
-            <HighlightButton onClick={() => this.setState({ showDetails: true })}>View details</HighlightButton>
-          </div>
+            <HighlightButton onClick={this.toggleShowDetails}>View details</HighlightButton>
+          </ActionsContainer>
         </div>
         {this.state.showDetails ? (
           <div>
-            <PNoMargins>Common mistakes made by {fullName}:</PNoMargins>
-            {/* <CommonMistakes attemptsCount={_.flatMap(attemptsCount} /> */}
+            <PNoMargins><strong>Common mistakes made by {fullName}:</strong></PNoMargins>
+            <CommonMistakes attemptsCount={attemptsList} />
           </div>
         ): ''}
       </Container>
