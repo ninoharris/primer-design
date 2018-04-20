@@ -3,24 +3,25 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import { connect } from 'react-redux'
-import { getBothVectorStrands, getVectorHelpers } from '../../selectors'
+import { getBothVectorStrands, getVectorRestrictionSites, getVectorContextualHelpers } from '../../selectors'
 
 import VectorForward from './VectorForward'
 import VectorReverse from './VectorReverse'
-import HelperPosition from '../../components/HelperPosition';
+import HelperPosition from '../../components/HelperPosition'
 import HelperMarkers from '../../components/HelperMarkers'
-import HighlightedSequence from '../../components/HighlightedSequence'
+import SequenceWithRESites from '../../components/SequenceWithRESites'
 import { Left5, Left3, Right5, Right3 } from '../../components/HelperEnds'
+import ContextualHelpers from '../../components/ContextualHelpers'
 
-
-const Vector = ({ forward = '', reverse = '', helpers = []}) => (
+const Vector = ({ forward = '', reverse = '', RESites = []}) => (
   <div className="vector pt-3 pb-3 mt-3">
     <HelperPosition length={90} className="fullheight" />
     <div className="forward mb-3">
-      <HelperMarkers helpers={helpers} />
+      <HelperMarkers helpers={RESites} />
       <div className="sequence">
         <Left5 />
-        <HighlightedSequence helpers={helpers} sequence={forward} direction='forward' />
+        <ContextualHelpers />
+        <SequenceWithRESites RESites={RESites} sequence={forward} sequenceDirection='forward' />
         <Right3 />
       </div>
       <VectorReverse />
@@ -29,7 +30,8 @@ const Vector = ({ forward = '', reverse = '', helpers = []}) => (
       <VectorForward />
       <div className="sequence">
         <Left3 />
-        <HighlightedSequence helpers={helpers} sequence={reverse} direction='reverse' />
+        <ContextualHelpers />
+        <SequenceWithRESites RESites={RESites} sequence={reverse} sequenceDirection='reverse' />
         <Right5 />
       </div>
     </div>
@@ -53,7 +55,8 @@ const mapStateToProps = (state) => {
   return {
     forward,
     reverse,
-    helpers: getVectorHelpers(state),
+    RESites: getVectorRestrictionSites(state),
+    contextualHelpers: getVectorContextualHelpers(state)
   }
 }
 

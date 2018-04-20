@@ -16,16 +16,16 @@ const HaystackContainer = styled.div`
   margin-top: -4rem;
 `
 
-const HaystackPreview = ({ forward, reverse, NPosMarker, CPosMarker, cursorPosition = null, restrictionSites }) => (
+const HaystackPreview = ({ forward, reverse, sequenceStartMarker, sequenceEndMarker, cursorPosition = null, restrictionSites }) => (
   <HaystackContainer>
   <div className="haystack Admin-Haystack">
     <div className="forward multiline">
         <div className="sequence">
           <HelperPosition length={forward.length} interval={3} />
-          <Marker className="" {...NPosMarker} />
-          <Marker className="" {...CPosMarker} />
+          <Marker className="" {...sequenceStartMarker} height="80px" top="60px" />
+          <Marker className="" {...sequenceEndMarker} height="80px" top="60px" />
           {typeof cursorPosition === 'number' && cursorPosition <= forward.length && cursorPosition !== 0 ?
-            <Marker className="" position={cursorPosition} text='Cursor' color={theme.black} /> : ''
+            <Marker className="" position={cursorPosition} text='Cursor' color={theme.black} height="80px" top="60px" /> : ''
           }
           <Left5 />
           <HaystackRestrictionSites 
@@ -64,8 +64,8 @@ const mapStateToProps = (state, ownProps) => {
     forward,
     reverse,
     restrictionSites: [ ...api.getRestrictionSiteMatches(forward), ...api.getRestrictionSiteMatches(reverse).map(site => ({...site, direction: 'reverse'}))],
-    NPosMarker: { position: parseInt(constructStart, 10), color: theme.RV, text: 'N‑terminal position' },
-    CPosMarker: { position: parseInt(constructEnd, 10), color: theme.RG, text: 'C‑terminal position' },
+    sequenceStartMarker: { position: parseInt(constructStart, 10), color: theme.RV, text: 'Start of GOI/SOI' },
+    sequenceEndMarker: { position: parseInt(constructEnd, 10), color: theme.RG, text: 'End of GOI/SOI' },
   }
 }
 

@@ -241,7 +241,6 @@ export class ExerciseEditor extends Component {
     const { haystack: haystackCursorPosition, vector: vectorCursorPosition } = this.state.cursor
     return (
       <Form onSubmit={this.props.handleSubmit} method="POST">
-        
         <Sidebar>
           <FormGroup>
             <PNoMargins><strong>Vector conditions</strong></PNoMargins>
@@ -277,6 +276,7 @@ export class ExerciseEditor extends Component {
 
         <Main>
           <Field name="questionPart1" component={this.renderTextarea} type="text" label="Question part 1: This introduces the general question and information about the vector." />
+          <RestrictionSitesPreview />
           <Field name="vector" component={this.renderTextarea} type="text" label="Vector forward sequence (reverse is calculated)" />
           <VectorPreview cursorPosition={vectorCursorPosition} />
           <Field name="questionPart2" component={this.renderTextarea} type="text" label="Question part 2: This contains information specific to the construct below." />

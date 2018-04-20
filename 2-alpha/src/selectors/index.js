@@ -131,9 +131,14 @@ export const getHaystackRestrictionSites = createSelector(
   }
 )
 
+export const getVectorContextualHelpers = createSelector(
+  getCurrentExercise,
+  ({ helpers }) => _.flatMap(helpers)
+)
+
 export const getVectorHelpers = createSelector( // merges RESites and user-added helpers
   getCurrentExercise,
-  getVectorRestrictionSites,
+  // getVectorRestrictionSites,
   ({ helpers }, RESites = []) => ([..._.flatMap(helpers, helper => helper), ...RESites ]).sort((a,b) => a.pos - b.pos)
 )
 

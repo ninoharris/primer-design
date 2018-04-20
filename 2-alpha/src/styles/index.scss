@@ -106,15 +106,59 @@ ul, li {
   user-select: none;
   position: relative;
 }
-.forward .sequence span {
+/*
+.forward .sequence .helper {
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
+  padding-top: 0.5rem;
 }
-.reverse .sequence span {
+.reverse .sequence .helper {
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
+  padding-bottom: 0.5rem;
+}
+*/
+
+.RG.unimportant {
+  position: relative;
+  opacity: 0.4;
+  & > span {
+    position: absolute;
+    transform: rotate(-4deg);
+    transform-origin: right top;
+    margin-top: -2px;
+    right: 0;
+  }
+}
+.RV.unimportant {
+  position: relative;
+  opacity: 0.4;
+  & > span {
+    position: absolute;
+    transform: rotate(4deg);
+    transform-origin: left top;
+    margin-top: -2px;
+    right: 0;
+  }
 }
 
+
+// RE sites
+
+.re-site-bl {
+  border-bottom-left-radius: 4px;
+  position: relative;
+}
+.re-site-br {
+  border-bottom-right-radius: 4px;
+}
+.re-site-tl {
+  border-top-left-radius: 4px;
+  position: relative;
+}
+.re-site-tr {
+  border-top-right-radius: 4px;
+}
 
 .haystack .forward, .haystack .reverse {
   transition: top 0.7s ease-out;
@@ -133,6 +177,7 @@ ul, li {
 .haystack-with-UFG .reverse {
   top: 2rem; /* move it down by a line, gives room for UFG */
 }
+
 
 
 
@@ -243,13 +288,13 @@ ul, li {
 .position-helper {
   cursor: default;
   position: absolute;
-  top: 0;
+  top: 70px;;
   z-index: -5;
   overflow: visible;
 }
 .position-helper > span {
   margin-left: -1px;
-  border-left: 1px solid rgba(0,0,0,0.03);
+  border-left: 1px solid rgba(0,0,0,0.1);
   position: relative;
   display: inline-block;
 }
@@ -257,9 +302,9 @@ ul, li {
   border-left: 0;
 }
 .position-helper span span {
-  font-size: 0.6rem;
+  font-size: 0.8rem;
   letter-spacing: -2px;
-  color: lightblue;
+  color: darkcyan;
   position: absolute;
 }
 .position-helper.fullheight > span {

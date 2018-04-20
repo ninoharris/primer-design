@@ -168,6 +168,7 @@ export const fetchCohorts = () => (dispatch) => {
 }
 
 export const fetchCohort = (id) => (dispatch) => {
+  console.log('fetching cohort')
   dispatch({ type: TYPES.FETCH_COHORT_INIT })
 
   return db.ref(`cohorts/${id}`).once('value')

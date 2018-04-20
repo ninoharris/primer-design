@@ -30,7 +30,7 @@ const HaystackRestrictionSites = ({
         <div>
           {api.properSpacing(_.pad('', site.pos))}
           <span
-            className="Restriction-Site"
+            className={`Restriction-Site ${sequenceDirection === 'forward' ? 're-site-tl re-site-tr' : 're-site-bl re-site-br'}`}
             onMouseEnter={() => { onHover(i)}} onMouseLeave={() => onHover()}
             style={{ backgroundColor: site.color, color: api.pickTextColor(site.color) }}>
             {sequenceDirection === 'forward' ? <span className="Name" style={{color: site.color}}>{site.name}</span> : ''}

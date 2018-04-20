@@ -23,20 +23,19 @@ const P = PLight.extend`
 
 class RecentCohort extends Component {
   fetchCohort() {
-    if(this.props.cohortID) {
-      this.props.fetchCohort(this.props.cohortID)
+    if (this.props.recentCohortID) {
+      this.props.fetchCohort(this.props.recentCohortID)
     }
   }
   componentDidUpdate() { this.fetchCohort() }
-  componentDidMount() { this.fetchCohort() }
   render() {
-    if(!this.props.cohortID) return null
-    const { studentCount, exerciseCount, cohortName, cohortID } = this.props
+    if (!this.props.recentCohortID) return null
+    const { studentCount, exerciseCount, cohortName, recentCohortID } = this.props
     return (
       <Container>
         <strong>{cohortName}</strong>
-        <Link to={`/admin/cohorts/${cohortID}`}><P>{studentCount} Students</P></Link>
-        <Link to={`/admin/cohorts/${cohortID}/exercises/manage`}><P>{exerciseCount} Exercises</P></Link>
+        <Link to={`/admin/cohorts/${recentCohortID}`}><P>{studentCount} Students</P></Link>
+        <Link to={`/admin/cohorts/${recentCohortID}/exercises/manage`}><P>{exerciseCount} Exercises</P></Link>
       </Container>
     )
   }
@@ -50,16 +49,16 @@ RecentCohort.propTypes = {
 
 const mapStateToProps = (state) => {
   const recentCohortID = getRecentCohortID(state)
-  if(!recentCohortID) return {}
+  if(!recentCohortID) return {  }
 
   const recentCohort = getRecentCohort(state)
-  if(!recentCohort) return {}
+  if(!recentCohort) return { recentCohortID }
 
   return {
     studentCount: _.size(recentCohort.studentIDs),
     exerciseCount: _.size(recentCohort.exerciseIDs),
     cohortName: recentCohort.cohortName,
-    cohortID: recentCohortID
+    recentCohortID
   }
 }
 

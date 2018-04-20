@@ -3,57 +3,81 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { formValueSelector } from 'redux-form'
 import * as api from '../api'
+import styled from 'styled-components'
+
+import theme from '../styles/theme'
 
 import HelperPosition from '../components/HelperPosition'
+import Marker from '../components/Marker'
 import HelperMarkers from '../components/HelperMarkers'
-import HighlightedSequence from '../components/HighlightedSequence'
+import SequenceWithRESites from '../components/SequenceWithRESites'
 // import Markers from '../components/Markers';
 
-export const VectorPreview = ({ forward, reverse, helpers, vectorMarkers, cursorPosition = null }) => {
+const Container = styled.div`
+  margin-bottom: 2rem;
+`
+
+export const VectorPreview = ({ 
+  forward, 
+  reverse, 
+  NPosMarker,
+  CPosMarker,
+  REHelpers, 
+  contextualHelpers, 
+  cursorPosition = null 
+}) => {
+  console.log('REHelpers:', REHelpers)
   return (
-    <div className="vector Admin-Vector pt-3 pb-3">
+    <Container className="vector Admin-Vector pt-3 mb-3 pb-3">
       <div className="forward">
         <div className="sequence">
           <HelperPosition length={forward.length} className="fullheight" />
-          {/* <Markers markers={vectorMarkers} className="Admin-Markers Admin-Vector-Markers" />
-          {typeof cursorPosition === 'number' && cursorPosition < forward.length && cursorPosition !== 0 ?
-            <Markers className="Admin-Markers Cursor-Position" markers={[cursorPosition]} /> : ''
-          } */}
-          <HelperMarkers helpers={helpers} />
-          <HighlightedSequence helpers={helpers} sequence={forward} direction='forward' />
+          <Marker className="" {...NPosMarker} height="30px" top="0px" />
+          <Marker className="" {...CPosMarker} height="30px" top="0px" />
+          {typeof cursorPosition === 'number' && cursorPosition <= forward.length && cursorPosition !== 0 ?
+            <Marker className="" position={cursorPosition} text='Cursor' color={theme.black} /> : ''
+          }
+          <SequenceWithRESites RESites={REHelpers} sequence={forward} sequenceDirection='forward' />
         </div>
       </div>
       <div className="reverse sequence">
         <div className="sequence">
-          <HighlightedSequence helpers={helpers} sequence={reverse} direction='reverse' />
+          <SequenceWithRESites RESites={REHelpers} sequence={reverse} sequenceDirection='reverse' />
         </div>
       </div>
-    </div>
+    </Container>
   )
 }
 
 const selector = formValueSelector('exerciseEditor')
 
 const mapStateToProps = (state, ownProps) => {
-  const { vector = ' ', vectorStart = null, vectorEnd = null, fusionStart = false, fusionEnd = false, helpers = [] } = selector(state,
-    'vector', 'vectorStart', 'vectorEnd', 'fusionStart', 'fusionEnd', 'helpers')
 
-  const userMadeHelpers = helpers.map(helper => ({
+  const { vector = ' ', vectorStart = null, vectorEnd = null, fusionStart = false, fusionEnd = false, helpers = [] } = selector(
+    state, 'vector', 'vectorStart', 'vectorEnd', 'fusionStart', 'fusionEnd', 'helpers'
+  )
+
+  const contextualHelpers = helpers.map(helper => ({
       ...helper,
       pos: Number(helper.pos),
       len: Number(helper.len),
   })).filter(helper => helper.pos && helper.len && helper.name && helper.color)
   
   const REHelpers = api.getRestrictionSiteMatches(vector)
-  const vectorMarkers = []
-  if (fusionStart) { vectorMarkers.push(parseInt(vectorStart, 10))}
-  if (fusionEnd) { vectorMarkers.push(parseInt(vectorEnd, 10)) }
-
+  let NPosMarker = {}, CPosMarker = {}
+  if (fusionStart) { 
+    NPosMarker = { position: parseInt(vectorStart, 10), color: theme.RV, text: 'N‑terminal position' }
+  }
+  if (fusionEnd) { 
+    CPosMarker = { position: parseInt(vectorEnd, 10), color: theme.RG, text: 'C‑terminal position' }
+  }
   return {
     forward: vector,
     reverse: api.complementFromString(vector),
-    vectorMarkers,
-    helpers: [...userMadeHelpers, ...REHelpers].sort((a,b) => a.pos - b.pos)
+    REHelpers,
+    contextualHelpers,
+    NPosMarker,
+    CPosMarker,
   }
 }
 
