@@ -227,7 +227,7 @@ console.log(fragments.LHS.reverse)
 	// Set length limits in which the user must create a primer
 	const limits = {
 		min: 18,
-		max: 22
+		max: 25
 	}
 
   // Display of exercise
@@ -246,8 +246,8 @@ console.log(fragments.LHS.reverse)
       console.log('No answer given...')
       continue;
     } 
-    if (answer.length >= limits.min || answer.length <= limits.max) {
-      console.log('So close! Sequence is just a bit too ' + (answer.length > limits.max ? 'long' : 'short'))
+    if (answer.length <= limits.min || answer.length >= limits.max) {
+      console.log('Sequence is just a bit too ' + (answer.length > limits.max ? 'long' : 'short'))
       continue;
     }
     // containsMatch was written in an API to determine correctness and returns an object of

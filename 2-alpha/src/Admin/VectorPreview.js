@@ -7,7 +7,7 @@ import * as api from '../api'
 import HelperPosition from '../components/HelperPosition'
 import HelperMarkers from '../components/HelperMarkers'
 import HighlightedSequence from '../components/HighlightedSequence'
-import Markers from '../components/Markers';
+// import Markers from '../components/Markers';
 
 export const VectorPreview = ({ forward, reverse, helpers, vectorMarkers, cursorPosition = null }) => {
   return (
@@ -15,20 +15,16 @@ export const VectorPreview = ({ forward, reverse, helpers, vectorMarkers, cursor
       <div className="forward">
         <div className="sequence">
           <HelperPosition length={forward.length} className="fullheight" />
-          <Markers markers={vectorMarkers} className="Admin-Markers Admin-Vector-Markers" />
+          {/* <Markers markers={vectorMarkers} className="Admin-Markers Admin-Vector-Markers" />
           {typeof cursorPosition === 'number' && cursorPosition < forward.length && cursorPosition !== 0 ?
             <Markers className="Admin-Markers Cursor-Position" markers={[cursorPosition]} /> : ''
-          }
+          } */}
           <HelperMarkers helpers={helpers} />
           <HighlightedSequence helpers={helpers} sequence={forward} direction='forward' />
         </div>
       </div>
       <div className="reverse sequence">
         <div className="sequence">
-          <Markers markers={vectorMarkers} className="Admin-Markers Admin-Vector-Markers" />
-          {typeof cursorPosition === 'number' && cursorPosition < forward.length && cursorPosition !== 0 ?
-            <Markers className="Admin-Markers Cursor-Position" markers={[cursorPosition]} /> : ''
-          }
           <HighlightedSequence helpers={helpers} sequence={reverse} direction='reverse' />
         </div>
       </div>

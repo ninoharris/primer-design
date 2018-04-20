@@ -17,7 +17,7 @@ class ExerciseEditPage extends Component {
   outerSubmit = (values) => {
     const id = this.props.id
     this.props.updateExercise(id, values).then(() => {
-      this.props.history.push('/admin')
+      this.props.history.push('/admin/exercises')
     })
   }
   removeExercise = () => {
@@ -51,4 +51,7 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-export default withRouter(connect(mapStateToProps, { updateExercise, removeExercise })(ExerciseEditPage))
+export default withRouter(connect(mapStateToProps, { 
+  updateExercise, 
+  removeExercise,
+ })(ExerciseEditPage))

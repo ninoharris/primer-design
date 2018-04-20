@@ -5,7 +5,7 @@ import * as api from '../../api'
 
 const HaystackRestrictionSites = ({ 
   seq, 
-  direction = 'forward', 
+  sequenceDirection = 'forward', 
   restrictionSites = [], 
   hoveredItem = null, 
   onHover = () => {},
@@ -13,7 +13,16 @@ const HaystackRestrictionSites = ({
 }) => {
   const RESitesDOM = restrictionSites
   .sort((a, b) => a.pos - b.pos)
-  .map((site) => direction === 'forward' ? site : {...site, seq: api.reverse(site.seq) } )
+  .map((site) => {
+    // if the restriction site is in the opposite direction of the strand, reverse the sequence
+    if(sequenceDirection === 'forward' && site.direction === 'reverse') {
+      return {...site, seq: api.reverse(site.seq)}
+    }
+    if (sequenceDirection === 'reverse' && site.direction !== 'reverse') {
+      return { ...site, seq: api.reverse(site.seq) }
+    }
+    return site
+  })
   .map((site, i) => {
     const className = (hoveredItem === i || alwaysShowName) ? 'hovered' : ''
     return (
@@ -24,7 +33,7 @@ const HaystackRestrictionSites = ({
             className="Restriction-Site"
             onMouseEnter={() => { onHover(i)}} onMouseLeave={() => onHover()}
             style={{ backgroundColor: site.color, color: api.pickTextColor(site.color) }}>
-            {direction === 'forward' ? <span className="Name" style={{color: site.color}}>{site.name}</span> : ''}
+            {sequenceDirection === 'forward' ? <span className="Name" style={{color: site.color}}>{site.name}</span> : ''}
             {site.seq}
           </span>
         </div>

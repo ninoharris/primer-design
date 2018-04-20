@@ -6,6 +6,7 @@ export const exercisesById = (state = {}, action) => {
     case TYPES.FETCH_EXERCISES_SUCCESS:
       return action.payload // replace exercises
     case TYPES.ADD_EXERCISE_SUCCESS:
+    case TYPES.UPDATE_EXERCISE_SUCCESS:
       return {...state, [action.id]: action.payload} // add exercises
     default: return state
   }

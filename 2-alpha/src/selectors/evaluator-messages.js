@@ -128,7 +128,7 @@ export default {
     ID: "VECTORS_TOO_CLOSE",
     type: ERROR,
     inputs: [FV, RV],    
-    title: `Primers are too close by ${num} spaces!`,
+    title: `Your primers use restriction sites that are too close Try selecting a different RE site for either the forward or reverse primer!`,
     adminTitle: "RE sites too close",
     url: "/preventing-vector-conflicts",
   }),

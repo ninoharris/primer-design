@@ -14,8 +14,7 @@ import {
   getURG,
   getURVHund80, 
   getURGReverse,
-  getHaystackForwardRestrictionSites,
-  getHaystackReverseRestrictionSites,
+  getHaystackRestrictionSites,
   getEditingGameInputs,
 } from './index'
 
@@ -121,6 +120,7 @@ export const getHaystackForwardMatches = createSelector(
   getBothHaystackStrands,
   getCurrentExercise,
   (input, { forward }, { constructStart }) => {
+    console.log('forward strand:', forward)
     if (input.length < 4) return {}
     const forwardMatches = {
       rightSeq: forward.substr(constructStart, input.length),
@@ -174,7 +174,7 @@ export const getHaystackEvaluations = createSelector(
       if (FG.reverseMatch) advice.add(msgs.FORWARD_WRONG_DIRECTION())
       if (FG.frame && FG.frame !== 0) advice.add(msgs.FORWARD_HAYSTACK_OUT_OF_FRAME(FG.frame))
       if (!FG.normalMatch && !FG.complementMatch && !FG.reverseMatch) advice.add(msgs.FORWARD_NO_MATCH())
-      if (api.isTooShort(FG.input) && !editing.FG) advice.add(msgs.FORWARD_TOO_SHORT())
+      if (api.isTooShort(FG.input) && editing !== 'FG') advice.add(msgs.FORWARD_TOO_SHORT())
     }
 
     if (RG.input) {
@@ -183,7 +183,7 @@ export const getHaystackEvaluations = createSelector(
       if (RG.reverseMatch) advice.add(msgs.REVERSE_WRONG_DIRECTION())
       if (RG.frame && RG.frame !== 0) advice.add(msgs.REVERSE_HAYSTACK_OUT_OF_FRAME(RG.frame))
       if (!RG.normalMatch && !RG.complementMatch && !RG.reverseMatch) advice.add(msgs.REVERSE_NO_MATCH())
-      if (api.isTooShort(RG.input) && !editing.RG) advice.add(msgs.REVERSE_TOO_SHORT())
+      if (api.isTooShort(RG.input) && editing !== 'RG') advice.add(msgs.REVERSE_TOO_SHORT())
     }
     // go to vector evaluations!
     return advice
@@ -196,10 +196,9 @@ export const getVectorEvaluations = createSelector(
   getUserVectorMatchReverse,
   getUFV,
   getURV,
-  getHaystackForwardRestrictionSites,
-  getHaystackReverseRestrictionSites,
+  getHaystackRestrictionSites,
   getCurrentExercise,
-  (FV, RV, UFV, URV, FG_RE_Sites, RG_RE_Sites, exercise) => {
+  (FV, RV, UFV, URV, haystack_RE_sites, exercise) => {
     const advice = evaluator()
     advice.addInputs({ FV, RV })
 
@@ -213,10 +212,7 @@ export const getVectorEvaluations = createSelector(
     if (UFVReadyToCheck) {
       // if only one match
       if (FV.singleMatch) {
-        for (let RESite of FG_RE_Sites) {
-          if (UFV.includes(RESite.seq)) advice.add(msgs.HAYSTACK_CONTAINS_FV_SITE(RESite.name))
-        }
-        for (let RESite of RG_RE_Sites) {
+        for (let RESite of haystack_RE_sites) {
           if (UFV.includes(RESite.seq)) advice.add(msgs.HAYSTACK_CONTAINS_FV_SITE(RESite.name))
         }
         if(!advice.hasError()) {
@@ -236,10 +232,7 @@ export const getVectorEvaluations = createSelector(
     }
     if (URVReadyToCheck) {
       if (RV.singleMatch) {
-        for (let RESite of FG_RE_Sites) {
-          if (URV.includes(RESite.seq)) advice.add(msgs.HAYSTACK_CONTAINS_RV_SITE(RESite.name))
-        }
-        for (let RESite of FG_RE_Sites) {
+        for (let RESite of haystack_RE_sites) {
           if (URV.includes(RESite.seq)) advice.add(msgs.HAYSTACK_CONTAINS_RV_SITE(RESite.name))
         }
         if (!advice.hasError()) {

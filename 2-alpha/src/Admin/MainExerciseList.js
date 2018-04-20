@@ -18,7 +18,7 @@ const MainExerciseList = ({ exercisesList }) => {
     <Ul>
       {exercisesList.map(exercise => (
         <ExerciseListItem key={exercise.id} {...exercise}>
-          {/* <SecondaryLink className="btn btn-primary" to={'/play/' + exercise.id}>Demo</SecondaryLink> */}
+          <SecondaryLink className="btn btn-primary" to={'/play/' + exercise.id}>Demo</SecondaryLink>
           {/* TODO: allow demos in state */}
           <HighlightLink className="btn btn-primary" to={`/admin/exercises/edit/${exercise.id}`}>Edit exercise</HighlightLink>
         </ExerciseListItem>

@@ -3,7 +3,7 @@ import messages, { INFO, SUCCESS, ERROR, FV, FG, RV, RG } from './evaluator-mess
 export const evaluator = (...evaluators) => {
   
   // evaluators can be built from other evaluators, combining their messages and inputs
-  // this is for reselect to cache different evaluators, each dependent on the changes
+  // this is fto cache different evaluators, each dependent on the changes
   // of their relevant inputs. This way they don't update upon irrelevant changes.
   const messages = evaluators.reduce((prevMessages, currEvaluator) => {
     return [...prevMessages, ...currEvaluator.getMessages()]
@@ -19,10 +19,6 @@ export const evaluator = (...evaluators) => {
   let anyErrors = false
   const hasError = () => anyErrors
   const signalError = () => anyErrors = true
-
-  // TODO: add most recently updated input feature
-  // const mostRecentInput = null
-  // const getMostRecentErrorInput = () => mostRecentInput
 
   const getMessages = () => messages
   const getErrorMessages = () => messages.filter(m => m.type === ERROR)

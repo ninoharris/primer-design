@@ -41,6 +41,7 @@ export const randomInt = function (max) {
 }
 export const pickRandomFromArray = (arr) => arr[Math.floor(Math.random() * arr.length)]
 
+// 1
 export const complementFromString = function (str) { // Pure
   const outcomes = {
     " ": " ",
@@ -53,17 +54,18 @@ export const complementFromString = function (str) { // Pure
   return str.split('').reduce((prev, curr) => [...prev, outcomes[curr] || ' '], []).join('')
 }
 
+// 2
 export const reverse = function (str) {
   return [...str].reverse().join('')
 }
 
+// 3
 export const hund80 = str => complementFromString(reverse(str))
 
+// 4
 export const getAASeq = function ({ seq, offset = 0, separator = '' }) {
   if (typeof seq !== 'string') throw Error('seq must be a string')
   seq = seq.toUpperCase()
-  // if (seq.match(/[^ATGC\b]+/gi)) throw Error('seq must only contain: ATGC (and space)')
-  // seq = seq.replace(/\b/, '') // remove spaces
 
   let output = [], currentCodon
   for (let i = offset; i <= seq.length; i += 3) {
@@ -74,11 +76,13 @@ export const getAASeq = function ({ seq, offset = 0, separator = '' }) {
   return output
 }
 
+// 5
 export const getGCContent = (seq) => {
   const GCCount = seq.toUpperCase().split('').filter(char => char === 'G' || char === 'C').length
   return GCCount / seq.length
 }
 
+// 6
 export const getMeltingTemperature = (seq) => {
   // Tm = 4(G + C) + 2(A + T) °C
   const chars = seq.toUpperCase().split('')
@@ -171,6 +175,8 @@ export const getLongestMatch = function (str) {
 // }
 // HELLO WORLD
 
+
+
 // looks for closest match within a range of 2 before and 2 after.
 export const shotgunMatch = ({ query, haystack, pos = 0, minPercentMatching = 0.5, ...rest }) => {
   let startPos = pos - 2
@@ -215,6 +221,7 @@ export const shotgunAllPotentialMatches = ({ query, haystack, pos = 0 }) => {
     params
   )
 }
+
 
 // query stays the same, haystack is complemented.
 // export const containsComplementMatch = function ({ query, haystack, pos }) {

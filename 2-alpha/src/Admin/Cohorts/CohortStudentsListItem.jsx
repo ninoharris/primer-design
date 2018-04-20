@@ -72,7 +72,7 @@ class CohortStudentsListItem extends Component {
           </div>
           <ActionsContainer className="col-3">
             <LinkShownIfHovered to={`/admin/cohorts/${cohortID}/manage`}>Edit student</LinkShownIfHovered>{' '}
-            <HighlightButton onClick={this.toggleShowDetails}>View details</HighlightButton>
+            <HighlightButton onClick={this.toggleShowDetails}>{this.state.showDetails ? 'Hide':'View'} details</HighlightButton>
           </ActionsContainer>
         </div>
         {this.state.showDetails ? (

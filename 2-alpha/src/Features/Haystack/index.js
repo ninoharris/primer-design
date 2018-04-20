@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getBothHaystackStrands, getUFG, getURG, getHaystackForwardRestrictionSites, getHaystackReverseRestrictionSites } from '../../selectors'
+import { getBothHaystackStrands, getUFG, getURG, getHaystackRestrictionSites } from '../../selectors'
 
 import HelperPosition from '../../components/HelperPosition'
 import HaystackForward from './HaystackForward';
@@ -30,7 +30,7 @@ export class Haystack extends Component {
                   seq={forward} 
                   restrictionSites={restrictionSites} 
                   onHover={this.handleHover} hoveredItem={this.state.hoveredItem}
-                  direction='forward'
+                  sequenceDirection='forward'
                 />
                 <Left5 />
                 {forward}
@@ -47,7 +47,7 @@ export class Haystack extends Component {
                   seq={reverse} 
                   restrictionSites={restrictionSites} 
                   onHover={this.handleHover} hoveredItem={this.state.hoveredItem} 
-                  direction='reverse'
+                  sequenceDirection='reverse'
                 />
                 <Left3 />
                 {reverse}
@@ -67,7 +67,7 @@ const mapStateToProps = (state) => {
     ...getBothHaystackStrands(state),
     FG: getUFG(state),
     RG: getURG(state),
-    restrictionSites: [ ...getHaystackForwardRestrictionSites(state), ...getHaystackReverseRestrictionSites(state) ]
+    restrictionSites: getHaystackRestrictionSites(state)
   }
   return props
 }

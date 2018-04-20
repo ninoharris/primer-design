@@ -15,7 +15,7 @@ class HaystackForward extends Component {
       if(char === correctChars[i]) {
         return <span key={i} style={{fontWeight: 'bold'}}>{char}</span>
       } else {
-        return <span key={i} style={{ color: 'red' }}>{char}</span>
+        return <span key={i} style={{ color: 'red', top: '-10px' }}>{char}</span>
       }
     })
   }
@@ -26,8 +26,8 @@ class HaystackForward extends Component {
       <div className="sequence RG user-sequence">
         {_.pad('', pos)}<Left3 />
         <span className="reverse-arrow">{isExact && normalMatch && frame === 0 ? this.showExact() : this.showMismatches()}</span>
-        <span className="offset-right unimportant">
-          <span className="RV">{RV}<Right5 /></span>
+        <span className="offset-right unimportant" >
+          <span className="RV" style={{ 'transformOrigin': 'center left', 'transform': 'rotate(20deg)' }}>{RV}<Right5 /></span>
         </span>
       </div>
     )

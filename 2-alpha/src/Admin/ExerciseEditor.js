@@ -159,13 +159,14 @@ export class ExerciseEditor extends Component {
     }
   }
   textareaInput = {} // textarea refs are captured so that we have the position of the user's text cursor as they're editing. this is used for preview markers.
-  getCursorPosition = (el) => {
+  getCursorPosition = (el, val) => {
     const name = el.name
-    const cursorPosition = this.textareaInput[name].selectionStart // get position of cursor when editing
+    const cursorPosition = el.selectionStart // get position of cursor when editing
     this.setState({ 
       cursor: { [name]: cursorPosition }
     })
   }
+  removeCursorPosition = () => this.setState({ cursor: {}})
   renderField = ({ name, input, label, type, meta: { pristine, touched, error, warning }, ...props }) => (
     <div>
       <Label htmlFor={input.name}>{label}</Label>
@@ -196,6 +197,7 @@ export class ExerciseEditor extends Component {
           onClick={(event) => this.getCursorPosition(event.target)}
           onKeyUp={(event) => this.getCursorPosition(event.target)}
           onKeyDown={(event) => this.getCursorPosition(event.target)}
+          onBlur={this.removeCursorPosition}
           placeholder={label} 
           type={type} 
           {...props} 
