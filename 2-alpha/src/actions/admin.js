@@ -2,6 +2,7 @@ import _ from 'lodash'
 import { arrToObj, firebasePathExists, firebasePathAlreadyExists } from '../api'
 import * as TYPES from './types'
 import db from '../firebase/firebase'
+import { getCurrentAuthorUid } from '../selectors/admin';
 
 export const addExercise = (exerciseData = {}) => (dispatch, getState) => {
   // client knows we are updating
@@ -185,8 +186,15 @@ export const fetchCohort = (id) => (dispatch) => {
 }
 
 // students array should be [{ studentID, fullName, etc...}]
-export const addCohort = ({ exerciseIDs = [], students = [], cohortName = '', authorID = ''}) => (dispatch) => {
+export const addCohort = ({ exerciseIDs = [], students = [], cohortName = ''}) => (dispatch, getState) => {
+  const authorID = getCurrentAuthorUid(getState())
   dispatch({ type: TYPES.ADD_COHORT_INIT })
+  if(!cohortName) {
+    dispatch({
+      type: TYPES.ADD_COHORT_FAIL,
+      err: 'No cohort name given',
+    })
+  }
 
   // check every student's ID doesnt exist before continuing, then return studentIDs object in promise for 'cohorts' path
   const studentsPromise = Promise.all(students.map(({studentID}) => firebasePathAlreadyExists(db, `students/${studentID}`)))
@@ -212,16 +220,18 @@ export const addCohort = ({ exerciseIDs = [], students = [], cohortName = '', au
   const authorPromise = firebasePathExists(db, `authors/${authorID}`)
 
   // all good
-  Promise.all([studentsPromise, exercisesPromise, authorPromise]).then((data) => {
+  return Promise.all([studentsPromise, exercisesPromise, authorPromise]).then((data) => {
+    let cohortID
     const [studentIDs, exerciseIDs] = data
     console.log('some stuff', studentIDs, exerciseIDs)
     // add cohort
-    db.ref('cohorts').push({ exerciseIDs, studentIDs, cohortName, authorID }).then((snapshot) => {
-      const cohortID = snapshot.key
+    return db.ref('cohorts').push({ exerciseIDs, studentIDs, cohortName, authorID }).then((snapshot) => {
+      cohortID = snapshot.key
       dispatch({
         type: TYPES.ADD_COHORT_SUCCESS,
         cohortID,
       })
+      return cohortID // ignore students below, TODO: make addCohort more complete (being able to add exercises and students simultaneously)
       // add students
       const studentsObj = students.reduce((obj, { studentID, ...rest }) => ({ ...obj, [studentID]: { ...rest, cohortID } }), {})
       console.log(studentsObj)

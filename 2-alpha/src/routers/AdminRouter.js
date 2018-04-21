@@ -20,6 +20,7 @@ import ExerciseEditPage from '../Admin/ExerciseEditPage'
 import ExerciseCreatePage from '../Admin/ExerciseCreatePage'
 import MyAccountPage from '../Admin/MyAccountPage'
 import CohortsRouter from './CohortsRouter'
+import AddCohortPage from '../Admin/Cohorts/AddCohortPage';
 
 
 class AdminRouter extends Component {
@@ -65,6 +66,7 @@ class AdminRouter extends Component {
         <Route exact path="/admin/exercises/create" component={ExerciseCreatePage} />
         <Route exact path="/admin/exercises/edit/:id" component={ExerciseEditPage} />
         <Route exact path="/admin/exercises" component={AdminExercisesPage} />
+        <Route path="/admin/cohorts/add" component={AddCohortPage} />
         <Route path="/admin/cohorts/:id?" component={CohortsRouter} />
         <Route path="/admin/my-account" component={MyAccountPage} />
       </Switch>

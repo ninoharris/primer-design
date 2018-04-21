@@ -175,3 +175,9 @@ export const getCohortCompletionStatuses = createSelector(
     }
   }
 )
+
+// export const getExerciseStatuses = createSelector(
+//   getStudents,
+//   exercisesByIdSelector,
+//   ()
+// )
