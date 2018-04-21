@@ -271,18 +271,7 @@ export const isTooLong = (seq, max = 20) => {
   return false
 }
 
-export const getRestrictionSiteMatches = (sequence) => {
-  const matches = [] // returns array
-  _.forEach(RESites, RE => {
-    let reg = RegExp(RE.seq, 'g')
-    let result = reg.exec(sequence)
-    while (result !== null) {
-      matches.push({...RE, pos: result.index })
-      result = reg.exec(sequence)
-    }
-  })
-  return matches
-}
+
 
 export const generateHelper = function (len, start = 1) {
   let output = ""
@@ -318,29 +307,51 @@ export const addCutsAsSpaces = (str, cuts = []) => {
   return str
 }
 
-export const getMatchParameters = (RESite, input, forwardDirection = true) => {
-  // a RESite has a sequence, pos, cutsForward, name
+// Run through the MCS sequence for any restriction sites and record their position within the sequence
+export const getRestrictionSiteMatches = (sequence) => {
+  const matches = [] // function returns array of matches
+  // From the RESites database (not shown), check each RE site for any occurances
+  _.forEach(RESites, RE => {
+    let reg = RegExp(RE.seq, 'g') // searching uses regular expressions (RegExp)
+    let result = reg.exec(sequence)
+    // run a loop to check of multiple instances of the same RE site.
+    while (result !== null) {
+      matches.push({ ...RE, pos: result.index })
+      result = reg.exec(sequence)
+    }
+  })
+  return matches
+}
+
+// getMatchParameters is repeatedly used on each RE site within the MCS 
+// forwardDirection refers to whether the analysed primer is a forward or reverse primer.
+export const getMatchParameters = (RESite, input, forwardDirection = true) => { // assumes forward direction
+  // All database entries of RESite have a sequence, cutsForward, and name
+  // When part of the MCS
+
   // if input is for the reverse strand, then its RESite seq must be reversed
-  // const REMatchingSeq = forwardDirection ? RESite.seq : api.reverse(RESite.seq)
 
   // every input can be split up into a leading, "match", and trailing sequence:
-  // ABCTTTTGGXYZ -> ABC leading, TTTTGG match, XYZ leading
-  // console.log(REMatchingSeq)
-  const REMatchPos = input.indexOf(RESite.seq)
-  // if(REMatchPos === -1) throw Error('getMatchParameters called on zero matches')
-
+  // ABCTTTTGGXYZ -> ABC leading (5' cap), TTTTGG match (RE site annealing), XYZ leading (bases added for frame)
+  const REMatchPos = input.indexOf(RESite.seq) // gets position of the RE site within the input
+  if(REMatchPos === -1) { // if the RE site is not found within the input
+    return null
+  }
   // lets chunk up the input into two parts now:
-  // for forward primer: [leading, trailing]
-  // for reverse primer: [trailing, leading]
+  // for forward primer: [0: leading, 1: trailing]
+  // for reverse primer: [0: trailing, 1: leading]. In either case, the RE site is kept
   let seqChunks = [
     input.slice(0, REMatchPos),
     input.slice(REMatchPos + RESite.seq.length)
   ]
-  if (forwardDirection === false) {
+  if (forwardDirection === false) { // if the reverse primer is being analysed
+    // reverse the trailing and leading strings to be 3' to 5' 
     seqChunks = seqChunks.map(reverse)
   }
+  // assign sequence parts dependent on whether its a forward or reverse primer
   let trailingSeq = forwardDirection ? seqChunks[1] : seqChunks[1]
   let leadingSeq = forwardDirection ? seqChunks[0] : seqChunks[0]
+  // return all available information
   return {
     input,
     REMatchPos,
@@ -354,14 +365,16 @@ export const getMatchParameters = (RESite, input, forwardDirection = true) => {
   }
 }
 
+export const has5Cap = (REMatchPos) => {
+  return REMatchPos >= 3
+}
+
 export const hasGCClamp = (seq = '') => {
   const seqEnd = seq.slice(seq.length - 2) // get last 2 bases
   return getGCContent(seqEnd) >= 0.5 // at least 1 of the end bases is GC
 }
 
-export const has5Cap = (REMatchPos) => {
-  return REMatchPos >= 3
-}
+
 
 window.reverse = reverse
 window.complementFromString = complementFromString

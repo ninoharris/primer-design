@@ -14,9 +14,9 @@ class HaystackForward extends Component {
     const { correctChars, input } = this.props
     return input.split('').map((char, i) => {
       if (char === correctChars[i]) {
-        return <span key={i} style={{ fontWeight: 'bold' }}>{char}</span>
+        return <span key={i} style={{ }}>{char}</span>
       } else {
-        return <span key={i} style={{ color: 'red' }}>{char}</span>
+        return <span key={i} style={{ color: 'red', fontWeight: 'bold', top: '-2px' }}>{char}</span>
       }
     })
   }

@@ -5,7 +5,7 @@ import { getURVReverse } from '../../selectors'
 import { getHaystackReverseMatches } from '../../selectors/evaluations'
 import { Right5, Left3 } from '../../components/HelperEnds'
 
-class HaystackForward extends Component {
+class HaystackReverse extends Component {
   showExact = () => {
     return this.props.input
   }
@@ -41,4 +41,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps)(HaystackForward)
+export default connect(mapStateToProps)(HaystackReverse)

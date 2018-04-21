@@ -18,7 +18,7 @@ export class Haystack extends Component {
   }
   render() {
     const { forward, reverse, FG, RG, restrictionSites } = this.props
-    const className = "haystack mt-3" + (FG.length > 3 ? ' haystack-with-UFG' : '') + (RG.length > 3 ? ' haystack-with-URG' : '')
+    const className = "haystack mt-3" + (FG.length >= 1 ? ' haystack-with-UFG' : '') + (RG.length >= 1 ? ' haystack-with-URG' : '')
     return (
       <div className={className}>
         <div style={{ position: 'relative', top: '-1rem' }}>

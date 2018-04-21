@@ -2297,3 +2297,6 @@ ul, li {
 
 .toggle-is-on .toggle-off, .toggle-is-off .toggle-on {
   display: none; }
+
+.ReactModal__Overlay {
+  z-index: 1000; }

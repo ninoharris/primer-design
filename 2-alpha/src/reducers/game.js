@@ -122,3 +122,11 @@ export const formInputs = combineReducers({
   FG: inputReducer('FG'),
   RG: inputReducer('RG'),
 })
+
+export const gameCompleted = (state = null, action) => {
+  switch (action.type) {
+    case TYPES.GAME_COMPLETED:
+      return action.val
+    default: return state
+  }
+}

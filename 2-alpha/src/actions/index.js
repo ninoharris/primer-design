@@ -98,7 +98,7 @@ export const selectExercise = (id = null) => (dispatch, getState) => {
 
     if(availableExercisesList.length === 0) {
       dispatch({
-        types: TYPES.GAME_COMPLETED,
+        type: TYPES.GAME_COMPLETED,
         val: true,
       })
     }

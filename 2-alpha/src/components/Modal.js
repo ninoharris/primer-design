@@ -25,7 +25,7 @@ class Modal extends Component {
     // ReactDOM.render(<Provider store={this})
     ReactDOM.render(
       <Provider store={configureStore}>
-        <div className="modal-content">
+        <div className="modal-content" style={{zIndex: 100}}>
           {this.props.children}
         </div>
       </Provider>, 

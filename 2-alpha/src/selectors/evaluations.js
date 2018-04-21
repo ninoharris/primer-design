@@ -121,7 +121,7 @@ export const getHaystackForwardMatches = createSelector(
   getCurrentExercise,
   (input, { forward }, { constructStart }) => {
     console.log('forward strand:', forward)
-    if (input.length < 4) return {}
+    if (input.length < 1) return {}
     const forwardMatches = {
       rightSeq: forward.substr(constructStart, input.length),
       input,
@@ -140,7 +140,7 @@ export const getHaystackReverseMatches = createSelector(
   getBothHaystackStrands,
   getCurrentExercise,
   (input, { reverse }, { constructEnd }) => {
-    if (input.length < 4) return {}
+    if (input.length < 1) return {}
     // for this, we keep the haystack the same and reverse the users input. Substring the haystack by the input length for checking.
     const pos = constructEnd - input.length
     const reverseMatches = {
