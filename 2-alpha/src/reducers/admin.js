@@ -61,6 +61,8 @@ export const cohorts = (state = {}, action = {}) => {
     case TYPES.ADD_STUDENT_SUCCESS:
     case TYPES.REMOVE_STUDENT_SUCCESS:
       return { ...state, [action.cohortID]: cohort(state[action.cohortID], action)}
+    case TYPES.REMOVE_COHORT_SUCCESS:
+      return _.omit(state, action.cohortID)
     default: return state
   }
 }

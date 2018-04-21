@@ -246,8 +246,8 @@ export const addCohort = ({ exerciseIDs = [], students = [], cohortName = ''}) =
   })
 }
 
-export const removeCohort = (id) => (dispatch) => {
-  const removeStudents = () => db.ref(`cohorts/${id}`).once('value')
+export const removeCohort = (cohortID) => (dispatch) => {
+  const removeStudents = () => db.ref(`cohorts/${cohortID}`).once('value')
     .then(snapshot => {
       const cohort = snapshot.val()
       return _.mapValues(cohort.studentIDs, () => null) // return object of { id1: null, id2: null, ... }
@@ -257,9 +257,9 @@ export const removeCohort = (id) => (dispatch) => {
   dispatch({ type: TYPES.REMOVE_COHORT_INIT})
   // get all students associated with cohort and delete them first.
 
-  removeStudents()
-    .then(() => db.ref(`cohorts/${id}`).set(null)) // remove cohort
-    .then(() => dispatch({ type: TYPES.REMOVE_COHORT_SUCCESS }))
+  return removeStudents()
+    .then(() => db.ref(`cohorts/${cohortID}`).set(null)) // remove cohort
+    .then(() => dispatch({ type: TYPES.REMOVE_COHORT_SUCCESS, cohortID }))
 }
 
 export const updateCohortName = (id, name) => (dispatch) => {

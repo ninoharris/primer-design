@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import moment from 'moment'
 import { } from '../../api'
 import React from 'react'
 import PropTypes from 'prop-types'
@@ -71,7 +72,7 @@ const CohortsListItem = ({ cohortID, cohortName, authorFullName, exerciseIDs = {
       </CommonMistakesContainer>
       <FlexVerticallyCenter>
         <LeftFillWidth>
-          <PLight>{cohortID}, '{cohortName}', was created by <strong>{authorFullName}</strong> on {createdDate}.</PLight>
+          <PLight>{cohortID}, '{cohortName}', was created by <strong>{authorFullName}</strong> on {moment(createdDate).format("h:mma ddd, Do MMM YY")}.</PLight>
         </LeftFillWidth>
         <div>
           <HighlightLink to={paths.getCohortManageExercisesURL(cohortID)}>Manage attached exercises</HighlightLink>

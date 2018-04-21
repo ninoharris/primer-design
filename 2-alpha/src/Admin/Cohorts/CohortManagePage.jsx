@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
-import { fetchCohort, updateCohortName } from '../../actions/admin'
+import { fetchCohort, updateCohortName, removeCohort } from '../../actions/admin'
 import { getCohort } from '../../selectors/admin'
 
 import AdminHeader from '../AdminHeader'
@@ -32,7 +32,13 @@ export class CohortManagePage extends Component {
     })
   }
   deleteCohort = () => {
-    this.props.history.push('/admin')
+    const sureToDelete = prompt(`Are you sure? This will delete the cohort and all its associated students. Please type 'yes' to go ahead.`)
+    if (sureToDelete === 'yes') {
+      this.props.removeCohort(this.props.cohortID).then( () =>
+        this.props.history.push('/admin')
+      )
+    }
+    
   }
   updateName = (name) => {
     this.props.updateCohortName(this.props.cohortID, name)
@@ -81,4 +87,5 @@ const mapStateToProps = (state, ownProps) => {
 export default connect(mapStateToProps, {
   fetchCohort,
   updateCohortName,
+  removeCohort,
 })(CohortManagePage)
