@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 
 import { getCohortExercises } from '../../selectors/admin'
-import { getStudents } from '../../selectors/admin'
+import { getStudentsWithCompletions } from '../../selectors/admin'
 import { fetchStudents } from '../../actions/admin'
 
 import CohortStudentsListItem from './CohortStudentsListItem';
@@ -68,7 +68,7 @@ export class CohortStudentsView extends Component {
 
 const mapStateToProps = (state, {studentIDs, cohortID}) => {
   return {
-    students: getStudents(state, { studentIDs }),
+    students: getStudentsWithCompletions(state, { studentIDs }),
     totalExercisesCount: _.size(getCohortExercises(state, { cohortID})),
   }
 }

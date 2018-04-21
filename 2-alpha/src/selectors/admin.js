@@ -32,6 +32,23 @@ export const getStudents = createSelector(
   (state, props) => props.studentIDs,
   (students, studentIDs) => console.log(students) || _.pick(students, _.keys(studentIDs))
 )
+export const getStudentsWithCompletions = createSelector(
+  getStudents,
+  (students) => {
+    for(const studentID in students) {
+      const student = students[studentID]
+      let completedCount = 0
+      for(const exercise in student.exercises) {
+        if(student.exercises[exercise].completed === true) completedCount++
+      }
+      if(typeof student.summary !== 'object') { // summary does not exist yet
+        student.summary = {}
+      }
+      student.summary.completedCount = completedCount
+    }
+    return students
+  }
+)
 
 export const getStudentsOverviewList = createSelector(
   getStudents,
